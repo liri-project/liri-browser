@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.4.0, 2015-06-01T13:43:52. -->
+<!-- Written by QtCreator 3.4.0, 2015-06-01T15:51:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -471,7 +471,7 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
-    <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">material-browser</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>

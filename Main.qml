@@ -2,6 +2,7 @@ import QtQuick 2.4
 import Material 0.1
 import QtQuick.Controls 1.3 as Controls
 import QtWebKit 3.0
+import QtWebKit.experimental 1.0
 
 
 ApplicationWindow {
@@ -14,7 +15,7 @@ ApplicationWindow {
         //backgroundColor: ""
         primaryColor: "#FF4719"
         //primaryDarkColor: ""
-        accentColor: "#FF9E00"
+        accentColor: "#00bcd4"
         //tabHighlightColor: ""
     }
 
@@ -28,21 +29,43 @@ ApplicationWindow {
         id: root
 
         /* Internal Style Settings */         // Red and White | Green | Grey
-        property color _tab_background_color:   "#e0e0e0" // "#8bc34a" // "#9e9e9e" //
-        property int _tab_height: Units.dp(48)
+        property color _tab_background_color: "#fafafa"
+        property int _tab_height: Units.dp(40)
         property int _tab_width: Units.dp(160)
+        property bool _tabs_rounded: false
+        property int _tabs_spacing: 1 // Units.dp(5)
         property int _titlebar_height: Units.dp(100)
-        property color _tab_color_active:       "#f44336" // "#7cb342" // "#e0e0e0" //
-        property color _tab_color_inactive:     "#fafafa" // "#9ccc65" // "#eeeeee" //
-        property color _tab_text_color_active: "white"
-        property color _tab_text_color_inactive: "black"
-        property color _icon_color: "white"
+        property color _tab_color_active:       "#eeeeee"
+        property color _tab_color_inactive:    "#e0e0e0"
+        property color _tab_text_color_active: "#212121"
+        property color _tab_text_color_inactive: "#757575"
+        property color _icon_color: "#757575"
+        property color _address_bar_color: "#e0e0e0"
+        property color current_text_color: _tab_text_color_active
 
 
         /* Tab Management */
         property var tabs: []
         property int current_tab_id: -1
         property int last_tab_id: -1
+
+        function get_text_color_for_background(bg) {
+            // from http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
+            var c = "#1b5e20".substring(1);      // strip #
+            var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+            var r = (rgb >> 16) & 0xff;  // extract red
+            var g = (rgb >>  8) & 0xff;  // extract green
+            var b = (rgb >>  0) & 0xff;  // extract blue
+
+            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+            if (luma < 100) {
+                return "white";
+            }
+            else {
+                return "#212121"
+            }
+        }
 
         function get_tab_by_id(id) {
             for (var i=0; i<tabs.length; i++) {
@@ -82,7 +105,8 @@ ApplicationWindow {
 
                 browser_tab_object.remove();
                 txt_url.text = ""
-                current_tab_id = -1;
+                if(current_tab_id === tab_id)
+                    current_tab_id = -1;
 
             });
             browser_tab_object.select.connect(function(tab_id){
@@ -110,9 +134,21 @@ ApplicationWindow {
             if (current_tab_id !== -1) {
                 get_tab_by_id(current_tab_id).tab.active = false;
                 get_tab_by_id(current_tab_id).webview.visible = false;
+                get_tab_by_id(current_tab_id).tab.update_color();
             }
             current_tab_id = tab_id;
             application_window.title = tab.tab.text + ' - Browser';
+
+            // Update tab color
+            tab.tab.update_color();
+            if (tab.tab.custom_color){
+                current_text_color = get_text_color_for_background(tab.tab.custom_color);
+                set_custom_bar_color(tab.tab.custom_color);
+            }
+            else {
+                set_default_bar_color();
+                current_text_color = _tab_text_color_active;
+            }
 
             if (tab.webview.loading){
                 prg_loading.visible = true;
@@ -151,6 +187,7 @@ ApplicationWindow {
         function tab_loading_changed(tab_id, request) {
             var tab = get_tab_by_id(tab_id)
 
+
             if (request.status === 0){
                 console.log("LoadStartedStatus");
                 if (tab_id === current_tab_id) {
@@ -171,6 +208,26 @@ ApplicationWindow {
                         txt_url.text = tab.webview.url
                         application_window.title = tab.webview.title + ' - Browser';
                     }
+
+                    // Looking for custom tab bar colors
+                    tab.webview.experimental.evaluateJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
+                        function(content){
+                            if(content !== "") {
+                                tab.tab.custom_color = content;
+                                tab.tab.update_color();
+                                if (tab_id === current_tab_id){
+                                    set_custom_bar_color(content);
+                                    current_text_color = get_text_color_for_background(content);
+                                }
+                            }
+                            else{
+                                tab.tab.custom_color = null;
+                                tab.tab.update_color();
+                                if (tab_id === current_tab_id)
+                                    set_default_bar_color()
+                            }
+                    });
+
             }
             else if (request.status === 3) {
                 console.log("LoadFailedStatus");
@@ -179,6 +236,14 @@ ApplicationWindow {
                 set_current_tab_url(new_url);
             }
 
+        }
+
+        function set_custom_bar_color(color) {
+            toolbar.color = color;
+        }
+
+        function set_default_bar_color() {
+           toolbar.color = root._tab_color_active;
         }
 
 
@@ -197,28 +262,49 @@ ApplicationWindow {
 
                 Row {
                     id: tab_row
-                    spacing: 0
+                    spacing: root._tabs_spacing
                     anchors.rightMargin: 50
                 }
 
-            }
+                Rectangle {
 
-            Rectangle {
-                id: rect_add_tab
+                    anchors.left: tab_row.right
+                    visible: !(flickable.contentWidth > flickable.width)
 
-                x: flickable.width - this.width
-                color: root._tab_color_active
-                height: root._tab_height
-                width: Units.dp(35)
-                IconButton {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    color: root._icon_color
-                    iconName: "content/add_circle"
+                    color: root._tab_background_color
+                    height: root._tab_height
+                    width: Units.dp(48)
+                    IconButton {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        color: root._icon_color
+                        iconName: "content/add"
 
-                    onClicked: root.add_tab()
+                        onClicked: root.add_tab()
+                    }
                 }
 
+            }
+            View {
+                elevation: 2
+                x: flickable.width - this.width
+                height: root._tab_height
+                width: Units.dp(48)
+                visible: (flickable.contentWidth > flickable.width)
+
+                Rectangle {
+                    id: rect_add_tab
+                    anchors.fill: parent
+                    color: root._tab_background_color
+                    IconButton {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        color: root._icon_color
+                        iconName: "content/add"
+
+                        onClicked: root.add_tab()
+                    }
+                }
             }
 
 
@@ -230,6 +316,7 @@ ApplicationWindow {
 
 
                 Rectangle {
+                    id: toolbar
                     anchors.fill: parent
                     color: root._tab_color_active
 
@@ -242,7 +329,7 @@ ApplicationWindow {
                             iconName : "navigation/arrow_back"
                             anchors.verticalCenter: parent.verticalCenter
                             onClicked: root.current_tab_go_back()
-                            color: root._icon_color
+                            color: root.current_text_color
                         }
 
                         IconButton {
@@ -250,7 +337,7 @@ ApplicationWindow {
                             hoverAnimation: true
                             iconName : "navigation/refresh"
                             anchors.verticalCenter: parent.verticalCenter
-                            color: root._icon_color
+                            color: root.current_text_color
                             onClicked: {
                                 root.get_tab_by_id(root.current_tab_id).webview.reload();
                             }
@@ -266,15 +353,22 @@ ApplicationWindow {
                         }
 
                         Rectangle {
-                            width: parent.width - this.x - btn_menu.width - parent.spacing
+                            width: parent.width - this.x - right_toolbar.width - parent.spacing
+                            radius: Units.dp(2)
                             anchors.verticalCenter: parent.verticalCenter
                             height: parent.height - Units.dp(16)
+                            color: root._address_bar_color
+                            opacity: 0.5
 
                             TextField{
                                 id: txt_url
                                 anchors.fill: parent
+                                anchors.leftMargin: Units.dp(5)
+                                anchors.rightMargin: Units.dp(5)
+                                anchors.topMargin: Units.dp(4)
                                 text: ""
-                                textColor: "black"
+                                opacity: 1
+                                textColor: root._tab_text_color_active
                                 onAccepted: {
                                     root.set_current_tab_url(txt_url.text)
                                 }
@@ -283,11 +377,26 @@ ApplicationWindow {
 
                         }
 
-                        IconButton {
-                            id: btn_menu
-                            color: root._icon_color
-                            iconName : "navigation/more_vert"
+                        Row {
+                            id: right_toolbar
+                            width: childrenRect.width
                             anchors.verticalCenter: parent.verticalCenter
+
+                            IconButton {
+                                id: btn_bookmark
+                                color: root.current_text_color
+                                iconName : "action/bookmark_outline"
+                                anchors.verticalCenter: parent.verticalCenter
+
+                            }
+
+                            IconButton {
+                                id: btn_menu
+                                color: root.current_text_color
+                                iconName : "navigation/more_vert"
+                                anchors.verticalCenter: parent.verticalCenter
+
+                            }
 
                         }
 
@@ -322,7 +431,7 @@ ApplicationWindow {
             margins: Units.dp(32)
         }
 
-        iconName: "action/bookmark"
+        iconName: "social/share"
 
         onClicked: {
             snackbar_bookmark.open('Added bookmark "' + root.get_tab_by_id(root.current_tab_id).webview.title + '"')

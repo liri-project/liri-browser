@@ -4,10 +4,6 @@ import Material 0.1
 ProgressCircle {
     id: indicator
 
-    color: root._icon_color
-
-    // Uncomment to enable color animation:
-    /*
     SequentialAnimation {
         running: true
         loops: Animation.Infinite
@@ -47,5 +43,5 @@ ProgressCircle {
             easing.type: Easing.InOutQuad
             duration:  1200
         }
-    }*/
+    }
 }
