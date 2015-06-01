@@ -6,5 +6,4 @@ WebView {
     property int tab_id
 
     anchors.fill: parent
-    url: "about:blank"
 }

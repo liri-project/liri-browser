@@ -51,7 +51,23 @@ ApplicationWindow {
             }
         }
 
-        function add_tab() {
+        function add_tab(url) {
+            if (!url)
+                url = start_page;
+            else {
+                if (url.indexOf('.') !== -1){
+                    if (url.lastIndexOf('http://', 0) !== 0){
+                        if (url.lastIndexOf('https://', 0) !== 0){
+                            url = 'http://' + url;
+                        }
+                    }
+                }
+                else
+                    url = "http://www.google.com/search?q=" + url;
+
+            }
+
+
             var new_tab_id = last_tab_id + 1
             last_tab_id = new_tab_id
 
@@ -66,6 +82,7 @@ ApplicationWindow {
 
                 browser_tab_object.remove();
                 txt_url.text = ""
+                current_tab_id = -1;
 
             });
             browser_tab_object.select.connect(function(tab_id){
@@ -73,7 +90,7 @@ ApplicationWindow {
             });
 
             var webview_component = Qt.createComponent("BrowserWebView.qml");
-            var webview_object = webview_component.createObject(web_container, { tab_id: new_tab_id, visible: false, url: start_page });
+            var webview_object = webview_component.createObject(web_container, { tab_id: new_tab_id, visible: false, url: url });
             webview_object.loadingChanged.connect(function(loadRequest){
                 tab_loading_changed(webview_object.tab_id, loadRequest);
             });
@@ -85,7 +102,7 @@ ApplicationWindow {
 
         function set_current_tab(tab_id) {
             if (tab_id === current_tab_id)
-                return
+                return                
             var tab = get_tab_by_id(tab_id);
             tab.webview.visible = true;
             tab.tab.active = true;
@@ -108,6 +125,11 @@ ApplicationWindow {
         }
 
         function set_current_tab_url(url) {
+            if (tabs.length === 0 || current_tab_id === -1){
+                add_tab(url);
+                return;
+            }
+
             var tab = get_tab_by_id(current_tab_id);
 
             if (url.indexOf('.') !== -1){
