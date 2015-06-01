@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>LoadingIndicator.qml</file>
+        <file>Main.qml</file>
+        <file>BrowserTab.qml</file>
+        <file>BrowserWebView.qml</file>
+    </qresource>
+</RCC>
