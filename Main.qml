@@ -3,10 +3,11 @@ import Material 0.1
 import QtQuick.Controls 1.3 as Controls
 import QtWebKit 3.0
 import QtWebKit.experimental 1.0
+import "TabManager.js" as TabManager
 
 
 ApplicationWindow {
-    id: application_window
+    id: root
 
     title: "Browser"
     visible: true
@@ -19,6 +20,27 @@ ApplicationWindow {
         //tabHighlightColor: ""
     }
 
+    /* Internal Style Settings */
+    property color _tab_background_color: "#fafafa"
+    property int _tab_height: Units.dp(40)
+    property int _tab_width: Units.dp(160)
+    property bool _tabs_rounded: false
+    property int _tabs_spacing: 1
+    property int _titlebar_height: Units.dp(100)
+    property color _tab_color_active: "#eeeeee"
+    property color _tab_color_inactive: "#e0e0e0"
+    property color _tab_text_color_active: "#212121"
+    property color _tab_text_color_inactive: "#757575"
+    property color _icon_color: "#757575"
+    property color _address_bar_color: "#e0e0e0"
+    property color current_text_color: _tab_text_color_active
+
+
+    /* Tab Management */
+    property var tabs: []
+    property int current_tab_id: -1
+    property int last_tab_id: -1
+
 
     /* User Settings */
     property string start_page: "https://www.google.com"
@@ -26,226 +48,7 @@ ApplicationWindow {
 
 
     initialPage: Item {
-        id: root
-
-        /* Internal Style Settings */         // Red and White | Green | Grey
-        property color _tab_background_color: "#fafafa"
-        property int _tab_height: Units.dp(40)
-        property int _tab_width: Units.dp(160)
-        property bool _tabs_rounded: false
-        property int _tabs_spacing: 1 // Units.dp(5)
-        property int _titlebar_height: Units.dp(100)
-        property color _tab_color_active:       "#eeeeee"
-        property color _tab_color_inactive:    "#e0e0e0"
-        property color _tab_text_color_active: "#212121"
-        property color _tab_text_color_inactive: "#757575"
-        property color _icon_color: "#757575"
-        property color _address_bar_color: "#e0e0e0"
-        property color current_text_color: _tab_text_color_active
-
-
-        /* Tab Management */
-        property var tabs: []
-        property int current_tab_id: -1
-        property int last_tab_id: -1
-
-        function get_text_color_for_background(bg) {
-            // from http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
-            var c = "#1b5e20".substring(1);      // strip #
-            var rgb = parseInt(c, 16);   // convert rrggbb to decimal
-            var r = (rgb >> 16) & 0xff;  // extract red
-            var g = (rgb >>  8) & 0xff;  // extract green
-            var b = (rgb >>  0) & 0xff;  // extract blue
-
-            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-
-            if (luma < 100) {
-                return "white";
-            }
-            else {
-                return "#212121"
-            }
-        }
-
-        function get_tab_by_id(id) {
-            for (var i=0; i<tabs.length; i++) {
-                if (tabs[i].id === id)
-                    return tabs[i]
-            }
-        }
-
-        function add_tab(url) {
-            if (!url)
-                url = start_page;
-            else {
-                if (url.indexOf('.') !== -1){
-                    if (url.lastIndexOf('http://', 0) !== 0){
-                        if (url.lastIndexOf('https://', 0) !== 0){
-                            url = 'http://' + url;
-                        }
-                    }
-                }
-                else
-                    url = "http://www.google.com/search?q=" + url;
-
-            }
-
-
-            var new_tab_id = last_tab_id + 1
-            last_tab_id = new_tab_id
-
-            var browser_tab_component = Qt.createComponent("BrowserTab.qml");
-            var browser_tab_object = browser_tab_component.createObject(tab_row, { tab_id: new_tab_id,text: "New Tab", });
-            browser_tab_object.close.connect(function (){
-
-                var tab_id = browser_tab_object.tab_id;
-                get_tab_by_id(tab_id).webview.destroy()
-                snackbar_tab_close.open('Closed tab "' + get_tab_by_id(tab_id).webview.title + '"');
-                tabs.splice(tabs.indexOf(get_tab_by_id(tab_id)));
-
-                browser_tab_object.remove();
-                txt_url.text = ""
-                if(current_tab_id === tab_id)
-                    current_tab_id = -1;
-
-            });
-            browser_tab_object.select.connect(function(tab_id){
-                set_current_tab(tab_id);
-            });
-
-            var webview_component = Qt.createComponent("BrowserWebView.qml");
-            var webview_object = webview_component.createObject(web_container, { tab_id: new_tab_id, visible: false, url: url });
-            webview_object.loadingChanged.connect(function(loadRequest){
-                tab_loading_changed(webview_object.tab_id, loadRequest);
-            });
-
-            tabs.push({id: new_tab_id, webview: webview_object, tab: browser_tab_object})
-            set_current_tab(new_tab_id)
-
-        }
-
-        function set_current_tab(tab_id) {
-            if (tab_id === current_tab_id)
-                return                
-            var tab = get_tab_by_id(tab_id);
-            tab.webview.visible = true;
-            tab.tab.active = true;
-            txt_url.text = tab.webview.url
-            if (current_tab_id !== -1) {
-                get_tab_by_id(current_tab_id).tab.active = false;
-                get_tab_by_id(current_tab_id).webview.visible = false;
-                get_tab_by_id(current_tab_id).tab.update_color();
-            }
-            current_tab_id = tab_id;
-            application_window.title = tab.tab.text + ' - Browser';
-
-            // Update tab color
-            tab.tab.update_color();
-            if (tab.tab.custom_color){
-                current_text_color = get_text_color_for_background(tab.tab.custom_color);
-                set_custom_bar_color(tab.tab.custom_color);
-            }
-            else {
-                set_default_bar_color();
-                current_text_color = _tab_text_color_active;
-            }
-
-            if (tab.webview.loading){
-                prg_loading.visible = true;
-                btn_refresh.visible = false;
-            }
-            else{
-                prg_loading.visible = false;
-                btn_refresh.visible = true;
-            }
-        }
-
-        function set_current_tab_url(url) {
-            if (tabs.length === 0 || current_tab_id === -1){
-                add_tab(url);
-                return;
-            }
-
-            var tab = get_tab_by_id(current_tab_id);
-
-            if (url.indexOf('.') !== -1){
-                if (url.lastIndexOf('http://', 0) !== 0){
-                    if (url.lastIndexOf('https://', 0) !== 0){
-                        url = 'http://' + url;
-                    }
-                }
-            }
-
-            tab.webview.url = url;
-        }
-
-        function current_tab_go_back() {
-            var tab = get_tab_by_id(current_tab_id);
-            tab.webview.goBack();
-        }
-
-        function tab_loading_changed(tab_id, request) {
-            var tab = get_tab_by_id(tab_id)
-
-
-            if (request.status === 0){
-                console.log("LoadStartedStatus");
-                if (tab_id === current_tab_id) {
-                    prg_loading.visible = true;
-                    btn_refresh.visible = false;
-                }
-
-            }
-            else if (request.status === 2) {
-                console.log("LoadFinishedStatus");
-                if (tab_id === current_tab_id) {
-                    prg_loading.visible = false;
-                    btn_refresh.visible = true;
-                }
-                if (tab.webview.url !== txt_url.text)
-                    tab.tab.text = tab.webview.title
-                    if (tab_id === current_tab_id) {
-                        txt_url.text = tab.webview.url
-                        application_window.title = tab.webview.title + ' - Browser';
-                    }
-
-                    // Looking for custom tab bar colors
-                    tab.webview.experimental.evaluateJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
-                        function(content){
-                            if(content !== "") {
-                                tab.tab.custom_color = content;
-                                tab.tab.update_color();
-                                if (tab_id === current_tab_id){
-                                    set_custom_bar_color(content);
-                                    current_text_color = get_text_color_for_background(content);
-                                }
-                            }
-                            else{
-                                tab.tab.custom_color = null;
-                                tab.tab.update_color();
-                                if (tab_id === current_tab_id)
-                                    set_default_bar_color()
-                            }
-                    });
-
-            }
-            else if (request.status === 3) {
-                console.log("LoadFailedStatus");
-                var new_url = "http://www.google.com/search?q=" + txt_url.text
-                txt_url.text = new_url;
-                set_current_tab_url(new_url);
-            }
-
-        }
-
-        function set_custom_bar_color(color) {
-            toolbar.color = color;
-        }
-
-        function set_default_bar_color() {
-           toolbar.color = root._tab_color_active;
-        }
-
+        id: page
 
         Rectangle {
             id: titlebar
@@ -280,7 +83,7 @@ ApplicationWindow {
                         color: root._icon_color
                         iconName: "content/add"
 
-                        onClicked: root.add_tab()
+                        onClicked: TabManager.add_tab();
                     }
                 }
 
@@ -328,7 +131,15 @@ ApplicationWindow {
                             id: btn_go_back
                             iconName : "navigation/arrow_back"
                             anchors.verticalCenter: parent.verticalCenter
-                            onClicked: root.current_tab_go_back()
+                            onClicked: TabManager.current_tab_page.go_back()
+                            color: root.current_text_color
+                        }
+
+                        IconButton {
+                            id: btn_go_forward
+                            iconName : "navigation/arrow_forward"
+                            anchors.verticalCenter: parent.verticalCenter
+                            onClicked: TabManager.current_tab_page.go_forward()
                             color: root.current_text_color
                         }
 
@@ -338,10 +149,7 @@ ApplicationWindow {
                             iconName : "navigation/refresh"
                             anchors.verticalCenter: parent.verticalCenter
                             color: root.current_text_color
-                            onClicked: {
-                                root.get_tab_by_id(root.current_tab_id).webview.reload();
-                            }
-
+                            onClicked: TabManager.current_tab_page.reload()
                         }
 
                         LoadingIndicator {
@@ -370,7 +178,7 @@ ApplicationWindow {
                                 opacity: 1
                                 textColor: root._tab_text_color_active
                                 onAccepted: {
-                                    root.set_current_tab_url(txt_url.text)
+                                    TabManager.set_current_tab_url(txt_url.text);
                                 }
 
                             }
@@ -406,7 +214,6 @@ ApplicationWindow {
             }
 
         }
-
 
         Item {
             anchors.top: titlebar.bottom
