@@ -2,7 +2,7 @@ import QtQuick 2.4
 import QtGraphicalEffects 1.0
 import Material 0.1
 
-Rectangle {
+Item {
     id: view
     z: 5
 
@@ -20,7 +20,6 @@ Rectangle {
     signal close
     signal select (int tab_id)
 
-    //elevation: if (page.active) { 2 } else { 0 }
     height: root._tab_height
     width: root._tab_width
 
@@ -28,7 +27,6 @@ Rectangle {
         color = page.color;
         text_color = page.text_color;
         icon_color = page.icon_color;
-        console.log(page.active)
         if (page.active){
             drop_shadow.visible = true;
             fake_shadow.visible = false;
@@ -59,7 +57,7 @@ Rectangle {
 
                 Image {
                     id: img_favicon
-                    //source: view.webview.icon //view.favicon
+                    source: view.webview.icon //view.favicon
                     //visible: icon_url !== ""
                     width: Units.dp(22)
                     height: Units.dp(22)

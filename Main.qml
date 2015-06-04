@@ -1,8 +1,6 @@
 import QtQuick 2.4
 import Material 0.1
 import QtQuick.Controls 1.3 as Controls
-import QtWebKit 3.0
-import QtWebKit.experimental 1.0
 import "TabManager.js" as TabManager
 
 
@@ -11,6 +9,9 @@ ApplicationWindow {
 
     title: "Browser"
     visible: true
+
+    width: 1000
+    height: 640
 
     theme {
         //backgroundColor: ""
@@ -51,11 +52,21 @@ ApplicationWindow {
     initialPage: Item {
         id: page
 
-        Rectangle {
+        Canvas {
             id: titlebar
             width: parent.width
             height: root._titlebar_height
-            color: root._tab_background_color
+
+            onPaint: {
+                var ctx = getContext("2d");
+                ctx.lineWidth = Units.dp(3);
+                ctx.strokeStyle = "#dadada";
+                ctx.fillStyle = "#dadada";
+                ctx.moveTo(flickable.x, flickable.height - Units.dp(1));
+                ctx.lineTo(flickable.x+flickable.width, flickable.height - ctx.lineWidth);
+                ctx.fill()
+                ctx.stroke();
+            }
 
             Flickable {
                 id: flickable
@@ -66,7 +77,8 @@ ApplicationWindow {
 
                 Row {
                     id: tab_row
-                    spacing: root._tabs_spacing
+                    x: if (this.children.length > 0 ){flickable.x + Units.dp(64)} else {parent.x}
+                    spacing: 0 // root._tabs_spacing
                     anchors.rightMargin: 50
                 }
 
@@ -76,7 +88,7 @@ ApplicationWindow {
                     visible: !(flickable.contentWidth > flickable.width)
 
                     color: root._tab_background_color
-                    height: root._tab_height
+                    height: root._tab_height - Units.dp(4)
                     width: Units.dp(48)
                     IconButton {
                         anchors.verticalCenter: parent.verticalCenter
@@ -88,7 +100,9 @@ ApplicationWindow {
                     }
                 }
 
+
             }
+
             View {
                 elevation: 2
                 x: flickable.width - this.width
@@ -118,8 +132,6 @@ ApplicationWindow {
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
-
-                //elevation: 4
 
                 Rectangle {
                     id: toolbar

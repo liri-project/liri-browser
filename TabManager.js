@@ -102,7 +102,6 @@ function TabPage(url) {
     }
 
     this.close = function(){
-        console.log("!")
         var tab_id = this.tab_id;
         this.webview.destroy()
         snackbar_tab_close.open('Closed tab "' + this.title + '"');
@@ -123,11 +122,11 @@ function TabPage(url) {
     }
 
     this.go_back = function () {
-        this.webview.view.goBack();
+        this.webview.goBack();
     }
 
     this.go_forward = function() {
-        this.webview.view.goForward();
+        this.webview.goForward();
     }
 
     this.select = function() {
@@ -171,7 +170,7 @@ function TabPage(url) {
     }
 
     this.update_toolbar = function() {
-        if (this.webview.view.canGoBack){
+        if (this.webview.canGoBack){
             btn_go_back.enabled = true;
         }
         else {
@@ -179,7 +178,7 @@ function TabPage(url) {
 
         }
 
-        if (this.webview.view.canGoForward){
+        if (this.webview.canGoForward){
             btn_go_forward.enabled = true;
         }
         else {
@@ -212,7 +211,7 @@ function TabPage(url) {
                     root.title = tab.webview.title + ' - Browser';
                 }
                 // Looking for custom tab bar colors
-                tab.webview.experimental.evaluateJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
+                tab.webview.runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
                     function(content){
                         if(content !== "") {
                             tab.custom_color = content;
@@ -235,13 +234,13 @@ function TabPage(url) {
         }
 
         tab.update_toolbar();
-        tab.tab.favicon = tab.webview.view.icon;
+        tab.tab.favicon = tab.webview.icon;
 
     }
 
 
     this.reload = function(){
-        this.webview.view.reload();
+        this.webview.reload();
     }
 
     /* Initialization */
@@ -269,11 +268,11 @@ function TabPage(url) {
     this.webview = webview_component.createObject(web_container, { page:this, visible: true, url: this.url });
 
     var tab_component = Qt.createComponent("BrowserTab.qml");
-    this.tab = tab_component.createObject(tab_row, { page: this, webview: this.webview.view });
+    this.tab = tab_component.createObject(tab_row, { page: this, webview: this.webview });
     this.tab.close.connect(this.close);
 
     var tab = this;
-    this.webview.view.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
+    this.webview.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
 
     open_tabs.push(this);
     this.select();
