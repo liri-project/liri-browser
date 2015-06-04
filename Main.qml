@@ -73,7 +73,7 @@ ApplicationWindow {
                 width: parent.width
                 height: root._tab_height
                 contentHeight: this.height
-                contentWidth: tab_row.width + rect_add_tab.width + Units.dp(16)
+                contentWidth: tab_row.width + rect_add_tab.width + btn_add_tab.width + Units.dp(16)
 
                 Row {
                     id: tab_row
@@ -83,6 +83,7 @@ ApplicationWindow {
                 }
 
                 Rectangle {
+                    id: btn_add_tab
 
                     anchors.left: tab_row.right
                     visible: !(flickable.contentWidth > flickable.width)
@@ -120,7 +121,7 @@ ApplicationWindow {
                         color: root._icon_color
                         iconName: "content/add"
 
-                        onClicked: root.add_tab()
+                        onClicked: TabManager.add_tab();
                     }
                 }
             }
@@ -205,7 +206,7 @@ ApplicationWindow {
 
                         Row {
                             id: right_toolbar
-                            width: childrenRect.width
+                            width: childrenRect.width + spacing
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Units.dp(24)
 
@@ -224,6 +225,8 @@ ApplicationWindow {
                                 anchors.verticalCenter: parent.verticalCenter
 
                             }
+
+                            Rectangle { width: Units.dp(24)}
 
                         }
 

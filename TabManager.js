@@ -1,6 +1,7 @@
 var open_tabs = [];
 var last_tab_id = -1;
 var current_tab_page;
+var open_tabs_history = [];
 
 function get_text_color_for_background(bg) {
     // from http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
@@ -67,6 +68,7 @@ function set_current_tab(tab_page) {
         current_tab_page.active = false;
         current_tab_page.webview.visible = false;
         current_tab_page.update_colors();
+        open_tabs_history.push(current_tab_page);
     }
     current_tab_page = tab_page;
     root.title = tab_page.title + ' - Browser';
@@ -97,22 +99,30 @@ function set_url(url) {
 
 function TabPage(url) {
 
-    this.create = function() {
-
-    }
-
     this.close = function(){
         var tab_id = this.tab_id;
-        this.webview.destroy()
-        snackbar_tab_close.open('Closed tab "' + this.title + '"');
-        open_tabs.splice(open_tabs.indexOf(this));
 
         this.tab.destroy();
         txt_url.text = "";
 
+
+        this.webview.destroy()
+        open_tabs.splice(open_tabs.indexOf(this));
+
+        snackbar_tab_close.open('Closed tab "' + this.title + '"');
+
+        // Remove this from open tabs history
+        while(open_tabs_history.indexOf(this) !== -1){
+            var index = open_tabs_history.indexOf(this);
+            open_tabs_history.splice(index, 1);
+        }
+
         if(current_tab_page === this){
             current_tab_page = false;
+            if (open_tabs_history.length > 0)
+                set_current_tab(open_tabs_history[open_tabs_history.length-1]);
         }
+
     }
 
     this.set_url = function(url) {

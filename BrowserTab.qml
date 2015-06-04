@@ -59,8 +59,8 @@ Item {
                     id: img_favicon
                     source: view.webview.icon //view.favicon
                     //visible: icon_url !== ""
-                    width: Units.dp(22)
-                    height: Units.dp(22)
+                    width: Units.dp(20)
+                    height: Units.dp(20)
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
