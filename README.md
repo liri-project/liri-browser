@@ -5,7 +5,8 @@ A minimalistic material design web browser written for Papyros (https://github.c
 * Support for custom theme color (meta tag "theme-color")
 
 ## Screenshots
-https://goo.gl/photos/dt3KxVUZWDfwW7rV7
+![Screenshot](/screenshot_02.png)
+![Screenshot](/screenshot_03.png)
 
 ## Installation
 
