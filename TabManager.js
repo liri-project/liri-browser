@@ -4,7 +4,7 @@ var current_tab_page;
 
 function get_text_color_for_background(bg) {
     // from http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
-    var c = "#1b5e20".substring(1);      // strip #
+    var c = bg.substring(1);      // strip #
     var rgb = parseInt(c, 16);   // convert rrggbb to decimal
     var r = (rgb >> 16) & 0xff;  // extract red
     var g = (rgb >>  8) & 0xff;  // extract green
@@ -12,14 +12,19 @@ function get_text_color_for_background(bg) {
 
     var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
 
-    if (luma < 100) {
+    if (luma < 200) {
         return "white";
     }
     else {
-        return "#212121"
+        return root._tab_text_color_active
     }
 }
 
+function shade_color(color, percent) {
+    // from http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+    var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
+    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+}
 
 function get_valid_url(url) {
     if (url.indexOf('.') !== -1){
@@ -97,6 +102,7 @@ function TabPage(url) {
     }
 
     this.close = function(){
+        console.log("!")
         var tab_id = this.tab_id;
         this.webview.destroy()
         snackbar_tab_close.open('Closed tab "' + this.title + '"');
@@ -117,11 +123,11 @@ function TabPage(url) {
     }
 
     this.go_back = function () {
-        this.webview.goBack();
+        this.webview.view.goBack();
     }
 
     this.go_forward = function() {
-        this.webview.goForward();
+        this.webview.view.goForward();
     }
 
     this.select = function() {
@@ -130,29 +136,42 @@ function TabPage(url) {
 
     this.update_colors = function() {
         if (this.active){
+            //this.tab.elevation = 4;
             if (this.custom_color) {
                 this.color = this.custom_color;
-                this.text_color = get_text_color_for_background(this.custom_color);
+                var new_text_color = get_text_color_for_background(this.custom_color);
+                this.text_color = new_text_color;
                 toolbar.color = this.custom_color;
-                root.current_text_color = get_text_color_for_background(this.custom_color);
+                root.current_text_color = new_text_color;
+                this.icon_color = root.current_icon_color = new_text_color;
             }
             else {
                 this.color = root._tab_color_active;
                 this.text_color = root._tab_text_color_active;
                 toolbar.color = root._tab_color_active;
                 root.current_text_color = root._tab_text_color_active
+                this.icon_color = root.current_icon_color = root._icon_color;
             }
         }
         else{
-            this.color = root._tab_color_inactive;
-            this.text_color = root._tab_text_color_inactive;
+            if (this.custom_color) {
+                this.color = this.custom_color_inactive
+                this.text_color = root._tab_text_color_inactive;
+                this.icon_color = root._tab_text_color_inactive;
+            }
+            else {
+                //this.tab.elevation = 0;
+                this.color = root._tab_color_inactive;
+                this.text_color = root._tab_text_color_inactive;
+                this.icon_color = root._tab_text_color_inactive;
+            }
         }
         this.tab.update_colors();
 
     }
 
     this.update_toolbar = function() {
-        if (this.webview.canGoBack){
+        if (this.webview.view.canGoBack){
             btn_go_back.enabled = true;
         }
         else {
@@ -160,7 +179,7 @@ function TabPage(url) {
 
         }
 
-        if (this.webview.canGoForward){
+        if (this.webview.view.canGoForward){
             btn_go_forward.enabled = true;
         }
         else {
@@ -197,10 +216,12 @@ function TabPage(url) {
                     function(content){
                         if(content !== "") {
                             tab.custom_color = content;
+                            tab.custom_color_inactive = shade_color(content, 0.6);
                             tab.update_colors();
                         }
                         else{
                             tab.custom_color = false;
+                            tab.custom_color_inactive = false;
                             tab.update_colors();
                         }
                 });
@@ -214,12 +235,13 @@ function TabPage(url) {
         }
 
         tab.update_toolbar();
+        tab.tab.favicon = tab.webview.view.icon;
 
     }
 
 
     this.reload = function(){
-        this.webview.reload();
+        this.webview.view.reload();
     }
 
     /* Initialization */
@@ -235,20 +257,23 @@ function TabPage(url) {
     this.active = false;
 
     this.custom_color = false;
+    this.custom_color_inactive = false;
     this.color = root._tab_color_active;
     this.text_color = root._tab_text_color_active;
+    this.icon_color = root._icon_color;
     this.title = "New Tab";
 
     this.tab_id = last_tab_id = last_tab_id + 1;
 
-    var tab_component = Qt.createComponent("BrowserTab.qml");
-    this.tab = tab_component.createObject(tab_row, { page: this });
-    this.tab.close.connect(this.close);
-
     var webview_component = Qt.createComponent("BrowserWebView.qml");
     this.webview = webview_component.createObject(web_container, { page:this, visible: true, url: this.url });
+
+    var tab_component = Qt.createComponent("BrowserTab.qml");
+    this.tab = tab_component.createObject(tab_row, { page: this, webview: this.webview.view });
+    this.tab.close.connect(this.close);
+
     var tab = this;
-    this.webview.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
+    this.webview.view.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
 
     open_tabs.push(this);
     this.select();

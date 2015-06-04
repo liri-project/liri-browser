@@ -4,5 +4,6 @@
         <file>Main.qml</file>
         <file>BrowserTab.qml</file>
         <file>BrowserWebView.qml</file>
+        <file>TabManager.js</file>
     </qresource>
 </RCC>

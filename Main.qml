@@ -21,19 +21,20 @@ ApplicationWindow {
     }
 
     /* Internal Style Settings */
-    property color _tab_background_color: "#fafafa"
+    property color _tab_background_color: "#f1f1f1" //"#fafafa"
     property int _tab_height: Units.dp(40)
-    property int _tab_width: Units.dp(160)
+    property int _tab_width: Units.dp(200)
     property bool _tabs_rounded: false
-    property int _tabs_spacing: 1
+    property int _tabs_spacing: Units.dp(2)
     property int _titlebar_height: Units.dp(100)
-    property color _tab_color_active: "#eeeeee"
-    property color _tab_color_inactive: "#e0e0e0"
+    property color _tab_color_active: "#ffffff" // "#eeeeee"
+    property color _tab_color_inactive: "#e5e5e5" // "#e0e0e0"
     property color _tab_text_color_active: "#212121"
     property color _tab_text_color_inactive: "#757575"
-    property color _icon_color: "#757575"
+    property color _icon_color: "#7b7b7b"
     property color _address_bar_color: "#e0e0e0"
     property color current_text_color: _tab_text_color_active
+    property color current_icon_color: _icon_color
 
 
     /* Tab Management */
@@ -112,11 +113,13 @@ ApplicationWindow {
 
 
             Item {
+                id: container
                 anchors.top: flickable.bottom
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
 
+                //elevation: 4
 
                 Rectangle {
                     id: toolbar
@@ -125,14 +128,15 @@ ApplicationWindow {
 
                     Row {
                         anchors.fill: parent
-                        spacing: 5
+                        anchors.leftMargin: Units.dp(24)
+                        spacing: Units.dp(24)
 
                         IconButton {
                             id: btn_go_back
                             iconName : "navigation/arrow_back"
                             anchors.verticalCenter: parent.verticalCenter
                             onClicked: TabManager.current_tab_page.go_back()
-                            color: root.current_text_color
+                            color: root.current_icon_color
                         }
 
                         IconButton {
@@ -140,7 +144,7 @@ ApplicationWindow {
                             iconName : "navigation/arrow_forward"
                             anchors.verticalCenter: parent.verticalCenter
                             onClicked: TabManager.current_tab_page.go_forward()
-                            color: root.current_text_color
+                            color: root.current_icon_color
                         }
 
                         IconButton {
@@ -148,7 +152,7 @@ ApplicationWindow {
                             hoverAnimation: true
                             iconName : "navigation/refresh"
                             anchors.verticalCenter: parent.verticalCenter
-                            color: root.current_text_color
+                            color: root.current_icon_color
                             onClicked: TabManager.current_tab_page.reload()
                         }
 
@@ -168,13 +172,15 @@ ApplicationWindow {
                             color: root._address_bar_color
                             opacity: 0.5
 
-                            TextField{
+                            TextField {
                                 id: txt_url
                                 anchors.fill: parent
                                 anchors.leftMargin: Units.dp(5)
                                 anchors.rightMargin: Units.dp(5)
                                 anchors.topMargin: Units.dp(4)
+                                showBorder: false
                                 text: ""
+                                placeholderText: "Input search or web address"
                                 opacity: 1
                                 textColor: root._tab_text_color_active
                                 onAccepted: {
@@ -189,10 +195,11 @@ ApplicationWindow {
                             id: right_toolbar
                             width: childrenRect.width
                             anchors.verticalCenter: parent.verticalCenter
+                            spacing: Units.dp(24)
 
                             IconButton {
                                 id: btn_bookmark
-                                color: root.current_text_color
+                                color: root.current_icon_color
                                 iconName : "action/bookmark_outline"
                                 anchors.verticalCenter: parent.verticalCenter
 
@@ -200,7 +207,7 @@ ApplicationWindow {
 
                             IconButton {
                                 id: btn_menu
-                                color: root.current_text_color
+                                color: root.current_icon_color
                                 iconName : "navigation/more_vert"
                                 anchors.verticalCenter: parent.verticalCenter
 
@@ -221,16 +228,15 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            Controls.ScrollView {
-                anchors.fill: parent
+            Item {
                 id: web_container
-
+                anchors.fill: parent
             }
 
         }
     }
 
-    ActionButton {
+    /*ActionButton {
 
         anchors {
             right: parent.right
@@ -243,7 +249,7 @@ ApplicationWindow {
         onClicked: {
             snackbar_bookmark.open('Added bookmark "' + root.get_tab_by_id(root.current_tab_id).webview.title + '"')
         }
-    }
+    }*/
 
     Snackbar {
         id: snackbar_bookmark
