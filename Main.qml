@@ -21,13 +21,13 @@ ApplicationWindow {
         //tabHighlightColor: ""
     }
 
-    /* Internal Style Settings */
+    /* Style Settings */
     property color _tab_background_color: "#f1f1f1" //"#fafafa"
     property int _tab_height: Units.dp(40)
     property int _tab_width: Units.dp(200)
     property bool _tabs_rounded: false
     property int _tabs_spacing: Units.dp(2)
-    property int _titlebar_height: Units.dp(100)
+    property int _titlebar_height: Units.dp(148)
     property color _tab_color_active: "#ffffff" // "#eeeeee"
     property color _tab_color_inactive: "#e5e5e5" // "#e0e0e0"
     property color _tab_text_color_active: "#212121"
@@ -37,25 +37,15 @@ ApplicationWindow {
     property color current_text_color: _tab_text_color_active
     property color current_icon_color: _icon_color
 
-
-    /* Tab Management */
-    property var tabs: []
-    property int current_tab_id: -1
-    property int last_tab_id: -1
-
-
-    /* User Settings */
     property string start_page: "https://www.google.com"
 
-
-
-    initialPage: Item {
+    initialPage: Rectangle {
         id: page
 
         Canvas {
             id: titlebar
             width: parent.width
-            height: root._titlebar_height
+            height: flickable.height + toolbar.height + bookmark_bar.height//_titlebar_height
 
             onPaint: {
                 var ctx = getContext("2d");
@@ -72,7 +62,7 @@ ApplicationWindow {
                 id: flickable
                 width: parent.width
                 height: root._tab_height
-                contentHeight: this.height
+                contentHeight: height
                 contentWidth: tab_row.width + rect_add_tab.width + btn_add_tab.width + Units.dp(16)
 
                 Row {
@@ -101,7 +91,6 @@ ApplicationWindow {
                     }
                 }
 
-
             }
 
             View {
@@ -126,111 +115,145 @@ ApplicationWindow {
                 }
             }
 
-
             Item {
-                id: container
+                id: toolbar_container
                 anchors.top: flickable.bottom
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
 
-                Rectangle {
-                    id: toolbar
+                Column{
                     anchors.fill: parent
-                    color: root._tab_color_active
 
-                    Row {
-                        anchors.fill: parent
-                        anchors.leftMargin: Units.dp(24)
-                        spacing: Units.dp(24)
+                    Rectangle {
+                        id: toolbar
+                        //anchors.fill: parent
+                        height: Units.dp(64)
+                        width: parent.width
+                        color: root._tab_color_active
 
-                        IconButton {
-                            id: btn_go_back
-                            iconName : "navigation/arrow_back"
-                            anchors.verticalCenter: parent.verticalCenter
-                            onClicked: TabManager.current_tab_page.go_back()
-                            color: root.current_icon_color
-                        }
+                        Row {
+                            anchors.fill: parent
+                            anchors.leftMargin: Units.dp(24)
+                            spacing: Units.dp(24)
 
-                        IconButton {
-                            id: btn_go_forward
-                            iconName : "navigation/arrow_forward"
-                            anchors.verticalCenter: parent.verticalCenter
-                            onClicked: TabManager.current_tab_page.go_forward()
-                            color: root.current_icon_color
-                        }
+                            IconButton {
+                                id: btn_go_back
+                                iconName : "navigation/arrow_back"
+                                anchors.verticalCenter: parent.verticalCenter
+                                onClicked: TabManager.current_tab_page.go_back()
+                                color: root.current_icon_color
+                            }
 
-                        IconButton {
-                            id: btn_refresh
-                            hoverAnimation: true
-                            iconName : "navigation/refresh"
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: root.current_icon_color
-                            onClicked: TabManager.current_tab_page.reload()
-                        }
+                            IconButton {
+                                id: btn_go_forward
+                                iconName : "navigation/arrow_forward"
+                                anchors.verticalCenter: parent.verticalCenter
+                                onClicked: TabManager.current_tab_page.go_forward()
+                                color: root.current_icon_color
+                            }
 
-                        LoadingIndicator {
-                            id: prg_loading
-                            visible: false
-                            width: btn_refresh.width
-                            height: btn_refresh.height
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
+                            IconButton {
+                                id: btn_refresh
+                                hoverAnimation: true
+                                iconName : "navigation/refresh"
+                                anchors.verticalCenter: parent.verticalCenter
+                                color: root.current_icon_color
+                                onClicked: TabManager.current_tab_page.reload()
+                            }
 
-                        Rectangle {
-                            width: parent.width - this.x - right_toolbar.width - parent.spacing
-                            radius: Units.dp(2)
-                            anchors.verticalCenter: parent.verticalCenter
-                            height: parent.height - Units.dp(16)
-                            color: root._address_bar_color
-                            opacity: 0.5
+                            LoadingIndicator {
+                                id: prg_loading
+                                visible: false
+                                width: btn_refresh.width
+                                height: btn_refresh.height
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
 
-                            TextField {
-                                id: txt_url
-                                anchors.fill: parent
-                                anchors.leftMargin: Units.dp(5)
-                                anchors.rightMargin: Units.dp(5)
-                                anchors.topMargin: Units.dp(4)
-                                showBorder: false
-                                text: ""
-                                placeholderText: "Input search or web address"
-                                opacity: 1
-                                textColor: root._tab_text_color_active
-                                onAccepted: {
-                                    TabManager.set_current_tab_url(txt_url.text);
+                            Rectangle {
+                                width: parent.width - this.x - right_toolbar.width - parent.spacing
+                                radius: Units.dp(2)
+                                anchors.verticalCenter: parent.verticalCenter
+                                height: parent.height - Units.dp(16)
+                                color: root._address_bar_color
+                                opacity: 0.5
+
+                                TextField {
+                                    id: txt_url
+                                    anchors.fill: parent
+                                    anchors.leftMargin: Units.dp(5)
+                                    anchors.rightMargin: Units.dp(5)
+                                    anchors.topMargin: Units.dp(4)
+                                    showBorder: false
+                                    text: ""
+                                    placeholderText: "Input search or web address"
+                                    opacity: 1
+                                    textColor: root._tab_text_color_active
+                                    onAccepted: {
+                                        TabManager.set_current_tab_url(txt_url.text);
+                                    }
+
                                 }
 
                             }
 
+                            Row {
+                                id: right_toolbar
+                                width: childrenRect.width + spacing
+                                anchors.verticalCenter: parent.verticalCenter
+                                spacing: Units.dp(24)
+
+                                IconButton {
+                                    id: btn_bookmark
+                                    color: root.current_icon_color
+                                    iconName : "action/bookmark_outline"
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    onClicked: TabManager.current_tab_page.bookmark()
+
+                                }
+
+                                IconButton {
+                                    id: btn_menu
+                                    color: root.current_icon_color
+                                    iconName : "navigation/more_vert"
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                }
+
+                                Rectangle { width: Units.dp(24)} // placeholder
+
+                            }
+
                         }
+                    }
 
-                        Row {
-                            id: right_toolbar
-                            width: childrenRect.width + spacing
-                            anchors.verticalCenter: parent.verticalCenter
-                            spacing: Units.dp(24)
+                    Rectangle {
+                        id: bookmark_bar
+                        color: toolbar.color
+                        height: if (visible) { Units.dp(48) } else {0}
+                        width: parent.width
 
-                            IconButton {
-                                id: btn_bookmark
-                                color: root.current_icon_color
-                                iconName : "action/bookmark_outline"
-                                anchors.verticalCenter: parent.verticalCenter
+                        Flickable {
+                            anchors.fill: parent
+                            anchors.margins: Units.dp(5)
+                            anchors.leftMargin: Units.dp(24)
+                            contentWidth: bookmark_container.implicitWidth + Units.dp(16)
+
+                            Row {
+
+                                function add_tab(url){TabManager.add_tab(url)}
+
+                                id: bookmark_container
+                                anchors.fill: parent
+                                spacing: Units.dp(15)
 
                             }
-
-                            IconButton {
-                                id: btn_menu
-                                color: root.current_icon_color
-                                iconName : "navigation/more_vert"
-                                anchors.verticalCenter: parent.verticalCenter
-
-                            }
-
-                            Rectangle { width: Units.dp(24)}
 
                         }
 
                     }
+
+
                 }
 
             }
@@ -267,11 +290,7 @@ ApplicationWindow {
     }*/
 
     Snackbar {
-        id: snackbar_bookmark
-        buttonText: "Undo"
-        onClicked: {
-            console.log('Undo Bookmark Creation ...')
-        }
+        id: snackbar
     }
 
     Snackbar {
@@ -279,8 +298,13 @@ ApplicationWindow {
         property string url: ""
         buttonText: "Reopen"
         onClicked: {
-            console.log('Reopen url '+ url)
+            console.log('Reopen url '+ url);
+            TabManager.add_tab(url);
         }
+    }
+
+    Component.onCompleted: {
+        TabManager.load_bookmarks();
     }
 
 }

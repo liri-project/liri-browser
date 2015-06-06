@@ -7,4 +7,5 @@ import QtWebEngine.experimental 1.0
 WebEngineView {
     property var page
     anchors.fill: parent
+
 }

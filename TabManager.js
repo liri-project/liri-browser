@@ -2,6 +2,61 @@ var open_tabs = [];
 var last_tab_id = -1;
 var current_tab_page;
 var open_tabs_history = [];
+var bookmarks = []
+
+function sortByKey(array, key) {
+    // from http://stackoverflow.com/questions/8837454/sort-array-of-objects-by-single-key-with-date-value
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
+function is_bookmarked(url){
+    for (var i=0; i<bookmarks.length; i++){
+        if (bookmarks[i].url === url)
+            return true
+    }
+    return false
+
+}
+
+function add_bookmark(title, url, favicon_url){
+    bookmarks.push({title: title, url: url, favicon_url: favicon_url});
+    reload_bookmarks();
+}
+
+function remove_boookmark(url){
+    for (var i=0; i<bookmarks.length; i++){
+        if (bookmarks[i].url === url){
+            bookmarks.splice(i, 1);
+            reload_bookmarks();
+            return true
+        }
+    }
+    return false
+}
+
+function clear_bookmarks(){
+    for(var i = bookmark_container.children.length; i > 0 ; i--) {
+        bookmark_container.children[i-1].destroy();
+  }
+}
+
+function load_bookmarks(){
+    bookmarks = sortByKey(bookmarks, "title"); // Automatically sort bookmarks
+    var bookmark_component = Qt.createComponent("BookmarkItem.qml");
+    for (var i=0; i<bookmarks.length; i++){
+        var b = bookmarks[i];
+         var bookmark_object = bookmark_component.createObject(bookmark_container, { title: b.title, url: b.url, favicon_url: b.favicon_url });
+    }
+}
+
+function reload_bookmarks(){
+    clear_bookmarks();
+    load_bookmarks();
+}
+
 
 function get_text_color_for_background(bg) {
     // from http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
@@ -42,7 +97,8 @@ function get_valid_url(url) {
 
 
 function add_tab(url){
-    return new TabPage(url);
+    var tab_page = new TabPage(url);
+    return tab_page;
 }
 
 
@@ -97,7 +153,22 @@ function set_url(url) {
 }
 
 
+
 function TabPage(url) {
+
+    this.bookmark = function() {
+        if (is_bookmarked(this.url)) {
+            snackbar.open('Removed bookmark "' + this.webview.title + '"');
+            remove_boookmark(this.url)
+        }
+            //snackbar.open("There is already a bookmark for this page")
+        else {
+            snackbar.open('Added bookmark "' + this.webview.title + '"');
+            add_bookmark(this.webview.title, this.webview.url, this.webview.icon);
+        }
+        this.update_toolbar();
+
+    }
 
     this.close = function(){
         var tab_id = this.tab_id;
@@ -109,6 +180,7 @@ function TabPage(url) {
         this.webview.destroy()
         open_tabs.splice(open_tabs.indexOf(this));
 
+        snackbar_tab_close.url = this.url
         snackbar_tab_close.open('Closed tab "' + this.title + '"');
 
         // Remove this from open tabs history
@@ -117,11 +189,15 @@ function TabPage(url) {
             open_tabs_history.splice(index, 1);
         }
 
+        prg_loading.visible = false;
+        btn_refresh.visible = true;
+
         if(current_tab_page === this){
             current_tab_page = false;
             if (open_tabs_history.length > 0)
                 set_current_tab(open_tabs_history[open_tabs_history.length-1]);
         }
+
 
     }
 
@@ -194,6 +270,16 @@ function TabPage(url) {
         else {
             btn_go_forward.enabled = false;
         }
+
+        if (is_bookmarked(this.url))
+            btn_bookmark.iconName = "action/bookmark";
+        else
+            btn_bookmark.iconName = "action/bookmark_outline";
+
+        if (bookmarks.length > 0)
+            bookmark_bar.visible = true;
+        else
+            bookmark_bar.visible = false;
 
     }
 

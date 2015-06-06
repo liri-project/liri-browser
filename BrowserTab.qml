@@ -71,7 +71,7 @@ Item {
                     width: parent.width - _btn_close.width - img_favicon.width - Units.dp(16)
                     elide: Text.ElideRight
                     smooth: true
-                    clip:true
+                    clip: true
                     anchors.verticalCenter: parent.verticalCenter
 
                 }
