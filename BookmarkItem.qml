@@ -1,5 +1,7 @@
 import QtQuick 2.0
+import QtQuick.Layouts 1.0
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 
 
 Item {
@@ -28,11 +30,13 @@ Item {
         }
 
         Text {
+            id: lbl_title
             text: title
             color: root.current_icon_color
             elide: Text.ElideRight
             smooth: true
             clip: true
+            font.family: root.font_family
 
             width: maximum_text_width
             anchors.verticalCenter: parent.verticalCenter
@@ -53,6 +57,42 @@ Item {
     MouseArea {
         id: mouse_area
         anchors.fill:  parent
-        onClicked: bookmark_container.add_tab(item.url)
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onClicked: {
+             if(mouse.button & Qt.RightButton) {
+                context_menu.open(parent, context_menu.width-parent.width)
+             }
+             else
+                 root.add_tab(item.url)
+         }
     }
+
+    Dropdown {
+        id: context_menu
+
+        width: Units.dp(250)
+        height: columnView.height + Units.dp(16)
+
+        ColumnLayout {
+            id: columnView
+            width: parent.width
+            anchors.centerIn: parent
+
+            /*ListItem.Standard {
+                text: "Edit"
+                iconName: "image/edit"
+            }*/
+
+            ListItem.Standard {
+                text: "Delete"
+                iconName: "action/delete"
+                onClicked: {
+                    root.remove_bookmark(item.url);
+                    context_menu.close();
+                }
+            }
+
+        }
+    }
+
 }

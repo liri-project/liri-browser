@@ -6,5 +6,9 @@
         <file>BrowserWebView.qml</file>
         <file>TabManager.js</file>
         <file>BookmarkItem.qml</file>
+        <file>ShortcutActions.qml</file>
+        <file>Application.qml</file>
+        <file>BrowserWindow.qml</file>
+        <file>DownloadsPopup.qml</file>
     </qresource>
 </RCC>

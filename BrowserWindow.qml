@@ -1,11 +1,16 @@
 import QtQuick 2.4
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
+import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3 as Controls
 import "TabManager.js" as TabManager
-
+import QtWebEngine 1.1
+import Qt.labs.settings 1.0
 
 ApplicationWindow {
     id: root
+
+    property QtObject app
 
     title: "Browser"
     visible: true
@@ -21,15 +26,32 @@ ApplicationWindow {
         //tabHighlightColor: ""
     }
 
+    /* User Settings */
+
+
+    property alias settings: settings
+
+    property var bookmarks: []
+
+    Settings {
+        id: settings
+        property alias x: root.x
+        property alias y: root.y
+        property alias width: root.width
+        property alias height: root.height
+
+        property var bookmarks
+    }
+
     /* Style Settings */
-    property color _tab_background_color: "#f1f1f1" //"#fafafa"
+    property color _tab_background_color: "#f1f1f1"
     property int _tab_height: Units.dp(40)
     property int _tab_width: Units.dp(200)
     property bool _tabs_rounded: false
-    property int _tabs_spacing: Units.dp(2)
+    property int _tabs_spacing: Units.dp(1)
     property int _titlebar_height: Units.dp(148)
-    property color _tab_color_active: "#ffffff" // "#eeeeee"
-    property color _tab_color_inactive: "#e5e5e5" // "#e0e0e0"
+    property color _tab_color_active: "#ffffff"
+    property color _tab_color_inactive: "#e5e5e5"
     property color _tab_text_color_active: "#212121"
     property color _tab_text_color_inactive: "#757575"
     property color _icon_color: "#7b7b7b"
@@ -37,12 +59,61 @@ ApplicationWindow {
     property color current_text_color: _tab_text_color_active
     property color current_icon_color: _icon_color
 
+    property string font_family: "Roboto"
+
     property string start_page: "https://www.google.com"
+
+    property alias current_tab_icon: current_tab_icon
+    property alias txt_search: txt_search
+    property alias downloads_popup: downloads_popup
+
+    property bool fullscreen: false
+
+    function start_fullscreen_mode(){
+        fullscreen = true;
+        showFullScreen();
+
+    }
+
+    function end_fullscreen_mode() {
+        fullscreen = false;
+        showNormal();
+    }
+
+    function show_search_overlay() {
+        website_search_overlay.visible = true;
+        txt_search.forceActiveFocus();
+        txt_search.selectAll();
+    }
+
+    function hide_search_overlay() {
+        website_search_overlay.visible = false;
+        TabManager.current_tab_page.find_text("");
+    }
+
+    function get_tab_manager() {
+        return TabManager;
+    }
+
+    function remove_bookmark(url) {
+        return TabManager.remove_bookmark(url);
+    }
+
+    function add_tab(url, background){
+        return TabManager.add_tab(url, background)
+    }
+
+    function get_current_tab() {
+        return TabManager.current_tab_page
+    }
+
+    ShortcutActions {}
 
     initialPage: Rectangle {
         id: page
 
         Canvas {
+            visible: !root.fullscreen
             id: titlebar
             width: parent.width
             height: flickable.height + toolbar.height + bookmark_bar.height//_titlebar_height
@@ -181,13 +252,14 @@ ApplicationWindow {
                                 TextField {
                                     id: txt_url
                                     anchors.fill: parent
-                                    anchors.leftMargin: Units.dp(5)
-                                    anchors.rightMargin: Units.dp(5)
+                                    anchors.leftMargin: Units.dp(24)
+                                    anchors.rightMargin: Units.dp(24)
                                     anchors.topMargin: Units.dp(4)
                                     showBorder: false
                                     text: ""
                                     placeholderText: "Input search or web address"
                                     opacity: 1
+                                    anchors.verticalCenter: parent.verticalCenter
                                     textColor: root._tab_text_color_active
                                     onAccepted: {
                                         TabManager.set_current_tab_url(txt_url.text);
@@ -213,10 +285,29 @@ ApplicationWindow {
                                 }
 
                                 IconButton {
+                                    id: btn_downloads
+                                    color: if (downloads_popup.active_downloads){"#448AFF"} else {root.current_icon_color}
+                                    iconName : "file/file_download"
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    onClicked: downloads_popup.open(btn_downloads)
+
+                                    Rectangle {
+                                        visible: downloads_popup.active_downloads
+                                        z: -1
+                                        width: parent.width + Units.dp(5)
+                                        height: parent.height + Units.dp(5)
+                                        anchors.centerIn: parent
+                                        color: "white"
+                                        radius: width*0.5
+                                    }
+                                }
+
+                                IconButton {
                                     id: btn_menu
                                     color: root.current_icon_color
                                     iconName : "navigation/more_vert"
                                     anchors.verticalCenter: parent.verticalCenter
+                                    onClicked: overflow_menu.open(btn_menu)
 
                                 }
 
@@ -240,9 +331,6 @@ ApplicationWindow {
                             contentWidth: bookmark_container.implicitWidth + Units.dp(16)
 
                             Row {
-
-                                function add_tab(url){TabManager.add_tab(url)}
-
                                 id: bookmark_container
                                 anchors.fill: parent
                                 spacing: Units.dp(15)
@@ -254,14 +342,146 @@ ApplicationWindow {
                     }
 
 
+                    DownloadsPopup {
+                        id: downloads_popup
+                    }
+
+
+                    Dropdown {
+                        id: overflow_menu
+                        objectName: "overflowMenu"
+
+                        width: Units.dp(250)
+                        height: columnView.height + Units.dp(16)
+
+                        ColumnLayout {
+                            id: columnView
+                            width: parent.width
+                            anchors.centerIn: parent
+
+                            ListItem.Standard {
+                                text: "New window"
+                                iconName: "action/open_in_new"
+                                onClicked: app.createWindow()
+                            }
+
+                            /*ListItem.Standard {
+                                text: "Save page"
+                                iconName: "content/save"
+                            }
+
+                            ListItem.Standard {
+                                text: "Print page"
+                                iconName: "action/print"
+                            }*/
+
+                            ListItem.Standard {
+                                text: "History"
+                                iconName: "action/history"
+                            }
+
+                            ListItem.Standard {
+                                text: "Fullscreen"
+                                iconName: "navigation/fullscreen"
+                                onClicked: if (!root.fullscreen) {root.start_fullscreen_mode(); overflow_menu.close()}
+
+                               }
+
+                            ListItem.Standard {
+                                text: "Search"
+                                iconName: "action/search"
+                                onClicked: root.show_search_overlay()
+                            }
+
+                            ListItem.Standard {
+                                text: "Settings"
+                                iconName: "action/settings"
+                            }
+                        }
+                    }
+
                 }
 
             }
 
         }
 
+
+        Rectangle {
+            id: fullscreen_bar
+            z: 5
+            visible: root.fullscreen
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: Units.dp(48)
+
+            Row {
+                anchors.fill: parent
+                anchors.leftMargin: Units.dp(24)
+                anchors.rightMargin: Units.dp(24)
+                spacing: Units.dp(24)
+
+                Image {
+                    id: current_tab_icon
+                    width: Units.dp(18)
+                    height: Units.dp(18)
+                    anchors.verticalCenter: parent.verticalCenter
+
+                }
+
+                Text {
+                    id: current_tab_title
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.family: root.font_family
+                }
+
+            }
+
+            IconButton {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: Units.dp(7)
+                iconName: "navigation/fullscreen_exit"
+                onClicked: {
+                    root.end_fullscreen_mode();
+                }
+            }
+
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: true
+
+                onEntered: {
+                    parent.opacity = 1.0;
+                }
+
+                onExited: {
+                    parent.opacity = 0.0;
+                }
+
+            }
+
+            Behavior on opacity { NumberAnimation {duration: 300} }
+            onVisibleChanged: {
+                if (visible)
+                    var timer = Qt.createQmlObject("import QtQuick 2.0; Timer {}", parent);
+                    timer.interval = 1500;
+                    timer.repeat = false;
+                    timer.triggered.connect(function () {
+                        opacity = 0
+                    });
+
+                    timer.start();
+            }
+
+        }
+
+
         Item {
-            anchors.top: titlebar.bottom
+            anchors.top: if (fullscreen){parent.top} else { titlebar.bottom}
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -271,6 +491,54 @@ ApplicationWindow {
                 anchors.fill: parent
             }
 
+        }
+    }
+
+    View {
+        id: website_search_overlay
+        visible: false
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: Units.dp(48)
+        elevation: Units.dp(4)
+
+        Row {
+            anchors.fill: parent
+            anchors.margins: Units.dp(5)
+            anchors.leftMargin: Units.dp(24)
+            anchors.rightMargin: Units.dp(24)
+            spacing: Units.dp(24)
+
+            TextField {
+                id: txt_search
+                placeholderText: "Search"
+                errorColor: "red"
+                onAccepted: TabManager.current_tab_page.find_text(text)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            IconButton {
+                iconName: "hardware/keyboard_arrow_up"
+                onClicked: TabManager.current_tab_page.find_text(txt_search.text, true)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            IconButton {
+                iconName: "hardware/keyboard_arrow_down"
+                onClicked: TabManager.current_tab_page.find_text(txt_search.text)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+        }
+
+        IconButton {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.rightMargin: Units.dp(24)
+            iconName: "navigation/close"
+            color: root._icon_color
+            onClicked: root.hide_search_overlay()
         }
     }
 
@@ -304,7 +572,12 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        root.bookmarks = settings.bookmarks;
         TabManager.load_bookmarks();
+    }
+
+    Component.onDestruction: {
+        settings.bookmarks = root.bookmarks;
     }
 
 }

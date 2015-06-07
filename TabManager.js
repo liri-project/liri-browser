@@ -2,7 +2,6 @@ var open_tabs = [];
 var last_tab_id = -1;
 var current_tab_page;
 var open_tabs_history = [];
-var bookmarks = []
 
 function sortByKey(array, key) {
     // from http://stackoverflow.com/questions/8837454/sort-array-of-objects-by-single-key-with-date-value
@@ -13,8 +12,8 @@ function sortByKey(array, key) {
 }
 
 function is_bookmarked(url){
-    for (var i=0; i<bookmarks.length; i++){
-        if (bookmarks[i].url === url)
+    for (var i=0; i<root.bookmarks.length; i++){
+        if (root.bookmarks[i].url === url)
             return true
     }
     return false
@@ -22,14 +21,15 @@ function is_bookmarked(url){
 }
 
 function add_bookmark(title, url, favicon_url){
-    bookmarks.push({title: title, url: url, favicon_url: favicon_url});
+    console.log(root.bookmarks)
+    root.bookmarks.push({title: title, url: url, favicon_url: favicon_url});
     reload_bookmarks();
 }
 
-function remove_boookmark(url){
-    for (var i=0; i<bookmarks.length; i++){
-        if (bookmarks[i].url === url){
-            bookmarks.splice(i, 1);
+function remove_bookmark(url){
+    for (var i=0; i<root.bookmarks.length; i++){
+        if (root.bookmarks[i].url == url){
+            root.bookmarks.splice(i, 1);
             reload_bookmarks();
             return true
         }
@@ -44,10 +44,10 @@ function clear_bookmarks(){
 }
 
 function load_bookmarks(){
-    bookmarks = sortByKey(bookmarks, "title"); // Automatically sort bookmarks
+    root.bookmarks = sortByKey(root.bookmarks, "title"); // Automatically sort root.bookmarks
     var bookmark_component = Qt.createComponent("BookmarkItem.qml");
-    for (var i=0; i<bookmarks.length; i++){
-        var b = bookmarks[i];
+    for (var i=0; i<root.bookmarks.length; i++){
+        var b = root.bookmarks[i];
          var bookmark_object = bookmark_component.createObject(bookmark_container, { title: b.title, url: b.url, favicon_url: b.favicon_url });
     }
 }
@@ -90,14 +90,14 @@ function get_valid_url(url) {
             }
         }
     }
-    else
+    else if (url !== "about:blank")
         url = "http://www.google.com/search?q=" + url;
     return url;
 }
 
 
-function add_tab(url){
-    var tab_page = new TabPage(url);
+function add_tab(url, background){
+    var tab_page = new TabPage(url, background);
     return tab_page;
 }
 
@@ -154,12 +154,12 @@ function set_url(url) {
 
 
 
-function TabPage(url) {
+function TabPage(url, background) {
 
     this.bookmark = function() {
         if (is_bookmarked(this.url)) {
             snackbar.open('Removed bookmark "' + this.webview.title + '"');
-            remove_boookmark(this.url)
+            remove_bookmark(this.url)
         }
             //snackbar.open("There is already a bookmark for this page")
         else {
@@ -276,10 +276,13 @@ function TabPage(url) {
         else
             btn_bookmark.iconName = "action/bookmark_outline";
 
-        if (bookmarks.length > 0)
+        if (root.bookmarks.length > 0)
             bookmark_bar.visible = true;
         else
             bookmark_bar.visible = false;
+
+        current_tab_title.text = this.title;
+        current_tab_icon.source = this.webview.icon
 
     }
 
@@ -330,13 +333,27 @@ function TabPage(url) {
         }
 
         tab.update_toolbar();
-        tab.tab.favicon = tab.webview.icon;
 
     }
 
 
     this.reload = function(){
         this.webview.reload();
+    }
+
+    this.find_text = function(text, backward) {
+        var flags
+        if (backward)
+            flags |= WebEngineView.FindBackward
+        this.webview.findText(text, flags, function(success) {
+            if (success)
+                root.txt_search.hasError = false;
+            else{
+                root.txt_search.hasError = true;
+            }
+
+        });
+
     }
 
     /* Initialization */
@@ -361,7 +378,7 @@ function TabPage(url) {
     this.tab_id = last_tab_id = last_tab_id + 1;
 
     var webview_component = Qt.createComponent("BrowserWebView.qml");
-    this.webview = webview_component.createObject(web_container, { page:this, visible: true, url: this.url });
+    this.webview = webview_component.createObject(web_container, { page:this, visible: false, url: this.url });
 
     var tab_component = Qt.createComponent("BrowserTab.qml");
     this.tab = tab_component.createObject(tab_row, { page: this, webview: this.webview });
@@ -371,7 +388,8 @@ function TabPage(url) {
     this.webview.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
 
     open_tabs.push(this);
-    this.select();
+    if (!background)
+        this.select();
 
 
 }

@@ -13,8 +13,6 @@ Item {
     property color text_color
     property color icon_color
 
-    property url favicon
-
     property var webview
 
     signal close
@@ -73,6 +71,7 @@ Item {
                     smooth: true
                     clip: true
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: root.font_family
 
                 }
 

@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets svg xml #webview (for android)
+QT += qml quick widgets svg xml webengine #webview (for android)
 #QT += androidextras
 
 QTPLUGIN += qsvg
