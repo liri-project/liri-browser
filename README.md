@@ -2,7 +2,16 @@
 A minimalistic material design web browser written for Papyros (https://github.com/papyros/)
 
 ### Features
-* Support for custom theme color (meta tag "theme-color")
+#### Awesome
+* [x] Support for custom theme color (meta tag "theme-color")
+
+#### Standard
+* [x] Favicons
+* [x] Download
+* [x] Fullscreen
+* [x] Search in website
+
+... work in progress!
 
 ## Screenshots
 ![Screenshot](/screenshot_02.png)
@@ -11,11 +20,12 @@ A minimalistic material design web browser written for Papyros (https://github.c
 ## Installation
 
 ### Dependencies
+* Qt 5.5 and QtWebEngine 1.1
 * qml-material (https://github.com/papyros/qml-material)
 * qml-extras (https://github.com/papyros/qml-extras)
-* QtWebEngine (libqt5webengine5, qml-module-qtwebengine)
 
 ### Instructions for Ubuntu 15.04
+* Install Qt 5.5 (https://www.qt.io)
 * Install qml-material
   * git clone https://github.com/papyros/qml-material.git
   * cd qml-material
@@ -30,10 +40,6 @@ A minimalistic material design web browser written for Papyros (https://github.c
   * make
   * make check # Optional, make sure everything is working correctly
   * sudo make install
-* Install QtWebEngine from Ethereum-PPA
-  * sudo apt-add-repository ppa:ethereum/ethereum
-  * sudo apt-get update
-  * sudo apt-get install libqt5webengine5 qml-module-qtwebengine
 
 ### Build and Run
   * git clone https://github.com/tim-sueberkrueb/material-browser.git
