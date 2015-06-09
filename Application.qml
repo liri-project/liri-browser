@@ -1,8 +1,17 @@
 import QtQuick 2.1
 import QtWebEngine 1.1
+import Qt.labs.settings 1.0
 
 QtObject {
     id: application
+
+    property var bookmarks: []
+    signal bookmarks_changed()
+
+    property QtObject settings: Settings {
+        property var bookmarks
+    }
+
 
     property QtObject default_profile: WebEngineProfile {
         storageName: "Default"
@@ -25,4 +34,13 @@ QtObject {
     function load() {
         var browserWindow = createWindow()
     }
+
+    Component.onCompleted: {
+        application.bookmarks = settings.bookmarks;
+    }
+
+    Component.onDestruction: {
+        settings.bookmarks = application.bookmarks;
+    }
+
 }

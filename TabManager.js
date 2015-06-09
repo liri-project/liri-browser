@@ -12,8 +12,8 @@ function sortByKey(array, key) {
 }
 
 function is_bookmarked(url){
-    for (var i=0; i<root.bookmarks.length; i++){
-        if (root.bookmarks[i].url === url)
+    for (var i=0; i<root.app.bookmarks.length; i++){
+        if (root.app.bookmarks[i].url === url)
             return true
     }
     return false
@@ -21,17 +21,19 @@ function is_bookmarked(url){
 }
 
 function add_bookmark(title, url, favicon_url){
-    console.log(root.bookmarks)
-    root.bookmarks.push({title: title, url: url, favicon_url: favicon_url});
+    console.log(root.app.bookmarks)
+    root.app.bookmarks.push({title: title, url: url, favicon_url: favicon_url});
+    bookmarks_changed();
     reload_bookmarks();
 }
 
 function remove_bookmark(url){
-    for (var i=0; i<root.bookmarks.length; i++){
-        if (root.bookmarks[i].url == url){
-            root.bookmarks.splice(i, 1);
+    for (var i=0; i<root.app.bookmarks.length; i++){
+        if (root.app.bookmarks[i].url == url){
+            root.app.bookmarks.splice(i, 1);
             reload_bookmarks();
-            return true
+            bookmarks_changed();
+            return true;
         }
     }
     return false
@@ -44,18 +46,32 @@ function clear_bookmarks(){
 }
 
 function load_bookmarks(){
-    root.bookmarks = sortByKey(root.bookmarks, "title"); // Automatically sort root.bookmarks
+    root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
     var bookmark_component = Qt.createComponent("BookmarkItem.qml");
-    for (var i=0; i<root.bookmarks.length; i++){
-        var b = root.bookmarks[i];
+    for (var i=0; i<root.app.bookmarks.length; i++){
+        var b = root.app.bookmarks[i];
          var bookmark_object = bookmark_component.createObject(bookmark_container, { title: b.title, url: b.url, favicon_url: b.favicon_url });
     }
+
+    if (root.app.bookmarks.length > 0)
+        bookmark_bar.visible = true;
+    else
+        bookmark_bar.visible = false;
+
 }
 
 function reload_bookmarks(){
     clear_bookmarks();
     load_bookmarks();
-    current_tab_page.update_toolbar();
+
+    if (current_tab_page)
+        current_tab_page.update_toolbar();
+}
+
+function bookmarks_changed() {
+    // update
+    root.app.bookmarks_changed();
+
 }
 
 
@@ -275,11 +291,6 @@ function TabPage(url, background) {
             btn_bookmark.iconName = "action/bookmark";
         else
             btn_bookmark.iconName = "action/bookmark_outline";
-
-        if (root.bookmarks.length > 0)
-            bookmark_bar.visible = true;
-        else
-            bookmark_bar.visible = false;
 
         current_tab_title.text = this.title;
         current_tab_icon.source = this.webview.icon
