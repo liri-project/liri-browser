@@ -6,11 +6,14 @@ A minimalistic material design web browser written for Papyros (https://github.c
 * [x] Support for custom theme color (meta tag "theme-color")
 
 #### Standard
+* [x] Bookmarks
 * [x] Favicons
 * [x] Download
 * [x] Fullscreen
 * [x] Search in website
-
+* [ ] Browser history
+* [ ] Browser settings
+* 
 ... work in progress!
 
 ## Screenshots
