@@ -106,7 +106,7 @@ Dropdown {
                         onClicked: {
                             var download = download_model.downloads[index]
 
-                            download.cancel()
+                            download.cancel();
 
                             download_model.downloads = download_model.downloads.filter(function (el) {
                                 return el.id !== download.id;

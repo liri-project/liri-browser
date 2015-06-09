@@ -4,31 +4,25 @@ import QtWebEngine 1.1
 QtObject {
     id: application
 
-
-
-    property Component browserWindowComponent: BrowserWindow {
-        app: application
-        /*onClosing: destroy()*/
+    property QtObject default_profile: WebEngineProfile {
+        storageName: "Default"
     }
-    /*property Component browserDialogComponent: BrowserDialog {
-        onClosing: destroy()
-    }*/
 
-    function createWindow(profile) {
-        var newWindow = browserWindowComponent.createObject(application)
-        //newWindow.get_current_tab().webview.profile = profile;
-        //profile.downloadRequested.connect(newWindow.onDownloadRequested)
+    property Component browser_window_component: BrowserWindow {
+        app: application
+    }
+
+    function createWindow (){
+        var newWindow = browser_window_component.createObject(application)
         return newWindow
     }
     function createDialog(request) {
-        var newDialog = browserWindowComponent.createObject(application)
+        var newDialog = browser_window_component.createObject(application)
         var tab = newDialog.add_tab("about:blank")
         request.openIn(tab.webview)
-        //newDialog.currentWebView.profile = profile
         return newDialog
     }
     function load() {
-        var browserWindow = createWindow() /*(defaultProfile)
-        browserWindow.currentWebView.url = url*/
+        var browserWindow = createWindow()
     }
 }

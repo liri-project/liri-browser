@@ -54,10 +54,10 @@ WebEngineView {
          request.accept()
      }
 
-     profile.onDownloadRequested: {
+     /*profile.onDownloadRequested: {
         console.log("WebEngineView.profile.onDownloadRequested")
         console.log(download)
         root.downloads_popup.append(download);
         download.accept();
-     }
+     }*/
 }

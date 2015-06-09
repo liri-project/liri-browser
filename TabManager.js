@@ -55,6 +55,7 @@ function load_bookmarks(){
 function reload_bookmarks(){
     clear_bookmarks();
     load_bookmarks();
+    current_tab_page.update_toolbar();
 }
 
 
@@ -151,7 +152,6 @@ function set_url(url) {
         current_tab_page.set_url(url);
     }
 }
-
 
 
 function TabPage(url, background) {
@@ -378,7 +378,7 @@ function TabPage(url, background) {
     this.tab_id = last_tab_id = last_tab_id + 1;
 
     var webview_component = Qt.createComponent("BrowserWebView.qml");
-    this.webview = webview_component.createObject(web_container, { page:this, visible: false, url: this.url });
+    this.webview = webview_component.createObject(web_container, { page:this, visible: false, url: this.url, profile: root.app.default_profile });
 
     var tab_component = Qt.createComponent("BrowserTab.qml");
     this.tab = tab_component.createObject(tab_row, { page: this, webview: this.webview });

@@ -107,6 +107,11 @@ ApplicationWindow {
         return TabManager.current_tab_page
     }
 
+    function download_requested(download) {
+       root.downloads_popup.append(download);
+       download.accept();
+    }
+
     ShortcutActions {}
 
     initialPage: Rectangle {
@@ -542,21 +547,6 @@ ApplicationWindow {
         }
     }
 
-    /*ActionButton {
-
-        anchors {
-            right: parent.right
-            bottom: parent.bottom
-            margins: Units.dp(32)
-        }
-
-        iconName: "social/share"
-
-        onClicked: {
-            snackbar_bookmark.open('Added bookmark "' + root.get_tab_by_id(root.current_tab_id).webview.title + '"')
-        }
-    }*/
-
     Snackbar {
         id: snackbar
     }
@@ -572,6 +562,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        root.app.default_profile.downloadRequested.connect(root.download_requested);
         root.bookmarks = settings.bookmarks;
         TabManager.load_bookmarks();
     }
