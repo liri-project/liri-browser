@@ -13,7 +13,7 @@ A minimalistic material design web browser written for Papyros (https://github.c
 * [x] Search in website
 * [ ] Browser history
 * [ ] Browser settings
-* 
+
 ... work in progress!
 
 ## Screenshots
