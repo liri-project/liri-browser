@@ -258,7 +258,7 @@ ApplicationWindow {
                                     anchors.topMargin: Units.dp(4)
                                     showBorder: false
                                     text: ""
-                                    placeholderText: "Input search or web address"
+                                    placeholderText: qsTr("Input search or web address")
                                     opacity: 1
                                     anchors.verticalCenter: parent.verticalCenter
                                     textColor: root._tab_text_color_active
@@ -361,41 +361,41 @@ ApplicationWindow {
                             anchors.centerIn: parent
 
                             ListItem.Standard {
-                                text: "New window"
+                                text: qsTr("New window")
                                 iconName: "action/open_in_new"
                                 onClicked: app.createWindow()
                             }
 
                             /*ListItem.Standard {
-                                text: "Save page"
+                                text: qsTr("Save page")
                                 iconName: "content/save"
                             }
 
                             ListItem.Standard {
-                                text: "Print page"
+                                text: qsTr("Print page")
                                 iconName: "action/print"
                             }*/
 
                             ListItem.Standard {
-                                text: "History"
+                                text: qsTr("History")
                                 iconName: "action/history"
                             }
 
                             ListItem.Standard {
-                                text: "Fullscreen"
+                                text: qsTr("Fullscreen")
                                 iconName: "navigation/fullscreen"
                                 onClicked: if (!root.fullscreen) {root.start_fullscreen_mode(); overflow_menu.close()}
 
                                }
 
                             ListItem.Standard {
-                                text: "Search"
+                                text: qsTr("Search")
                                 iconName: "action/search"
                                 onClicked: root.show_search_overlay()
                             }
 
                             ListItem.Standard {
-                                text: "Settings"
+                                text: qsTr("Settings")
                                 iconName: "action/settings"
                             }
                         }
@@ -513,7 +513,7 @@ ApplicationWindow {
 
             TextField {
                 id: txt_search
-                placeholderText: "Search"
+                placeholderText: qsTr("Search")
                 errorColor: "red"
                 onAccepted: TabManager.current_tab_page.find_text(text)
                 anchors.verticalCenter: parent.verticalCenter
@@ -550,9 +550,8 @@ ApplicationWindow {
     Snackbar {
         id: snackbar_tab_close
         property string url: ""
-        buttonText: "Reopen"
+        buttonText: qsTr("Reopen")
         onClicked: {
-            console.log('Reopen url '+ url);
             TabManager.add_tab(url);
         }
     }

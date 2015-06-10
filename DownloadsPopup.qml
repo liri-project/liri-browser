@@ -133,7 +133,7 @@ Dropdown {
                     Text {
                         visible: !list_view.count
                         font.family: root.font_family
-                        text: "No active downloads"
+                        text: qsTr("No active downloads")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                     }

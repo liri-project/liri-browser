@@ -1,3 +1,10 @@
+# Copy translation files
+copydata.commands = $(COPY_DIR) $$PWD/translations $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata
+
 TEMPLATE = app
 
 QT += qml quick widgets svg xml webengine #webview (for android)
@@ -8,6 +15,15 @@ QTPLUGIN += qsvg
 SOURCES += main.cpp
 
 RESOURCES += qml.qrc
+
+TRANSLATIONS += translations/de_DE.ts
+
+OTHER_FILES += translations/*.qm
+
+lupdate_only{
+    SOURCES = *.qml \
+              *.js
+}
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

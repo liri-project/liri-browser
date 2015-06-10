@@ -78,13 +78,13 @@ Item {
             anchors.centerIn: parent
 
             ListItem.Standard {
-                text: "Edit"
+                text: qsTr("Edit")
                 iconName: "image/edit"
                 onClicked: edit_dialog.open(item);
             }
 
             ListItem.Standard {
-                text: "Delete"
+                text: qsTr("Delete")
                 iconName: "action/delete"
                 onClicked: {
                     root.remove_bookmark(item.url);
@@ -116,7 +116,7 @@ Item {
                     id: name
                     anchors.verticalCenter: parent.verticalCenter
                     font.family: root.font_family
-                    text: "Edit bookmark"
+                    text: qsTr("Edit bookmark")
                 }
 
                 IconButton {
@@ -135,7 +135,7 @@ Item {
             }
 
             Label {
-                text: "Title"
+                text: qsTr("Title")
             }
 
             TextField {
@@ -166,7 +166,7 @@ Item {
             anchors.bottomMargin: Units.dp(24)
             anchors.right: btn_edit_apply.left
 
-            text: "Cancel"
+            text: qsTr("Cancel")
 
             onClicked: {
                 txt_edit_title.text = item.title;
@@ -184,7 +184,7 @@ Item {
             anchors.rightMargin: Units.dp(24)
             anchors.right: parent.right
 
-            text: "Apply"
+            text: qsTr("Apply")
 
             onClicked: {
                 root.get_tab_manager().change_bookmark(item.url, txt_edit_title.text, txt_edit_url.text, txt_edit_favicon_url.text);

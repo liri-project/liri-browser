@@ -17,6 +17,17 @@ int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
+    // Load Translations
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(),
+            QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&qtTranslator);
+
+    QTranslator translator;
+    translator.load("translations/" + QLocale::system().name());
+    app.installTranslator(&translator);
+
+    // Initialize QtWebEngine
     QtWebEngine::initialize();
 
     QQmlApplicationEngine appEngine;

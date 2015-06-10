@@ -36,6 +36,7 @@ QtObject {
     }
 
     Component.onCompleted: {
+        console.log("Locale name: " + Qt.locale().name)
         application.bookmarks = settings.bookmarks;
     }
 

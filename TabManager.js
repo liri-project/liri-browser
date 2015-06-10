@@ -189,12 +189,11 @@ function TabPage(url, background) {
 
     this.bookmark = function() {
         if (is_bookmarked(this.url)) {
-            snackbar.open('Removed bookmark "' + this.webview.title + '"');
+            snackbar.open(qsTr('Removed bookmark') + ' "' + this.webview.title + '"');
             remove_bookmark(this.url)
         }
-            //snackbar.open("There is already a bookmark for this page")
         else {
-            snackbar.open('Added bookmark "' + this.webview.title + '"');
+            snackbar.open(qsTr('Added bookmark') + ' "' + this.webview.title + '"');
             add_bookmark(this.webview.title, this.webview.url, this.webview.icon);
         }
         this.update_toolbar();
@@ -212,7 +211,7 @@ function TabPage(url, background) {
         open_tabs.splice(open_tabs.indexOf(this));
 
         snackbar_tab_close.url = this.url
-        snackbar_tab_close.open('Closed tab "' + this.title + '"');
+        snackbar_tab_close.open(qsTr('Closed tab') + ' "' + this.title + '"');
 
         // Remove this from open tabs history
         while(open_tabs_history.indexOf(this) !== -1){
@@ -399,7 +398,7 @@ function TabPage(url, background) {
     this.color = root._tab_color_active;
     this.text_color = root._tab_text_color_active;
     this.icon_color = root._icon_color;
-    this.title = "New Tab";
+    this.title = qsTr("New Tab");
 
     this.tab_id = last_tab_id = last_tab_id + 1;
 
