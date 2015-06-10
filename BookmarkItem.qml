@@ -42,7 +42,6 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
 
             Component.onCompleted:  {
-                console.log(paintedWidth, maximum_text_width)
                 if (paintedWidth > maximum_text_width) {
                     width= maximum_text_width
                 }
@@ -78,10 +77,11 @@ Item {
             width: parent.width
             anchors.centerIn: parent
 
-            /*ListItem.Standard {
+            ListItem.Standard {
                 text: "Edit"
                 iconName: "image/edit"
-            }*/
+                onClicked: edit_dialog.open(item);
+            }
 
             ListItem.Standard {
                 text: "Delete"
@@ -94,5 +94,106 @@ Item {
 
         }
     }
+
+    Popover {
+        id: edit_dialog
+
+        width: Units.dp(400)
+        height: col.childrenRect.height
+
+        dismissOnTap: true
+
+        Column {
+            id: col
+            anchors.fill: parent
+            anchors.margins: Units.dp(24)
+            spacing: Units.dp(5)
+
+            Item {
+                width: parent.width
+                height: Units.dp(24)
+                Text {
+                    id: name
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.family: root.font_family
+                    text: "Edit bookmark"
+                }
+
+                IconButton {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    iconName: "navigation/close"
+                    onClicked: edit_dialog.close()
+                }
+
+            }
+
+            TextField {
+                id: txt_edit_title
+                width: parent.width
+                text: item.title
+            }
+
+            Label {
+                text: "Title"
+            }
+
+            TextField {
+                id: txt_edit_url
+                width: parent.width
+                text: item.url
+            }
+
+            Label {
+                text: "URL"
+            }
+
+            TextField {
+                id: txt_edit_favicon_url
+                width: parent.width
+                text: item.favicon_url
+            }
+
+            Label {
+                text: "Icon URL"
+            }
+
+        }
+
+        Button {
+            id: btn_edit_cancel
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: Units.dp(24)
+            anchors.right: btn_edit_apply.left
+
+            text: "Cancel"
+
+            onClicked: {
+                txt_edit_title.text = item.title;
+                txt_edit_url.text = item.url;
+                txt_edit_favicon_url.text = item.favicon_url;
+                edit_dialog.close();
+            }
+        }
+
+        Button {
+            id: btn_edit_apply
+
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: Units.dp(24)
+            anchors.rightMargin: Units.dp(24)
+            anchors.right: parent.right
+
+            text: "Apply"
+
+            onClicked: {
+                root.get_tab_manager().change_bookmark(item.url, txt_edit_title.text, txt_edit_url.text, txt_edit_favicon_url.text);
+                edit_dialog.close();
+            }
+        }
+
+
+    }
+
 
 }

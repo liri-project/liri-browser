@@ -27,6 +27,21 @@ function add_bookmark(title, url, favicon_url){
     reload_bookmarks();
 }
 
+function change_bookmark(url, title, new_url, favicon_url){
+    for (var i=0; i<root.app.bookmarks.length; i++){
+        if (root.app.bookmarks[i].url == url){
+            root.app.bookmarks[i].url = new_url;
+            root.app.bookmarks[i].title = title;
+            root.app.bookmarks[i].favicon_url = favicon_url;
+            reload_bookmarks();
+            bookmarks_changed();
+            return true
+        }
+    }
+    return false
+
+}
+
 function remove_bookmark(url){
     for (var i=0; i<root.app.bookmarks.length; i++){
         if (root.app.bookmarks[i].url == url){
