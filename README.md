@@ -13,7 +13,7 @@ A minimalistic material design web browser written for Papyros (https://github.c
 * [x] Search in website
 * [ ] Browser history
 * [ ] Browser settings
-* 
+
 ... work in progress!
 
 ## Screenshots
@@ -52,5 +52,11 @@ A minimalistic material design web browser written for Papyros (https://github.c
   * run material-browser executable
 
 ## Copyright and License
+This application is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+See LICENSE for more information.
 
 (C) Copyright by Tim Süberkrüb, 2015
