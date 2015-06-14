@@ -9,5 +9,8 @@
         <file>Application.qml</file>
         <file>BrowserWindow.qml</file>
         <file>DownloadsPopup.qml</file>
+        <file>SettingsDrawer.qml</file>
+        <file>DownloadsDrawer.qml</file>
+        <file>ColorPicker.qml</file>
     </qresource>
 </RCC>

@@ -64,10 +64,52 @@
     </message>
 </context>
 <context>
+    <name>DownloadsDrawer</name>
+    <message>
+        <source>No active downloads</source>
+        <translation>Keine aktuellen Downloads</translation>
+    </message>
+</context>
+<context>
     <name>DownloadsPopup</name>
     <message>
         <source>No active downloads</source>
         <translation>Keine aktuellen Downloads</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsDrawer</name>
+    <message>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Allgemein</translation>
+    </message>
+    <message>
+        <source>Start page</source>
+        <translation>Startseite</translation>
+    </message>
+    <message>
+        <source>Theme</source>
+        <translation>Theme</translation>
+    </message>
+    <message>
+        <source>Primary Color</source>
+        <translation>Primärfarbe</translation>
+    </message>
+    <message>
+        <source>Accent Color</source>
+        <translation>Accentfarbe</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Speichern</translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>

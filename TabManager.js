@@ -388,7 +388,7 @@ function TabPage(url, background) {
         this.url = get_valid_url(url);
     }
     else {
-        this.url = start_page;
+        this.url = root.app.home_url;
     }
 
     this.active = false;

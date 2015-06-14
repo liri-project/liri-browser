@@ -19,6 +19,7 @@ ApplicationWindow {
     height: 640
 
     theme {
+        id: theme
         //backgroundColor: ""
         primaryColor: "#FF4719"
         //primaryDarkColor: ""
@@ -37,6 +38,8 @@ ApplicationWindow {
         property alias y: root.y
         property alias width: root.width
         property alias height: root.height
+        property alias primaryColor: theme.primaryColor
+        property alias accentColor: theme.accentColor
     }
 
     /* Style Settings */
@@ -57,11 +60,10 @@ ApplicationWindow {
 
     property string font_family: "Roboto"
 
-    property string start_page: "https://www.google.com"
-
     property alias current_tab_icon: current_tab_icon
     property alias txt_search: txt_search
     property alias downloads_popup: downloads_popup
+    property alias downloads_drawer: downloads_drawer
 
     property bool fullscreen: false
 
@@ -104,7 +106,7 @@ ApplicationWindow {
     }
 
     function download_requested(download) {
-       root.downloads_popup.append(download);
+       root.downloads_drawer.append(download);
        download.accept();
     }
 
@@ -287,13 +289,13 @@ ApplicationWindow {
 
                                 IconButton {
                                     id: btn_downloads
-                                    color: if (downloads_popup.active_downloads){"#448AFF"} else {root.current_icon_color}
+                                    color: if (downloads_drawer.active_downloads){"#448AFF"} else {root.current_icon_color}
                                     iconName : "file/file_download"
                                     anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: downloads_popup.open(btn_downloads)
+                                    onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)
 
                                     Rectangle {
-                                        visible: downloads_popup.active_downloads
+                                        visible: downloads_drawer.active_downloads
                                         z: -1
                                         width: parent.width + Units.dp(5)
                                         height: parent.height + Units.dp(5)
@@ -397,6 +399,7 @@ ApplicationWindow {
                             ListItem.Standard {
                                 text: qsTr("Settings")
                                 iconName: "action/settings"
+                                onClicked: { overflow_menu.close(); settings_drawer.open(); }
                             }
                         }
                     }
@@ -494,6 +497,12 @@ ApplicationWindow {
 
         }
     }
+
+    SettingsDrawer {id: settings_drawer}
+
+    DownloadsDrawer {id: downloads_drawer}
+
+    // TODO: Add History drawer
 
     View {
         id: website_search_overlay

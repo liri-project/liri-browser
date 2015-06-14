@@ -5,10 +5,14 @@ import Qt.labs.settings 1.0
 QtObject {
     id: application
 
+    property string home_url: "https://www.google.de"
+
+
     property var bookmarks: []
     signal bookmarks_changed()
 
     property QtObject settings: Settings {
+        property alias home_url: application.home_url
         property var bookmarks
     }
 
