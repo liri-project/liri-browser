@@ -74,7 +74,18 @@
     <name>DownloadsPopup</name>
     <message>
         <source>No active downloads</source>
-        <translation>Keine aktuellen Downloads</translation>
+        <translation type="vanished">Keine aktuellen Downloads</translation>
+    </message>
+</context>
+<context>
+    <name>HistoryDrawer</name>
+    <message>
+        <source>History</source>
+        <translation>Chronik</translation>
+    </message>
+    <message>
+        <source>No history found</source>
+        <translation>Chronik nicht gefunden</translation>
     </message>
 </context>
 <context>

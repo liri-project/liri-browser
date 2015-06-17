@@ -8,9 +8,9 @@
         <file>ShortcutActions.qml</file>
         <file>Application.qml</file>
         <file>BrowserWindow.qml</file>
-        <file>DownloadsPopup.qml</file>
         <file>SettingsDrawer.qml</file>
         <file>DownloadsDrawer.qml</file>
         <file>ColorPicker.qml</file>
+        <file>HistoryDrawer.qml</file>
     </qresource>
 </RCC>

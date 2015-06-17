@@ -349,6 +349,22 @@ function TabPage(url, background) {
                         }
                 });
 
+                // Add history entry
+                if (tab.webview.title) {
+                    var locale = Qt.locale()
+                    var current_date = new Date()
+                    var date_string = current_date.toLocaleDateString();
+
+                    var item = {
+                        "url": tab.url.toString(),
+                        "title": tab.webview.title,
+                        "favicon_url": tab.webview.icon.toString(),
+                        "date": date_string,
+                    }
+
+                    root.app.history_model.insert(0, item);
+                }
+
         }
         else if (request.status === 3) {
             // LoadFailedStatus

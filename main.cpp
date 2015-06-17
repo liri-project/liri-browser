@@ -17,6 +17,10 @@ int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
+    app.setOrganizationName("tim-sueberkrueb");
+    app.setOrganizationDomain("github.com/tim-sueberkrueb");
+    app.setApplicationName("material-browser");
+
     // Load Translations
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + QLocale::system().name(),

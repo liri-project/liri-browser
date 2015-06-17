@@ -62,7 +62,6 @@ ApplicationWindow {
 
     property alias current_tab_icon: current_tab_icon
     property alias txt_search: txt_search
-    property alias downloads_popup: downloads_popup
     property alias downloads_drawer: downloads_drawer
 
     property bool fullscreen: false
@@ -345,11 +344,6 @@ ApplicationWindow {
                     }
 
 
-                    DownloadsPopup {
-                        id: downloads_popup
-                    }
-
-
                     Dropdown {
                         id: overflow_menu
                         objectName: "overflowMenu"
@@ -381,6 +375,7 @@ ApplicationWindow {
                             ListItem.Standard {
                                 text: qsTr("History")
                                 iconName: "action/history"
+                                onClicked: { overflow_menu.close(); history_drawer.open(); }
                             }
 
                             ListItem.Standard {
@@ -498,11 +493,11 @@ ApplicationWindow {
         }
     }
 
-    SettingsDrawer {id: settings_drawer}
+    SettingsDrawer { id: settings_drawer }
 
-    DownloadsDrawer {id: downloads_drawer}
+    DownloadsDrawer { id: downloads_drawer }
 
-    // TODO: Add History drawer
+    HistoryDrawer { id: history_drawer }
 
     View {
         id: website_search_overlay

@@ -8,7 +8,7 @@ NavigationDrawer {
     id: drawer
     z: 25
     mode: "right"
-    width: Units.dp(350)    
+    width: Units.dp(350)
 
     Column {
         anchors.fill: parent
@@ -35,22 +35,23 @@ NavigationDrawer {
             }
         }
 
+        Component {
+            id: history_item_delegate
+            ListItem.Standard {
+                text: title
+                action: Image {
+                    anchors.centerIn: parent
+                    source: favicon_url
+                    height: Units.dp(16)
+                    width: Units.dp(16)
+                }
+            }
+        }
+
         Item {
             width: parent.width
             height: parent.height - history_title.height
 
-            ListModel {
-                id: history_model
-                property var history: []
-            }
-
-            Component {
-                id: history_item_delegate
-
-                ListItem.Standard {
-                    text: history_model.history[index]
-                }
-            }
 
             ScrollView {
                 anchors.fill: parent
@@ -60,13 +61,13 @@ NavigationDrawer {
 
                     spacing: 5
 
-                    model: history_model
+                    model: root.app.history_model
                     delegate: history_item_delegate
 
                     Text {
                         visible: !list_view.count
                         font.family: root.font_family
-                        text: qsTr("History unavailable")
+                        text: qsTr("No history found")
                         anchors.top: history_title.bottom
                         anchors.horizontalCenter: parent.horizontalCenter
                     }

@@ -12,6 +12,18 @@ WebEngineView {
     onIconChanged: {
         if (page.active)
             root.current_tab_icon.source = icon;
+
+        // Set the favicon in history
+        var history_model = root.app.history_model;
+        for (var i=0; i<history_model.count; i++) {
+            var item = history_model.get(i);
+            if (item.url == webbview.url){
+                item.favicon_url = webbview.icon
+                history_model.set(i, item);
+                break;
+            }
+            console.log(i)
+        }
     }
 
     /*settings.autoLoadImages: appSettings.autoLoadImages
