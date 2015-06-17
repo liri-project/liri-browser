@@ -46,6 +46,12 @@ QtObject {
 
     Component.onCompleted: {
         console.log("Locale name: " + Qt.locale().name)
+        if (!settings.bookmarks)
+            settings.bookmarks = [];
+
+        if (!settings.history)
+            settings.history = [];
+
         application.bookmarks = settings.bookmarks;
 
         // Load the browser history
