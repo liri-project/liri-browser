@@ -55,8 +55,18 @@ QtObject {
         application.bookmarks = settings.bookmarks;
 
         // Load the browser history
+        var locale = Qt.locale()
+        var current_date = new Date()
+        var date_string = current_date.toLocaleDateString();
+
+        var current_item_date = date_string;
         for (var i=0; i<application.settings.history.length; i++){
-            application.history_model.append(application.settings.history[i]);
+            var item = application.settings.history[i];
+            if (current_item_date != item.date) {
+                application.history_model.append({"title": item.date, "url": false, "favicon_url": false, "date": item.date, "type": "date"})
+                current_item_date = item.date
+            }
+            application.history_model.append(item);
         }
     }
 
@@ -67,7 +77,8 @@ QtObject {
         var history = [];
         for (var i=0; i<application.history_model.count; i++){
             var item = application.history_model.get(i);
-            history.push({"title": item.title, "url": item.url, "favicon_url": item.favicon_url});
+            if (item.type !== "date")
+                history.push({"title": item.title, "url": item.url, "favicon_url": item.favicon_url, "date": item.date, "type": item.type});
         }
         application.settings.history = history;
     }

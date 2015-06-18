@@ -369,6 +369,7 @@ function TabPage(url, background) {
                         "title": tab.webview.title,
                         "favicon_url": tab.webview.icon.toString(),
                         "date": date_string,
+                        "type": "entry"
                     }
 
                     root.app.history_model.insert(0, item);

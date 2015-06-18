@@ -39,14 +39,17 @@ NavigationDrawer {
             id: history_item_delegate
             ListItem.Standard {
                 text: title
+                textColor: if (type == "date") { "black" } else { root._tab_text_color_active }
+                iconName: if (type === "date") { "device/access_time" } else { "" }
                 action: Image {
                     anchors.centerIn: parent
-                    source: favicon_url
+                    source: if (favicon_url) { favicon_url } else { "" }
                     height: Units.dp(16)
                     width: Units.dp(16)
                 }
                 onClicked: {
-                    root.add_tab(url);
+                    if (type === "entry")
+                        root.add_tab(url);
                 }
             }
         }
