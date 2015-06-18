@@ -185,6 +185,13 @@ function set_url(url) {
 }
 
 
+function apply_default_colors(){
+    toolbar.color = root._tab_color_active;
+    root.current_text_color = root._tab_text_color_active;
+    root.current_icon_color = root._icon_color;
+}
+
+
 function TabPage(url, background) {
 
     this.bookmark = function() {
@@ -226,6 +233,8 @@ function TabPage(url, background) {
             current_tab_page = false;
             if (open_tabs_history.length > 0)
                 set_current_tab(open_tabs_history[open_tabs_history.length-1]);
+            else
+                apply_default_colors();
         }
 
 

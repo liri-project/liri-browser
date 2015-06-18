@@ -45,6 +45,9 @@ NavigationDrawer {
                     height: Units.dp(16)
                     width: Units.dp(16)
                 }
+                onClicked: {
+                    root.add_tab(url);
+                }
             }
         }
 

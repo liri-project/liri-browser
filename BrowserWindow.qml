@@ -283,7 +283,6 @@ ApplicationWindow {
                                     iconName : "action/bookmark_outline"
                                     anchors.verticalCenter: parent.verticalCenter
                                     onClicked: TabManager.current_tab_page.bookmark()
-
                                 }
 
                                 IconButton {
