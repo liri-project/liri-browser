@@ -12,9 +12,9 @@ QT += qml quick widgets svg xml webengine #webview (for android)
 
 QTPLUGIN += qsvg
 
-SOURCES += main.cpp
+SOURCES += src/main.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += src/qml.qrc
 
 TRANSLATIONS += translations/de_DE.ts
 
