@@ -16,7 +16,8 @@ SOURCES += main.cpp
 
 RESOURCES += qml.qrc
 
-TRANSLATIONS += translations/de_DE.ts
+TRANSLATIONS += translations/de_DE.ts /
+                translations/ru_RU.ts
 
 OTHER_FILES += translations/*.qm
 
