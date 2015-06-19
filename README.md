@@ -19,7 +19,7 @@ A minimalistic material design web browser written for Papyros (https://github.c
 ... work in progress!
 
 ## Screenshots
-![Screenshot](/screenshot_02.png)
+![Screenshot](/screenshot_01.png)
 ![Screenshot](/screenshot_03.png)
 
 ## Translations
