@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine appEngine;
     //appEngine.rootContext()->setContextProperty("utils", &utils);
-    appEngine.load(QUrl("qrc:/Application.qml"));
+    appEngine.load(QUrl("qrc:/qml/Application.qml"));
     QMetaObject::invokeMethod(appEngine.rootObjects().first(), "load");
 
     return app.exec();
