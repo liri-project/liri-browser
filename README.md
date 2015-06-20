@@ -19,8 +19,8 @@ A minimalistic material design web browser written for Papyros (https://github.c
 ... work in progress!
 
 ## Screenshots
-![Screenshot](/screenshot_01.png)
-![Screenshot](/screenshot_03.png)
+![Screenshot](screenshots/screenshot_01.png)
+![Screenshot](screenshots/screenshot_03.png)
 
 ## Translations
 Please help us translating this application! Read this guide to get started:
