@@ -65,4 +65,4 @@ the Free Software Foundation, either version 3 of the License, or
 
 See LICENSE for more information.
 
-(C) Copyright by Tim Süberkrüb, 2015
+(C) Copyright 2015 by Tim Süberkrüb and contributors
