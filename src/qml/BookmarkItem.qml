@@ -155,7 +155,7 @@ Item {
             }
 
             Label {
-                text: "Icon URL"
+                text: qsTr("Icon URL")
             }
 
         }

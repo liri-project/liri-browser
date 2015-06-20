@@ -12,18 +12,18 @@ QT += qml quick widgets svg xml webengine #webview (for android)
 
 QTPLUGIN += qsvg
 
-SOURCES += main.cpp
+SOURCES += src/main.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += src/qml.qrc
 
-TRANSLATIONS += translations/de_DE.ts /
-                translations/ru_RU.ts
+TRANSLATIONS += translations/*.ts
 
 OTHER_FILES += translations/*.qm
 
 lupdate_only{
     SOURCES = *.qml \
-              *.js
+              *.js \
+              src/qml/* \
 }
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

@@ -13,7 +13,7 @@ Dropdown {
         id: lbl_title
         style: "dialog"
         font.family: root.font_family
-        text: "Choose a color"
+        text: qsTr("Choose a color")
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.margins: Units.dp(24)

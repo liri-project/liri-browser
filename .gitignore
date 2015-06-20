@@ -1,3 +1,7 @@
+# Build directory
+
+build
+
 # C++ objects and libs
 
 *.slo
