@@ -3,21 +3,6 @@ A minimalistic material design web browser written for Papyros (https://github.c
 
 [![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-### Features
-#### Awesome
-* [x] Support for custom theme color (meta tag "theme-color")
-
-#### Standard
-* [x] Bookmarks
-* [x] Favicons
-* [x] Download
-* [x] Fullscreen
-* [x] Search in website
-* [x] Browser settings
-* [x] Browser history
-
-... work in progress!
-
 ## Screenshots
 ![Screenshot](screenshots/screenshot_01.png)
 ![Screenshot](screenshots/screenshot_03.png)
@@ -29,11 +14,12 @@ https://github.com/tim-sueberkrueb/material-browser/wiki/Translations
 ## Installation
 
 ### Dependencies
-* Qt 5.5 and QtWebEngine 1.1
+* Qt 5.5 and QtWebEngine 1.1 (http://qt.io)
+  * *Note:* Qt 5.5 is currently beta. You can grap it here: http://download.qt.io/development_releases/qt/5.5/5.5.0-beta/ 
 * qml-material (https://github.com/papyros/qml-material)
 * qml-extras (https://github.com/papyros/qml-extras)
 
-### Instructions for Ubuntu 15.04
+### Instructions
 * Install Qt 5.5 (https://www.qt.io)
 * Install qml-material
   * git clone https://github.com/papyros/qml-material.git
@@ -65,4 +51,4 @@ the Free Software Foundation, either version 3 of the License, or
 
 See LICENSE for more information.
 
-(C) Copyright by Tim Süberkrüb, 2015
+(C) Copyright 2015 by Tim Süberkrüb and contributors
