@@ -52,4 +52,5 @@ the Free Software Foundation, either version 3 of the License, or
 See LICENSE for more information.
 
 (C) Copyright 2015 by Tim Süberkrüb and contributors
+
 See CONTRIBUTORS.md for a complete list of contributors.
