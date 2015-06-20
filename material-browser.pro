@@ -16,13 +16,14 @@ SOURCES += src/main.cpp
 
 RESOURCES += src/qml.qrc
 
-TRANSLATIONS += translations/de_DE.ts
+TRANSLATIONS += translations/*.ts
 
 OTHER_FILES += translations/*.qm
 
 lupdate_only{
     SOURCES = *.qml \
-              *.js
+              *.js \
+              src/qml/* \
 }
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

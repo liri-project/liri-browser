@@ -31,6 +31,10 @@
         <source>Removed bookmark</source>
         <translation type="obsolete">Lesezeichen gelöscht</translation>
     </message>
+    <message>
+        <source>Icon URL</source>
+        <translation>Icon-URL</translation>
+    </message>
 </context>
 <context>
     <name>BrowserWindow</name>
@@ -61,6 +65,13 @@
     <message>
         <source>Reopen</source>
         <translation>Erneut öffnen</translation>
+    </message>
+</context>
+<context>
+    <name>ColorPicker</name>
+    <message>
+        <source>Choose a color</source>
+        <translation>Farbe wählen</translation>
     </message>
 </context>
 <context>
