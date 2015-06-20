@@ -63,6 +63,7 @@ ApplicationWindow {
     property alias current_tab_icon: current_tab_icon
     property alias txt_search: txt_search
     property alias downloads_drawer: downloads_drawer
+    property alias icon_connection_type: icon_connection_type
 
     property bool fullscreen: false
 
@@ -251,10 +252,20 @@ ApplicationWindow {
                                 color: root._address_bar_color
                                 opacity: 0.5
 
+                                Icon {
+                                    x: Units.dp(16)
+                                    id: icon_connection_type
+                                    property bool secure_connection: false
+                                    property bool certificate_error: false
+                                    name: if (secure_connection) { "action/lock" } else { "social/public" }
+                                    color: if (secure_connection){ "green" } else {root.current_icon_color}
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
                                 TextField {
                                     id: txt_url
                                     anchors.fill: parent
-                                    anchors.leftMargin: Units.dp(24)
+                                    anchors.leftMargin: icon_connection_type.x + icon_connection_type.width + Units.dp(16)
                                     anchors.rightMargin: Units.dp(24)
                                     anchors.topMargin: Units.dp(4)
                                     showBorder: false

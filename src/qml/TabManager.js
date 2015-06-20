@@ -358,8 +358,14 @@ function TabPage(url, background) {
                         }
                 });
 
+                // Check for secure connection
+                if (tab.url.toString().lastIndexOf("https://", 0) === 0)
+                    root.icon_connection_type.secure_connection = true;
+                else
+                    root.icon_connection_type.secure_connection = false;
+
                 // Add history entry
-                if (tab.webview.title) {
+                if (tab.webview.title && tab.url.toString() != root.app.home_url) {
                     var locale = Qt.locale()
                     var current_date = new Date()
                     var date_string = current_date.toLocaleDateString();
