@@ -211,8 +211,6 @@ function TabPage(url, background) {
         var tab_id = this.tab_id;
 
         this.tab.destroy();
-        txt_url.text = "";
-
 
         this.webview.destroy()
         open_tabs.splice(open_tabs.indexOf(this));
@@ -233,8 +231,10 @@ function TabPage(url, background) {
             current_tab_page = false;
             if (open_tabs_history.length > 0)
                 set_current_tab(open_tabs_history[open_tabs_history.length-1]);
-            else
+            else {
+                txt_url.text = "";
                 apply_default_colors();
+            }
         }
 
 
@@ -295,25 +295,27 @@ function TabPage(url, background) {
     }
 
     this.update_toolbar = function() {
-        if (this.webview.canGoBack){
-            btn_go_back.enabled = true;
-        }
-        else {
-            btn_go_back.enabled = false;
+        if (this === current_tab_page) {
+            if (this.webview.canGoBack){
+                btn_go_back.enabled = true;
+            }
+            else {
+                btn_go_back.enabled = false;
 
-        }
+            }
 
-        if (this.webview.canGoForward){
-            btn_go_forward.enabled = true;
-        }
-        else {
-            btn_go_forward.enabled = false;
-        }
+            if (this.webview.canGoForward){
+                btn_go_forward.enabled = true;
+            }
+            else {
+                btn_go_forward.enabled = false;
+            }
 
-        if (is_bookmarked(this.url))
-            btn_bookmark.iconName = "action/bookmark";
-        else
-            btn_bookmark.iconName = "action/bookmark_outline";
+            if (is_bookmarked(this.url))
+                btn_bookmark.iconName = "action/bookmark";
+            else
+                btn_bookmark.iconName = "action/bookmark_outline";
+        }
 
         current_tab_title.text = this.title;
         current_tab_icon.source = this.webview.icon
