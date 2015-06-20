@@ -33,7 +33,7 @@ https://github.com/tim-sueberkrueb/material-browser/wiki/Translations
 * qml-material (https://github.com/papyros/qml-material)
 * qml-extras (https://github.com/papyros/qml-extras)
 
-### Instructions for Ubuntu 15.04
+### Instructions
 * Install Qt 5.5 (https://www.qt.io)
 * Install qml-material
   * git clone https://github.com/papyros/qml-material.git
