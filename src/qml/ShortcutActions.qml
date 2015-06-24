@@ -68,6 +68,10 @@ Item {
         onTriggered: get_current_tab().webview.zoomFactor += 0.1;
     }
     Controls.Action {
+        shortcut: "Ctrl+Tab"
+        onTriggered: {console.log("nextChild")} // TODO: implement tab switching per Ctrl+Tab
+    }
+    Controls.Action {
         shortcut: "F5"
         onTriggered: {
             get_current_tab().reload()

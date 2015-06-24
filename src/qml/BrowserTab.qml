@@ -26,12 +26,10 @@ Item {
         text_color = page.text_color;
         icon_color = page.icon_color;
         if (page.active){
-            drop_shadow.visible = true;
-            fake_shadow.visible = false;
+
         }
         else {
-            drop_shadow.visible = false;
-            fake_shadow.visible = true;
+
         }
     }
 
@@ -41,10 +39,10 @@ Item {
 
         Rectangle {
             id: rect
-            width: parent.width - Units.dp(3)
-            height: parent.height - Units.dp(3)
-            x: parent.x + Units.dp(3)
-            y: parent.y + Units.dp(3)
+            width: parent.width
+            height: parent.height
+            x: parent.x
+            y: parent.y
             color: view.color
 
             Row {
@@ -89,34 +87,45 @@ Item {
 
     }
 
-    DropShadow {
-        id: drop_shadow
-        anchors.fill: container
-        horizontalOffset: -Units.dp(3)
-        verticalOffset: -Units.dp(3)
+    Item {
+        id: container_details
+        visible: false
 
-        radius: 8.0;
-        samples: 16;
-        color: "#dadada";
+        anchors.fill: parent
 
-        smooth: true;
-        source: container;
+        TextField {
+            id: address_bar
+            anchors.fill: parent
+            text: "https://google.com"
+            showBorder: false
+        }
     }
 
-    Rectangle {
-        z: 2
-        id: fake_shadow
-        color: "#dadada";
-        width: parent.width
-        height: Units.dp(3)
-        x: 0
-        y: parent.height - height
+
+    Behavior on width {
+        SmoothedAnimation { duration: 100 }
     }
 
     MouseArea {
+        id: mouse_area
         width: parent.width - _btn_close.width
         height: parent.height
-        onClicked: page.select()
+        onClicked: {
+            var is_already_selected = page.active;
+            page.select();
+            if (is_already_selected) {
+                view.width = Units.dp(300)
+                container_details.visible = true;
+                container.visible = false
+                mouse_area.visible = false
+                if (view.x + view.width >= root.flickable.contentX+root.flickable.contentWidth + Units.dp(48))
+                    root.flickable.contentX = view.x + view.width + Units.dp(48);
+                else
+                    root.flickable.contentX = view.x + Units.dp(48);
+                address_bar.forceActiveFocus();
+
+            }
+        }
     }
 
 }

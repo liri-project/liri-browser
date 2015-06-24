@@ -64,6 +64,7 @@ ApplicationWindow {
     property alias txt_search: txt_search
     property alias downloads_drawer: downloads_drawer
     property alias icon_connection_type: icon_connection_type
+    property alias flickable: flickable
 
     property bool fullscreen: false
 
@@ -137,13 +138,17 @@ ApplicationWindow {
                 width: parent.width
                 height: root._tab_height
                 contentHeight: height
-                contentWidth: tab_row.width + rect_add_tab.width + btn_add_tab.width + Units.dp(16)
+                contentWidth: tab_row.width + rect_add_tab.width + btn_add_tab.width + Units.dp(100)
+
+                onFlickStarted: {
+                    // TODO: Set current tab back to normal state
+                }
 
                 Row {
                     id: tab_row
                     x: if (this.children.length > 0 ){flickable.x + Units.dp(64)} else {parent.x}
                     spacing: 0 // root._tabs_spacing
-                    anchors.rightMargin: 50
+                    anchors.rightMargin: Units.dp(50)
                 }
 
                 Rectangle {
