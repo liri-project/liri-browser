@@ -11,7 +11,12 @@ A minimalistic material design web browser written for Papyros (https://github.c
 Please help us translating this application! Read this guide to get started:
 https://github.com/tim-sueberkrueb/material-browser/wiki/Translations
 
-## Installation
+## Installation on Linux
+
+### Simple Installation Script
+If you just want to try material-browser out you can use our simple installation script. It will download and install Qt 5.5 and all necessary dependencies:
+
+https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
 
 ### Dependencies
 * Qt 5.5 and QtWebEngine 1.1 (http://qt.io)
