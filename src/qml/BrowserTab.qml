@@ -33,8 +33,21 @@ Item {
         }
     }
 
-    function ensure_visible() {
-        // TODO: Implement ensure_visible
+    function ensure_visible(width) {
+        var right_margin = Units.dp(48)
+        var spacing = Units.dp(64)
+        if (!width)
+            width = view.width;
+        // Ensure that the tab is visible
+        if (view.x + width >= flickable.contentX+root.flickable.width - right_margin) {
+            root.flickable.contentX = view.x-root.flickable.width + width + right_margin + spacing;
+        }
+        else if (view.x < flickable.contentX) {
+            if (view.x-spacing <= 0)
+                root.flickable.contentX = 0;
+            else
+                root.flickable.contentX = view.x - spacing;
+        }
     }
 
     Item {
@@ -122,10 +135,7 @@ Item {
                 container_details.visible = true;
                 container.visible = false
                 mouse_area.visible = false
-                if (view.x + view.width >= root.flickable.contentX+root.flickable.contentWidth + Units.dp(48))
-                    root.flickable.contentX = view.x + view.width + Units.dp(48);
-                else
-                    root.flickable.contentX = view.x + Units.dp(48);
+                view.ensure_visible(Units.dp(300));
                 address_bar.forceActiveFocus();
 
             }

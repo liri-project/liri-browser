@@ -172,6 +172,7 @@ function set_current_tab(tab_page) {
 
     tab_page.update_colors();
     tab_page.update_toolbar();
+    tab_page.tab.ensure_visible();
 }
 
 

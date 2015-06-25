@@ -140,13 +140,17 @@ ApplicationWindow {
                 contentHeight: height
                 contentWidth: tab_row.width + rect_add_tab.width + btn_add_tab.width + Units.dp(100)
 
+                Behavior on contentX {
+                    SmoothedAnimation { duration: 100 }
+                }
+
                 onFlickStarted: {
                     // TODO: Set current tab back to normal state
                 }
 
                 Row {
                     id: tab_row
-                    x: if (this.children.length > 0 ){flickable.x + Units.dp(64)} else {parent.x}
+                    x: if (this.children.length > 0 ){flickable.x + 0} else {parent.x}
                     spacing: 0 // root._tabs_spacing
                     anchors.rightMargin: Units.dp(50)
                 }
