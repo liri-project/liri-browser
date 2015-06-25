@@ -296,7 +296,7 @@ ApplicationWindow {
                                 IconButton {
                                     id: btn_bookmark
                                     color: root.current_icon_color
-                                    iconName : "action/bookmark_border"
+                                    iconName: "action/bookmark_border"
                                     anchors.verticalCenter: parent.verticalCenter
                                     onClicked: TabManager.current_tab_page.bookmark()
                                 }

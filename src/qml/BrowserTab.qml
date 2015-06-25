@@ -33,6 +33,10 @@ Item {
         }
     }
 
+    function ensure_visible() {
+        // TODO: Implement ensure_visible
+    }
+
     Item {
         id: container
         anchors.fill: parent
