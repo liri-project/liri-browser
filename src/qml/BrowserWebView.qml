@@ -63,7 +63,7 @@ WebEngineView {
          else {
              root.end_fullscreen_mode();
          }
-         request.accept()
+         request.accept();
      }
 
      /*profile.onDownloadRequested: {

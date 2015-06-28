@@ -21,7 +21,6 @@ function is_bookmarked(url){
 }
 
 function add_bookmark(title, url, favicon_url){
-    console.log(root.app.bookmarks)
     root.app.bookmarks.push({title: title, url: url, favicon_url: favicon_url});
     bookmarks_changed();
     reload_bookmarks();
@@ -35,10 +34,10 @@ function change_bookmark(url, title, new_url, favicon_url){
             root.app.bookmarks[i].favicon_url = favicon_url;
             reload_bookmarks();
             bookmarks_changed();
-            return true
+            return true;
         }
     }
-    return false
+    return false;
 
 }
 
@@ -51,7 +50,7 @@ function remove_bookmark(url){
             return true;
         }
     }
-    return false
+    return false;
 }
 
 function clear_bookmarks(){
@@ -148,17 +147,19 @@ function set_current_tab_url (url) {
 function set_current_tab(tab_page) {
     if (tab_page === current_tab_page)
         return;
-    tab_page.webview.visible = true;
 
-    tab_page.active = true;
-    txt_url.text = tab_page.webview.url
+    txt_url.text = tab_page.webview.url;
+    tab_page.tab.txt_url.text = tab_page.webview.url;
     if (current_tab_page) {
-        current_tab_page.active = false;
+        current_tab_page.tab.state = "inactive";
         current_tab_page.webview.visible = false;
-        current_tab_page.update_colors();
         open_tabs_history.push(current_tab_page);
     }
     current_tab_page = tab_page;
+
+    tab_page.webview.visible = true;
+    tab_page.tab.state = "active";
+
     root.title = tab_page.title + ' - Browser';
 
     if (tab_page.webview.loading){
@@ -170,8 +171,7 @@ function set_current_tab(tab_page) {
         btn_refresh.visible = true;
     }
 
-    tab_page.update_colors();
-    tab_page.update_toolbar();
+    tab_page.tab.ensure_visible();
 }
 
 
@@ -314,7 +314,7 @@ function TabPage(url, background) {
             if (is_bookmarked(this.url))
                 btn_bookmark.iconName = "action/bookmark";
             else
-                btn_bookmark.iconName = "action/bookmark_outline";
+                btn_bookmark.iconName = "action/bookmark_border";
         }
 
         current_tab_title.text = this.title;
@@ -341,8 +341,13 @@ function TabPage(url, background) {
                 tab.url = tab.webview.url;
                 tab.title = tab.webview.title;
                 tab.tab.title = tab.title;
+
+                //if (tab.tab.state == "active_edit")
+                //   tab.tab.state = "active";
+
                 if (tab === current_tab_page) {
                     txt_url.text = tab.webview.url;
+                    tab.tab.txt_url.text = tab.webview.url;
                     root.title = tab.webview.title + ' - Browser';
                 }
                 // Looking for custom tab bar colors
@@ -362,9 +367,9 @@ function TabPage(url, background) {
 
                 // Check for secure connection
                 if (tab.url.toString().lastIndexOf("https://", 0) === 0)
-                    root.icon_connection_type.secure_connection = true;
+                    root.secure_connection = true;
                 else
-                    root.icon_connection_type.secure_connection = false;
+                    root.secure_connection = false;
 
                 // Add history entry
                 if (tab.webview.title && tab.url.toString() != root.app.home_url) {
@@ -386,9 +391,15 @@ function TabPage(url, background) {
         }
         else if (request.status === 3) {
             // LoadFailedStatus
-            var new_url = get_valid_url(txt_url.text)
-            txt_url.text = new_url;
-            tab.set_url(new_url);
+            var new_url = "about:blank";
+            if (root.app.integrated_addressbars) {
+                tab.tab.txt_url.text = new_url;
+                tab.set_url(new_url);
+            }
+            else {
+                txt_url.text = new_url;
+                tab.set_url(new_url);
+            }
         }
 
         tab.update_toolbar();
@@ -424,8 +435,6 @@ function TabPage(url, background) {
     else {
         this.url = root.app.home_url;
     }
-
-    this.active = false;
 
     this.custom_color = false;
     this.custom_color_inactive = false;
