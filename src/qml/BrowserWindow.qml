@@ -21,9 +21,9 @@ ApplicationWindow {
     theme {
         id: theme
         //backgroundColor: ""
-        primaryColor: "#FF4719"
-        //primaryDarkColor: ""
-        accentColor: "#00bcd4"
+        primaryColor: "#2196F3"
+        primaryDarkColor: "#1976D2"
+        accentColor: "#4CAF50"
         //tabHighlightColor: ""
     }
 
@@ -46,12 +46,13 @@ ApplicationWindow {
     property color _tab_background_color: "#f1f1f1"
     property int _tab_height: Units.dp(40)
     property int _tab_width: Units.dp(200)
+    property int _tab_width_edit: Units.dp(400)
     property bool _tabs_rounded: false
     property int _tabs_spacing: Units.dp(1)
     property int _titlebar_height: Units.dp(148)
     property color _tab_color_active: "#ffffff"
     property color _tab_color_inactive: "#e5e5e5"
-    property color _tab_indicator_color: "#2196f3"
+    property alias _tab_indicator_color: theme.accentColor
     property color _tab_text_color_active: "#212121"
     property color _tab_text_color_inactive: "#757575"
     property color _icon_color: "#7b7b7b"
@@ -69,8 +70,6 @@ ApplicationWindow {
 
     property bool fullscreen: false
     property bool secure_connection: false
-
-    property bool integrated_addressbars: false
 
     function start_fullscreen_mode(){
         fullscreen = true;
@@ -124,7 +123,7 @@ ApplicationWindow {
             visible: !root.fullscreen
             id: titlebar
             width: parent.width
-            height: if (root.integrated_addressbars) {flickable.height + bookmark_bar.height} else {flickable.height + toolbar.height + bookmark_bar.height}
+            height: if (root.app.integrated_addressbars) {flickable.height + bookmark_bar.height} else {flickable.height + toolbar.height + bookmark_bar.height}
 
             elevation: Units.dp(2)
 
@@ -144,7 +143,7 @@ ApplicationWindow {
                 width: parent.width
                 height: root._tab_height
                 contentHeight: height
-                contentWidth: tab_row.width + rect_add_tab.width + btn_add_tab.width + Units.dp(100)
+                contentWidth: tab_row.width + btn_add_tab.width + Units.dp(100)
 
                 Behavior on contentX {
                     SmoothedAnimation { duration: 100 }
@@ -182,26 +181,61 @@ ApplicationWindow {
 
             }
 
-            View {
-                elevation: 2
-                x: flickable.width - this.width
-                height: root._tab_height
-                width: Units.dp(48)
-                visible: (flickable.contentWidth > flickable.width)
+            Rectangle {
+                id: toolbar_integrated
+                //elevation: if (flickable.contentWidth > flickable.width) { Units.dp(2) } else {0}
+                anchors.top: flickable.top
+                anchors.bottom: flickable.bottom
+                anchors.right: flickable.right
+                width: if (root.app.integrated_addressbars) { btn_add_tab_integrated.width + btn_downloads_integrated.width + btn_menu_integrated.width + Units.dp(24)*3 } else { Units.dp(48) }
 
-                Rectangle {
-                    id: rect_add_tab
-                    anchors.fill: parent
-                    color: root._tab_background_color
-                    IconButton {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: root._icon_color
-                        iconName: "content/add"
+                IconButton {
+                    id: btn_add_tab_integrated
+                    visible: (flickable.contentWidth > flickable.width)
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: btn_downloads_integrated.left
+                    anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 12 }
+                    color: root._icon_color
+                    iconName: "content/add"
 
-                        onClicked: TabManager.add_tab();
+                    onClicked: TabManager.add_tab();
+                }
+
+                IconButton {
+                    id: btn_downloads_integrated
+                    visible: root.app.integrated_addressbars && downloads_drawer.active_downloads
+                    width: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
+                    color: if (downloads_drawer.active_downloads){ theme.accentColor } else { root.current_icon_color }
+                    iconName : "file/file_download"
+                    anchors.right: btn_menu_integrated.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.margins: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
+                    onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)
+
+                    Rectangle {
+                        visible: downloads_drawer.active_downloads
+                        z: -1
+                        width: parent.width + Units.dp(5)
+                        height: parent.height + Units.dp(5)
+                        anchors.centerIn: parent
+                        color: "white"
+                        radius: width*0.5
                     }
                 }
+
+                IconButton {
+                    id: btn_menu_integrated
+                    visible: root.app.integrated_addressbars
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
+                    width: if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
+                    color: root.current_icon_color
+                    iconName : "navigation/more_vert"
+                    onClicked: overflow_menu.open(btn_menu_integrated)
+
+                }
+
             }
 
             Item {
@@ -312,7 +346,7 @@ ApplicationWindow {
 
                                 IconButton {
                                     id: btn_downloads
-                                    color: if (downloads_drawer.active_downloads){"#448AFF"} else {root.current_icon_color}
+                                    color: if (downloads_drawer.active_downloads){ theme.accentColor } else {root.current_icon_color}
                                     iconName : "file/file_download"
                                     anchors.verticalCenter: parent.verticalCenter
                                     onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)

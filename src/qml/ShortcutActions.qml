@@ -20,8 +20,29 @@ Item {
         id: focus
         shortcut: "Ctrl+L"
         onTriggered: {
-            txt_url.forceActiveFocus();
-            txt_url.selectAll();
+            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
+                root.get_current_tab().tab.state = "active_edit";
+                root.get_current_tab().tab.txt_url.forceActiveFocus();
+                root.get_current_tab().tab.txt_url.selectAll();
+            }
+            else {
+                txt_url.forceActiveFocus();
+                txt_url.selectAll();
+            }
+        }
+    }
+    Controls.Action {
+        shortcut: "Ctrl+K"
+        onTriggered: {
+            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
+                root.get_current_tab().tab.state = "active_edit";
+                root.get_current_tab().tab.txt_url.forceActiveFocus();
+                root.get_current_tab().tab.txt_url.selectAll();
+            }
+            else {
+                txt_url.forceActiveFocus();
+                txt_url.selectAll();
+            }
         }
     }
     Controls.Action {
@@ -78,6 +99,20 @@ Item {
         shortcut: "F5"
         onTriggered: {
             get_current_tab().reload()
+        }
+    }
+    Controls.Action {
+        shortcut: "F6"
+        onTriggered: {
+            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
+                root.get_current_tab().tab.state = "active_edit";
+                root.get_current_tab().tab.txt_url.forceActiveFocus();
+                root.get_current_tab().tab.txt_url.selectAll();
+            }
+            else {
+                txt_url.forceActiveFocus();
+                txt_url.selectAll();
+            }
         }
     }
     Controls.Action {

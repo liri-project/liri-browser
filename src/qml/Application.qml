@@ -10,6 +10,8 @@ QtObject {
     property var bookmarks: []
     signal bookmarks_changed()
 
+    property bool integrated_addressbars: true
+
     property ListModel history_model: ListModel {
         id: history_model
         dynamicRoles: true
@@ -19,6 +21,7 @@ QtObject {
         property alias home_url: application.home_url
         property var bookmarks
         property var history
+        property alias integrated_addressbars: application.integrated_addressbars
     }
 
 

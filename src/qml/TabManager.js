@@ -314,7 +314,7 @@ function TabPage(url, background) {
             if (is_bookmarked(this.url))
                 btn_bookmark.iconName = "action/bookmark";
             else
-                btn_bookmark.iconName = "action/bookmark_outline";
+                btn_bookmark.iconName = "action/bookmark_border";
         }
 
         current_tab_title.text = this.title;
@@ -336,14 +336,15 @@ function TabPage(url, background) {
             if (tab === current_tab_page) {
                 prg_loading.visible = false;
                 btn_refresh.visible = true;
-                if (tab.tab.state == "active_edit") {
-                    tab.tab.state = "active";
-                }
             }
             if (tab.url !== tab.webview.url)
                 tab.url = tab.webview.url;
                 tab.title = tab.webview.title;
                 tab.tab.title = tab.title;
+
+                //if (tab.tab.state == "active_edit")
+                //   tab.tab.state = "active";
+
                 if (tab === current_tab_page) {
                     txt_url.text = tab.webview.url;
                     tab.tab.txt_url.text = tab.webview.url;
@@ -391,7 +392,7 @@ function TabPage(url, background) {
         else if (request.status === 3) {
             // LoadFailedStatus
             var new_url = "about:blank";
-            if (root.integrated_addressbars) {
+            if (root.app.integrated_addressbars) {
                 tab.tab.txt_url.text = new_url;
                 tab.set_url(new_url);
             }
@@ -440,7 +441,6 @@ function TabPage(url, background) {
     this.color = root._tab_color_active;
     this.text_color = root._tab_text_color_active;
     this.icon_color = root._icon_color;
-    this.indicator_color = root._tab_indicator_color
     this.title = qsTr("New Tab");
 
     this.tab_id = last_tab_id = last_tab_id + 1;

@@ -5,7 +5,6 @@ import Material 0.1
 
 View {
     id: view
-    z: 5
 
     property var page
 
@@ -40,6 +39,7 @@ View {
               rect_indicator.visible = false;
 
               // Update colors
+              icon_color = text_color = root._tab_text_color_inactive;
               color = root._tab_color_inactive;
               update_colors();
           }
@@ -59,6 +59,7 @@ View {
               rect_indicator.visible = true;
 
               // Update colors
+              icon_color = text_color = root._tab_text_color_active;
               color = root._tab_color_active;
               update_colors();
           }
@@ -68,11 +69,11 @@ View {
         name: "active_edit"
         StateChangeScript {
           script: {
-              view.width = Units.dp(300);
+              mouse_area.visible = false;
+              view.width = root._tab_width_edit;
               container_edit.visible = true;
               container_default.visible = false;
-              mouse_area.visible = false;
-              view.ensure_visible(Units.dp(300));
+              view.ensure_visible(root._tab_width_edit);
               txt_url.forceActiveFocus();
               //rect_indicator_edit.y = 0;
               canvas_edit_background.height = container_edit.height;
@@ -81,6 +82,7 @@ View {
               rect_indicator.visible = true;
 
               // Update colors
+              icon_color = text_color = root._tab_text_color_active;
               color = root._tab_color_active;
               update_colors();
           }
@@ -89,16 +91,13 @@ View {
     ]
 
     function update_colors() {
-        //color = page.color;
-        //text_color = page.text_color;
-        //icon_color = page.icon_color;
-        rect_indicator.color = page.indicator_color;
-        //rect_indicator_edit.color = page.indicator_color;
-        canvas_edit_background.color = page.indicator_color;
+        rect_indicator.color = page.custom_color || root._tab_indicator_color;
+        canvas_edit_background.color = page.custom_color || root._tab_indicator_color;
+        canvas_edit_background.requestPaint();
     }
 
     function ensure_visible(width) {
-        var right_margin = Units.dp(48)
+        var right_margin = Units.dp(120)
         var spacing = Units.dp(64)
         if (!width)
             width = view.width;
@@ -136,8 +135,17 @@ View {
                     id: img_favicon
                     source: view.webview.icon //view.favicon
                     //visible: icon_url !== ""
-                    width: Units.dp(20)
+                    visible: !webview.loading
+                    width: if (webview.loading) { 0 } else { Units.dp(20) }
                     height: Units.dp(20)
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                LoadingIndicator {
+                    id: prg_loading
+                    visible: webview.loading
+                    width: if (webview.loading) { Units.dp(24) } else { 0 }
+                    height: Units.dp(24)
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -145,7 +153,7 @@ View {
                     id: _lbl
                     text: page.title
                     color: view.text_color
-                    width: parent.width - _btn_close.width - img_favicon.width - Units.dp(16)
+                    width: parent.width - _btn_close.width - img_favicon.width - prg_loading.width - Units.dp(16)
                     elide: Text.ElideRight
                     smooth: true
                     clip: true
@@ -189,13 +197,69 @@ View {
                 NumberAnimation { duration: 200 }
             }
 
+            IconButton {
+                id: btn_go_back
+                iconName : "navigation/arrow_back"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.margins: Units.dp(16)
+                enabled: webview.canGoBack
+
+                onClicked: root.get_tab_manager().current_tab_page.go_back()
+                color: root.current_icon_color
+            }
+
+            IconButton {
+                id: btn_go_forward
+                iconName : "navigation/arrow_forward"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: btn_go_back.right
+                anchors.margins: if (webview.canGoForward) { Units.dp(16) } else { 0 }
+                enabled: webview.canGoForward
+                visible: webview.canGoForward
+                width: if (webview.canGoForward) { Units.dp(24) } else { 0 }
+
+                Behavior on width {
+                    SmoothedAnimation { duration: 200 }
+                }
+
+                onClicked: root.get_tab_manager().current_tab_page.go_forward()
+                color: root.current_icon_color
+            }
+
+            IconButton {
+                id: btn_refresh
+                visible: !webview.loading
+                width: Units.dp(24)
+                hoverAnimation: true
+                iconName : "navigation/refresh"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: btn_go_forward.right
+                anchors.margins: Units.dp(16)
+                color: root.current_icon_color
+                onClicked: {
+                    view.state = "active";
+                    root.get_tab_manager().current_tab_page.reload();
+                }
+            }
+
+            LoadingIndicator {
+                id: prg_loading_edit
+                visible: webview.loading
+                width: Units.dp(24)
+                height: Units.dp(24)
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: btn_go_forward.right
+                anchors.margins: Units.dp(16)
+            }
+
             Icon {
                 id: icon_connection_type
                 name: if (root.secure_connection) { "action/lock" } else { "social/public" }
                 color: if (root.secure_connection) { "green" } else {root.current_icon_color}
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.margins: Units.dp(5)
+                anchors.left: prg_loading_edit.right
+                anchors.margins: Units.dp(16)
             }
 
             TextField {
@@ -208,13 +272,14 @@ View {
                 text: "https://google.com"
                 showBorder: false
                 onAccepted: {
+                    view.state = "active";
                     root.get_tab_manager().set_current_tab_url(txt_url.text);
                 }
             }
 
             IconButton {
                 id: btn_txt_url_hide
-                anchors.margins: Units.dp(5)
+                anchors.margins: Units.dp(16)
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 iconName: "hardware/keyboard_return"
@@ -240,6 +305,8 @@ View {
             onPaint: {
                 // get context to draw with
                 var ctx = getContext("2d");
+
+                ctx.clearRect(0, 0, width, height);
                 // setup the fill
                 ctx.fillStyle = color;
                 // begin a new path to draw
@@ -310,7 +377,7 @@ View {
         onClicked: {
             var is_already_selected = (view.state == "active");
             page.select();
-            if (is_already_selected && root.integrated_addressbars) {
+            if (is_already_selected && root.app.integrated_addressbars) {
                 view.state = "active_edit";
             }
         }
