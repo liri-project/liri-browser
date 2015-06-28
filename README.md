@@ -20,7 +20,6 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
 
 ### Dependencies
 * Qt 5.5 and QtWebEngine 1.1 (http://qt.io)
-  * *Note:* Qt 5.5 is currently beta. You can grap it here: http://download.qt.io/development_releases/qt/5.5/5.5.0-beta/ 
 * qml-material (https://github.com/papyros/qml-material)
 * qml-extras (https://github.com/papyros/qml-extras)
 
