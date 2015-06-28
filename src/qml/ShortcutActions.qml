@@ -47,7 +47,10 @@ Item {
     Controls.Action {
         shortcut: "Escape"
         onTriggered: {
-            if (root.txt_search.visible){
+            if (root.get_current_tab().tab.state === "active_edit"){
+                root.get_current_tab().tab.state = "active"
+            }
+            else if (root.txt_search.visible){
                 root.hide_search_overlay();
             }
             else if (root.fullscreen){

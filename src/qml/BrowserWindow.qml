@@ -51,6 +51,7 @@ ApplicationWindow {
     property int _titlebar_height: Units.dp(148)
     property color _tab_color_active: "#ffffff"
     property color _tab_color_inactive: "#e5e5e5"
+    property color _tab_indicator_color: "#2196f3"
     property color _tab_text_color_active: "#212121"
     property color _tab_text_color_inactive: "#757575"
     property color _icon_color: "#7b7b7b"
@@ -67,6 +68,9 @@ ApplicationWindow {
     property alias flickable: flickable
 
     property bool fullscreen: false
+    property bool secure_connection: false
+
+    property bool integrated_addressbars: false
 
     function start_fullscreen_mode(){
         fullscreen = true;
@@ -116,13 +120,15 @@ ApplicationWindow {
     initialPage: Rectangle {
         id: page
 
-        Canvas {
+        View {
             visible: !root.fullscreen
             id: titlebar
             width: parent.width
-            height: flickable.height + toolbar.height + bookmark_bar.height//_titlebar_height
+            height: if (root.integrated_addressbars) {flickable.height + bookmark_bar.height} else {flickable.height + toolbar.height + bookmark_bar.height}
 
-            onPaint: {
+            elevation: Units.dp(2)
+
+            /*onPaint: {
                 var ctx = getContext("2d");
                 ctx.lineWidth = Units.dp(3);
                 ctx.strokeStyle = "#dadada";
@@ -131,7 +137,7 @@ ApplicationWindow {
                 ctx.lineTo(flickable.x+flickable.width, flickable.height - ctx.lineWidth);
                 ctx.fill()
                 ctx.stroke();
-            }
+            }*/
 
             Flickable {
                 id: flickable
@@ -200,6 +206,7 @@ ApplicationWindow {
 
             Item {
                 id: toolbar_container
+                visible: !integrated_addressbars
                 anchors.top: flickable.bottom
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
@@ -264,10 +271,8 @@ ApplicationWindow {
                                 Icon {
                                     x: Units.dp(16)
                                     id: icon_connection_type
-                                    property bool secure_connection: false
-                                    property bool certificate_error: false
-                                    name: if (secure_connection) { "action/lock" } else { "social/public" }
-                                    color: if (secure_connection){ "green" } else {root.current_icon_color}
+                                    name: if (root.secure_connection) { "action/lock" } else { "social/public" }
+                                    color: if (root.secure_connection){ "green" } else {root.current_icon_color}
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
 
@@ -500,6 +505,7 @@ ApplicationWindow {
 
         Item {
             anchors.top: if (fullscreen){parent.top} else { titlebar.bottom}
+            anchors.topMargin: Units.dp(2)
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
