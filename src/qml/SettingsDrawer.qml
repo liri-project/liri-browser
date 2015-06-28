@@ -78,7 +78,7 @@ NavigationDrawer {
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Label {
-                    text: "Integrated addressbars"
+                    text: qsTr("Integrated addressbars")
                     anchors.verticalCenter: parent.verticalCenter
                     font.pixelSize: Units.dp(16)
                 }

@@ -133,6 +133,14 @@
         <source>Abort</source>
         <translation>Abbrechen</translation>
     </message>
+    <message>
+        <source>Appearance</source>
+        <translation>Aussehen</translation>
+    </message>
+    <message>
+        <source>Integrated addressbars</source>
+        <translation>Integrierte Adresszeilen</translation>
+    </message>
 </context>
 <context>
     <name>TabManager</name>
