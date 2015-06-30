@@ -35,6 +35,10 @@
         <source>Icon URL</source>
         <translation>Icon-URL</translation>
     </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
+    </message>
 </context>
 <context>
     <name>BrowserWindow</name>
@@ -140,6 +144,10 @@
     <message>
         <source>Integrated addressbars</source>
         <translation>Integrierte Adresszeilen</translation>
+    </message>
+    <message>
+        <source>Colorize the entire tab and toolbar</source>
+        <translation>Toolbar und Tabs ganz einfärben</translation>
     </message>
 </context>
 <context>

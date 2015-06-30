@@ -19,22 +19,27 @@
         <translation>Редактировать закладку</translation>
     </message>
     <message>
-        <location filename="../src/qml/BookmarkItem.qml" line="138"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="133"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="../src/qml/BookmarkItem.qml" line="158"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="141"/>
+        <source>URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BookmarkItem.qml" line="150"/>
         <source>Icon URL</source>
         <translation>URL иконки</translation>
     </message>
     <message>
-        <location filename="../src/qml/BookmarkItem.qml" line="169"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="164"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/qml/BookmarkItem.qml" line="187"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="182"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
@@ -135,28 +140,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsDrawer.qml" line="96"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="101"/>
+        <source>Colorize the entire tab and toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsDrawer.qml" line="116"/>
         <source>Theme</source>
         <translatorcomment>Внешний вид (?)</translatorcomment>
         <translation>Тема</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsDrawer.qml" line="103"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="123"/>
         <source>Primary Color</source>
         <translation>Основной цвет</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsDrawer.qml" line="125"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="145"/>
         <source>Accent Color</source>
         <translation>Акцентный цвет</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsDrawer.qml" line="169"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="189"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsDrawer.qml" line="181"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="203"/>
         <source>Abort</source>
         <translation>Отмена</translation>
     </message>
@@ -164,22 +174,22 @@
 <context>
     <name>TabManager</name>
     <message>
-        <location filename="../src/qml/TabManager.js" line="199"/>
+        <location filename="../src/qml/TabManager.js" line="201"/>
         <source>Removed bookmark</source>
         <translation>Удалена закладка</translation>
     </message>
     <message>
-        <location filename="../src/qml/TabManager.js" line="203"/>
+        <location filename="../src/qml/TabManager.js" line="205"/>
         <source>Added bookmark</source>
         <translation>Добавлена закладка</translation>
     </message>
     <message>
-        <location filename="../src/qml/TabManager.js" line="219"/>
+        <location filename="../src/qml/TabManager.js" line="221"/>
         <source>Closed tab</source>
         <translation>Закрыта вкладка</translation>
     </message>
     <message>
-        <location filename="../src/qml/TabManager.js" line="444"/>
+        <location filename="../src/qml/TabManager.js" line="446"/>
         <source>New Tab</source>
         <translation>Новая вкладка</translation>
     </message>
