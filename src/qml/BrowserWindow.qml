@@ -205,7 +205,7 @@ ApplicationWindow {
                     id: btn_downloads_integrated
                     visible: root.app.integrated_addressbars && downloads_drawer.active_downloads
                     width: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
-                    color: if (downloads_drawer.active_downloads){ theme.accentColor } else { root.current_icon_color }
+                    color: if (downloads_drawer.active_downloads){ theme.accentColor } else { root._icon_color }
                     iconName : "file/file_download"
                     anchors.right: btn_menu_integrated.left
                     anchors.verticalCenter: parent.verticalCenter
@@ -230,7 +230,7 @@ ApplicationWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
                     width: if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
-                    color: root.current_icon_color
+                    color: root._icon_color
                     iconName : "navigation/more_vert"
                     onClicked: overflow_menu.open(btn_menu_integrated)
 
