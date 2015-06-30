@@ -10,7 +10,8 @@ QtObject {
     property var bookmarks: []
     signal bookmarks_changed()
 
-    property bool integrated_addressbars: true
+    property bool integrated_addressbars: false
+    property bool tabs_entirely_colorized: false
 
     property ListModel history_model: ListModel {
         id: history_model
@@ -22,6 +23,7 @@ QtObject {
         property var bookmarks
         property var history
         property alias integrated_addressbars: application.integrated_addressbars
+        property alias tabs_entirely_colorized: application.tabs_entirely_colorized
     }
 
 

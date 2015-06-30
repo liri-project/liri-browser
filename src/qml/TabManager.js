@@ -153,12 +153,14 @@ function set_current_tab(tab_page) {
     if (current_tab_page) {
         current_tab_page.tab.state = "inactive";
         current_tab_page.webview.visible = false;
+        current_tab_page.update_colors();
         open_tabs_history.push(current_tab_page);
     }
     current_tab_page = tab_page;
 
     tab_page.webview.visible = true;
     tab_page.tab.state = "active";
+    tab_page.update_colors();
 
     root.title = tab_page.title + ' - Browser';
 
@@ -259,9 +261,9 @@ function TabPage(url, background) {
     }
 
     this.update_colors = function() {
-        if (this.active){
+        if (this.tab.state != "inactive" ){
             //this.tab.elevation = 4;
-            if (this.custom_color) {
+            if (this.custom_color && root.app.tabs_entirely_colorized) {
                 this.color = this.custom_color;
                 var new_text_color = get_text_color_for_background(this.custom_color);
                 this.text_color = new_text_color;
@@ -278,7 +280,7 @@ function TabPage(url, background) {
             }
         }
         else{
-            if (this.custom_color) {
+            if (this.custom_color && root.app.tabs_entirely_colorized) {
                 this.color = this.custom_color_inactive
                 this.text_color = root._tab_text_color_inactive;
                 this.icon_color = root._tab_text_color_inactive;

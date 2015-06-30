@@ -56,7 +56,8 @@ View {
               canvas_edit_background.height = 0;
               item_edit_components.opacity = 0;
 
-              rect_indicator.visible = true;
+              if (!root.app.tabs_entirely_colorized)
+                rect_indicator.visible = true;
 
               // Update colors
               icon_color = text_color = root._tab_text_color_active;
@@ -79,11 +80,13 @@ View {
               canvas_edit_background.height = container_edit.height;
               item_edit_components.opacity = 1;
 
-              rect_indicator.visible = true;
+              if (!root.app.tabs_entirely_colorized)
+                rect_indicator.visible = true;
 
               // Update colors
               icon_color = text_color = root._tab_text_color_active;
               color = root._tab_color_active;
+
               update_colors();
           }
         }
@@ -94,6 +97,20 @@ View {
         rect_indicator.color = page.custom_color || root._tab_indicator_color;
         canvas_edit_background.color = page.custom_color || root._tab_indicator_color;
         canvas_edit_background.requestPaint();
+
+        if (root.app.tabs_entirely_colorized) {
+            color = page.color;
+            text_color = page.text_color;
+            icon_color = page.icon_color;
+        }
+        else {
+            if (state !== "inactive")
+                color = root._tab_color_active;
+            else
+                color = root._tab_color_inactive;
+            text_color = root._tab_text_color_active
+            icon_color = root._tab_text_color_active
+        }
     }
 
     function ensure_visible(width) {
@@ -178,7 +195,6 @@ View {
                 width: parent.width
                 anchors.bottom: parent.bottom
             }
-
         }
 
     }
@@ -206,7 +222,7 @@ View {
                 enabled: webview.canGoBack
 
                 onClicked: root.get_tab_manager().current_tab_page.go_back()
-                color: root.current_icon_color
+                color: root._icon_color
             }
 
             IconButton {
@@ -224,7 +240,7 @@ View {
                 }
 
                 onClicked: root.get_tab_manager().current_tab_page.go_forward()
-                color: root.current_icon_color
+                color: root._icon_color
             }
 
             IconButton {
@@ -236,7 +252,7 @@ View {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: btn_go_forward.right
                 anchors.margins: Units.dp(16)
-                color: root.current_icon_color
+                color: root._icon_color
                 onClicked: {
                     view.state = "active";
                     root.get_tab_manager().current_tab_page.reload();
@@ -279,6 +295,7 @@ View {
 
             IconButton {
                 id: btn_txt_url_hide
+                color: root._icon_color
                 anchors.margins: Units.dp(16)
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter

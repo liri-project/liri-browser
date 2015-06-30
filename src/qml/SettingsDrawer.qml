@@ -88,6 +88,26 @@ NavigationDrawer {
             }
         }
 
+        ListItem.Standard {
+            Row {
+                anchors.fill: parent
+                spacing: Units.dp(12)
+                CheckBox {
+                    id: chb_tabs_entirely_colorized
+                    checked: root.app.tabs_entirely_colorized
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Label {
+                    text: qsTr("Colorize the entire tab and toolbar")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: Units.dp(16)
+                }
+            }
+            onClicked: {
+                chb_tabs_entirely_colorized.checked = !chb_tabs_entirely_colorized.checked
+            }
+        }
+
         Item {
             height: Units.dp(48)
             width: parent.width
@@ -174,6 +194,8 @@ NavigationDrawer {
                     theme.accentColor = accent_color_picker.color;
                     root.app.home_url = txt_home_url.text;
                     root.app.integrated_addressbars = chb_integrated_addressbars.checked;
+                    root.app.tabs_entirely_colorized = chb_tabs_entirely_colorized.checked;
+                    root.get_tab_manager().current_tab_page.update_colors()
                     drawer.close();
                 }
             }
@@ -185,6 +207,7 @@ NavigationDrawer {
                     primary_color_picker.color = theme.primaryColor;
                     txt_home_url.text = root.app.home_url;
                     chb_integrated_addressbars.checked = root.app.integrated_addressbars;
+                    chb_tabs_entirely_colorized.checked = root.app.tabs_entirely_colorized;
                     drawer.close();
                 }
             }
