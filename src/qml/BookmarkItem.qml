@@ -99,7 +99,7 @@ Item {
         id: edit_dialog
 
         width: Units.dp(400)
-        height: col.childrenRect.height
+        height: col.childrenRect.height + Units.dp(24)
 
         dismissOnTap: true
 
@@ -107,7 +107,7 @@ Item {
             id: col
             anchors.fill: parent
             anchors.margins: Units.dp(24)
-            spacing: Units.dp(5)
+            spacing: Units.dp(24)
 
             Item {
                 width: parent.width
@@ -130,32 +130,27 @@ Item {
 
             TextField {
                 id: txt_edit_title
-                width: parent.width
+                placeholderText: qsTr("Title")
+                floatingLabel: true
                 text: item.title
-            }
-
-            Label {
-                text: qsTr("Title")
+                width: parent.width
             }
 
             TextField {
                 id: txt_edit_url
-                width: parent.width
+                placeholderText: qsTr("URL")
+                floatingLabel: true
                 text: item.url
-            }
+                width: parent.width
 
-            Label {
-                text: "URL"
             }
 
             TextField {
                 id: txt_edit_favicon_url
-                width: parent.width
+                placeholderText: qsTr("Icon URL")
+                floatingLabel: true
                 text: item.favicon_url
-            }
-
-            Label {
-                text: qsTr("Icon URL")
+                width: parent.width
             }
 
         }
