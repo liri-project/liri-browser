@@ -1,132 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <title>Material-browser by tim-sueberkrueb</title>
+    <meta charset="UTF-8">
+    <title>Material-browser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#26a69a">
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   </head>
-
   <body>
+    <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Material Browser</a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="http://papros.io">Go To Papyros Website</a></li>
+          </ul>
 
-    <header>
-      <div class="container">
-        <h1>Material-browser</h1>
-        <h2>A minimalistic material design web browser created for Papyros</h2>
-
-        <section id="downloads">
-          <a href="https://github.com/tim-sueberkrueb/material-browser/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/tim-sueberkrueb/material-browser/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/tim-sueberkrueb/material-browser" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
-
+          <ul id="nav-mobile" class="side-nav">
+            <li><a href="http://papros.io">Go To Papyros Website</a></li>
+          </ul>
+          <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+  <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <section id="main_content">
-        <h1>
-<a id="material-browser" class="anchor" href="#material-browser" aria-hidden="true"><span class="octicon octicon-link"></span></a>Material Browser</h1>
+      <br><br>
+      <h1 class="header center blue-text">Material Browser</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">A modern responsive web browser based on Material Design</h5>
+      </div>
+        <img class="responsive-img" src="screenshots/screenshot_01.png">
+      <div class="row center">
+        <a href="https://github.com/tim-sueberkrueb/material-browser" id="download-button" class="btn-large waves-effect waves-light blue">Download Here!</a>
+      </div>
+      <br><br>
 
-<p>A minimalistic material design web browser written for Papyros (<a href="https://github.com/papyros/">https://github.com/papyros/</a>)</p>
-
-<p>See <a href="http://papyros.io">http://papyros.io</a> for more information about Papyros.</p>
-
-<p><a href="https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/tim-sueberkrueb/material-browser"></a></p>
-
-<h2>
-<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots</h2>
-
-<p><img src="screenshots/screenshot_01.png" alt="Screenshot">
-<img src="screenshots/screenshot_03.png" alt="Screenshot"></p>
-
-<h2>
-<a id="translations" class="anchor" href="#translations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Translations</h2>
-
-<p>Please help us translating this application! Read this guide to get started:
-<a href="https://github.com/tim-sueberkrueb/material-browser/wiki/Translations">https://github.com/tim-sueberkrueb/material-browser/wiki/Translations</a></p>
-
-<h2>
-<a id="installation-on-linux" class="anchor" href="#installation-on-linux" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation on Linux</h2>
-
-<h3>
-<a id="simple-installation-script" class="anchor" href="#simple-installation-script" aria-hidden="true"><span class="octicon octicon-link"></span></a>Simple Installation Script</h3>
-
-<p>If you just want to try material-browser out you can use our simple installation script. It will download and install Qt 5.5 and all necessary dependencies:</p>
-
-<p><a href="https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3">https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3</a></p>
-
-<h3>
-<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h3>
-
-<ul>
-<li>Qt 5.5 and QtWebEngine 1.1 (<a href="http://qt.io">http://qt.io</a>)</li>
-<li>qml-material (<a href="https://github.com/papyros/qml-material">https://github.com/papyros/qml-material</a>)</li>
-<li>qml-extras (<a href="https://github.com/papyros/qml-extras">https://github.com/papyros/qml-extras</a>)</li>
-</ul>
-
-<h3>
-<a id="instructions" class="anchor" href="#instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Instructions</h3>
-
-<ul>
-<li>Install Qt 5.5 (<a href="https://www.qt.io">https://www.qt.io</a>)</li>
-<li>Install qml-material
-
-<ul>
-<li>git clone <a href="https://github.com/papyros/qml-material.git">https://github.com/papyros/qml-material.git</a>
-</li>
-<li>cd qml-material</li>
-<li>qmake</li>
-<li>make</li>
-<li>make check # Optional, make sure everything is working correctly</li>
-<li>sudo make install</li>
-</ul>
-</li>
-<li>Install qml-extras
-
-<ul>
-<li>git clone <a href="https://github.com/papyros/qml-extras.git">https://github.com/papyros/qml-extras.git</a>
-</li>
-<li>cd qml-extras</li>
-<li>qmake</li>
-<li>make</li>
-<li>make check # Optional, make sure everything is working correctly</li>
-<li>sudo make install</li>
-</ul>
-</li>
-</ul>
-
-<h3>
-<a id="build-and-run" class="anchor" href="#build-and-run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build and Run</h3>
-
-<ul>
-<li>git clone <a href="https://github.com/tim-sueberkrueb/material-browser.git">https://github.com/tim-sueberkrueb/material-browser.git</a>
-</li>
-<li>cd material-browser</li>
-<li>qmake</li>
-<li>make</li>
-<li>run material-browser executable</li>
-</ul>
-
-<h2>
-<a id="copyright-and-license" class="anchor" href="#copyright-and-license" aria-hidden="true"><span class="octicon octicon-link"></span></a>Copyright and License</h2>
-
-<p>(C) Copyright 2015 by Tim Süberkrüb and contributors</p>
-
-<p>See CONTRIBUTORS.md for a full list of contributors.</p>
-
-<p>This application is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.</p>
-
-<p>See LICENSE for more information.</p>
-      </section>
     </div>
+  </div>
 
-    
+
+  <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Lightweight</h5>
+
+            <p class="light">This browser was designed from the ground up to be fast and leightweight. It's easier on your CPU.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+            <h5 class="center">Material Design Powered</h5>
+
+            <p class="light">By utilizing elements and principles of Material Design, we were able to create a broswer that incorporates components and animations that provide more feedback to users.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Easy to customize</h5>
+
+            <p class="light">We have provided tools you need to make the browser yours. We are also always open to feedback and try to improve.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br><br>
+
+    <div class="section">
+
+    </div>
+  </div>
+
+  <footer class="page-footer blue">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Bio</h5>
+          <p class="grey-text text-lighten-4">We are an open-source browser with big ideas. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l4 s12">
+          <h5 class="white-text">More To Come!</h5>
+<!--
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+          </ul>
+-->
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://papyros.io">Papyros</a>
+      </div>
+    </div>
+  </footer>
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
+      <script src="js/init.js"></script>
   </body>
 </html>
