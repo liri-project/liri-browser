@@ -1,5 +1,6 @@
 # Material Browser
 A minimalistic material design web browser written for Papyros (https://github.com/papyros/)
+
 See http://papyros.io for more information about Papyros.
 
 [![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
