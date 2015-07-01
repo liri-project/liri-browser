@@ -127,17 +127,6 @@ ApplicationWindow {
 
             elevation: Units.dp(2)
 
-            /*onPaint: {
-                var ctx = getContext("2d");
-                ctx.lineWidth = Units.dp(3);
-                ctx.strokeStyle = "#dadada";
-                ctx.fillStyle = "#dadada";
-                ctx.moveTo(flickable.x, flickable.height - Units.dp(1));
-                ctx.lineTo(flickable.x+flickable.width, flickable.height - ctx.lineWidth);
-                ctx.fill()
-                ctx.stroke();
-            }*/
-
             Flickable {
                 id: flickable
                 width: parent.width

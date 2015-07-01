@@ -320,7 +320,6 @@ function TabPage(url, background) {
         }
 
         current_tab_title.text = this.title;
-        current_tab_icon.source = this.webview.icon
 
     }
 
