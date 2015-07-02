@@ -195,7 +195,12 @@ NavigationDrawer {
                     root.app.home_url = txt_home_url.text;
                     root.app.integrated_addressbars = chb_integrated_addressbars.checked;
                     root.app.tabs_entirely_colorized = chb_tabs_entirely_colorized.checked;
-                    root.get_tab_manager().current_tab_page.update_colors()
+                    root.get_tab_manager().current_tab_page.update_toolbar();
+                    var tabs = root.get_tab_manager().open_tabs;
+                    for (var i=0; i<tabs.length; i++) {
+                        var tab = tabs[i];
+                        tab.update_colors();
+                    }
                     drawer.close();
                 }
             }

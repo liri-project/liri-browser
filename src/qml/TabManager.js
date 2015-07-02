@@ -319,7 +319,8 @@ function TabPage(url, background) {
                 btn_bookmark.iconName = "action/bookmark_border";
         }
 
-        current_tab_title.text = this.title;
+        root.current_tab_title.text = this.webview.title;
+        root.current_tab_icon.source = this.webview.icon;
 
     }
 

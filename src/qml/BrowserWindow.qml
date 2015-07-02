@@ -63,6 +63,7 @@ ApplicationWindow {
     property string font_family: "Roboto"
 
     property alias current_tab_icon: current_tab_icon
+    property alias current_tab_title: current_tab_title
     property alias txt_search: txt_search
     property alias downloads_drawer: downloads_drawer
     property alias icon_connection_type: icon_connection_type
