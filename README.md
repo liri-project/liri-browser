@@ -3,6 +3,8 @@ A minimalistic material design web browser written for Papyros (https://github.c
 
 See http://papyros.io for more information about Papyros.
 
+[![GitHub license](https://img.shields.io/github/license/tim-sueberkrueb/material-browser.svg)](https://github.com/tim-sueberkrueb/material-browser/blob/master/LICENSE)
+[![](https://img.shields.io/github/issues-raw/tim-sueberkrueb/material-browser.svg)](https://github.com/tim-sueberkrueb/material-browser/issues)
 [![GitHub release](https://img.shields.io/badge/release-0.1-red.svg)](https://github.com/tim-sueberkrueb/material-browser/releases)
 [![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
