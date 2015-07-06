@@ -230,7 +230,6 @@ ApplicationWindow {
 
             Item {
                 id: toolbar_container
-                visible: !integrated_addressbars
                 anchors.top: flickable.bottom
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
@@ -241,6 +240,7 @@ ApplicationWindow {
 
                     Rectangle {
                         id: toolbar
+                        visible: !integrated_addressbars
                         //anchors.fill: parent
                         height: Units.dp(64)
                         width: parent.width
@@ -437,6 +437,13 @@ ApplicationWindow {
                                 text: qsTr("Search")
                                 iconName: "action/search"
                                 onClicked: root.show_search_overlay()
+                            }
+
+                            ListItem.Standard {
+                                text: qsTr("Bookmark")
+                                visible: root.app.integrated_addressbars
+                                iconName: "action/bookmark_border"
+                                onClicked: TabManager.current_tab_page.bookmark()
                             }
 
                             ListItem.Standard {

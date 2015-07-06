@@ -47,38 +47,43 @@
 <context>
     <name>BrowserWindow</name>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="321"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="311"/>
         <source>Input search or web address</source>
         <translation>Введите поисковой запрос или адрес сайта</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="418"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="408"/>
         <source>New window</source>
         <translation>Новое окно</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="434"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="424"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="440"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="430"/>
         <source>Fullscreen</source>
         <translation>На весь экран</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="447"/>
-        <location filename="../src/qml/BrowserWindow.qml" line="579"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="437"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="576"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="453"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="443"/>
+        <source>Bookmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="450"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="616"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="613"/>
         <source>Reopen</source>
         <translation>Вернуть</translation>
     </message>
@@ -166,7 +171,7 @@
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsDrawer.qml" line="203"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="208"/>
         <source>Abort</source>
         <translation>Отмена</translation>
     </message>

@@ -70,6 +70,10 @@
         <source>Reopen</source>
         <translation>Erneut öffnen</translation>
     </message>
+    <message>
+        <source>Bookmark</source>
+        <translation>Lesezeichen</translation>
+    </message>
 </context>
 <context>
     <name>ColorPicker</name>
