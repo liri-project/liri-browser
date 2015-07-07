@@ -157,7 +157,7 @@ ApplicationWindow {
                     visible: !(flickable.contentWidth > flickable.width)
 
                     color: root._tab_background_color
-                    height: root._tab_height - Units.dp(4)
+                    height: root._tab_height
                     width: Units.dp(48)
                     IconButton {
                         anchors.verticalCenter: parent.verticalCenter
