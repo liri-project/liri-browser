@@ -31,10 +31,7 @@ WebEngineView {
                  settings.errorPageEnabled: appSettings.errorPageEnabled*/
 
      onCertificateError: {
-         console.log("onCertificateError")
-         console.log(error)
-         /*error.defer()
-         sslDialog.enqueue(error)*/
+         dlg_certificate_error.show_error(error);
      }
 
      onNewViewRequested: {

@@ -616,6 +616,36 @@ ApplicationWindow {
         }
     }
 
+    Dialog {
+        id: dlg_certificate_error
+
+        property var page
+        property var error
+        property string url
+
+        visible: true
+        width: Units.dp(400)
+        title: qsTr("This Connection Is Untrusted")
+        text: qsTr("You are about to securely connect to %1 but we can't confirm that your connection is secure because this site's identity can't be verified.").arg("'" + url + "'")
+        positiveButtonText: qsTr("Continue anyway")
+        negativeButtonText: qsTr("Leave page")
+
+        onAccepted: {
+           error.ignoreCertificateError();
+        }
+
+        onRejected: {
+            error.rejectCertificate();
+        }
+
+        function show_error(error) {
+            error.defer();
+            url = error.url;
+            dlg_certificate_error.error = error;
+            dlg_certificate_error.show();
+        }
+    }
+
 
     Component.onCompleted: {
         // Profile handling
