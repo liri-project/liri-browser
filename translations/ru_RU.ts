@@ -87,6 +87,26 @@
         <source>Reopen</source>
         <translation>Вернуть</translation>
     </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="628"/>
+        <source>This Connection Is Untrusted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="629"/>
+        <source>You are about to securely connect to %1 but we can&apos;t confirm that your connection is secure because this site&apos;s identity can&apos;t be verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="630"/>
+        <source>Continue anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="631"/>
+        <source>Leave page</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ColorPicker</name>

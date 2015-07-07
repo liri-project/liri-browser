@@ -74,6 +74,22 @@
         <source>Bookmark</source>
         <translation>Lesezeichen</translation>
     </message>
+    <message>
+        <source>This Connection Is Untrusted</source>
+        <translation>Keine vertrauenswürdige Verbindung</translation>
+    </message>
+    <message>
+        <source>You are about to securely connect to %1 but we can&apos;t confirm that your connection is secure because this site&apos;s identity can&apos;t be verified.</source>
+        <translation>Sie sind dabei, eine sichere Verbindung zu %1 aufzubauen, es kann aber nicht überprüft werden, ob die wirklich Verbindung sicher ist. Die Identität dieser Website kann nicht bestätigt werden.</translation>
+    </message>
+    <message>
+        <source>Continue anyway</source>
+        <translation>Trotzdem fortfahren</translation>
+    </message>
+    <message>
+        <source>Leave page</source>
+        <translation>Seite verlassen</translation>
+    </message>
 </context>
 <context>
     <name>ColorPicker</name>
