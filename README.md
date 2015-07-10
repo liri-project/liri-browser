@@ -10,7 +10,7 @@ See http://papyros.io for more information about Papyros.
 
 ## Screenshots
 ![Screenshot](screenshots/screenshot_01.png)
-![Screenshot](screenshots/screenshot_03.png)
+![Screenshot](screenshots/screenshot_02.png)
 
 ## Translations
 Please help us translating this application! Read this guide to get started:
