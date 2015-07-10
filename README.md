@@ -8,6 +8,11 @@ See http://papyros.io for more information about Papyros.
 [![GitHub release](https://img.shields.io/badge/release-0.2-red.svg)](https://github.com/tim-sueberkrueb/material-browser/releases)
 [![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Demo
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=7CbvpyzsQ0g" target="_blank"><img src="http://img.youtube.com/vi/7CbvpyzsQ0g/0.jpg" alt="video" width="240" height="180" border="10" /></a>
+
+https://youtu.be/7CbvpyzsQ0g
+
 ## Screenshots
 ![Screenshot](screenshots/screenshot_01.png)
 ![Screenshot](screenshots/screenshot_02.png)
