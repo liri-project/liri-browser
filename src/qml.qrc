@@ -12,5 +12,6 @@
         <file>qml/DownloadsDrawer.qml</file>
         <file>qml/ColorPicker.qml</file>
         <file>qml/HistoryDrawer.qml</file>
+        <file>qml/NewTabPage.qml</file>
     </qresource>
 </RCC>

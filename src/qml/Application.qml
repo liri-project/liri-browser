@@ -13,9 +13,23 @@ QtObject {
     property bool integrated_addressbars: false
     property bool tabs_entirely_colorized: false
 
+    property bool new_tab_page: true
+
     property ListModel history_model: ListModel {
         id: history_model
         dynamicRoles: true
+    }
+
+    property ListModel dashboard_model: ListModel {
+        id: dashboard_model
+
+        function createModel() {
+            for (var i=1; i<=20; i++) {
+                dashboard_model.append({"title": "Website " + i.toString(), url: "google.de", icon_url: "http://www.google.com/s2/favicons?domain=https://google.de", "uid": i})
+            }
+        }
+        Component.onCompleted: {createModel()}
+
     }
 
     property QtObject settings: Settings {

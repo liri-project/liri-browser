@@ -174,6 +174,7 @@ function set_current_tab(tab_page) {
     }
 
     tab_page.tab.ensure_visible();
+    tab_page.update_toolbar();
 }
 
 
@@ -217,7 +218,7 @@ function TabPage(url, background) {
         this.webview.destroy()
         open_tabs.splice(open_tabs.indexOf(this));
 
-        snackbar_tab_close.url = this.url
+        snackbar_tab_close.url = this.webview.url
         snackbar_tab_close.open(qsTr('Closed tab') + ' "' + this.title + '"');
 
         // Remove this from open tabs history
@@ -243,6 +244,7 @@ function TabPage(url, background) {
     }
 
     this.set_url = function(url) {
+        this.webview.new_tab_page = false;
         url = get_valid_url(url);
         this.url = url;
         this.webview.url = get_valid_url(url);
@@ -429,10 +431,13 @@ function TabPage(url, background) {
     }
 
     /* Initialization */
-
+    var new_tab_page = false;
 
     if (url){
         this.url = get_valid_url(url);
+    }
+    else if (root.app.new_tab_page) {
+        new_tab_page = true;
     }
     else {
         this.url = root.app.home_url;
@@ -448,14 +453,14 @@ function TabPage(url, background) {
     this.tab_id = last_tab_id = last_tab_id + 1;
 
     var webview_component = Qt.createComponent("BrowserWebView.qml");
-    this.webview = webview_component.createObject(web_container, { page:this, visible: false, url: this.url, profile: root.app.default_profile });
+    this.webview = webview_component.createObject(web_container, { page:this, visible: false, url: this.url, new_tab_page: new_tab_page, profile: root.app.default_profile });
 
     var tab_component = Qt.createComponent("BrowserTab.qml");
     this.tab = tab_component.createObject(tab_row, { page: this, webview: this.webview });
     this.tab.close.connect(this.close);
 
     var tab = this;
-    this.webview.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
+    this.webview.view.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
 
     open_tabs.push(this);
     if (!background)
