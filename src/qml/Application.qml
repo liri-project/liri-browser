@@ -22,20 +22,13 @@ QtObject {
 
     property ListModel dashboard_model: ListModel {
         id: dashboard_model
-
-        function createModel() {
-            for (var i=1; i<=20; i++) {
-                dashboard_model.append({"title": "Website " + i.toString(), url: "google.de", icon_url: "http://www.google.com/s2/favicons?domain=https://google.de", "uid": i})
-            }
-        }
-        Component.onCompleted: {createModel()}
-
     }
 
     property QtObject settings: Settings {
         property alias home_url: application.home_url
         property var bookmarks
         property var history
+        property var dashboard
         property alias integrated_addressbars: application.integrated_addressbars
         property alias tabs_entirely_colorized: application.tabs_entirely_colorized
     }
@@ -87,6 +80,13 @@ QtObject {
             }
             application.history_model.append(item);
         }
+
+        // Load the dashboard model
+        for (var i=0; i<application.settings.dashboard.length; i++){
+            var item = application.settings.dashboard[i];
+            application.dashboard_model.append(item);
+        }
+
     }
 
     Component.onDestruction: {
@@ -100,6 +100,14 @@ QtObject {
                 history.push({"title": item.title, "url": item.url, "favicon_url": item.favicon_url, "date": item.date, "type": item.type});
         }
         application.settings.history = history;
+
+        // Save the dashboard model
+        var dashboard = [];
+        for (var i=0; i<application.dashboard_model.count; i++){
+            var item = application.dashboard_model.get(i);
+            dashboard.push({"title": item.title, "url": item.url, "icon_url": item.icon_url, uid: item.uid})
+        }
+        application.settings.dashboard = dashboard;
     }
 
 }

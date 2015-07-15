@@ -1,5 +1,7 @@
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 
 Rectangle {
     id: page_root
@@ -66,6 +68,7 @@ Rectangle {
 
         MouseArea {
             id: grid_mouse_area
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
             anchors.fill: parent
             hoverEnabled: true
             preventStealing : true
@@ -85,14 +88,154 @@ Rectangle {
                 }
             }
             onClicked: {
-                if (index != -1) {
-                    var url = grid.model.get(activeIndex=index).url;
-                    webview.page.set_url(url);
+                if(mouse.button & Qt.LeftButton) {
+                    if (index != -1) {
+                        var url = grid.model.get(activeIndex=index).url;
+                        webview.page.set_url(url);
+                    }
+                }
+                else {
+                    if (index != -1) {
+                        var m = grid.model.get(activeIndex=index);
+                        context_menu.open(grid, -grid.width+mouseX + context_menu.width, mouseY)
+
+                    }
                 }
             }
         }
 
+    }
+
+
+    Dropdown {
+        id: context_menu
+
+        width: Units.dp(250)
+        height: columnView.height + Units.dp(16)
+
+        ColumnLayout {
+            id: columnView
+            width: parent.width
+            anchors.centerIn: parent
+
+            ListItem.Standard {
+                text: qsTr("Edit")
+                iconName: "image/edit"
+                onClicked: {
+                    edit_dialog.model_item = grid.model.get(grid_mouse_area.index);
+                    edit_dialog.open(page_root, 0, -page_root.height/2 - edit_dialog.height/2);
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Delete")
+                iconName: "action/delete"
+                onClicked: {
+                    grid.model.remove(grid_mouse_area.index)
+                    context_menu.close();
+                }
+            }
+
+        }
+    }
+
+    Popover {
+        id: edit_dialog
+
+        width: Units.dp(400)
+        height: col.childrenRect.height + Units.dp(24)
+
+        property var model_item: {"title": "", "url": "", "icon_url": ""}
+
+        dismissOnTap: true
+
+        Column {
+            id: col
+            anchors.fill: parent
+            anchors.margins: Units.dp(24)
+            spacing: Units.dp(24)
+
+            Item {
+                width: parent.width
+                height: Units.dp(24)
+                Text {
+                    id: name
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.family: root.font_family
+                    text: qsTr("Edit item")
+                }
+
+                IconButton {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    iconName: "navigation/close"
+                    onClicked: edit_dialog.close()
+                }
+
+            }
+
+            TextField {
+                id: txt_edit_title
+                placeholderText: qsTr("Title")
+                floatingLabel: true
+                text: edit_dialog.model_item.title
+                width: parent.width
+            }
+
+            TextField {
+                id: txt_edit_url
+                placeholderText: qsTr("URL")
+                floatingLabel: true
+                text: edit_dialog.model_item.url
+                width: parent.width
+
+            }
+
+            TextField {
+                id: txt_edit_icon_url
+                placeholderText: qsTr("Icon URL")
+                floatingLabel: true
+                text: edit_dialog.model_item.icon_url
+                width: parent.width
+            }
+
+
+        }
+
+        Button {
+            id: btn_edit_cancel
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: Units.dp(24)
+            anchors.right: btn_edit_apply.left
+
+            text: qsTr("Cancel")
+
+            onClicked: {
+                edit_dialog.close();
+            }
+        }
+
+        Button {
+            id: btn_edit_apply
+
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: Units.dp(24)
+            anchors.rightMargin: Units.dp(24)
+            anchors.right: parent.right
+
+            text: qsTr("Apply")
+
+            onClicked: {
+                edit_dialog.model_item.title = txt_edit_title.text;
+                edit_dialog.model_item.url = txt_edit_url.text
+                edit_dialog.model_item.icon_url = txt_edit_icon_url.text
+                edit_dialog.close();
+            }
+        }
 
     }
+
+
+
 }
 

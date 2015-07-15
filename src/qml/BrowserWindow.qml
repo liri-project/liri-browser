@@ -623,7 +623,7 @@ ApplicationWindow {
         property var error
         property string url
 
-        visible: true
+        visible: false
         width: Units.dp(400)
         title: qsTr("This Connection Is Untrusted")
         text: qsTr("You are about to securely connect to %1 but we can't confirm that your connection is secure because this site's identity can't be verified.").arg("'" + url + "'")
