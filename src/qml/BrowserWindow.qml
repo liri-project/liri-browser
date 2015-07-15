@@ -436,14 +436,21 @@ ApplicationWindow {
                             ListItem.Standard {
                                 text: qsTr("Search")
                                 iconName: "action/search"
-                                onClicked: root.show_search_overlay()
+                                onClicked: { overflow_menu.close(); root.show_search_overlay();}
                             }
 
                             ListItem.Standard {
                                 text: qsTr("Bookmark")
                                 visible: root.app.integrated_addressbars
                                 iconName: "action/bookmark_border"
-                                onClicked: TabManager.current_tab_page.bookmark()
+                                onClicked: { overflow_menu.close(); TabManager.current_tab_page.bookmark(); }
+                            }
+
+                            ListItem.Standard {
+                                text: qsTr("Add to dash")
+                                //visible: root.app.integrated_addressbars
+                                iconName: "action/favorite_border"
+                                onClicked: { overflow_menu.close(); TabManager.current_tab_page.add_to_dash(); }
                             }
 
                             ListItem.Standard {

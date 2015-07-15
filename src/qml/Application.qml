@@ -22,6 +22,7 @@ QtObject {
 
     property ListModel dashboard_model: ListModel {
         id: dashboard_model
+        dynamicRoles: true
     }
 
     property QtObject settings: Settings {

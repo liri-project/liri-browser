@@ -210,6 +210,18 @@ function TabPage(url, background) {
 
     }
 
+    this.add_to_dash = function() {
+        var uid_max = 0;
+        for (var i=0; i<root.app.dashboard_model.count; i++) {
+            if (root.app.dashboard_model.get(i).uid > uid_max){
+                uid_max = root.app.dashboard_model.get(i).uid;
+            }
+        }
+
+        root.app.dashboard_model.append({"title": this.webview.title, "url": this.webview.url, "icon_url": this.webview.icon.toString(), "uid": uid_max+1});
+        snackbar.open(qsTr('Added website "%1" to dash').arg(this.webview.title));
+    }
+
     this.close = function(){
         var tab_id = this.tab_id;
 

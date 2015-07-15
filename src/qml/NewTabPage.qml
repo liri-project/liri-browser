@@ -123,7 +123,7 @@ Rectangle {
                 iconName: "image/edit"
                 onClicked: {
                     edit_dialog.model_item = grid.model.get(grid_mouse_area.index);
-                    edit_dialog.open(page_root, 0, -page_root.height/2 - edit_dialog.height/2);
+                    edit_dialog.open(page_root, 0, -page_root.height/2 - edit_dialog.height);
                 }
             }
 
