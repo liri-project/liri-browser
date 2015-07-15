@@ -194,6 +194,25 @@ function apply_default_colors(){
     root.current_icon_color = root._icon_color;
 }
 
+function get_better_icon(page, url, callback){
+    var doc = new XMLHttpRequest();
+    doc.onreadystatechange = function() {
+        if (doc.readyState == XMLHttpRequest.DONE) {
+            console.log(doc.responseText);
+            var json = JSON.parse(doc.responseText);
+            if ("error" in json) {
+                callback(page, false);
+            }
+            else {
+                callback(page, json["icons"][0].url);
+            }
+        }
+    }
+    doc.open("get", "http://icons.better-idea.org/api/icons?url=" + url);
+    doc.setRequestHeader("Content-Encoding", "UTF-8");
+    doc.send();
+}
+
 
 function TabPage(url, background) {
 
@@ -218,8 +237,11 @@ function TabPage(url, background) {
             }
         }
 
-        root.app.dashboard_model.append({"title": this.webview.title, "url": this.webview.url, "icon_url": this.webview.icon.toString(), "uid": uid_max+1});
-        snackbar.open(qsTr('Added website "%1" to dash').arg(this.webview.title));
+        get_better_icon(this, this.webview.url, function(page, icon_url){
+            root.app.dashboard_model.append({"title": page.webview.title, "url": page.webview.url.toString(), "icon_url": icon_url.toString() || page.webview.icon.toString(), "uid": uid_max+1});
+            snackbar.open(qsTr('Added website "%1" to dash').arg(page.webview.title));
+        });
+
     }
 
     this.close = function(){

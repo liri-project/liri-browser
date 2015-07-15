@@ -12,7 +12,7 @@ Rectangle {
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        cellWidth: 165; cellHeight: 95
+        cellWidth: 165; cellHeight: 130
         width: parent.width - Units.dp(128)
         height: parent.height -  Units.dp(128)
         model: root.app.dashboard_model
@@ -43,6 +43,9 @@ Rectangle {
 
                     Image {
                         anchors.centerIn: parent
+                        width: if (implicitWidth > Units.dp(64)) { Units.dp(64) } else { implicitWidth }
+                        height: if (implicitHeight > Units.dp(64)) { Units.dp(64) } else { implicitHeight }
+
                         source: icon_url
                     }
 
@@ -54,6 +57,10 @@ Rectangle {
                         anchors.margins: Units.dp(16)
                         text: title
                         font.pixelSize: Units.dp(14)
+                        elide: Text.ElideRight
+                        width: parent.width - Units.dp(10)
+                        clip: true
+
                     }
 
                     states: [
