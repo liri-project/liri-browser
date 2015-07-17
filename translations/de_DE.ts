@@ -39,6 +39,10 @@
         <source>URL</source>
         <translation>URL</translation>
     </message>
+    <message>
+        <source>Add to dash</source>
+        <translation>Hinzufügen zur Startseite</translation>
+    </message>
 </context>
 <context>
     <name>BrowserWindow</name>
@@ -90,12 +94,23 @@
         <source>Leave page</source>
         <translation>Seite verlassen</translation>
     </message>
+    <message>
+        <source>Add to dash</source>
+        <translation>Zur Startseite hinzufügen</translation>
+    </message>
+</context>
+<context>
+    <name>ColorChooser</name>
+    <message>
+        <source>Choose a color</source>
+        <translation>Farbe wählen</translation>
+    </message>
 </context>
 <context>
     <name>ColorPicker</name>
     <message>
         <source>Choose a color</source>
-        <translation>Farbe wählen</translation>
+        <translation type="vanished">Farbe wählen</translation>
     </message>
 </context>
 <context>
@@ -121,6 +136,49 @@
     <message>
         <source>No history found</source>
         <translation>Chronik nicht gefunden</translation>
+    </message>
+</context>
+<context>
+    <name>NewTabPage</name>
+    <message>
+        <source>Nothing here, yet</source>
+        <translation>Noch nichts da</translation>
+    </message>
+    <message>
+        <source>You can add items by clicking on the menu item &quot;Add to dash&quot; on any website or by right clicking on a bookmark.</source>
+        <translation>Klicken Sie auf &quot;Hinzufügen zur Startseite&quot;, um neue Verknüpfungen zu ergänzen oder rechtsklicken Sie auf ein Lesezeichen</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Bearbeiten</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Löschen</translation>
+    </message>
+    <message>
+        <source>Edit item</source>
+        <translation>Verknüpfung bearbeiten</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation>Titel</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
+    </message>
+    <message>
+        <source>Icon URL</source>
+        <translation>Icon-URL</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Übernehmen</translation>
     </message>
 </context>
 <context>
@@ -169,6 +227,10 @@
         <source>Colorize the entire tab and toolbar</source>
         <translation>Toolbar und Tabs ganz einfärben</translation>
     </message>
+    <message>
+        <source>Enable dashboard</source>
+        <translation>Startseite aktivieren</translation>
+    </message>
 </context>
 <context>
     <name>TabManager</name>
@@ -187,6 +249,10 @@
     <message>
         <source>New Tab</source>
         <translation>Neuer Tab</translation>
+    </message>
+    <message>
+        <source>Added website &quot;%1&quot; to dash</source>
+        <translation>Webseite &quot;%1&quot; zur Startseite hinzugefügt</translation>
     </message>
 </context>
 </TS>
