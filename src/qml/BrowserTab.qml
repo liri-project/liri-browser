@@ -152,10 +152,18 @@ View {
                     id: img_favicon
                     source: view.webview.icon //view.favicon
                     //visible: icon_url !== ""
-                    visible: !webview.loading
+                    visible: !webview.loading && !webview.new_tab_page
                     width: if (webview.loading) { 0 } else { Units.dp(20) }
                     height: Units.dp(20)
                     anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Icon {
+                    id: icon_dashboard
+                    name: "action/dashboard"
+                    visible: webview.new_tab_page
+                    anchors.verticalCenter: parent.verticalCenter
+
                 }
 
                 LoadingIndicator {

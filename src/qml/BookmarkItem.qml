@@ -11,6 +11,8 @@ Item {
     property string url
     property int maximum_width: Units.dp(148)
 
+    property color color: "white"
+
     height: parent.height
     width: row.childrenRect.width
 
@@ -81,6 +83,12 @@ Item {
                 text: qsTr("Edit")
                 iconName: "image/edit"
                 onClicked: edit_dialog.open(item);
+            }
+
+            ListItem.Standard {
+                text: qsTr("Add to dash")
+                iconName: "action/dashboard"
+                onClicked: root.get_tab_manager().add_to_dash(url, title, color);
             }
 
             ListItem.Standard {

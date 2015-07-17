@@ -436,14 +436,21 @@ ApplicationWindow {
                             ListItem.Standard {
                                 text: qsTr("Search")
                                 iconName: "action/search"
-                                onClicked: root.show_search_overlay()
+                                onClicked: { overflow_menu.close(); root.show_search_overlay();}
                             }
 
                             ListItem.Standard {
                                 text: qsTr("Bookmark")
                                 visible: root.app.integrated_addressbars
                                 iconName: "action/bookmark_border"
-                                onClicked: TabManager.current_tab_page.bookmark()
+                                onClicked: { overflow_menu.close(); TabManager.current_tab_page.bookmark(); }
+                            }
+
+                            ListItem.Standard {
+                                text: qsTr("Add to dash")
+                                //visible: root.app.integrated_addressbars
+                                iconName: "action/dashboard"
+                                onClicked: { overflow_menu.close(); TabManager.current_tab_page.add_to_dash(); }
                             }
 
                             ListItem.Standard {
@@ -623,7 +630,7 @@ ApplicationWindow {
         property var error
         property string url
 
-        visible: true
+        visible: false
         width: Units.dp(400)
         title: qsTr("This Connection Is Untrusted")
         text: qsTr("You are about to securely connect to %1 but we can't confirm that your connection is secure because this site's identity can't be verified.").arg("'" + url + "'")

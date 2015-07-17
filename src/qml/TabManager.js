@@ -20,8 +20,8 @@ function is_bookmarked(url){
 
 }
 
-function add_bookmark(title, url, favicon_url){
-    root.app.bookmarks.push({title: title, url: url, favicon_url: favicon_url});
+function add_bookmark(title, url, favicon_url, color){
+    root.app.bookmarks.push({title: title, url: url, favicon_url: favicon_url, color: color});
     bookmarks_changed();
     reload_bookmarks();
 }
@@ -132,6 +132,25 @@ function add_tab(url, background){
     return tab_page;
 }
 
+function add_to_dash(url, title, color) {
+    var uid_max = 0;
+    for (var i=0; i<root.app.dashboard_model.count; i++) {
+        if (root.app.dashboard_model.get(i).uid > uid_max){
+            uid_max = root.app.dashboard_model.get(i).uid;
+        }
+    }
+
+    get_better_icon(url, title, color, function(url, title, color, icon_url){
+        var fg_color
+        if (color)
+            fg_color = get_text_color_for_background(color.toString())
+        else
+            fg_color = "black"
+        root.app.dashboard_model.append({"title": title, "url": url.toString(), "icon_url": icon_url.toString(), "uid": uid_max+1, "bg_color": color || "white", "fg_color": fg_color});
+        snackbar.open(qsTr('Added website "%1" to dash').arg(title));
+    });
+}
+
 
 function set_current_tab_url (url) {
     if (current_tab_page) {
@@ -174,6 +193,7 @@ function set_current_tab(tab_page) {
     }
 
     tab_page.tab.ensure_visible();
+    tab_page.update_toolbar();
 }
 
 
@@ -193,6 +213,24 @@ function apply_default_colors(){
     root.current_icon_color = root._icon_color;
 }
 
+function get_better_icon(url, title, color, callback){
+    var doc = new XMLHttpRequest();
+    doc.onreadystatechange = function() {
+        if (doc.readyState == XMLHttpRequest.DONE) {
+            var json = JSON.parse(doc.responseText);
+            if ("error" in json) {
+                callback(url, title, color, false);
+            }
+            else {
+                callback(url, title, color, json["icons"][0].url);
+            }
+        }
+    }
+    doc.open("get", "http://icons.better-idea.org/api/icons?url=" + url);
+    doc.setRequestHeader("Content-Encoding", "UTF-8");
+    doc.send();
+}
+
 
 function TabPage(url, background) {
 
@@ -203,10 +241,14 @@ function TabPage(url, background) {
         }
         else {
             snackbar.open(qsTr('Added bookmark') + ' "' + this.webview.title + '"');
-            add_bookmark(this.webview.title, this.webview.url, this.webview.icon);
+            add_bookmark(this.webview.title, this.webview.url, this.webview.icon, this.custom_color);
         }
         this.update_toolbar();
 
+    }
+
+    this.add_to_dash = function() {
+        add_to_dash(this.webview.url, this.webview.title, this.custom_color);
     }
 
     this.close = function(){
@@ -217,7 +259,7 @@ function TabPage(url, background) {
         this.webview.destroy()
         open_tabs.splice(open_tabs.indexOf(this));
 
-        snackbar_tab_close.url = this.url
+        snackbar_tab_close.url = this.webview.url
         snackbar_tab_close.open(qsTr('Closed tab') + ' "' + this.title + '"');
 
         // Remove this from open tabs history
@@ -243,6 +285,7 @@ function TabPage(url, background) {
     }
 
     this.set_url = function(url) {
+        this.webview.new_tab_page = false;
         url = get_valid_url(url);
         this.url = url;
         this.webview.url = get_valid_url(url);
@@ -429,10 +472,13 @@ function TabPage(url, background) {
     }
 
     /* Initialization */
-
+    var new_tab_page = false;
 
     if (url){
         this.url = get_valid_url(url);
+    }
+    else if (root.app.new_tab_page) {
+        new_tab_page = true;
     }
     else {
         this.url = root.app.home_url;
@@ -448,14 +494,14 @@ function TabPage(url, background) {
     this.tab_id = last_tab_id = last_tab_id + 1;
 
     var webview_component = Qt.createComponent("BrowserWebView.qml");
-    this.webview = webview_component.createObject(web_container, { page:this, visible: false, url: this.url, profile: root.app.default_profile });
+    this.webview = webview_component.createObject(web_container, { page:this, visible: false, url: this.url, new_tab_page: new_tab_page, profile: root.app.default_profile });
 
     var tab_component = Qt.createComponent("BrowserTab.qml");
     this.tab = tab_component.createObject(tab_row, { page: this, webview: this.webview });
     this.tab.close.connect(this.close);
 
     var tab = this;
-    this.webview.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
+    this.webview.view.loadingChanged.connect(function(request){tab.loading_changed(tab, request)});
 
     open_tabs.push(this);
     if (!background)
