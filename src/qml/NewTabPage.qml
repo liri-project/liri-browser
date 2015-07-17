@@ -242,7 +242,7 @@ Rectangle {
             ColorChooser {
                 id: color_chooser
                 color: edit_dialog.model_item.bg_color
-                title: "Background color"
+                title: qsTr("Background color")
             }
 
 

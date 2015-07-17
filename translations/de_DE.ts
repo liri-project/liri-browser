@@ -180,6 +180,10 @@
         <source>Apply</source>
         <translation>Übernehmen</translation>
     </message>
+    <message>
+        <source>Background color</source>
+        <translation>Hintergrundfarbe</translation>
+    </message>
 </context>
 <context>
     <name>SettingsDrawer</name>

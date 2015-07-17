@@ -197,6 +197,11 @@
         <translation type="unfinished">URL иконки</translation>
     </message>
     <message>
+        <location filename="../src/qml/NewTabPage.qml" line="245"/>
+        <source>Background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/qml/NewTabPage.qml" line="257"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
