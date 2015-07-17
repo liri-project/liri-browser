@@ -449,7 +449,7 @@ ApplicationWindow {
                             ListItem.Standard {
                                 text: qsTr("Add to dash")
                                 //visible: root.app.integrated_addressbars
-                                iconName: "action/favorite_border"
+                                iconName: "action/dashboard"
                                 onClicked: { overflow_menu.close(); TabManager.current_tab_page.add_to_dash(); }
                             }
 

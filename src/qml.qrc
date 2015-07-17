@@ -13,5 +13,6 @@
         <file>qml/ColorPicker.qml</file>
         <file>qml/HistoryDrawer.qml</file>
         <file>qml/NewTabPage.qml</file>
+        <file>qml/ColorChooser.qml</file>
     </qresource>
 </RCC>

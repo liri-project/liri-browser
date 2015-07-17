@@ -1,11 +1,36 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 1.2
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 
 Rectangle {
     id: page_root
     anchors.fill: parent
+
+    Text {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: text_description.top
+        font.family: root.font_family
+        text: qsTr("Nothing here, yet")
+        visible: root.app.dashboard_model.count === 0
+        font.pixelSize: 24
+        color: root._icon_color
+    }
+
+    Text {
+        id: text_description
+        horizontalAlignment: Text.AlignHCenter
+        width: parent.width - Units.dp(48)
+        anchors.centerIn: parent
+        font.family: root.font_family
+        text: qsTr('You can add items by clicking on the menu item "Add to dash" on any website or by right clicking on a bookmark.')
+        clip: true
+        wrapMode: Text.WordWrap
+        visible: root.app.dashboard_model.count === 0
+        font.pixelSize: 16
+        color: root._icon_color
+    }
 
     GridView {
         id: grid
@@ -31,6 +56,8 @@ Rectangle {
                     border.color: Qt.rgba(0,0,0,0.2)
                     radius: Units.dp(2)
 
+                    color: bg_color
+
                     width: item.width; height: item.height;
                     property int uid: (index >= 0) ? grid.model.get(index).uid : -1
 
@@ -50,10 +77,12 @@ Rectangle {
                     }
 
                     Text {
+                        color: fg_color
                         font.family: root.font_family
                         anchors.bottom: parent.bottom
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        horizontalAlignment: Text.AlignHCenter
                         anchors.margins: Units.dp(16)
                         text: title
                         font.pixelSize: Units.dp(14)
@@ -79,9 +108,9 @@ Rectangle {
             anchors.fill: parent
             hoverEnabled: true
             preventStealing : true
-            property int index: grid.indexAt(mouseX, mouseY) //item underneath cursor
-            property int activeId: -1 // uid of active item
-            property int activeIndex // current position of active item
+            property int index: grid.indexAt(mouseX, mouseY)
+            property int activeId: -1
+            property int activeIndex
 
             onPressAndHold: {
                 activeId = grid.model.get(activeIndex=index).uid
@@ -150,11 +179,15 @@ Rectangle {
         id: edit_dialog
 
         width: Units.dp(400)
-        height: col.childrenRect.height + Units.dp(24)
+        height: Units.dp(345)
 
-        property var model_item: {"title": "", "url": "", "icon_url": ""}
+        property var model_item: {"title": "", "url": "", "icon_url": "", "bg_color": "white"}
+        onModel_itemChanged: {
+            color_chooser.color = model_item.bg_color || "white";
 
-        dismissOnTap: true
+        }
+
+        dismissOnTap: false
 
         Column {
             id: col
@@ -206,6 +239,12 @@ Rectangle {
                 width: parent.width
             }
 
+            ColorChooser {
+                id: color_chooser
+                color: edit_dialog.model_item.bg_color
+                title: "Background color"
+            }
+
 
         }
 
@@ -234,8 +273,10 @@ Rectangle {
 
             onClicked: {
                 edit_dialog.model_item.title = txt_edit_title.text;
-                edit_dialog.model_item.url = txt_edit_url.text
-                edit_dialog.model_item.icon_url = txt_edit_icon_url.text
+                edit_dialog.model_item.url = txt_edit_url.text;
+                edit_dialog.model_item.icon_url = txt_edit_icon_url.text;
+                edit_dialog.model_item.bg_color = color_chooser.color;
+                edit_dialog.model_item.fg_color = root.get_tab_manager().get_text_color_for_background(color_chooser.color.toString());
                 edit_dialog.close();
             }
         }

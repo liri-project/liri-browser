@@ -57,7 +57,6 @@ NavigationDrawer {
             anchors.bottomMargin: 30
         }
 
-
         Item {
             height: Units.dp(48)
             width: parent.width
@@ -65,6 +64,26 @@ NavigationDrawer {
                 style: "title"
                 text: qsTr("Appearance")
                 anchors.centerIn: parent
+            }
+        }
+
+        ListItem.Standard {
+            Row {
+                anchors.fill: parent
+                spacing: Units.dp(12)
+                CheckBox {
+                    id: chb_dashboard
+                    checked: root.app.new_tab_page
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Label {
+                    text: qsTr("Enable dashboard")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: Units.dp(16)
+                }
+            }
+            onClicked: {
+                chb_dashboard.checked = !chb_dashboard.checked
             }
         }
 
@@ -195,6 +214,7 @@ NavigationDrawer {
                     root.app.home_url = txt_home_url.text;
                     root.app.integrated_addressbars = chb_integrated_addressbars.checked;
                     root.app.tabs_entirely_colorized = chb_tabs_entirely_colorized.checked;
+                    root.app.new_tab_page = chb_dashboard.checked;
                     root.get_tab_manager().current_tab_page.update_toolbar();
                     var tabs = root.get_tab_manager().open_tabs;
                     for (var i=0; i<tabs.length; i++) {
@@ -211,6 +231,7 @@ NavigationDrawer {
                     accent_color_picker.color = theme.accentColor;
                     primary_color_picker.color = theme.primaryColor;
                     txt_home_url.text = root.app.home_url;
+                    chb_dashboard.checked = root.app.new_tab_page;
                     chb_integrated_addressbars.checked = root.app.integrated_addressbars;
                     chb_tabs_entirely_colorized.checked = root.app.tabs_entirely_colorized;
                     drawer.close();
