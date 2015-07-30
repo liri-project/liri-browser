@@ -31,7 +31,6 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
 ### Dependencies
 * Qt 5.5 and QtWebEngine 1.1 (http://qt.io)
 * qml-material (https://github.com/papyros/qml-material)
-* qml-extras (https://github.com/papyros/qml-extras)
 
 ### Instructions
 * Install Qt 5.5 (https://www.qt.io)
@@ -42,14 +41,7 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
   * make
   * make check # Optional, make sure everything is working correctly
   * sudo make install
-* Install qml-extras
-  * git clone https://github.com/papyros/qml-extras.git
-  * cd qml-extras
-  * qmake
-  * make
-  * make check # Optional, make sure everything is working correctly
-  * sudo make install
-
+ 
 ### Build and Run
   * git clone https://github.com/tim-sueberkrueb/material-browser.git
   * cd material-browser
