@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3 as Controls
 import "TabManager.js" as TabManager
 import QtWebEngine 1.1
+import QtQuick.Dialogs 1.1
 import Qt.labs.settings 1.0
 
 ApplicationWindow {
@@ -29,6 +30,7 @@ ApplicationWindow {
 
     /* User Settings */
 
+    property variant win;
 
     property alias settings: settings
 
@@ -443,7 +445,7 @@ ApplicationWindow {
                                 text: qsTr("Bookmark")
                                 visible: root.app.integrated_addressbars
                                 iconName: "action/bookmark_border"
-                                onClicked: { overflow_menu.close(); TabManager.current_tab_page.bookmark(); }
+                                onClicked: {  overflow_menu.close(); TabManager.current_tab_page.bookmark();}
                             }
 
                             ListItem.Standard {
@@ -451,6 +453,17 @@ ApplicationWindow {
                                 //visible: root.app.integrated_addressbars
                                 iconName: "action/dashboard"
                                 onClicked: { overflow_menu.close(); TabManager.current_tab_page.add_to_dash(); }
+                            }
+
+                            ListItem.Standard {
+                                text: qsTr("View source")
+                                //visible: root.app.integrated_addressbars
+                                iconName: "action/code"
+                                onClicked: {
+                                  overflow_menu.close();
+                                  TabManager.current_tab_page.get_source_code();
+                                  subWindow_source.visible = true;
+                                }
                             }
 
                             ListItem.Standard {
@@ -652,8 +665,25 @@ ApplicationWindow {
             dlg_certificate_error.show();
         }
     }
-
-
+    Window {
+         id: subWindow_source
+         width: 555
+         height: 333
+         visible: false
+         title: "Source of "
+         flags: Qt.SubWindow
+         Controls.ScrollView {
+            anchors.fill: parent
+            Text {
+              id: source_code
+              x:5
+              width: subWindow_source.width - 30
+              textFormat: Text.PlainText
+              wrapMode: Text.WrapAnywhere
+              text: "source"
+            }
+        }
+    }
     Component.onCompleted: {
         // Profile handling
         root.app.default_profile.downloadRequested.connect(root.download_requested);

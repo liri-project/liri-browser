@@ -151,6 +151,14 @@ function add_to_dash(url, title, color) {
     });
 }
 
+function get_source_code(wv) {
+  var source = "";
+  wv.runJavaScript("function getSource() { return document.documentElement.innerHTML;} getSource() ",
+      function(content){
+          source_code.text = content;
+          subWindow_source.title = "Source of " + wv.url;
+  });
+}
 
 function set_current_tab_url (url) {
     if (current_tab_page) {
@@ -249,6 +257,10 @@ function TabPage(url, background) {
 
     this.add_to_dash = function() {
         add_to_dash(this.webview.url, this.webview.title, this.custom_color);
+    }
+
+    this.get_source_code = function() {
+        get_source_code(this.webview);
     }
 
     this.close = function(){
