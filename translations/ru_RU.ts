@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/qml/BookmarkItem.qml" line="89"/>
         <source>Add to dash</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить на главную</translation>
     </message>
     <message>
         <location filename="../src/qml/BookmarkItem.qml" line="95"/>
@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/qml/BookmarkItem.qml" line="149"/>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
     <message>
         <location filename="../src/qml/BookmarkItem.qml" line="158"/>
@@ -52,70 +52,76 @@
 <context>
     <name>BrowserWindow</name>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="311"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="313"/>
         <source>Input search or web address</source>
         <translation>Введите поисковой запрос или адрес сайта</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="408"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="410"/>
         <source>New window</source>
         <translation>Новое окно</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="424"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="426"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="430"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="432"/>
         <source>Fullscreen</source>
         <translation>На весь экран</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="437"/>
-        <location filename="../src/qml/BrowserWindow.qml" line="583"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="439"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="596"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="443"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="445"/>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Закладка</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="450"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="452"/>
         <source>Add to dash</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить на главную</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="457"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="459"/>
+        <source>View source</source>
+        <translation>Исходный код</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="470"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="620"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="633"/>
         <source>Reopen</source>
         <translation>Вернуть</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="635"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="648"/>
         <source>This Connection Is Untrusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключение не является достоверным</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="636"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="650"/>
         <source>You are about to securely connect to %1 but we can&apos;t confirm that your connection is secure because this site&apos;s identity can&apos;t be verified.</source>
-        <translation type="unfinished"></translation>
+        <extracomment>%1 is an URL</extracomment>
+        <translation>Вы собираетесь установить защищённое соединение с %1, однако мы не можем быть уверены, что подключение защищено, так как идентификационные данные сайта не могут быть проверены.</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="637"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="651"/>
         <source>Continue anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>Продолжить в любом случае</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWindow.qml" line="638"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="652"/>
         <source>Leave page</source>
-        <translation type="unfinished"></translation>
+        <translation>Покинуть страницу</translation>
     </message>
 </context>
 <context>
@@ -123,7 +129,7 @@
     <message>
         <location filename="../src/qml/ColorChooser.qml" line="18"/>
         <source>Choose a color</source>
-        <translation type="unfinished">Выберите цвет</translation>
+        <translation>Выберите цвет</translation>
     </message>
 </context>
 <context>
@@ -135,6 +141,11 @@
 </context>
 <context>
     <name>DownloadsDrawer</name>
+    <message>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="39"/>
+        <source>Downloads</source>
+        <translation>Загрузки</translation>
+    </message>
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="140"/>
         <source>No active downloads</source>
@@ -159,57 +170,57 @@
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="15"/>
         <source>Nothing here, yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Здесь пусто, пока что</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="27"/>
         <source>You can add items by clicking on the menu item &quot;Add to dash&quot; on any website or by right clicking on a bookmark.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы можете добавлять сайты щелчком мыши по пункту меню &quot;Добавить на главную&quot; на открытом сайте или правым щелчком по закладке.</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="158"/>
         <source>Edit</source>
-        <translation type="unfinished">Редактировать</translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="167"/>
         <source>Delete</source>
-        <translation type="unfinished">Удалить</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="205"/>
         <source>Edit item</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование элемента</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="219"/>
         <source>Title</source>
-        <translation type="unfinished">Заголовок</translation>
+        <translation>Заголовок</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="227"/>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="236"/>
         <source>Icon URL</source>
-        <translation type="unfinished">URL иконки</translation>
+        <translation>URL иконки</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="245"/>
         <source>Background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="257"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/qml/NewTabPage.qml" line="272"/>
         <source>Apply</source>
-        <translation type="unfinished">Применить</translation>
+        <translation>Применить</translation>
     </message>
 </context>
 <context>
@@ -232,22 +243,23 @@
     <message>
         <location filename="../src/qml/SettingsDrawer.qml" line="65"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний вид</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsDrawer.qml" line="80"/>
         <source>Enable dashboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Главная страница</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsDrawer.qml" line="100"/>
         <source>Integrated addressbars</source>
-        <translation type="unfinished"></translation>
+        <translation>Интегрированная адресная панель</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsDrawer.qml" line="120"/>
         <source>Colorize the entire tab and toolbar</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Not the best translation but otherwise it doesn&apos;t fit in the drawer.</translatorcomment>
+        <translation>Окрашивать панель инструментов</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsDrawer.qml" line="135"/>
@@ -279,27 +291,33 @@
 <context>
     <name>TabManager</name>
     <message>
-        <location filename="../src/qml/TabManager.js" line="150"/>
+        <location filename="../src/qml/TabManager.js" line="151"/>
         <source>Added website &quot;%1&quot; to dash</source>
-        <translation type="unfinished"></translation>
+        <extracomment>%1 is a title</extracomment>
+        <translation>Сайт &quot;%1&quot; добавлен на главную страницу</translation>
     </message>
     <message>
-        <location filename="../src/qml/TabManager.js" line="239"/>
+        <location filename="../src/qml/TabManager.js" line="248"/>
         <source>Removed bookmark</source>
         <translation>Удалена закладка</translation>
     </message>
     <message>
-        <location filename="../src/qml/TabManager.js" line="243"/>
+        <location filename="../src/qml/TabManager.js" line="252"/>
         <source>Added bookmark</source>
         <translation>Добавлена закладка</translation>
     </message>
     <message>
-        <location filename="../src/qml/TabManager.js" line="263"/>
-        <source>Closed tab</source>
-        <translation>Закрыта вкладка</translation>
+        <location filename="../src/qml/TabManager.js" line="277"/>
+        <source>Closed tab &quot;%1&quot;</source>
+        <extracomment>%1 is a title</extracomment>
+        <translation>Вкладка &quot;%1&quot; закрыта</translation>
     </message>
     <message>
-        <location filename="../src/qml/TabManager.js" line="492"/>
+        <source>Closed tab</source>
+        <translation type="vanished">Закрыта вкладка</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/TabManager.js" line="506"/>
         <source>New Tab</source>
         <translation>Новая вкладка</translation>
     </message>

@@ -84,6 +84,7 @@
     </message>
     <message>
         <source>You are about to securely connect to %1 but we can&apos;t confirm that your connection is secure because this site&apos;s identity can&apos;t be verified.</source>
+        <extracomment>%1 is an URL</extracomment>
         <translation>Sie sind dabei, eine sichere Verbindung zu %1 aufzubauen, es kann aber nicht überprüft werden, ob die wirklich Verbindung sicher ist. Die Identität dieser Website kann nicht bestätigt werden.</translation>
     </message>
     <message>
@@ -97,6 +98,10 @@
     <message>
         <source>Add to dash</source>
         <translation>Zur Startseite hinzufügen</translation>
+    </message>
+    <message>
+        <source>View source</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -118,6 +123,10 @@
     <message>
         <source>No active downloads</source>
         <translation>Keine aktuellen Downloads</translation>
+    </message>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -248,7 +257,7 @@
     </message>
     <message>
         <source>Closed tab</source>
-        <translation>Tab geschlossen</translation>
+        <translation type="vanished">Tab geschlossen</translation>
     </message>
     <message>
         <source>New Tab</source>
@@ -256,7 +265,13 @@
     </message>
     <message>
         <source>Added website &quot;%1&quot; to dash</source>
+        <extracomment>%1 is a title</extracomment>
         <translation>Webseite &quot;%1&quot; zur Startseite hinzugefügt</translation>
+    </message>
+    <message>
+        <source>Closed tab &quot;%1&quot;</source>
+        <extracomment>%1 is a title</extracomment>
+        <translation>Tab geschlossen &quot;%1&quot;</translation>
     </message>
 </context>
 </TS>
