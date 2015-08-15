@@ -36,7 +36,7 @@ NavigationDrawer {
                     rightMargin: Units.dp(16)
                     centerIn:parent
                 }
-                text:  "Downloads"
+                text: qsTr("Downloads")
                 style: "title"
                 font.pixelSize: Units.dp(24)
             }

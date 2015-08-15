@@ -646,6 +646,7 @@ ApplicationWindow {
         visible: false
         width: Units.dp(400)
         title: qsTr("This Connection Is Untrusted")
+        //: %1 is an URL
         text: qsTr("You are about to securely connect to %1 but we can't confirm that your connection is secure because this site's identity can't be verified.").arg("'" + url + "'")
         positiveButtonText: qsTr("Continue anyway")
         negativeButtonText: qsTr("Leave page")
@@ -679,7 +680,7 @@ ApplicationWindow {
               x:5
               width: subWindow_source.width - 30
               textFormat: Text.PlainText
-              wrapMode: Text.WrapAnywhere
+              wrapMode: Text.WrapAnywhere
               text: "source"
             }
         }

@@ -147,6 +147,7 @@ function add_to_dash(url, title, color) {
         else
             fg_color = "black"
         root.app.dashboard_model.append({"title": title, "url": url.toString(), "icon_url": icon_url.toString(), "uid": uid_max+1, "bg_color": color || "white", "fg_color": fg_color});
+        //: %1 is a title
         snackbar.open(qsTr('Added website "%1" to dash').arg(title));
     });
 }
@@ -272,7 +273,8 @@ function TabPage(url, background) {
         open_tabs.splice(open_tabs.indexOf(this));
 
         snackbar_tab_close.url = this.webview.url
-        snackbar_tab_close.open(qsTr('Closed tab') + ' "' + this.title + '"');
+        //: %1 is a title
+        snackbar_tab_close.open(qsTr('Closed tab "%1"').arg(this.title));
 
         // Remove this from open tabs history
         while(open_tabs_history.indexOf(this) !== -1){
