@@ -101,7 +101,7 @@
     </message>
     <message>
         <source>View source</source>
-        <translation type="unfinished"></translation>
+        <translation>Seitenquelltext ansehen</translation>
     </message>
 </context>
 <context>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Downloads</translation>
     </message>
 </context>
 <context>
@@ -271,7 +271,7 @@
     <message>
         <source>Closed tab &quot;%1&quot;</source>
         <extracomment>%1 is a title</extracomment>
-        <translation>Tab geschlossen &quot;%1&quot;</translation>
+        <translation>Tab &quot;%1&quot; geschlossen</translation>
     </message>
 </context>
 </TS>
