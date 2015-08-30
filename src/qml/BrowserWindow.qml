@@ -13,7 +13,7 @@ ApplicationWindow {
 
     property QtObject app
 
-    title: "Browser"
+    title: "Liri Browser"
     visible: true
 
     width: 1000

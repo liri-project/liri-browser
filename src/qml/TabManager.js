@@ -190,7 +190,7 @@ function set_current_tab(tab_page) {
     tab_page.tab.state = "active";
     tab_page.update_colors();
 
-    root.title = tab_page.title + ' - Browser';
+    root.title = tab_page.title + ' - Liri Browser';
 
     if (tab_page.webview.loading){
         prg_loading.visible = true;
