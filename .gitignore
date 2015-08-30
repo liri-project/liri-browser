@@ -41,14 +41,14 @@ Makefile*
 *.exe
 *.out
 *.app
-material-browser
+liri-browser
 
 # Visual Studio
 /Win32
 /debug
 /release
-material-browser.sdf
-material-browser.v12.suo
-material-browser.vcxproj
-material-browser.vcxproj.filters
-material-browser.vcxproj.user
+liri-browser.sdf
+liri-browser.v12.suo
+liri-browser.vcxproj
+liri-browser.vcxproj.filters
+liri-browser.vcxproj.user
