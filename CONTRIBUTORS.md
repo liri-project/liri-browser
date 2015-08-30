@@ -12,6 +12,8 @@ The list of contributors is sorted alphabetical based on the last names.
 The list of languages is sorted alphabetical.
 
 ## Translations
+* French
+  * Pierre Jacquier (https://github.com/pierremtb)
 * German
   * Tim Süberkrüb (https://github.com/tim-sueberkrueb)
 * Russian
