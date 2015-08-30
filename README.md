@@ -3,9 +3,9 @@ A minimalistic material design web browser written for Papyros (https://github.c
 
 See http://papyros.io for more information about Papyros.
 
-[![GitHub license](https://img.shields.io/github/license/tim-sueberkrueb/material-browser.svg)](https://github.com/tim-sueberkrueb/material-browser/blob/master/LICENSE)
-[![](https://img.shields.io/github/issues-raw/tim-sueberkrueb/material-browser.svg)](https://github.com/tim-sueberkrueb/material-browser/issues)
-[![GitHub release](https://img.shields.io/badge/release-0.2-red.svg)](https://github.com/tim-sueberkrueb/material-browser/releases)
+[![GitHub license](https://img.shields.io/github/license/liri-browser/liri-browser.svg)](https://github.com/liri-browser/liri-browser/blob/master/LICENSE)
+[![](https://img.shields.io/github/issues-raw/liri-browser/liri-browser.svg)](https://github.com/liri-browser/liri-browser/issues)
+[![GitHub release](https://img.shields.io/badge/release-0.2-red.svg)](https://github.com/liri-browser/liri-browser/releases)
 [![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## About
@@ -25,12 +25,12 @@ https://youtu.be/7CbvpyzsQ0g
 
 ## Translations
 Please help us translating this application! Read this guide to get started:
-https://github.com/tim-sueberkrueb/material-browser/wiki/Translations
+https://github.com/liri-browser/liri-browser/wiki/Translations
 
 ## Installation on Linux
 
 ### Simple Installation Script
-If you just want to try material-browser out you can use our simple installation script. It will download and install Qt 5.5 and all necessary dependencies:
+If you just want to try Liri Browser out you can use our simple installation script. It will download and install Qt 5.5 and all necessary dependencies:
 
 https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
 
@@ -49,11 +49,11 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
   * sudo make install
  
 ### Build and Run
-  * git clone https://github.com/tim-sueberkrueb/material-browser.git
-  * cd material-browser
+  * git clone https://github.com/liri-browser/liri-browser.git
+  * cd liri-browser
   * qmake
   * make
-  * run material-browser executable
+  * run liri-browser executable
 
 ## Copyright and License
 (C) Copyright 2015 by Tim Süberkrüb and contributors
