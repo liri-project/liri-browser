@@ -6,7 +6,7 @@ See http://papyros.io for more information about Papyros.
 [![GitHub license](https://img.shields.io/github/license/liri-browser/liri-browser.svg)](https://github.com/liri-browser/liri-browser/blob/master/LICENSE)
 [![](https://img.shields.io/github/issues-raw/liri-browser/liri-browser.svg)](https://github.com/liri-browser/liri-browser/issues)
 [![GitHub release](https://img.shields.io/badge/release-0.2-red.svg)](https://github.com/liri-browser/liri-browser/releases)
-[![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/liri-browser/liri-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## About
 Our goal is it to create a minimalistic and simple, yet unique webbrowser that gets out of your way and lets you concentrate on the content. 
