@@ -9,7 +9,7 @@ See http://papyros.io for more information about Papyros.
 [![Join the chat at https://gitter.im/tim-sueberkrueb/material-browser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tim-sueberkrueb/material-browser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## About
-Our goal is it to create a simple, powerful webbrowser, yet unique webbrowser that gets out of your way and lets you concentrate on the content. 
+Our goal is it to create a minimalistic and simple, yet unique webbrowser that gets out of your way and lets you concentrate on the content. 
 Liri's user interface is designed according to Google's Material Design which leads to a clean and beautiful interface.
 
 The name "liri" comes from the Albanian word for freedom. Liri Browser was former named "Material Browser".
