@@ -32,8 +32,9 @@ ApplicationWindow {
 
     property variant win;
 
+    property alias settings: settings
 
-    property Settings settings: Settings {
+    Settings {
         id: settings
         property alias x: root.x
         property alias y: root.y
@@ -68,7 +69,7 @@ ApplicationWindow {
     property alias txt_search: txt_search
     property alias downloads_drawer: downloads_drawer
     property alias icon_connection_type: icon_connection_type
-    //property alias flickable: flickable
+    property alias flickable: flickable
 
     property bool fullscreen: false
     property bool secure_connection: false
@@ -116,192 +117,12 @@ ApplicationWindow {
        download.accept();
     }
 
-
-    /** NEW FUNCTIONS AND PROPERTIES **/
-
-    property var activeTab
-    property var lastActiveTab
-    property var activeTabHistory: []
-
-    property int lastTabUID: 0
-
-    onActiveTabChanged: {
-        // Handle last active tab
-        if (lastActiveTab !== undefined && lastActiveTab !== null && lastActiveTab !== false) {
-            lastActiveTab.state = "inactive";
-            lastActiveTab.page.visible = false;
-        }
-        // Handle now active tab
-        if (activeTab) {
-            lastActiveTab = activeTab;
-            activeTab.state = "active";
-            activeTab.page.visible = true;
-            activeTabHistory.push(activeTab.uid);
-        }
-    }
-
-    function getTabModelDataByUID (uid) {
-        for (var i=0; i<model.count; i++) {
-            if (model.get(i).uid == uid) {
-                return model.get(i);
-            }
-        }
-        return false;
-    }
-
-    function getTabModelIndexByUID (uid) {
-        for (var i=0; i<model.count; i++) {
-            if (model.get(i).uid == uid) {
-                return i;
-            }
-        }
-        return false;
-    }
-
-    function getUIDByModelIndex(i) {
-        return model.get(i).uid;
-    }
-
-    function addTab(url) {
-        var webview_component = Qt.createComponent ("BrowserWebView.qml");
-        var webview = webview_component.createObject(pageContainer, {url: url});
-        model.append({url: url,
-                      title: "New tab",
-                      page:webview,
-                      uid: lastTabUID,
-                      state:"inactive",
-                      hasCloseButton: true,
-                      closeButtonIconName: "navigation/close",
-                      iconSource: Qt.resolvedUrl(""),
-                     });
-        lastTabUID++;
-    }
-
-    function removeTab(t) {
-        // t is uid
-        if (typeof(t) === "number") {
-            // Remove all uid references from activeTabHistory:
-            while (activeTabHistory.indexOf(t) > -1) {
-                activeTabHistory.splice(activeTabHistory.indexOf(t), 1);
-            }
-
-            // Set last active tab:
-            if (activeTab.uid === t) {
-                setLastActiveTabActive(function(){
-                    var modelData = getTabModelDataByUID(t);
-                    modelData.page.visible = false;
-                    modelData.page.destroy();
-                    model.remove(getTabModelIndexByUID(t));
-                });
-            }
-        }
-    }
-
-    function ensureTabIsVisible(t) {
-        if (typeof(t) === "number") {
-            var modelIndex = getTabModelIndexByUID(t);
-            listView.positionViewAtIndex(modelIndex, ListView.Visible);
-        }
-    }
-
-    function setActiveTab(t, ensureVisible, callback) {
-        if (typeof(t) === "number") {
-            activeTab = getTabModelDataByUID(t);
-        }
-        if (ensureVisible)
-            ensureTabIsVisible(t);
-        if (callback)
-            callback();
-    }
-
-    function setLastActiveTabActive (callback) {
-        if (model.count > 1) {
-            if (activeTabHistory.length > 0) {
-                setActiveTab(activeTabHistory[activeTabHistory.length-1], true, callback);
-            }
-            else {
-                callback();
-                setActiveTab(getUIDByModelIndex(0), true);
-            }
-        }
-        else {
-            callback();
-        }
-    }
-
-
-    /** ------------- **/
-
     ShortcutActions {}
 
     initialPage: Rectangle {
         id: page
 
         View {
-
-            width: parent.width
-            height: 50
-
-        Rectangle {
-            id: tabBar
-            height: Units.dp(48)
-            width: parent.width
-            color: "red"
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-
-            ListView {
-                id: listView
-                width: parent.width
-                height: parent.height
-                orientation: ListView.Horizontal
-                spacing: Units.dp(1)
-                interactive: mouseArea.draggingId == -1
-
-                model: ListModel {}
-
-                delegate: TabBarItemDelegate {}
-
-                MouseArea {
-                        id: mouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        property int index: listView.indexAt(mouseX + listView.contentX, mouseY)
-                        property int draggingId: -1
-                        property int activeIndex
-                        propagateComposedEvents: true
-
-                        onClicked: mouse.accepted = false;
-
-                        onPressAndHold: {
-                            console.log("onPressAndHold")
-                            //tabView.activeTab = listView.itemAt(mouseX + listView.contentX, mouseY);
-                            console.log(listView.model.get(activeIndex=index).state)
-                            draggingId = listView.model.get(activeIndex=index).uid;
-                        }
-                        onReleased: {
-                            console.log("onReleased")
-                            draggingId = -1
-                        }
-                        onPositionChanged: {
-                            if (draggingId != -1 && index != -1 && index != activeIndex) {
-                                listView.model.move(activeIndex, activeIndex = index, 1);
-                            }
-                        }
-
-                        onWheel: {
-                            console.log(wheel.angleDelta.y)
-                            //listView.contentX += wheel.angleDelta.y;
-                            listView.flick(wheel.angleDelta.y*10, 0);
-                        }
-                 }
-
-            }
-
-        }
-
-        /*View {
             visible: !root.fullscreen
             id: titlebar
             width: parent.width
@@ -407,7 +228,7 @@ ApplicationWindow {
 
                 }
 
-            }*/
+            }
 
             Item {
                 id: toolbar_container
@@ -702,6 +523,7 @@ ApplicationWindow {
             }
 
             MouseArea {
+                id: mouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 propagateComposedEvents: true

@@ -14,5 +14,6 @@
         <file>qml/HistoryDrawer.qml</file>
         <file>qml/NewTabPage.qml</file>
         <file>qml/ColorChooser.qml</file>
+        <file>qml/TabBarItemDelegate.qml</file>
     </qresource>
 </RCC>
