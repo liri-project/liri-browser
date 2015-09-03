@@ -668,22 +668,15 @@ ApplicationWindow {
     }
     Window {
          id: subWindow_source
-         width: 555
-         height: 333
+         width: 755
+         height: 433
          visible: false
          title: "Source of "
-         flags: Qt.SubWindow
-         Controls.ScrollView {
-            anchors.fill: parent
-            Text {
-              id: source_code
-              x:5
-              width: subWindow_source.width - 30
-              textFormat: Text.PlainText
-              wrapMode: Text.WrapAnywhere
-              text: "source"
-            }
-        }
+         flags: Qt.Window
+         WebEngineView {
+             anchors.fill: parent
+             id: source_html
+         }
     }
     Component.onCompleted: {
         // Profile handling
