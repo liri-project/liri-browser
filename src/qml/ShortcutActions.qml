@@ -7,7 +7,7 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+D"
         onTriggered: {
-            // Show downloads
+            downloads_drawer.open();
         }
     }
     Controls.Action {
@@ -20,10 +20,8 @@ Item {
         id: focus
         shortcut: "Ctrl+L"
         onTriggered: {
-            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
-                root.get_current_tab().tab.state = "active_edit";
-                root.get_current_tab().tab.txt_url.forceActiveFocus();
-                root.get_current_tab().tab.txt_url.selectAll();
+            if (root.app.integrated_addressbars && !root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = true;
             }
             else {
                 txt_url.forceActiveFocus();
@@ -34,10 +32,8 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+K"
         onTriggered: {
-            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
-                root.get_current_tab().tab.state = "active_edit";
-                root.get_current_tab().tab.txt_url.forceActiveFocus();
-                root.get_current_tab().tab.txt_url.selectAll();
+            if (root.app.integrated_addressbars && !root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = true;
             }
             else {
                 txt_url.forceActiveFocus();
@@ -48,13 +44,13 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+R"
         onTriggered: {
-            get_current_tab().reload()
+            root.activeTab.webview.reload();
         }
     }
     Controls.Action {
         shortcut: "Ctrl+T"
         onTriggered: {
-            root.add_tab()
+            root.addTab()
             txt_url.forceActiveFocus();
             txt_url.selectAll();
         }
@@ -62,14 +58,14 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+W"
         onTriggered: {
-            get_current_tab().close()
+            root.removeTab(activeTab.uid);
         }
     }
     Controls.Action {
         shortcut: "Escape"
         onTriggered: {
-            if (root.get_current_tab().tab.state === "active_edit"){
-                root.get_current_tab().tab.state = "active"
+            if (root.app.integrated_addressbars && root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = false;
             }
             else if (root.txt_search.visible){
                 root.hide_search_overlay();
@@ -81,15 +77,15 @@ Item {
     }
     Controls.Action {
         shortcut: "Ctrl+0"
-        onTriggered: get_current_tab().webview.zoomFactor = 1.0;
+        onTriggered: root.activeTab.webview.zoomFactor = 1.0;
     }
     Controls.Action {
         shortcut: "Ctrl+-"
-        onTriggered: get_current_tab().webview.zoomFactor -= 0.1;
+        onTriggered: root.activeTab.webview.zoomFactor -= 0.1;
     }
     Controls.Action {
         shortcut: "Ctrl+="
-        onTriggered: get_current_tab().webview.zoomFactor += 0.1;
+        onTriggered: root.activeTab.webview.zoomFactor += 0.1;
     }
     Controls.Action {
         shortcut: "Ctrl+Tab"
@@ -98,16 +94,14 @@ Item {
     Controls.Action {
         shortcut: "F5"
         onTriggered: {
-            get_current_tab().reload()
+            root.activeTab.webview.reload()
         }
     }
     Controls.Action {
         shortcut: "F6"
         onTriggered: {
-            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
-                root.get_current_tab().tab.state = "active_edit";
-                root.get_current_tab().tab.txt_url.forceActiveFocus();
-                root.get_current_tab().tab.txt_url.selectAll();
+            if (root.app.integrated_addressbars && !root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = true;
             }
             else {
                 txt_url.forceActiveFocus();

@@ -64,7 +64,7 @@ Item {
                 context_menu.open(parent, context_menu.width-parent.width)
              }
              else
-                 root.add_tab(item.url)
+                 root.addTab(item.url);
          }
     }
 

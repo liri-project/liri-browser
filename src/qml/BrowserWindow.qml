@@ -59,13 +59,11 @@ ApplicationWindow {
     property color _tab_text_color_inactive: "#757575"
     property color _icon_color: "#7b7b7b"
     property color _address_bar_color: "#e0e0e0"
-    property color current_text_color: _tab_text_color_active
-    property color current_icon_color: _icon_color
+    property color current_text_color: activeTab.customTextColor ? activeTab.customTextColor : _icon_color
+    property color current_icon_color: activeTab.customTextColor ? activeTab.customTextColor : _icon_color
 
     property string font_family: "Roboto"
 
-    property alias current_tab_icon: current_tab_icon
-    property alias current_tab_title: current_tab_title
     property alias txt_search: txt_search
     property alias downloads_drawer: downloads_drawer
     property alias icon_connection_type: icon_connection_type
@@ -121,12 +119,16 @@ ApplicationWindow {
     /** NEW FUNCTIONS AND PROPERTIES **/
 
     property var activeTab
+    property var activeTabItem
     property var lastActiveTab
     property var activeTabHistory: []
 
     property int lastTabUID: 0
 
     property ListModel tabsModel: ListModel {}
+
+    property bool activeTabInEditMode: false
+    property var activeTabInEditModeItem
 
     onActiveTabChanged: {
         // Handle last active tab
@@ -136,11 +138,14 @@ ApplicationWindow {
         }
         // Handle now active tab
         if (activeTab) {
+            if (activeTabInEditModeItem)
+                activeTabInEditModeItem.editModeActive = false;
             lastActiveTab = activeTab;
             activeTab.state = "active";
             activeTab.webview.visible = true;
             activeTabHistory.push(activeTab.uid);
         }
+        updateToolbar();
     }
 
     function getTabModelDataByUID (uid) {
@@ -165,19 +170,38 @@ ApplicationWindow {
         return tabsModel.get(i).uid;
     }
 
-    function addTab(url) {
+    function addTab(url, background) {
+        var u;
+        var ntp = false;
+        if (url){
+            u = TabManager.get_valid_url(url);
+        }
+        else if (root.app.new_tab_page) {
+            ntp = true;
+        }
+        else {
+            u = root.app.home_url;
+        }
+
         var webview_component = Qt.createComponent ("BrowserWebView.qml");
-        var webview = webview_component.createObject(web_container, {url: url});
-        tabsModel.append({url: url,
-                      title: "New tab",
-                      webview:webview,
-                      uid: lastTabUID,
-                      state:"inactive",
-                      hasCloseButton: true,
-                      closeButtonIconName: "navigation/close",
-                      iconSource: webview.icon,
-                     });
+        var webview = webview_component.createObject(web_container, {url: u, new_tab_page: ntp, profile: root.app.default_profile, uid: lastTabUID});
+        var modelData = {
+            url: url,
+            webview: webview,
+            uid: lastTabUID,
+            state:"inactive",
+            hasCloseButton: true,
+            closeButtonIconName: "navigation/close",
+            iconSource: webview.icon,
+            customColor: false,
+            customColorLight: false,
+            customTextColor: false,
+        }
+        tabsModel.append(modelData);
+        if (!background)
+            setActiveTab(lastTabUID, true);
         lastTabUID++;
+        return modelData;
     }
 
     function removeTab(t) {
@@ -232,6 +256,66 @@ ApplicationWindow {
         }
     }
 
+    function setActiveTabURL(url) {
+        var u = TabManager.get_valid_url(url);
+        activeTab.webview.url = u;
+    }
+
+    function toggleActiveTabBookmark() {
+        var url = activeTab.webview.url;
+        var icon = activeTab.webview.icon;
+        var title = activeTab.webview.title;
+        if (TabManager.is_bookmarked(url)) {
+            snackbar.open(qsTr('Removed bookmark %1').arg(title));
+            TabManager.remove_bookmark(url)
+        }
+        else {
+            snackbar.open(qsTr('Added bookmark "%1"').arg(title));
+            TabManager.add_bookmark(title, url, icon, false);
+        }
+        updateToolbar ();
+    }
+
+    function activeTabFindText(text, backward) {
+        var flags
+        if (backward)
+            flags |= WebEngineView.FindBackward
+        activeTab.webview.findText(text, flags, function(success) {
+            if (success)
+                root.txt_search.hasError = false;
+            else{
+                root.txt_search.hasError = true;
+            }
+        });
+
+    }
+
+    function activeTabViewSourceCode () {
+      activeTab.webview.runJavaScript("function getSource() { return document.documentElement.innerHTML;} getSource() ",
+          function(content){
+            addTab("http://liri-browser.github.io/sourcecodeviewer/index.html?c=" + content);
+      });
+    }
+
+    function updateToolbar () {
+        var url = activeTab.webview.url;
+
+        if (TabManager.is_bookmarked(url))
+            btn_bookmark.iconName = "action/bookmark";
+        else
+            btn_bookmark.iconName = "action/bookmark_border";
+    }
+
+    /* Events */
+
+    function activeTabUrlChanged() {
+        updateToolbar ();
+    }
+
+    function downloadRequested(download) {
+        download_requested(download);
+    }
+
 
     /** ------------- **/
 
@@ -252,7 +336,7 @@ ApplicationWindow {
             id: titlebar
 
             width: parent.width
-            height: 200
+            height: if (root.app.integrated_addressbars) {tabBar.height + bookmark_bar.height} else {tabBar.height + toolbar.height + bookmark_bar.height}
 
             elevation: 2
 
@@ -265,8 +349,12 @@ ApplicationWindow {
                     anchors.top: parent.top
                     ListView {
                         id: listView
-                        height: parent.height
-                        width: parent.width
+
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.right: toolbar_integrated.left
+
                         orientation: ListView.Horizontal
                         spacing: Units.dp(1)
                         interactive: mouseArea.draggingId == -1
@@ -286,39 +374,48 @@ ApplicationWindow {
 
                                 onClicked: mouse.accepted = false;
 
+                                onPressed: if (root.activeTabInEditMode) {mouse.accepted = false;}
+
                                 onPressAndHold: {
-                                    console.log("onPressAndHold")
-                                    var item = listView.itemAt(mouseX + listView.contentX, mouseY);
-                                    if(item !== null) {
-                                        //root.activeTab = item;
-                                        console.log(listView.model.get(activeIndex=index).state)
-                                        draggingId = listView.model.get(activeIndex=index).uid;
+                                    if (root.activeTabInEditMode) {mouse.accepted = false;}
+                                    else {
+                                        var item = listView.itemAt(mouseX + listView.contentX, mouseY);
+                                        if(item !== null) {
+                                            //root.activeTab = item;
+                                            draggingId = listView.model.get(activeIndex=index).uid;
+                                        }
                                     }
+
                                 }
                                 onReleased: {
-                                    console.log("onReleased")
                                     if (activeTab.uid !== draggingId)
                                         getTabModelDataByUID(draggingId).state = "inactive";
+                                    else
+                                        getTabModelDataByUID(draggingId).state = "active";
                                     draggingId = -1
-
+                                    mouse.accepted = false;
                                 }
                                 onPositionChanged: {
                                     if (draggingId != -1 && index != -1 && index != activeIndex) {
                                         listView.model.move(activeIndex, activeIndex = index, 1);
                                     }
+                                    mouse.accepted = false;
+
+                                }
+                                onDoubleClicked: {
+                                    mouse.accepted = false;
                                 }
 
                                 onWheel: {
-                                    console.log(wheel.angleDelta.y)
                                     listView.flick(wheel.angleDelta.y*10, 0);
                                 }
                          }
 
                     }
 
-                    Rectangle {
+                    View {
                         id: toolbar_integrated
-                        //elevation: if (flickable.contentWidth > flickable.width) { Units.dp(2) } else {0}
+                        elevation: Units.dp(2)
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         anchors.right: parent.right
@@ -332,7 +429,7 @@ ApplicationWindow {
                             color: root._icon_color
                             iconName: "content/add"
 
-                            onClicked: TabManager.add_tab();
+                            onClicked: addTab();
                         }
 
                         IconButton {
@@ -389,7 +486,7 @@ ApplicationWindow {
                             //anchors.fill: parent
                             height: Units.dp(64)
                             width: parent.width
-                            color: root._tab_color_active
+                            color: activeTab.customColor ? activeTab.customColor : root._tab_color_active
 
                             Row {
                                 anchors.fill: parent
@@ -399,16 +496,18 @@ ApplicationWindow {
                                 IconButton {
                                     id: btn_go_back
                                     iconName : "navigation/arrow_back"
+                                    enabled: root.activeTab.webview.canGoBack
                                     anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: TabManager.current_tab_page.go_back()
+                                    onClicked: root.activeTab.webview.goBack()
                                     color: root.current_icon_color
                                 }
 
                                 IconButton {
                                     id: btn_go_forward
                                     iconName : "navigation/arrow_forward"
+                                    enabled: root.activeTab.webview.canGoForward
                                     anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: TabManager.current_tab_page.go_forward()
+                                    onClicked: root.activeTab.webview.goForward()
                                     color: root.current_icon_color
                                 }
 
@@ -418,12 +517,13 @@ ApplicationWindow {
                                     iconName : "navigation/refresh"
                                     anchors.verticalCenter: parent.verticalCenter
                                     color: root.current_icon_color
-                                    onClicked: TabManager.current_tab_page.reload()
+                                    visible: !activeTab.webview.loading
+                                    onClicked: activeTab.webview.reload()
                                 }
 
                                 LoadingIndicator {
                                     id: prg_loading
-                                    visible: false
+                                    visible: activeTab.webview.loading
                                     width: btn_refresh.width
                                     height: btn_refresh.height
                                     anchors.verticalCenter: parent.verticalCenter
@@ -440,8 +540,8 @@ ApplicationWindow {
                                     Icon {
                                         x: Units.dp(16)
                                         id: icon_connection_type
-                                        name: if (root.secure_connection) { "action/lock" } else { "social/public" }
-                                        color: if (root.secure_connection){ "green" } else {root.current_icon_color}
+                                        name: root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
+                                        color: root.activeTab.webview.secureConnection ? "green" : root.current_icon_color
                                         anchors.verticalCenter: parent.verticalCenter
                                     }
 
@@ -452,15 +552,12 @@ ApplicationWindow {
                                         anchors.rightMargin: Units.dp(24)
                                         anchors.topMargin: Units.dp(4)
                                         showBorder: false
-                                        text: ""
+                                        text: root.activeTab.webview.url
                                         placeholderText: qsTr("Input search or web address")
                                         opacity: 1
                                         anchors.verticalCenter: parent.verticalCenter
                                         textColor: root._tab_text_color_active
-                                        onAccepted: {
-                                            TabManager.set_current_tab_url(txt_url.text);
-                                        }
-
+                                        onAccepted: setActiveTabURL(text);
                                     }
 
                                 }
@@ -476,7 +573,7 @@ ApplicationWindow {
                                         color: root.current_icon_color
                                         iconName: "action/bookmark_border"
                                         anchors.verticalCenter: parent.verticalCenter
-                                        onClicked: TabManager.current_tab_page.bookmark()
+                                        onClicked: toggleActiveTabBookmark();
                                     }
 
                                     IconButton {
@@ -534,6 +631,12 @@ ApplicationWindow {
 
                             }
 
+                            Behavior on height {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
                         }
 
 
@@ -588,14 +691,14 @@ ApplicationWindow {
                                     text: qsTr("Bookmark")
                                     visible: root.app.integrated_addressbars
                                     iconName: "action/bookmark_border"
-                                    onClicked: {  overflow_menu.close(); TabManager.current_tab_page.bookmark();}
+                                    onClicked: {  overflow_menu.close(); root.toggleActiveTabBookmark();}
                                 }
 
                                 ListItem.Standard {
                                     text: qsTr("Add to dash")
                                     //visible: root.app.integrated_addressbars
                                     iconName: "action/dashboard"
-                                    onClicked: { overflow_menu.close(); TabManager.current_tab_page.add_to_dash(); }
+                                    onClicked: { overflow_menu.close(); TabManager.add_to_dash(activeTab.webview.url, activeTab.webview.title, false); }
                                 }
 
                                 ListItem.Standard {
@@ -604,8 +707,7 @@ ApplicationWindow {
                                     iconName: "action/code"
                                     onClicked: {
                                       overflow_menu.close();
-                                      TabManager.current_tab_page.get_source_code();
-                                      subWindow_source.visible = true;
+                                      activeTabViewSourceCode();
                                     }
                                 }
 
@@ -748,7 +850,7 @@ ApplicationWindow {
                 spacing: Units.dp(24)
 
                 Image {
-                    id: current_tab_icon
+                    source: root.activeTab.webview.icon
                     width: Units.dp(18)
                     height: Units.dp(18)
                     anchors.verticalCenter: parent.verticalCenter
@@ -756,7 +858,7 @@ ApplicationWindow {
                 }
 
                 Text {
-                    id: current_tab_title
+                    text: root.activeTab.webview.title
                     anchors.verticalCenter: parent.verticalCenter
                     font.family: root.font_family
                 }
@@ -845,19 +947,19 @@ ApplicationWindow {
                 id: txt_search
                 placeholderText: qsTr("Search")
                 errorColor: "red"
-                onAccepted: TabManager.current_tab_page.find_text(text)
+                onAccepted: activeTabFindText(text)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             IconButton {
                 iconName: "hardware/keyboard_arrow_up"
-                onClicked: TabManager.current_tab_page.find_text(txt_search.text, true)
+                onClicked: activeTabFindText(txt_search.text, true)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             IconButton {
                 iconName: "hardware/keyboard_arrow_down"
-                onClicked: TabManager.current_tab_page.find_text(txt_search.text)
+                onClicked: activeTabFindText(txt_search.text)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -937,7 +1039,7 @@ ApplicationWindow {
     }
     Component.onCompleted: {
         // Profile handling
-        root.app.default_profile.downloadRequested.connect(root.download_requested);
+        root.app.default_profile.downloadRequested.connect(root.downloadRequested);
 
         // Bookmark handling
         TabManager.load_bookmarks();

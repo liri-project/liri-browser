@@ -50,8 +50,8 @@ QtObject {
     }
     function createDialog(request) {
         var newDialog = browser_window_component.createObject(application)
-        var tab = newDialog.add_tab("about:blank")
-        request.openIn(tab.webview)
+        var tab = newDialog.addTab("about:blank")
+        request.openIn(tab.webview.view)
         return newDialog
     }
     function load() {

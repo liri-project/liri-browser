@@ -17,7 +17,6 @@ function is_bookmarked(url){
             return true
     }
     return false
-
 }
 
 function add_bookmark(title, url, favicon_url, color){

@@ -126,8 +126,9 @@ Rectangle {
             onClicked: {
                 if(mouse.button & Qt.LeftButton) {
                     if (index != -1) {
+                        new_tab_page = false;
                         var url = grid.model.get(activeIndex=index).url;
-                        webview.page.set_url(url);
+                        root.setActiveTabURL(url);
                     }
                 }
                 else {
