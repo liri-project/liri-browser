@@ -152,13 +152,11 @@ function add_to_dash(url, title, color) {
     });
 }
 
-function get_source_code(wv,source_wv) {
+function get_source_code(wv) {
   var source = "";
   wv.runJavaScript("function getSource() { return document.documentElement.innerHTML;} getSource() ",
-      function(content){source_wv.url = ("http://liri-browser.github.io/sourcecodeviewer/index.html?c=" + content);
-          console.log(source_wv.url);
-          source_wv.reload();
-          subWindow_source.title = "Source of " + wv.url;
+      function(content){
+        add_tab("http://liri-browser.github.io/sourcecodeviewer/index.html?c=" + content);
   });
 }
 
@@ -254,7 +252,6 @@ function TabPage(url, background) {
             add_bookmark(this.webview.title, this.webview.url, this.webview.icon, this.custom_color);
         }
         this.update_toolbar();
-
     }
 
     this.add_to_dash = function() {
@@ -262,7 +259,7 @@ function TabPage(url, background) {
     }
 
     this.get_source_code = function() {
-        get_source_code(this.webview, source_html);
+        get_source_code(this.webview);
     }
 
     this.close = function(){

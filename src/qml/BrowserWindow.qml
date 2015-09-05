@@ -462,7 +462,6 @@ ApplicationWindow {
                                 onClicked: {
                                   overflow_menu.close();
                                   TabManager.current_tab_page.get_source_code();
-                                  subWindow_source.visible = true;
                                 }
                             }
 
@@ -665,18 +664,6 @@ ApplicationWindow {
             dlg_certificate_error.error = error;
             dlg_certificate_error.show();
         }
-    }
-    Window {
-         id: subWindow_source
-         width: 755
-         height: 433
-         visible: false
-         title: "Source of "
-         flags: Qt.Window
-         WebEngineView {
-             anchors.fill: parent
-             id: source_html
-         }
     }
     Component.onCompleted: {
         // Profile handling
