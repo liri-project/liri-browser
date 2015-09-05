@@ -1,25 +1,28 @@
 import QtQuick 2.4
 import Material 0.1
 import QtWebEngine 1.1
-//import QtWebEngine.experimental 1.1
-
 
 
 Item {
-    id: browser_web_view
+    id: browserWebView
     anchors.fill: parent
+
+    visible: false
+
+    property var uid
     property alias view: webview
-    property bool new_tab_page
+    property bool newTabPage
 
     /* Wrapping WebEngineView functionality */
     property alias page: webview.page
     property alias url: webview.url
     property alias profile: webview.profile
     property alias icon: webview.icon
-    property alias title: webview.title
+    property string title: newTabPage ? qsTr("New tab") : webview.title
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
+    property bool secureConnection: false
 
     function goBack() {
         webview.goBack();
@@ -45,23 +48,28 @@ Item {
         id: webview
         property var page
         anchors.fill: parent
-        visible: !new_tab_page
+        visible: !newTabPage
 
         onIconChanged: {
-            if (page.tab.state !== "inactive")
-                root.current_tab_icon.source = icon;
-
             // Set the favicon in history
-            var history_model = root.app.history_model;
-            for (var i=0; i<history_model.count; i++) {
-                var item = history_model.get(i);
+            var historyModel = root.app.historyModel;
+            for (var i=0; i<historyModel.count; i++) {
+                var item = historyModel.get(i);
                 if (item.url == webview.url){
-                    item.favicon_url = webview.icon
-                    history_model.set(i, item);
+                    item.faviconUrl = webview.icon
+                    historyModel.set(i, item);
                     break;
                 }
-                console.log(i)
             }
+        }
+
+        onUrlChanged: {
+            if (url.toString().lastIndexOf("https://", 0) === 0)
+                browserWebView.secureConnection = true;
+            else
+                browserWebView.secureConnection = false;
+            if (root.activeTab.webview == browserWebView)
+                activeTabUrlChanged();
         }
 
         /*settings.autoLoadImages: appSettings.autoLoadImages
@@ -69,7 +77,7 @@ Item {
                      settings.errorPageEnabled: appSettings.errorPageEnabled*/
 
          onCertificateError: {
-             dlg_certificate_error.show_error(error);
+             dlgCertificateError.showError(error);
          }
 
          onNewViewRequested: {
@@ -77,11 +85,11 @@ Item {
              if (!request.userInitiated)
                  console.log("Warning: Blocked a popup window.")
              else if (request.destination === WebEngineView.NewViewInTab) {
-                 var tab = root.add_tab("about:blank");
-                 request.openIn(tab.webview);
+                 var tab = root.addTab("about:blank");
+                 request.openIn(tab.webview.view);
              } else if (request.destination === WebEngineView.NewViewInBackgroundTab) {
-                 var tab = root.add_tab("about:blank", true);
-                 request.openIn(tab.webview);
+                 var tab = root.addTab("about:blank", true);
+                 request.openIn(tab.webview.view);
              } else if (request.destination === WebEngineView.NewViewInDialog) {
                  var dialog = root.app.createDialog(request);
              } else {
@@ -93,18 +101,63 @@ Item {
          onFullScreenRequested: {
              console.log("onFullScreenRequested")
              if (request.toggleOn) {
-                 root.start_fullscreen_mode();
+                 root.startFullscreenMode();
              }
              else {
-                 root.end_fullscreen_mode();
+                 root.endFullscreenMode();
              }
              request.accept();
+         }
+
+         onLoadingChanged: {
+            if (loadRequest.status === WebEngineView.LoadStartedStatus) {
+                if (newTabPage) {
+                    newTabPage = false;
+                }
+            }
+
+            else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
+                // Looking for custom tab bar colors
+                runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
+                    function(content){
+                        if(content !== "") {
+                            root.getTabModelDataByUID(uid).customColor = content;
+                            root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(content, 0.6);
+                            root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
+                        }
+                        else{
+                            root.getTabModelDataByUID(uid).customColor = false;
+                        }
+                });
+
+                // Add history entry
+                if (title && url.toString() != root.app.homeUrl) {
+                    var locale = Qt.locale()
+                    var currentDate = new Date()
+                    var dateString = currentDate.toLocaleDateString();
+
+                    var item = {
+                        "url": url.toString(),
+                        "title": title,
+                        "faviconUrl": icon.toString(),
+                        "date": dateString,
+                        "type": "entry"
+                    }
+
+                    root.app.historyModel.insert(0, item);
+                }
+
+            }
+
+            else if (loadRequest.status === WebEngineView.LoadFailedStatus) {
+                root.setActiveTabURL('about:blank');
+            }
          }
     }
 
     NewTabPage {
-        id: item_new_tab_page
-        visible: new_tab_page
+        id: itemNewTabPage
+        visible: newTabPage
         anchors.fill: parent
     }
 

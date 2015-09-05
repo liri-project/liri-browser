@@ -3,16 +3,16 @@ import Material 0.1
 
 
 Dropdown {
-    id: color_picker
-    property alias color: color_chooser.color
-    property alias titel: color_chooser.title
+    id: colorPicker
+    property alias color: colorChooser.color
+    property alias titel: colorChooser.title
 
     width: Units.dp(300)
     height: Units.dp(196)
 
     ColorChooser {
-        id: color_chooser
-        color_picker: color_picker
+        id: colorChooser
+        colorPicker: colorPicker
         anchors.fill: parent
     }
 }

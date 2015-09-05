@@ -16,7 +16,7 @@ NavigationDrawer {
         spacing: Units.dp(5)
 
         View {
-            id: history_title
+            id: historyTitle
             height: label.height + Units.dp(30)
             width: parent.width
             Label {
@@ -36,45 +36,45 @@ NavigationDrawer {
         }
 
         Component {
-            id: history_item_delegate
+            id: historyItemDelegate
             ListItem.Standard {
                 text: title
-                textColor: if (type == "date") { "black" } else { root._tab_text_color_active }
-                iconName: if (type === "date") { "device/access_time" } else { "" }
+                textColor: if (type == "date") { "black" } else { root.tabTextColorActive }
+                iconName: if (type === "date") { "device/accessTime" } else { "" }
                 action: Image {
                     anchors.centerIn: parent
-                    source: if (favicon_url) { favicon_url } else { "" }
+                    source: if (faviconUrl) { faviconUrl } else { "" }
                     height: Units.dp(16)
                     width: Units.dp(16)
                 }
                 onClicked: {
                     if (type === "entry")
-                        root.add_tab(url);
+                        root.addTab(url);
                 }
             }
         }
 
         Item {
             width: parent.width
-            height: parent.height - history_title.height
+            height: parent.height - historyTitle.height
 
 
             ScrollView {
                 anchors.fill: parent
                 ListView {
-                    id: list_view
+                    id: listView
                     anchors.fill: parent
 
                     spacing: 5
 
-                    model: root.app.history_model
-                    delegate: history_item_delegate
+                    model: root.app.historyModel
+                    delegate: historyItemDelegate
 
                     Text {
-                        visible: !list_view.count
-                        font.family: root.font_family
+                        visible: !listView.count
+                        font.family: root.fontFamily
                         text: qsTr("No history found")
-                        anchors.top: history_title.bottom
+                        anchors.top: historyTitle.bottom
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }

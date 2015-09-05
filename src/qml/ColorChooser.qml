@@ -3,18 +3,18 @@ import Material 0.1
 
 
 Item {
-    id: color_chooser
+    id: colorChooser
     property color color
     property string title
-    property Item color_picker
+    property Item colorPicker
 
     width: Units.dp(300)
     height: Units.dp(196)
 
     Label {
-        id: lbl_title
+        id: lblTitle
         style: "dialog"
-        font.family: root.font_family
+        font.family: root.fontFamily
         text: title || qsTr("Choose a color")
         anchors.top: parent.top
         anchors.left: parent.left
@@ -26,7 +26,7 @@ Item {
         columns: 7
         spacing: Units.dp(8)
         id: grid
-        anchors.top: lbl_title.bottom
+        anchors.top: lblTitle.bottom
         anchors.topMargin: Units.dp(24)
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -44,15 +44,15 @@ Item {
                 height: Units.dp(30)
                 radius: Units.dp(2)
                 color: Palette.colors[modelData]["500"]
-                border.width: if (color === color_chooser.color) { Units.dp(2) } else { 0 }
+                border.width: if (color === colorChooser.color) { Units.dp(2) } else { 0 }
                 border.color: Theme.alpha("#000", 0.26)
 
                 Ink {
                     anchors.fill: parent
 
                     onPressed: {
-                        color_chooser.color = parent.color;
-                        if (color_picker) color_picker.close();
+                        colorChooser.color = parent.color;
+                        if (colorPicker) colorPicker.close();
                     }
                 }
             }

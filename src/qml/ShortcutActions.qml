@@ -7,89 +7,85 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+D"
         onTriggered: {
-            // Show downloads
+            downloadsDrawer.open();
         }
     }
     Controls.Action {
         shortcut: "Ctrl+F"
         onTriggered: {
-            root.show_search_overlay()
+            root.showSearchOverlay()
         }
     }
     Controls.Action {
         id: focus
         shortcut: "Ctrl+L"
         onTriggered: {
-            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
-                root.get_current_tab().tab.state = "active_edit";
-                root.get_current_tab().tab.txt_url.forceActiveFocus();
-                root.get_current_tab().tab.txt_url.selectAll();
+            if (root.app.integratedAddressbars && !root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = true;
             }
             else {
-                txt_url.forceActiveFocus();
-                txt_url.selectAll();
+                txtUrl.forceActiveFocus();
+                txtUrl.selectAll();
             }
         }
     }
     Controls.Action {
         shortcut: "Ctrl+K"
         onTriggered: {
-            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
-                root.get_current_tab().tab.state = "active_edit";
-                root.get_current_tab().tab.txt_url.forceActiveFocus();
-                root.get_current_tab().tab.txt_url.selectAll();
+            if (root.app.integratedAddressbars && !root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = true;
             }
             else {
-                txt_url.forceActiveFocus();
-                txt_url.selectAll();
+                txtUrl.forceActiveFocus();
+                txtUrl.selectAll();
             }
         }
     }
     Controls.Action {
         shortcut: "Ctrl+R"
         onTriggered: {
-            get_current_tab().reload()
+            root.activeTab.webview.reload();
         }
     }
     Controls.Action {
         shortcut: "Ctrl+T"
         onTriggered: {
-            root.add_tab()
-            txt_url.forceActiveFocus();
-            txt_url.selectAll();
+            root.addTab()
+            txtUrl.forceActiveFocus();
+            txtUrl.selectAll();
         }
     }
     Controls.Action {
         shortcut: "Ctrl+W"
         onTriggered: {
-            get_current_tab().close()
+            root.removeTab(activeTab.uid);
         }
     }
     Controls.Action {
         shortcut: "Escape"
         onTriggered: {
-            if (root.get_current_tab().tab.state === "active_edit"){
-                root.get_current_tab().tab.state = "active"
+            if (root.app.integratedAddressbars && root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = false;
             }
-            else if (root.txt_search.visible){
-                root.hide_search_overlay();
+            else if (root.txtSearch.visible){
+                root.hideSearchOverlay();
             }
             else if (root.fullscreen){
-                root.end_fullscreen_mode();
+                root.endFullscreenMode();
             }
         }
     }
     Controls.Action {
         shortcut: "Ctrl+0"
-        onTriggered: get_current_tab().webview.zoomFactor = 1.0;
+        onTriggered: root.activeTab.webview.zoomFactor = 1.0;
     }
     Controls.Action {
         shortcut: "Ctrl+-"
-        onTriggered: get_current_tab().webview.zoomFactor -= 0.1;
+        onTriggered: root.activeTab.webview.zoomFactor -= 0.1;
     }
     Controls.Action {
         shortcut: "Ctrl+="
-        onTriggered: get_current_tab().webview.zoomFactor += 0.1;
+        onTriggered: root.activeTab.webview.zoomFactor += 0.1;
     }
     Controls.Action {
         shortcut: "Ctrl+Tab"
@@ -98,20 +94,18 @@ Item {
     Controls.Action {
         shortcut: "F5"
         onTriggered: {
-            get_current_tab().reload()
+            root.activeTab.webview.reload()
         }
     }
     Controls.Action {
         shortcut: "F6"
         onTriggered: {
-            if (root.app.integrated_addressbars && root.get_current_tab().tab.state !== "active_edit"){
-                root.get_current_tab().tab.state = "active_edit";
-                root.get_current_tab().tab.txt_url.forceActiveFocus();
-                root.get_current_tab().tab.txt_url.selectAll();
+            if (root.app.integratedAddressbars && !root.activeTabInEditMode){
+                root.activeTabItem.editModeActive = true;
             }
             else {
-                txt_url.forceActiveFocus();
-                txt_url.selectAll();
+                txtUrl.forceActiveFocus();
+                txtUrl.selectAll();
             }
         }
     }
@@ -119,10 +113,10 @@ Item {
         shortcut: "F11"
         onTriggered: {
             if (!root.fullscreen){
-                root.start_fullscreen_mode();
+                root.startFullscreenMode();
             }
             else {
-                root.end_fullscreen_mode();
+                root.endFullscreenMode();
             }
         }
     }

@@ -3,7 +3,6 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3 as Controls
-import "TabManager.js" as TabManager
 import QtWebEngine 1.1
 import QtQuick.Dialogs 1.1
 import Qt.labs.settings 1.0
@@ -13,7 +12,7 @@ ApplicationWindow {
 
     property QtObject app
 
-    title: "Liri Browser"
+    title: activeTab ? (activeTab.webview.title || qsTr("Loading")) + " - Liri Browser" : "Liri Browser"
     visible: true
 
     width: 1000
@@ -32,9 +31,8 @@ ApplicationWindow {
 
     property variant win;
 
-    property alias settings: settings
 
-    Settings {
+    property Settings settings: Settings {
         id: settings
         property alias x: root.x
         property alias y: root.y
@@ -45,77 +43,411 @@ ApplicationWindow {
     }
 
     /* Style Settings */
-    property color _tab_background_color: "#f1f1f1"
-    property int _tab_height: Units.dp(40)
-    property int _tab_width: Units.dp(200)
-    property int _tab_width_edit: Units.dp(400)
-    property bool _tabs_rounded: false
-    property int _tabs_spacing: Units.dp(1)
-    property int _titlebar_height: Units.dp(148)
-    property color _tab_color_active: "#ffffff"
-    property color _tab_color_inactive: "#e5e5e5"
-    property alias _tab_indicator_color: theme.accentColor
-    property color _tab_text_color_active: "#212121"
-    property color _tab_text_color_inactive: "#757575"
-    property color _icon_color: "#7b7b7b"
-    property color _address_bar_color: "#e0e0e0"
-    property color current_text_color: _tab_text_color_active
-    property color current_icon_color: _icon_color
+    property color tabBackgroundColor: "#f1f1f1"
+    property int tabHeight: Units.dp(40)
+    property int tabWidth: Units.dp(200)
+    property int tabWidthEdit: Units.dp(400)
+    property int tabsSpacing: Units.dp(1)
+    property int titlebarHeight: Units.dp(148)
+    property color tabColorActive: "#ffffff"
+    property color tabColorInactive: "#e5e5e5"
+    property alias tabIndicatorColor: theme.accentColor
+    property color tabTextColorActive: "#212121"
+    property color tabTextColorInactive: "#757575"
+    property color iconColor: "#7b7b7b"
+    property color addressBarColor: "#e0e0e0"
+    property color currentTextColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
+    property color currentIconColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
 
-    property string font_family: "Roboto"
+    property string fontFamily: "Roboto"
 
-    property alias current_tab_icon: current_tab_icon
-    property alias current_tab_title: current_tab_title
-    property alias txt_search: txt_search
-    property alias downloads_drawer: downloads_drawer
-    property alias icon_connection_type: icon_connection_type
-    property alias flickable: flickable
+    property alias txtSearch: txtSearch
+    property alias downloadsDrawer: downloadsDrawer
+    property alias iconConnectionType: iconConnectionType
+    //property alias flickable: flickable
 
     property bool fullscreen: false
-    property bool secure_connection: false
+    property bool secureConnection: false
 
-    function start_fullscreen_mode(){
+
+    /* Functions */
+
+    function startFullscreenMode(){
         fullscreen = true;
         showFullScreen();
 
     }
 
-    function end_fullscreen_mode() {
+    function endFullscreenMode() {
         fullscreen = false;
         showNormal();
     }
 
-    function show_search_overlay() {
-        website_search_overlay.visible = true;
-        txt_search.forceActiveFocus();
-        txt_search.selectAll();
+    function showSearchOverlay() {
+        websiteSearchOverlay.visible = true;
+        txtSearch.forceActiveFocus();
+        txtSearch.selectAll();
     }
 
-    function hide_search_overlay() {
-        website_search_overlay.visible = false;
-        TabManager.current_tab_page.find_text("");
+    function hideSearchOverlay() {
+        websiteSearchOverlay.visible = false;
     }
 
-    function get_tab_manager() {
-        return TabManager;
+    function sortByKey(array, key) {
+        // from http://stackoverflow.com/questions/8837454/sort-array-of-objects-by-single-key-with-date-value
+        return array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
     }
 
-    function remove_bookmark(url) {
-        return TabManager.remove_bookmark(url);
+    function getValidUrl(url) {
+        if (url.indexOf('.') !== -1){
+            if (url.lastIndexOf('http://', 0) !== 0){
+                if (url.lastIndexOf('https://', 0) !== 0){
+                    url = 'http://' + url;
+                }
+            }
+        }
+        else if (url !== "about:blank")
+            url = "http://www.google.com/search?q=" + url;
+        return url;
     }
 
-    function add_tab(url, background){
-        return TabManager.add_tab(url, background)
+
+    function getBetterIcon(url, title, color, callback){
+        var doc = new XMLHttpRequest();
+        doc.onreadystatechange = function() {
+            if (doc.readyState == XMLHttpRequest.DONE) {
+                var json = JSON.parse(doc.responseText);
+                if ("error" in json) {
+                    callback(url, title, color, false);
+                }
+                else {
+                    callback(url, title, color, json["icons"][0].url);
+                }
+            }
+        }
+        doc.open("get", "http://icons.better-idea.org/api/icons?url=" + url);
+        doc.setRequestHeader("Content-Encoding", "UTF-8");
+        doc.send();
     }
 
-    function get_current_tab() {
-        return TabManager.current_tab_page
+    function addToDash(url, title, color) {
+        var uidMax = 0;
+        for (var i=0; i<root.app.dashboardModel.count; i++) {
+            if (root.app.dashboardModel.get(i).uid > uidMax){
+                uidMax = root.app.dashboardModel.get(i).uid;
+            }
+        }
+
+        getBetterIcon(url, title, color, function(url, title, color, iconUrl){
+            var fgColor
+            if (color)
+                fgColor = getTextColorForBackground(color.toString())
+            else
+                fgColor = "black"
+            root.app.dashboardModel.append({"title": title, "url": url.toString(), "iconUrl": iconUrl.toString(), "uid": uidMax+1, "bgColor": color || "white", "fgColor": fgColor});
+            //: %1 is a title
+            snackbar.open(qsTr('Added website "%1" to dash').arg(title));
+        });
     }
 
-    function download_requested(download) {
-       root.downloads_drawer.append(download);
-       download.accept();
+    function isBookmarked(url){
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            if (root.app.bookmarks[i].url === url)
+                return true
+        }
+        return false
     }
+
+    function addBookmark(title, url, faviconUrl, color){
+        root.app.bookmarks.push({title: title, url: url, faviconUrl: faviconUrl, color: color});
+        changedBookmarks();
+    }
+
+    function changeBookmark(url, title, newUrl, faviconUrl){
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            if (root.app.bookmarks[i].url == url){
+                root.app.bookmarks[i].url = newUrl;
+                root.app.bookmarks[i].title = title;
+                root.app.bookmarks[i].faviconUrl = faviconUrl;
+                changedBookmarks();
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    function removeBookmark(url){
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            if (root.app.bookmarks[i].url == url){
+                root.app.bookmarks.splice(i, 1);
+                changedBookmarks();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function clearBookmarks(){
+        for(var i = bookmarkContainer.children.length; i > 0 ; i--) {
+            bookmarkContainer.children[i-1].destroy();
+      }
+    }
+
+    function loadBookmarks(){
+        root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
+        var bookmarkComponent = Qt.createComponent("BookmarkItem.qml");
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            var b = root.app.bookmarks[i];
+            var bookmarkObject = bookmarkComponent.createObject(bookmarkContainer, { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
+        }
+
+        if (root.app.bookmarks.length > 0)
+            bookmarkBar.visible = true;
+        else
+            bookmarkBar.visible = false;
+    }
+
+    function reloadBookmarks(){
+        clearBookmarks();
+        loadBookmarks();
+    }
+
+    function bookmarksChanged() {
+        root.app.changedBookmarks();
+    }
+
+    function shadeColor(color, percent) {
+        // from http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+        var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
+        return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+    }
+
+    function getTextColorForBackground(bg) {
+        // from http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
+        var c = bg.substring(1);      // strip #
+        var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+        var r = (rgb >> 16) & 0xff;  // extract red
+        var g = (rgb >>  8) & 0xff;  // extract green
+        var b = (rgb >>  0) & 0xff;  // extract blue
+
+        var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+        if (luma < 200) {
+            return "white";
+        }
+        else {
+            return root.TabTextColorActive
+        }
+    }
+
+
+
+    /** NEW FUNCTIONS AND PROPERTIES **/
+
+    property var activeTab
+    property var activeTabItem
+    property var lastActiveTab
+    property var activeTabHistory: []
+
+    property int lastTabUID: 0
+
+    property ListModel tabsModel: ListModel {}
+
+    property bool activeTabInEditMode: false
+    property var activeTabInEditModeItem
+
+    onActiveTabChanged: {
+        // Handle last active tab
+        if (lastActiveTab !== undefined && lastActiveTab !== null && lastActiveTab !== false) {
+            lastActiveTab.state = "inactive";
+            lastActiveTab.webview.visible = false;
+        }
+        // Handle now active tab
+        if (activeTab) {
+            if (activeTabInEditModeItem)
+                activeTabInEditModeItem.editModeActive = false;
+            lastActiveTab = activeTab;
+            activeTab.state = "active";
+            activeTab.webview.visible = true;
+            activeTabHistory.push(activeTab.uid);
+        }
+        updateToolbar();
+    }
+
+    function getTabModelDataByUID (uid) {
+        for (var i=0; i<tabsModel.count; i++) {
+            if (tabsModel.get(i).uid == uid) {
+                return tabsModel.get(i);
+            }
+        }
+        return false;
+    }
+
+    function getTabModelIndexByUID (uid) {
+        for (var i=0; i<tabsModel.count; i++) {
+            if (tabsModel.get(i).uid == uid) {
+                return i;
+            }
+        }
+        return false;
+    }
+
+    function getUIDByModelIndex(i) {
+        return tabsModel.get(i).uid;
+    }
+
+    function addTab(url, background) {
+        var u;
+        var ntp = false;
+        if (url){
+            u = getValidUrl(url);
+        }
+        else if (root.app.newTabPage) {
+            ntp = true;
+        }
+        else {
+            u = root.app.homeUrl;
+        }
+
+        var webviewComponent = Qt.createComponent ("BrowserWebView.qml");
+        var webview = webviewComponent.createObject(webContainer, {url: u, newTabPage: ntp, profile: root.app.defaultProfile, uid: lastTabUID});
+        var modelData = {
+            url: url,
+            webview: webview,
+            uid: lastTabUID,
+            state:"inactive",
+            hasCloseButton: true,
+            closeButtonIconName: "navigation/close",
+            iconSource: webview.icon,
+            customColor: false,
+            customColorLight: false,
+            customTextColor: false,
+        }
+        tabsModel.append(modelData);
+        if (!background)
+            setActiveTab(lastTabUID, true);
+        lastTabUID++;
+        return modelData;
+    }
+
+    function removeTab(t) {
+        // t is uid
+        if (typeof(t) === "number") {
+            // Remove all uid references from activeTabHistory:
+            while (activeTabHistory.indexOf(t) > -1) {
+                activeTabHistory.splice(activeTabHistory.indexOf(t), 1);
+            }
+
+            // Set last active tab:
+            if (activeTab.uid === t) {
+                setLastActiveTabActive(function(){
+                    var modelData = getTabModelDataByUID(t);
+                    modelData.webview.visible = false;
+                    modelData.webview.destroy();
+                    tabsModel.remove(getTabModelIndexByUID(t));
+                });
+            }
+        }
+    }
+
+    function ensureTabIsVisible(t) {
+        if (typeof(t) === "number") {
+            var modelIndex = getTabModelIndexByUID(t);
+            listView.positionViewAtIndex(modelIndex, ListView.Visible);
+        }
+    }
+
+    function setActiveTab(t, ensureVisible, callback) {
+        if (typeof(t) === "number") {
+            activeTab = getTabModelDataByUID(t);
+        }
+        if (ensureVisible)
+            ensureTabIsVisible(t);
+        if (callback)
+            callback();
+    }
+
+    function setLastActiveTabActive (callback) {
+        if (tabsModel.count > 1) {
+            if (activeTabHistory.length > 0) {
+                setActiveTab(activeTabHistory[activeTabHistory.length-1], true, callback);
+            }
+            else {
+                callback();
+                setActiveTab(getUIDByModelIndex(0), true);
+            }
+        }
+        else {
+            callback();
+        }
+    }
+
+    function setActiveTabURL(url) {
+        var u = getValidUrl(url);
+        activeTab.webview.url = u;
+    }
+
+    function toggleActiveTabBookmark() {
+        var url = activeTab.webview.url;
+        var icon = activeTab.webview.icon;
+        var title = activeTab.webview.title;
+        if (isBookmarked(url)) {
+            snackbar.open(qsTr('Removed bookmark %1').arg(title));
+            removeBookmark(url)
+        }
+        else {
+            snackbar.open(qsTr('Added bookmark "%1"').arg(title));
+            addBookmark(title, url, icon, activeTab.customColor);
+        }
+        updateToolbar ();
+    }
+
+    function activeTabFindText(text, backward) {
+        var flags
+        if (backward)
+            flags |= WebEngineView.FindBackward
+        activeTab.webview.findText(text, flags, function(success) {
+            if (success)
+                root.txtSearch.hasError = false;
+            else{
+                root.txtSearch.hasError = true;
+            }
+        });
+
+    }
+
+    function activeTabViewSourceCode () {
+      activeTab.webview.runJavaScript("function getSource() { return document.documentElement.innerHTML;} getSource() ",
+          function(content){
+            addTab("http://liri-browser.github.io/sourcecodeviewer/index.html?c=" + content);
+      });
+    }
+
+    function updateToolbar () {
+        var url = activeTab.webview.url;
+
+        if (isBookmarked(url))
+            btnBookmark.iconName = "action/bookmark";
+        else
+            btnBookmark.iconName = "action/bookmark_border";
+    }
+
+    /* Events */
+
+    function activeTabUrlChanged() {
+        updateToolbar ();
+    }
+
+    function downloadRequested(download) {
+        downloadRequested(download);
+    }
+
+
+    /** ------------- **/
 
     ShortcutActions {}
 
@@ -123,365 +455,401 @@ ApplicationWindow {
         id: page
 
         View {
-            visible: !root.fullscreen
             id: titlebar
+
             width: parent.width
-            height: if (root.app.integrated_addressbars) {flickable.height + bookmark_bar.height} else {flickable.height + toolbar.height + bookmark_bar.height}
+            height: if (root.app.integratedAddressbars) {tabBar.height + bookmarkBar.height} else {tabBar.height + toolbar.height + bookmarkBar.height}
 
-            elevation: Units.dp(2)
-
-            Flickable {
-                id: flickable
-                width: parent.width
-                height: root._tab_height
-                contentHeight: height
-                contentWidth: tab_row.width + btn_add_tab.width + Units.dp(100)
-
-                Behavior on contentX {
-                    SmoothedAnimation { duration: 100 }
-                }
-
-                onFlickStarted: {
-                    // TODO: Set current tab back to normal state
-                }
-
-                Row {
-                    id: tab_row
-                    x: if (this.children.length > 0 ){flickable.x + 0} else {parent.x}
-                    spacing: 0 // root._tabs_spacing
-                    anchors.rightMargin: Units.dp(50)
-                }
+            elevation: 2
 
                 Rectangle {
-                    id: btn_add_tab
-
-                    anchors.left: tab_row.right
-                    visible: !(flickable.contentWidth > flickable.width)
-
-                    color: root._tab_background_color
-                    height: root._tab_height
-                    width: Units.dp(48)
-                    IconButton {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: root._icon_color
-                        iconName: "content/add"
-
-                        onClicked: TabManager.add_tab();
-                    }
-                }
-
-            }
-
-            Rectangle {
-                id: toolbar_integrated
-                //elevation: if (flickable.contentWidth > flickable.width) { Units.dp(2) } else {0}
-                anchors.top: flickable.top
-                anchors.bottom: flickable.bottom
-                anchors.right: flickable.right
-                width: if (root.app.integrated_addressbars) { btn_add_tab_integrated.width + btn_downloads_integrated.width + btn_menu_integrated.width + Units.dp(24)*3 } else { Units.dp(48) }
-
-                IconButton {
-                    id: btn_add_tab_integrated
-                    visible: (flickable.contentWidth > flickable.width)
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: btn_downloads_integrated.left
-                    anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 12 }
-                    color: root._icon_color
-                    iconName: "content/add"
-
-                    onClicked: TabManager.add_tab();
-                }
-
-                IconButton {
-                    id: btn_downloads_integrated
-                    visible: root.app.integrated_addressbars && downloads_drawer.active_downloads
-                    width: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
-                    color: if (downloads_drawer.active_downloads){ theme.accentColor } else { root._icon_color }
-                    iconName : "file/file_download"
-                    anchors.right: btn_menu_integrated.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
-                    onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)
-
-                    Rectangle {
-                        visible: downloads_drawer.active_downloads
-                        z: -1
-                        width: parent.width + Units.dp(5)
-                        height: parent.height + Units.dp(5)
-                        anchors.centerIn: parent
-                        color: "white"
-                        radius: width*0.5
-                    }
-                }
-
-                IconButton {
-                    id: btn_menu_integrated
-                    visible: root.app.integrated_addressbars
+                    id: tabBar
+                    height: root.tabHeight
+                    color: root.tabBackgroundColor
+                    anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
-                    width: if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
-                    color: root._icon_color
-                    iconName : "navigation/more_vert"
-                    onClicked: overflow_menu.open(btn_menu_integrated)
+                    anchors.top: parent.top
+                    ListView {
+                        id: listView
 
-                }
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.right: toolbarIntegrated.left
 
-            }
+                        orientation: ListView.Horizontal
+                        spacing: Units.dp(1)
+                        interactive: mouseArea.draggingId == -1
 
-            Item {
-                id: toolbar_container
-                anchors.top: flickable.bottom
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
+                        model: tabsModel
 
-                Column{
-                    anchors.fill: parent
+                        delegate: TabBarItemDelegate {}
 
-                    Rectangle {
-                        id: toolbar
-                        visible: !integrated_addressbars
-                        //anchors.fill: parent
-                        height: Units.dp(64)
-                        width: parent.width
-                        color: root._tab_color_active
+                        MouseArea {
+                                id: mouseArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                property int index: listView.indexAt(mouseX + listView.contentX, mouseY)
+                                property int draggingId: -1
+                                property int activeIndex
+                                propagateComposedEvents: true
 
-                        Row {
-                            anchors.fill: parent
-                            anchors.leftMargin: Units.dp(24)
-                            spacing: Units.dp(24)
+                                onClicked: mouse.accepted = false;
 
-                            IconButton {
-                                id: btn_go_back
-                                iconName : "navigation/arrow_back"
-                                anchors.verticalCenter: parent.verticalCenter
-                                onClicked: TabManager.current_tab_page.go_back()
-                                color: root.current_icon_color
-                            }
+                                onPressed: if (root.activeTabInEditMode) {mouse.accepted = false;}
 
-                            IconButton {
-                                id: btn_go_forward
-                                iconName : "navigation/arrow_forward"
-                                anchors.verticalCenter: parent.verticalCenter
-                                onClicked: TabManager.current_tab_page.go_forward()
-                                color: root.current_icon_color
-                            }
-
-                            IconButton {
-                                id: btn_refresh
-                                hoverAnimation: true
-                                iconName : "navigation/refresh"
-                                anchors.verticalCenter: parent.verticalCenter
-                                color: root.current_icon_color
-                                onClicked: TabManager.current_tab_page.reload()
-                            }
-
-                            LoadingIndicator {
-                                id: prg_loading
-                                visible: false
-                                width: btn_refresh.width
-                                height: btn_refresh.height
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-
-                            Rectangle {
-                                width: parent.width - this.x - right_toolbar.width - parent.spacing
-                                radius: Units.dp(2)
-                                anchors.verticalCenter: parent.verticalCenter
-                                height: parent.height - Units.dp(16)
-                                color: root._address_bar_color
-                                opacity: 0.5
-
-                                Icon {
-                                    x: Units.dp(16)
-                                    id: icon_connection_type
-                                    name: if (root.secure_connection) { "action/lock" } else { "social/public" }
-                                    color: if (root.secure_connection){ "green" } else {root.current_icon_color}
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-
-                                TextField {
-                                    id: txt_url
-                                    anchors.fill: parent
-                                    anchors.leftMargin: icon_connection_type.x + icon_connection_type.width + Units.dp(16)
-                                    anchors.rightMargin: Units.dp(24)
-                                    anchors.topMargin: Units.dp(4)
-                                    showBorder: false
-                                    text: ""
-                                    placeholderText: qsTr("Input search or web address")
-                                    opacity: 1
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    textColor: root._tab_text_color_active
-                                    onAccepted: {
-                                        TabManager.set_current_tab_url(txt_url.text);
+                                onPressAndHold: {
+                                    if (root.activeTabInEditMode) {mouse.accepted = false;}
+                                    else {
+                                        var item = listView.itemAt(mouseX + listView.contentX, mouseY);
+                                        if(item !== null) {
+                                            //root.activeTab = item;
+                                            draggingId = listView.model.get(activeIndex=index).uid;
+                                        }
                                     }
 
                                 }
+                                onReleased: {
+                                    if (activeTab.uid !== draggingId)
+                                        getTabModelDataByUID(draggingId).state = "inactive";
+                                    else
+                                        getTabModelDataByUID(draggingId).state = "active";
+                                    draggingId = -1
+                                    mouse.accepted = false;
+                                }
+                                onPositionChanged: {
+                                    if (draggingId != -1 && index != -1 && index != activeIndex) {
+                                        listView.model.move(activeIndex, activeIndex = index, 1);
+                                    }
+                                    mouse.accepted = false;
 
+                                }
+                                onDoubleClicked: {
+                                    mouse.accepted = false;
+                                }
+
+                                onWheel: {
+                                    listView.flick(wheel.angleDelta.y*10, 0);
+                                }
+                         }
+
+                    }
+
+                    View {
+                        id: toolbarIntegrated
+                        elevation: Units.dp(2)
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        width: if (root.app.integratedAddressbars) { btnAddTabIntegrated.width + btnDownloadsIntegrated.width + btnMenuIntegrated.width + Units.dp(24)*3 } else { Units.dp(48) }
+
+                        IconButton {
+                            id: btnAddTabIntegrated
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.right: btnDownloadsIntegrated.left
+                            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
+                            color: root.iconColor
+                            iconName: "content/add"
+
+                            onClicked: addTab();
+                        }
+
+                        IconButton {
+                            id: btnDownloadsIntegrated
+                            visible: root.app.integratedAddressbars && downloadsDrawer.activeDownloads
+                            width: if (root.app.integratedAddressbars && downloadsDrawer.activeDownloads) { Units.dp(24) } else { 0 }
+                            color: if (downloadsDrawer.activeDownloads){ theme.accentColor } else { root.iconColor }
+                            iconName : "file/file_download"
+                            anchors.right: btnMenuIntegrated.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.margins: if (root.app.integratedAddressbars && downloadsDrawer.activeDownloads) { Units.dp(24) } else { 0 }
+                            onClicked: downloadsDrawer.open(btnDownloads)// downloadsPopup.open(btnDownloads)
+
+                            Rectangle {
+                                visible: downloadsDrawer.activeDownloads
+                                z: -1
+                                width: parent.width + Units.dp(5)
+                                height: parent.height + Units.dp(5)
+                                anchors.centerIn: parent
+                                color: "white"
+                                radius: width*0.5
                             }
+                        }
+
+                        IconButton {
+                            id: btnMenuIntegrated
+                            visible: root.app.integratedAddressbars
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 0 }
+                            width: if (root.app.integratedAddressbars) { Units.dp(24) } else { 0 }
+                            color: root.iconColor
+                            iconName : "navigation/more_vert"
+                            onClicked: overflowMenu.open(btnMenuIntegrated)
+
+                        }
+
+                    }
+
+                }
+
+                Item {
+                    id: toolbarContainer
+                    anchors.top: tabBar.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    Column {
+                        anchors.fill: parent
+
+                        Rectangle {
+                            id: toolbar
+                            visible: !integratedAddressbars
+                            //anchors.fill: parent
+                            height: Units.dp(64)
+                            width: parent.width
+                            color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
 
                             Row {
-                                id: right_toolbar
-                                width: childrenRect.width + spacing
-                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.fill: parent
+                                anchors.leftMargin: Units.dp(24)
                                 spacing: Units.dp(24)
 
                                 IconButton {
-                                    id: btn_bookmark
-                                    color: root.current_icon_color
-                                    iconName: "action/bookmark_border"
+                                    id: btnGoBack
+                                    iconName : "navigation/arrow_back"
+                                    enabled: root.activeTab.webview.canGoBack
                                     anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: TabManager.current_tab_page.bookmark()
+                                    onClicked: root.activeTab.webview.goBack()
+                                    color: root.currentIconColor
                                 }
 
                                 IconButton {
-                                    id: btn_downloads
-                                    color: if (downloads_drawer.active_downloads){ theme.accentColor } else {root.current_icon_color}
-                                    iconName : "file/file_download"
+                                    id: btnGoForward
+                                    iconName : "navigation/arrow_forward"
+                                    enabled: root.activeTab.webview.canGoForward
                                     anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)
+                                    onClicked: root.activeTab.webview.goForward()
+                                    color: root.currentIconColor
+                                }
 
-                                    Rectangle {
-                                        visible: downloads_drawer.active_downloads
-                                        z: -1
-                                        width: parent.width + Units.dp(5)
-                                        height: parent.height + Units.dp(5)
-                                        anchors.centerIn: parent
-                                        color: "white"
-                                        radius: width*0.5
+                                IconButton {
+                                    id: btnRefresh
+                                    hoverAnimation: true
+                                    iconName : "navigation/refresh"
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    color: root.currentIconColor
+                                    visible: !activeTab.webview.loading
+                                    onClicked: activeTab.webview.reload()
+                                }
+
+                                LoadingIndicator {
+                                    id: prgLoading
+                                    visible: activeTab.webview.loading
+                                    width: btnRefresh.width
+                                    height: btnRefresh.height
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Rectangle {
+                                    width: parent.width - this.x - rightToolbar.width - parent.spacing
+                                    radius: Units.dp(2)
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    height: parent.height - Units.dp(16)
+                                    color: root.addressBarColor
+                                    opacity: 0.5
+
+                                    Icon {
+                                        x: Units.dp(16)
+                                        id: iconConnectionType
+                                        name: root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
+                                        color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
+                                        anchors.verticalCenter: parent.verticalCenter
+                                    }
+
+                                    TextField {
+                                        id: txtUrl
+                                        anchors.fill: parent
+                                        anchors.leftMargin: iconConnectionType.x + iconConnectionType.width + Units.dp(16)
+                                        anchors.rightMargin: Units.dp(24)
+                                        anchors.topMargin: Units.dp(4)
+                                        showBorder: false
+                                        text: root.activeTab.webview.url
+                                        placeholderText: qsTr("Input search or web address")
+                                        opacity: 1
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        textColor: root.tabTextColorActive
+                                        onAccepted: setActiveTabURL(text);
+                                    }
+
+                                }
+
+                                Row {
+                                    id: rightToolbar
+                                    width: childrenRect.width + spacing
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    spacing: Units.dp(24)
+
+                                    IconButton {
+                                        id: btnBookmark
+                                        color: root.currentIconColor
+                                        iconName: "action/bookmark_border"
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        onClicked: toggleActiveTabBookmark();
+                                    }
+
+                                    IconButton {
+                                        id: btnDownloads
+                                        color: if (downloadsDrawer.activeDownloads){ theme.accentColor } else {root.currentIconColor}
+                                        iconName : "file/file_download"
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        onClicked: downloadsDrawer.open(btnDownloads)// downloadsPopup.open(btnDownloads)
+
+                                        Rectangle {
+                                            visible: downloadsDrawer.activeDownloads
+                                            z: -1
+                                            width: parent.width + Units.dp(5)
+                                            height: parent.height + Units.dp(5)
+                                            anchors.centerIn: parent
+                                            color: "white"
+                                            radius: width*0.5
+                                        }
+                                    }
+
+                                    IconButton {
+                                        id: btnMenu
+                                        color: root.currentIconColor
+                                        iconName : "navigation/more_vert"
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        onClicked: overflowMenu.open(btnMenu)
+
+                                    }
+
+                                    Rectangle { width: Units.dp(24)} // placeholder
+
+                                }
+
+                            }
+                        }
+
+                        Rectangle {
+                            id: bookmarkBar
+                            color: toolbar.color
+                            height: if (visible) { Units.dp(48) } else {0}
+                            width: parent.width
+
+                            Flickable {
+                                anchors.fill: parent
+                                anchors.margins: Units.dp(5)
+                                anchors.leftMargin: Units.dp(24)
+                                contentWidth: bookmarkContainer.implicitWidth + Units.dp(16)
+
+                                Row {
+                                    id: bookmarkContainer
+                                    anchors.fill: parent
+                                    spacing: Units.dp(15)
+
+                                }
+
+                            }
+
+                            Behavior on height {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
+                        }
+
+
+                        Dropdown {
+                            id: overflowMenu
+                            objectName: "overflowMenu"
+
+                            width: Units.dp(250)
+                            height: columnView.height + Units.dp(16)
+
+                            ColumnLayout {
+                                id: columnView
+                                width: parent.width
+                                anchors.centerIn: parent
+
+                                ListItem.Standard {
+                                    text: qsTr("New window")
+                                    iconName: "action/open_in_new"
+                                    onClicked: app.createWindow()
+                                }
+
+                                /*ListItem.Standard {
+                                    text: qsTr("Save page")
+                                    iconName: "content/save"
+                                }
+
+                                ListItem.Standard {
+                                    text: qsTr("Print page")
+                                    iconName: "action/print"
+                                }*/
+
+                                ListItem.Standard {
+                                    text: qsTr("History")
+                                    iconName: "action/history"
+                                    onClicked: { overflowMenu.close(); historyDrawer.open(); }
+                                }
+
+                                ListItem.Standard {
+                                    text: qsTr("Fullscreen")
+                                    iconName: "navigation/fullscreen"
+                                    onClicked: if (!root.fullscreen) {root.startFullscreenMode(); overflowMenu.close()}
+
+                                   }
+
+                                ListItem.Standard {
+                                    text: qsTr("Search")
+                                    iconName: "action/search"
+                                    onClicked: { overflowMenu.close(); root.showSearchOverlay();}
+                                }
+
+                                ListItem.Standard {
+                                    text: qsTr("Bookmark")
+                                    visible: root.app.integratedAddressbars
+                                    iconName: "action/bookmark_border"
+                                    onClicked: {  overflowMenu.close(); root.toggleActiveTabBookmark();}
+                                }
+
+                                ListItem.Standard {
+                                    text: qsTr("Add to dash")
+                                    //visible: root.app.integratedAddressbars
+                                    iconName: "action/dashboard"
+                                    onClicked: { overflowMenu.close(); root.addToDash(activeTab.webview.url, activeTab.webview.title, activeTab.customColor); }
+                                }
+
+                                ListItem.Standard {
+                                    text: qsTr("View source")
+                                    //visible: root.app.integratedAddressbars
+                                    iconName: "action/code"
+                                    onClicked: {
+                                      overflowMenu.close();
+                                      activeTabViewSourceCode();
                                     }
                                 }
 
-                                IconButton {
-                                    id: btn_menu
-                                    color: root.current_icon_color
-                                    iconName : "navigation/more_vert"
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: overflow_menu.open(btn_menu)
-
-                                }
-
-                                Rectangle { width: Units.dp(24)} // placeholder
-
-                            }
-
-                        }
-                    }
-
-                    Rectangle {
-                        id: bookmark_bar
-                        color: toolbar.color
-                        height: if (visible) { Units.dp(48) } else {0}
-                        width: parent.width
-
-                        Flickable {
-                            anchors.fill: parent
-                            anchors.margins: Units.dp(5)
-                            anchors.leftMargin: Units.dp(24)
-                            contentWidth: bookmark_container.implicitWidth + Units.dp(16)
-
-                            Row {
-                                id: bookmark_container
-                                anchors.fill: parent
-                                spacing: Units.dp(15)
-
-                            }
-
-                        }
-
-                    }
-
-
-                    Dropdown {
-                        id: overflow_menu
-                        objectName: "overflowMenu"
-
-                        width: Units.dp(250)
-                        height: columnView.height + Units.dp(16)
-
-                        ColumnLayout {
-                            id: columnView
-                            width: parent.width
-                            anchors.centerIn: parent
-
-                            ListItem.Standard {
-                                text: qsTr("New window")
-                                iconName: "action/open_in_new"
-                                onClicked: app.createWindow()
-                            }
-
-                            /*ListItem.Standard {
-                                text: qsTr("Save page")
-                                iconName: "content/save"
-                            }
-
-                            ListItem.Standard {
-                                text: qsTr("Print page")
-                                iconName: "action/print"
-                            }*/
-
-                            ListItem.Standard {
-                                text: qsTr("History")
-                                iconName: "action/history"
-                                onClicked: { overflow_menu.close(); history_drawer.open(); }
-                            }
-
-                            ListItem.Standard {
-                                text: qsTr("Fullscreen")
-                                iconName: "navigation/fullscreen"
-                                onClicked: if (!root.fullscreen) {root.start_fullscreen_mode(); overflow_menu.close()}
-
-                               }
-
-                            ListItem.Standard {
-                                text: qsTr("Search")
-                                iconName: "action/search"
-                                onClicked: { overflow_menu.close(); root.show_search_overlay();}
-                            }
-
-                            ListItem.Standard {
-                                text: qsTr("Bookmark")
-                                visible: root.app.integrated_addressbars
-                                iconName: "action/bookmark_border"
-                                onClicked: {  overflow_menu.close(); TabManager.current_tab_page.bookmark();}
-                            }
-
-                            ListItem.Standard {
-                                text: qsTr("Add to dash")
-                                //visible: root.app.integrated_addressbars
-                                iconName: "action/dashboard"
-                                onClicked: { overflow_menu.close(); TabManager.current_tab_page.add_to_dash(); }
-                            }
-
-                            ListItem.Standard {
-                                text: qsTr("View source")
-                                //visible: root.app.integrated_addressbars
-                                iconName: "action/code"
-                                onClicked: {
-                                  overflow_menu.close();
-                                  TabManager.current_tab_page.get_source_code();
+                                ListItem.Standard {
+                                    text: qsTr("Settings")
+                                    iconName: "action/settings"
+                                    onClicked: { overflowMenu.close(); settingsDrawer.open(); }
                                 }
                             }
-
-                            ListItem.Standard {
-                                text: qsTr("Settings")
-                                iconName: "action/settings"
-                                onClicked: { overflow_menu.close(); settings_drawer.open(); }
-                            }
                         }
+
                     }
 
                 }
-
-            }
 
         }
 
 
         Rectangle {
-            id: fullscreen_bar
+            id: fullscreenBar
             z: 5
             visible: root.fullscreen
             anchors.top: parent.top
@@ -496,7 +864,7 @@ ApplicationWindow {
                 spacing: Units.dp(24)
 
                 Image {
-                    id: current_tab_icon
+                    source: root.activeTab.webview.icon
                     width: Units.dp(18)
                     height: Units.dp(18)
                     anchors.verticalCenter: parent.verticalCenter
@@ -504,9 +872,9 @@ ApplicationWindow {
                 }
 
                 Text {
-                    id: current_tab_title
+                    text: root.activeTab.webview.title
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: root.font_family
+                    font.family: root.fontFamily
                 }
 
             }
@@ -517,12 +885,11 @@ ApplicationWindow {
                 anchors.rightMargin: Units.dp(7)
                 iconName: "navigation/fullscreen_exit"
                 onClicked: {
-                    root.end_fullscreen_mode();
+                    root.endFullscreenMode();
                 }
             }
 
             MouseArea {
-                id: mouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 propagateComposedEvents: true
@@ -561,21 +928,21 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
 
             Item {
-                id: web_container
+                id: webContainer
                 anchors.fill: parent
             }
 
         }
     }
 
-    SettingsDrawer { id: settings_drawer }
+    SettingsDrawer { id: settingsDrawer }
 
-    DownloadsDrawer { id: downloads_drawer }
+    DownloadsDrawer { id: downloadsDrawer }
 
-    HistoryDrawer { id: history_drawer }
+    HistoryDrawer { id: historyDrawer }
 
     View {
-        id: website_search_overlay
+        id: websiteSearchOverlay
         visible: false
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -591,22 +958,22 @@ ApplicationWindow {
             spacing: Units.dp(24)
 
             TextField {
-                id: txt_search
+                id: txtSearch
                 placeholderText: qsTr("Search")
                 errorColor: "red"
-                onAccepted: TabManager.current_tab_page.find_text(text)
+                onAccepted: activeTabFindText(text)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             IconButton {
                 iconName: "hardware/keyboard_arrow_up"
-                onClicked: TabManager.current_tab_page.find_text(txt_search.text, true)
+                onClicked: activeTabFindText(txtSearch.text, true)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             IconButton {
                 iconName: "hardware/keyboard_arrow_down"
-                onClicked: TabManager.current_tab_page.find_text(txt_search.text)
+                onClicked: activeTabFindText(txtSearch.text)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -617,8 +984,8 @@ ApplicationWindow {
             anchors.verticalCenter: parent.verticalCenter
             anchors.rightMargin: Units.dp(24)
             iconName: "navigation/close"
-            color: root._icon_color
-            onClicked: root.hide_search_overlay()
+            color: root.iconColor
+            onClicked: root.hideSearchOverlay()
         }
     }
 
@@ -627,16 +994,16 @@ ApplicationWindow {
     }
 
     Snackbar {
-        id: snackbar_tab_close
+        id: snackbarTabClose
         property string url: ""
         buttonText: qsTr("Reopen")
         onClicked: {
-            TabManager.add_tab(url);
+            root.addTab(url);
         }
     }
 
     Dialog {
-        id: dlg_certificate_error
+        id: dlgCertificateError
 
         property var page
         property var error
@@ -658,20 +1025,42 @@ ApplicationWindow {
             error.rejectCertificate();
         }
 
-        function show_error(error) {
+        function showError(error) {
             error.defer();
             url = error.url;
-            dlg_certificate_error.error = error;
-            dlg_certificate_error.show();
+            dlgCertificateError.error = error;
+            dlgCertificateError.show();
+        }
+    }
+    Window {
+         id: subWindowSource
+         width: 555
+         height: 333
+         visible: false
+         title: "Source of "
+         flags: Qt.SubWindow
+         Controls.ScrollView {
+            anchors.fill: parent
+            Text {
+              id: sourceCode
+              x:5
+              width: subWindowSource.width - 30
+              textFormat: Text.PlainText
+              wrapMode: Text.WrapAnywhere
+              text: "source"
+            }
         }
     }
     Component.onCompleted: {
+        // Add tab
+        addTab();
+
         // Profile handling
-        root.app.default_profile.downloadRequested.connect(root.download_requested);
+        root.app.defaultProfile.downloadRequested.connect(root.downloadRequested);
 
         // Bookmark handling
-        TabManager.load_bookmarks();
-        root.app.bookmarks_changed.connect(TabManager.reload_bookmarks)
+        root.loadBookmarks();
+        root.app.changedBookmarks.connect(root.reloadBookmarks)
     }
 
 }

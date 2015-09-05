@@ -10,11 +10,11 @@ NavigationDrawer {
     mode: "right"
     width: Units.dp(350)    
 
-    property bool active_downloads:list_view.count
+    property bool activeDownloads:listView.count
 
     function append(download) {
-        download_model.append(download)
-        download_model.downloads.push(download)
+        downloadModel.append(download)
+        downloadModel.downloads.push(download)
     }
 
     Column {
@@ -23,7 +23,7 @@ NavigationDrawer {
         spacing: Units.dp(5)
 
         View {
-            id: download_title
+            id: downloadTitle
             height: label.height + Units.dp(30)
             width: parent.width
             Label {
@@ -44,36 +44,36 @@ NavigationDrawer {
 
         Item {
             width: parent.width
-            height: parent.height - download_title.height
+            height: parent.height - downloadTitle.height
 
             ListModel {
-                id: download_model
+                id: downloadModel
                 property var downloads: []
             }
 
             function append(download) {
-                download_model.append(download)
-                download_model.downloads.push(download)
+                downloadModel.append(download)
+                downloadModel.downloads.push(download)
             }
 
             Component {
-                id: download_item_delegate
+                id: downloadItemDelegate
 
                 Rectangle {
-                    width: list_view.width
+                    width: listView.width
                     height: childrenRect.height
                     anchors.margins: 10
                     radius: Units.dp(3)
                     color: "transparent"
                     Rectangle {
-                        id: pogress_bar
+                        id: pogressBar
 
-                        property real progress: download_model.downloads[index]
-                                               ? download_model.downloads[index].receivedBytes / download_model.downloads[index].totalBytes : 0
+                        property real progress: downloadModel.downloads[index]
+                                               ? downloadModel.downloads[index].receivedBytes / downloadModel.downloads[index].totalBytes : 0
 
                         radius: 3
-                        color: width === list_view.width ? "#4CAF50" : "#448AFF"
-                        width: list_view.width * progress
+                        color: width === listView.width ? "#4CAF50" : "#448AFF"
+                        width: listView.width * progress
                         height: Units.dp(48)
 
                         Behavior on width {
@@ -86,36 +86,36 @@ NavigationDrawer {
                     Text {
                         id: label
                         text: path
-                        color: if (pogress_bar.width === list_view.width) { "white" } else { "black" }
-                        font.family: root.font_family
+                        color: if (pogressBar.width === listView.width) { "white" } else { "black" }
+                        font.family: root.fontFamily
                         font.pixelSize: Units.dp(14)
                         elide: Text.ElideLeft
                         clip: true
                         anchors {
                             verticalCenter: parent.verticalCenter
                             left: parent.left
-                            right: btn_cancel.left
+                            right: btnCancel.left
                             leftMargin: Units.dp(5)
                             rightMargin: Units.dp(5)
                         }
                     }
 
                     IconButton {
-                        id: btn_cancel
+                        id: btnCancel
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.rightMargin: Units.dp(12)
                         iconName: "navigation/cancel"
-                        color: if (pogress_bar.width === list_view.width) { "white" } else { "black" }
+                        color: if (pogressBar.width === listView.width) { "white" } else { "black" }
                         onClicked: {
-                            var download = download_model.downloads[index]
+                            var download = downloadModel.downloads[index]
 
                             download.cancel();
 
-                            download_model.downloads = download_model.downloads.filter(function (el) {
+                            downloadModel.downloads = downloadModel.downloads.filter(function (el) {
                                 return el.id !== download.id;
                             });
-                            download_model.remove(index)
+                            downloadModel.remove(index)
                         }
                     }
 
@@ -126,19 +126,19 @@ NavigationDrawer {
             ScrollView {
                 anchors.fill: parent
                 ListView {
-                    id: list_view
+                    id: listView
                     anchors.fill: parent
 
                     spacing: 5
 
-                    model: download_model
-                    delegate: download_item_delegate
+                    model: downloadModel
+                    delegate: downloadItemDelegate
 
                     Text {
-                        visible: !list_view.count
-                        font.family: root.font_family
+                        visible: !listView.count
+                        font.family: root.fontFamily
                         text: qsTr("No active downloads")
-                        anchors.top: download_title.bottom
+                        anchors.top: downloadTitle.bottom
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }

@@ -1,9 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/LoadingIndicator.qml</file>
-        <file>qml/BrowserTab.qml</file>
         <file>qml/BrowserWebView.qml</file>
-        <file>qml/TabManager.js</file>
         <file>qml/BookmarkItem.qml</file>
         <file>qml/ShortcutActions.qml</file>
         <file>qml/Application.qml</file>
@@ -14,5 +12,6 @@
         <file>qml/HistoryDrawer.qml</file>
         <file>qml/NewTabPage.qml</file>
         <file>qml/ColorChooser.qml</file>
+        <file>qml/TabBarItemDelegate.qml</file>
     </qresource>
 </RCC>

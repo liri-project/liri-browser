@@ -17,9 +17,9 @@ int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    app.setOrganizationName("tim-sueberkrueb");
-    app.setOrganizationDomain("github.com/tim-sueberkrueb");
-    app.setApplicationName("material-browser");
+    app.setOrganizationName("liri-browser");
+    app.setOrganizationDomain("liri-browser.github.io");
+    app.setApplicationName("liri-browser");
 
     // Load Translations
     QTranslator qtTranslator;
