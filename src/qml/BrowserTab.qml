@@ -362,31 +362,6 @@ View {
             }
         }
 
-        /*Rectangle {
-            id: rect_edit_background
-            height: 0
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            z: -1
-            opacity: 0.2
-            Behavior on height {
-                SmoothedAnimation { duration: 100 }
-            }
-        }
-
-        Rectangle {
-            id: rect_indicator_edit
-            color: "red"
-            height: Units.dp(1)
-            anchors.left: parent.left
-            anchors.right: parent.right
-            y: parent.height - height
-            Behavior on y {
-                SmoothedAnimation { duration: 100 }
-            }
-        }*/
-
     }
 
 

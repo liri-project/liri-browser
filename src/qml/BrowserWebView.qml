@@ -8,6 +8,9 @@ import QtWebEngine 1.1
 Item {
     id: browser_web_view
     anchors.fill: parent
+
+    visible: false
+
     property alias view: webview
     property bool new_tab_page
 

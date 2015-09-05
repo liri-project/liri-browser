@@ -8,12 +8,12 @@ Component {
 
     Item {
         id: item
-        height: listView.height
-        width: Units.dp(256)
+        height: root._tab_height
+        width: root._tab_width
 
-        property color inactiveColor: "grey"
-        property color activeColor: "white"
-        property color draggingColor: "green"
+        property color inactiveColor: root._tab_color_inactive
+        property color activeColor: root._tab_color_active
+        property color draggingColor: root._tab_color_dragging
         property alias state: rect.state
 
         property QtObject modelData: listView.model.get(index)
@@ -29,31 +29,57 @@ Component {
             anchors.fill: parent
 
             Row {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: Units.dp(16)
+                anchors.fill: parent
+                anchors.leftMargin: Units.dp(20)
+                anchors.rightMargin: Units.dp(5)
+                spacing: Units.dp(7)
 
                 Image {
                     id: icon
-                    width: source != "" ? Units.dp(16) : 0
-                    height: source != "" ? Units.dp(16) : 0
-                    source: modelData.iconSource
+                    //visible: icon_url !== ""
+                    visible: !modelData.webview.loading && !modelData.webview.new_tab_page
+                    width: webview.loading ?  0 : Units.dp(20)
+                    height: Units.dp(20)
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: modelData.webview.icon
+                }
+
+                Icon {
+                    id: icon_dashboard
+                    name: "action/dashboard"
+                    visible: modelData.webview.new_tab_page
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                LoadingIndicator {
+                    id: prg_loading
+                    visible: modelData.webview.loading
+                    width: webview.loading ? Units.dp(24) : 0
+                    height: Units.dp(24)
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
                 Text {
                     id: title
-                    text: modelData.title
-                    width: parent.width - icon.width - closeButton.width
+                    text: modelData.webview.title
+                    color: view.text_color
+                    width: parent.width - closeButton.width - icon.width - prg_loading.width - Units.dp(16)
+                    elide: Text.ElideRight
+                    smooth: true
+                    clip: true
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.family: root.font_family
+
                 }
 
                 IconButton {
                     id: closeButton
+                    color: root._tab_text_color_active
+                    anchors.verticalCenter: parent.verticalCenter
                     visible: modelData.hasCloseButton
                     iconName: modelData.closeButtonIconName
                     onClicked: {
-                        console.log("on close")
-                        removeTab(uid)
+                        removeTab(uid);
                     }
                 }
             }
@@ -72,7 +98,6 @@ Component {
                     PropertyChanges {
                         target: rect
                         color: item.inactiveColor
-
                     }
                 },
 
@@ -88,7 +113,6 @@ Component {
                         y: item.y
                         width: item.width
                         height: item.height
-
                     }
                 }
             ]
@@ -96,9 +120,7 @@ Component {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.log("*");
-                    tabView.activeTab = modelData
-
+                    root.activeTab = modelData;
                     mouse.accepted = false;
                 }
                 propagateComposedEvents: true
