@@ -7,37 +7,37 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+D"
         onTriggered: {
-            downloads_drawer.open();
+            downloadsDrawer.open();
         }
     }
     Controls.Action {
         shortcut: "Ctrl+F"
         onTriggered: {
-            root.show_search_overlay()
+            root.showSearchOverlay()
         }
     }
     Controls.Action {
         id: focus
         shortcut: "Ctrl+L"
         onTriggered: {
-            if (root.app.integrated_addressbars && !root.activeTabInEditMode){
+            if (root.app.integratedAddressbars && !root.activeTabInEditMode){
                 root.activeTabItem.editModeActive = true;
             }
             else {
-                txt_url.forceActiveFocus();
-                txt_url.selectAll();
+                txtUrl.forceActiveFocus();
+                txtUrl.selectAll();
             }
         }
     }
     Controls.Action {
         shortcut: "Ctrl+K"
         onTriggered: {
-            if (root.app.integrated_addressbars && !root.activeTabInEditMode){
+            if (root.app.integratedAddressbars && !root.activeTabInEditMode){
                 root.activeTabItem.editModeActive = true;
             }
             else {
-                txt_url.forceActiveFocus();
-                txt_url.selectAll();
+                txtUrl.forceActiveFocus();
+                txtUrl.selectAll();
             }
         }
     }
@@ -51,8 +51,8 @@ Item {
         shortcut: "Ctrl+T"
         onTriggered: {
             root.addTab()
-            txt_url.forceActiveFocus();
-            txt_url.selectAll();
+            txtUrl.forceActiveFocus();
+            txtUrl.selectAll();
         }
     }
     Controls.Action {
@@ -64,14 +64,14 @@ Item {
     Controls.Action {
         shortcut: "Escape"
         onTriggered: {
-            if (root.app.integrated_addressbars && root.activeTabInEditMode){
+            if (root.app.integratedAddressbars && root.activeTabInEditMode){
                 root.activeTabItem.editModeActive = false;
             }
-            else if (root.txt_search.visible){
-                root.hide_search_overlay();
+            else if (root.txtSearch.visible){
+                root.hideSearchOverlay();
             }
             else if (root.fullscreen){
-                root.end_fullscreen_mode();
+                root.endFullscreenMode();
             }
         }
     }
@@ -100,12 +100,12 @@ Item {
     Controls.Action {
         shortcut: "F6"
         onTriggered: {
-            if (root.app.integrated_addressbars && !root.activeTabInEditMode){
+            if (root.app.integratedAddressbars && !root.activeTabInEditMode){
                 root.activeTabItem.editModeActive = true;
             }
             else {
-                txt_url.forceActiveFocus();
-                txt_url.selectAll();
+                txtUrl.forceActiveFocus();
+                txtUrl.selectAll();
             }
         }
     }
@@ -113,10 +113,10 @@ Item {
         shortcut: "F11"
         onTriggered: {
             if (!root.fullscreen){
-                root.start_fullscreen_mode();
+                root.startFullscreenMode();
             }
             else {
-                root.end_fullscreen_mode();
+                root.endFullscreenMode();
             }
         }
     }

@@ -3,7 +3,6 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.3 as Controls
-import "TabManager.js" as TabManager
 import QtWebEngine 1.1
 import QtQuick.Dialogs 1.1
 import Qt.labs.settings 1.0
@@ -13,7 +12,7 @@ ApplicationWindow {
 
     property QtObject app
 
-    title: "Liri Browser"
+    title: activeTab ? (activeTab.webview.title || qsTr("Loading")) + " - Liri Browser" : "Liri Browser"
     visible: true
 
     width: 1000
@@ -44,76 +43,207 @@ ApplicationWindow {
     }
 
     /* Style Settings */
-    property color _tab_background_color: "#f1f1f1"
-    property int _tab_height: Units.dp(40)
-    property int _tab_width: Units.dp(200)
-    property int _tab_width_edit: Units.dp(400)
-    property bool _tabs_rounded: false
-    property int _tabs_spacing: Units.dp(1)
-    property int _titlebar_height: Units.dp(148)
-    property color _tab_color_active: "#ffffff"
-    property color _tab_color_inactive: "#e5e5e5"
-    property color _tab_color_dragging: "#e0e0e0"
-    property alias _tab_indicator_color: theme.accentColor
-    property color _tab_text_color_active: "#212121"
-    property color _tab_text_color_inactive: "#757575"
-    property color _icon_color: "#7b7b7b"
-    property color _address_bar_color: "#e0e0e0"
-    property color current_text_color: activeTab.customTextColor ? activeTab.customTextColor : _icon_color
-    property color current_icon_color: activeTab.customTextColor ? activeTab.customTextColor : _icon_color
+    property color tabBackgroundColor: "#f1f1f1"
+    property int tabHeight: Units.dp(40)
+    property int tabWidth: Units.dp(200)
+    property int tabWidthEdit: Units.dp(400)
+    property int tabsSpacing: Units.dp(1)
+    property int titlebarHeight: Units.dp(148)
+    property color tabColorActive: "#ffffff"
+    property color tabColorInactive: "#e5e5e5"
+    property alias tabIndicatorColor: theme.accentColor
+    property color tabTextColorActive: "#212121"
+    property color tabTextColorInactive: "#757575"
+    property color iconColor: "#7b7b7b"
+    property color addressBarColor: "#e0e0e0"
+    property color currentTextColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
+    property color currentIconColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
 
-    property string font_family: "Roboto"
+    property string fontFamily: "Roboto"
 
-    property alias txt_search: txt_search
-    property alias downloads_drawer: downloads_drawer
-    property alias icon_connection_type: icon_connection_type
+    property alias txtSearch: txtSearch
+    property alias downloadsDrawer: downloadsDrawer
+    property alias iconConnectionType: iconConnectionType
     //property alias flickable: flickable
 
     property bool fullscreen: false
-    property bool secure_connection: false
+    property bool secureConnection: false
 
-    function start_fullscreen_mode(){
+
+    /* Functions */
+
+    function startFullscreenMode(){
         fullscreen = true;
         showFullScreen();
 
     }
 
-    function end_fullscreen_mode() {
+    function endFullscreenMode() {
         fullscreen = false;
         showNormal();
     }
 
-    function show_search_overlay() {
-        website_search_overlay.visible = true;
-        txt_search.forceActiveFocus();
-        txt_search.selectAll();
+    function showSearchOverlay() {
+        websiteSearchOverlay.visible = true;
+        txtSearch.forceActiveFocus();
+        txtSearch.selectAll();
     }
 
-    function hide_search_overlay() {
-        website_search_overlay.visible = false;
-        TabManager.current_tab_page.find_text("");
+    function hideSearchOverlay() {
+        websiteSearchOverlay.visible = false;
     }
 
-    function get_tab_manager() {
-        return TabManager;
+    function sortByKey(array, key) {
+        // from http://stackoverflow.com/questions/8837454/sort-array-of-objects-by-single-key-with-date-value
+        return array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
     }
 
-    function remove_bookmark(url) {
-        return TabManager.remove_bookmark(url);
+    function getValidUrl(url) {
+        if (url.indexOf('.') !== -1){
+            if (url.lastIndexOf('http://', 0) !== 0){
+                if (url.lastIndexOf('https://', 0) !== 0){
+                    url = 'http://' + url;
+                }
+            }
+        }
+        else if (url !== "about:blank")
+            url = "http://www.google.com/search?q=" + url;
+        return url;
     }
 
-    function add_tab(url, background){
-        return TabManager.add_tab(url, background)
+
+    function getBetterIcon(url, title, color, callback){
+        var doc = new XMLHttpRequest();
+        doc.onreadystatechange = function() {
+            if (doc.readyState == XMLHttpRequest.DONE) {
+                var json = JSON.parse(doc.responseText);
+                if ("error" in json) {
+                    callback(url, title, color, false);
+                }
+                else {
+                    callback(url, title, color, json["icons"][0].url);
+                }
+            }
+        }
+        doc.open("get", "http://icons.better-idea.org/api/icons?url=" + url);
+        doc.setRequestHeader("Content-Encoding", "UTF-8");
+        doc.send();
     }
 
-    function get_current_tab() {
-        return TabManager.current_tab_page
+    function addToDash(url, title, color) {
+        var uidMax = 0;
+        for (var i=0; i<root.app.dashboardModel.count; i++) {
+            if (root.app.dashboardModel.get(i).uid > uidMax){
+                uidMax = root.app.dashboardModel.get(i).uid;
+            }
+        }
+
+        getBetterIcon(url, title, color, function(url, title, color, iconUrl){
+            var fgColor
+            if (color)
+                fgColor = getTextColorForBackground(color.toString())
+            else
+                fgColor = "black"
+            root.app.dashboardModel.append({"title": title, "url": url.toString(), "iconUrl": iconUrl.toString(), "uid": uidMax+1, "bgColor": color || "white", "fgColor": fgColor});
+            //: %1 is a title
+            snackbar.open(qsTr('Added website "%1" to dash').arg(title));
+        });
     }
 
-    function download_requested(download) {
-       root.downloads_drawer.append(download);
-       download.accept();
+    function isBookmarked(url){
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            if (root.app.bookmarks[i].url === url)
+                return true
+        }
+        return false
     }
+
+    function addBookmark(title, url, faviconUrl, color){
+        root.app.bookmarks.push({title: title, url: url, faviconUrl: faviconUrl, color: color});
+        changedBookmarks();
+    }
+
+    function changeBookmark(url, title, newUrl, faviconUrl){
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            if (root.app.bookmarks[i].url == url){
+                root.app.bookmarks[i].url = newUrl;
+                root.app.bookmarks[i].title = title;
+                root.app.bookmarks[i].faviconUrl = faviconUrl;
+                changedBookmarks();
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    function removeBookmark(url){
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            if (root.app.bookmarks[i].url == url){
+                root.app.bookmarks.splice(i, 1);
+                changedBookmarks();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function clearBookmarks(){
+        for(var i = bookmarkContainer.children.length; i > 0 ; i--) {
+            bookmarkContainer.children[i-1].destroy();
+      }
+    }
+
+    function loadBookmarks(){
+        root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
+        var bookmarkComponent = Qt.createComponent("BookmarkItem.qml");
+        for (var i=0; i<root.app.bookmarks.length; i++){
+            var b = root.app.bookmarks[i];
+            var bookmarkObject = bookmarkComponent.createObject(bookmarkContainer, { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
+        }
+
+        if (root.app.bookmarks.length > 0)
+            bookmarkBar.visible = true;
+        else
+            bookmarkBar.visible = false;
+    }
+
+    function reloadBookmarks(){
+        clearBookmarks();
+        loadBookmarks();
+    }
+
+    function bookmarksChanged() {
+        root.app.changedBookmarks();
+    }
+
+    function shadeColor(color, percent) {
+        // from http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+        var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
+        return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+    }
+
+    function getTextColorForBackground(bg) {
+        // from http://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
+        var c = bg.substring(1);      // strip #
+        var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+        var r = (rgb >> 16) & 0xff;  // extract red
+        var g = (rgb >>  8) & 0xff;  // extract green
+        var b = (rgb >>  0) & 0xff;  // extract blue
+
+        var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+        if (luma < 200) {
+            return "white";
+        }
+        else {
+            return root.TabTextColorActive
+        }
+    }
+
 
 
     /** NEW FUNCTIONS AND PROPERTIES **/
@@ -174,17 +304,17 @@ ApplicationWindow {
         var u;
         var ntp = false;
         if (url){
-            u = TabManager.get_valid_url(url);
+            u = getValidUrl(url);
         }
-        else if (root.app.new_tab_page) {
+        else if (root.app.newTabPage) {
             ntp = true;
         }
         else {
-            u = root.app.home_url;
+            u = root.app.homeUrl;
         }
 
-        var webview_component = Qt.createComponent ("BrowserWebView.qml");
-        var webview = webview_component.createObject(web_container, {url: u, new_tab_page: ntp, profile: root.app.default_profile, uid: lastTabUID});
+        var webviewComponent = Qt.createComponent ("BrowserWebView.qml");
+        var webview = webviewComponent.createObject(webContainer, {url: u, newTabPage: ntp, profile: root.app.defaultProfile, uid: lastTabUID});
         var modelData = {
             url: url,
             webview: webview,
@@ -257,7 +387,7 @@ ApplicationWindow {
     }
 
     function setActiveTabURL(url) {
-        var u = TabManager.get_valid_url(url);
+        var u = getValidUrl(url);
         activeTab.webview.url = u;
     }
 
@@ -265,13 +395,13 @@ ApplicationWindow {
         var url = activeTab.webview.url;
         var icon = activeTab.webview.icon;
         var title = activeTab.webview.title;
-        if (TabManager.is_bookmarked(url)) {
+        if (isBookmarked(url)) {
             snackbar.open(qsTr('Removed bookmark %1').arg(title));
-            TabManager.remove_bookmark(url)
+            removeBookmark(url)
         }
         else {
             snackbar.open(qsTr('Added bookmark "%1"').arg(title));
-            TabManager.add_bookmark(title, url, icon, false);
+            addBookmark(title, url, icon, activeTab.customColor);
         }
         updateToolbar ();
     }
@@ -282,9 +412,9 @@ ApplicationWindow {
             flags |= WebEngineView.FindBackward
         activeTab.webview.findText(text, flags, function(success) {
             if (success)
-                root.txt_search.hasError = false;
+                root.txtSearch.hasError = false;
             else{
-                root.txt_search.hasError = true;
+                root.txtSearch.hasError = true;
             }
         });
 
@@ -300,10 +430,10 @@ ApplicationWindow {
     function updateToolbar () {
         var url = activeTab.webview.url;
 
-        if (TabManager.is_bookmarked(url))
-            btn_bookmark.iconName = "action/bookmark";
+        if (isBookmarked(url))
+            btnBookmark.iconName = "action/bookmark";
         else
-            btn_bookmark.iconName = "action/bookmark_border";
+            btnBookmark.iconName = "action/bookmark_border";
     }
 
     /* Events */
@@ -313,7 +443,7 @@ ApplicationWindow {
     }
 
     function downloadRequested(download) {
-        download_requested(download);
+        downloadRequested(download);
     }
 
 
@@ -324,26 +454,18 @@ ApplicationWindow {
     initialPage: Rectangle {
         id: page
 
-        Component.onCompleted: {
-            addTab("https://www.google.de");
-            addTab("https://www.google.de");
-            addTab("https://www.google.de");
-            addTab("https://www.google.de");
-
-        }
-
         View {
             id: titlebar
 
             width: parent.width
-            height: if (root.app.integrated_addressbars) {tabBar.height + bookmark_bar.height} else {tabBar.height + toolbar.height + bookmark_bar.height}
+            height: if (root.app.integratedAddressbars) {tabBar.height + bookmarkBar.height} else {tabBar.height + toolbar.height + bookmarkBar.height}
 
             elevation: 2
 
                 Rectangle {
                     id: tabBar
-                    height: root._tab_height
-                    color: root._tab_background_color
+                    height: root.tabHeight
+                    color: root.tabBackgroundColor
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -353,7 +475,7 @@ ApplicationWindow {
                         anchors.top: parent.top
                         anchors.left: parent.left
                         anchors.bottom: parent.bottom
-                        anchors.right: toolbar_integrated.left
+                        anchors.right: toolbarIntegrated.left
 
                         orientation: ListView.Horizontal
                         spacing: Units.dp(1)
@@ -414,37 +536,37 @@ ApplicationWindow {
                     }
 
                     View {
-                        id: toolbar_integrated
+                        id: toolbarIntegrated
                         elevation: Units.dp(2)
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         anchors.right: parent.right
-                        width: if (root.app.integrated_addressbars) { btn_add_tab_integrated.width + btn_downloads_integrated.width + btn_menu_integrated.width + Units.dp(24)*3 } else { Units.dp(48) }
+                        width: if (root.app.integratedAddressbars) { btnAddTabIntegrated.width + btnDownloadsIntegrated.width + btnMenuIntegrated.width + Units.dp(24)*3 } else { Units.dp(48) }
 
                         IconButton {
-                            id: btn_add_tab_integrated
+                            id: btnAddTabIntegrated
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.right: btn_downloads_integrated.left
-                            anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 12 }
-                            color: root._icon_color
+                            anchors.right: btnDownloadsIntegrated.left
+                            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
+                            color: root.iconColor
                             iconName: "content/add"
 
                             onClicked: addTab();
                         }
 
                         IconButton {
-                            id: btn_downloads_integrated
-                            visible: root.app.integrated_addressbars && downloads_drawer.active_downloads
-                            width: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
-                            color: if (downloads_drawer.active_downloads){ theme.accentColor } else { root._icon_color }
+                            id: btnDownloadsIntegrated
+                            visible: root.app.integratedAddressbars && downloadsDrawer.activeDownloads
+                            width: if (root.app.integratedAddressbars && downloadsDrawer.activeDownloads) { Units.dp(24) } else { 0 }
+                            color: if (downloadsDrawer.activeDownloads){ theme.accentColor } else { root.iconColor }
                             iconName : "file/file_download"
-                            anchors.right: btn_menu_integrated.left
+                            anchors.right: btnMenuIntegrated.left
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.margins: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
-                            onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)
+                            anchors.margins: if (root.app.integratedAddressbars && downloadsDrawer.activeDownloads) { Units.dp(24) } else { 0 }
+                            onClicked: downloadsDrawer.open(btnDownloads)// downloadsPopup.open(btnDownloads)
 
                             Rectangle {
-                                visible: downloads_drawer.active_downloads
+                                visible: downloadsDrawer.activeDownloads
                                 z: -1
                                 width: parent.width + Units.dp(5)
                                 height: parent.height + Units.dp(5)
@@ -455,15 +577,15 @@ ApplicationWindow {
                         }
 
                         IconButton {
-                            id: btn_menu_integrated
-                            visible: root.app.integrated_addressbars
+                            id: btnMenuIntegrated
+                            visible: root.app.integratedAddressbars
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
-                            width: if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
-                            color: root._icon_color
+                            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 0 }
+                            width: if (root.app.integratedAddressbars) { Units.dp(24) } else { 0 }
+                            color: root.iconColor
                             iconName : "navigation/more_vert"
-                            onClicked: overflow_menu.open(btn_menu_integrated)
+                            onClicked: overflowMenu.open(btnMenuIntegrated)
 
                         }
 
@@ -472,7 +594,7 @@ ApplicationWindow {
                 }
 
                 Item {
-                    id: toolbar_container
+                    id: toolbarContainer
                     anchors.top: tabBar.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -482,11 +604,11 @@ ApplicationWindow {
 
                         Rectangle {
                             id: toolbar
-                            visible: !integrated_addressbars
+                            visible: !integratedAddressbars
                             //anchors.fill: parent
                             height: Units.dp(64)
                             width: parent.width
-                            color: activeTab.customColor ? activeTab.customColor : root._tab_color_active
+                            color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
 
                             Row {
                                 anchors.fill: parent
@@ -494,61 +616,61 @@ ApplicationWindow {
                                 spacing: Units.dp(24)
 
                                 IconButton {
-                                    id: btn_go_back
+                                    id: btnGoBack
                                     iconName : "navigation/arrow_back"
                                     enabled: root.activeTab.webview.canGoBack
                                     anchors.verticalCenter: parent.verticalCenter
                                     onClicked: root.activeTab.webview.goBack()
-                                    color: root.current_icon_color
+                                    color: root.currentIconColor
                                 }
 
                                 IconButton {
-                                    id: btn_go_forward
+                                    id: btnGoForward
                                     iconName : "navigation/arrow_forward"
                                     enabled: root.activeTab.webview.canGoForward
                                     anchors.verticalCenter: parent.verticalCenter
                                     onClicked: root.activeTab.webview.goForward()
-                                    color: root.current_icon_color
+                                    color: root.currentIconColor
                                 }
 
                                 IconButton {
-                                    id: btn_refresh
+                                    id: btnRefresh
                                     hoverAnimation: true
                                     iconName : "navigation/refresh"
                                     anchors.verticalCenter: parent.verticalCenter
-                                    color: root.current_icon_color
+                                    color: root.currentIconColor
                                     visible: !activeTab.webview.loading
                                     onClicked: activeTab.webview.reload()
                                 }
 
                                 LoadingIndicator {
-                                    id: prg_loading
+                                    id: prgLoading
                                     visible: activeTab.webview.loading
-                                    width: btn_refresh.width
-                                    height: btn_refresh.height
+                                    width: btnRefresh.width
+                                    height: btnRefresh.height
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
 
                                 Rectangle {
-                                    width: parent.width - this.x - right_toolbar.width - parent.spacing
+                                    width: parent.width - this.x - rightToolbar.width - parent.spacing
                                     radius: Units.dp(2)
                                     anchors.verticalCenter: parent.verticalCenter
                                     height: parent.height - Units.dp(16)
-                                    color: root._address_bar_color
+                                    color: root.addressBarColor
                                     opacity: 0.5
 
                                     Icon {
                                         x: Units.dp(16)
-                                        id: icon_connection_type
+                                        id: iconConnectionType
                                         name: root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
-                                        color: root.activeTab.webview.secureConnection ? "green" : root.current_icon_color
+                                        color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
                                         anchors.verticalCenter: parent.verticalCenter
                                     }
 
                                     TextField {
-                                        id: txt_url
+                                        id: txtUrl
                                         anchors.fill: parent
-                                        anchors.leftMargin: icon_connection_type.x + icon_connection_type.width + Units.dp(16)
+                                        anchors.leftMargin: iconConnectionType.x + iconConnectionType.width + Units.dp(16)
                                         anchors.rightMargin: Units.dp(24)
                                         anchors.topMargin: Units.dp(4)
                                         showBorder: false
@@ -556,35 +678,35 @@ ApplicationWindow {
                                         placeholderText: qsTr("Input search or web address")
                                         opacity: 1
                                         anchors.verticalCenter: parent.verticalCenter
-                                        textColor: root._tab_text_color_active
+                                        textColor: root.tabTextColorActive
                                         onAccepted: setActiveTabURL(text);
                                     }
 
                                 }
 
                                 Row {
-                                    id: right_toolbar
+                                    id: rightToolbar
                                     width: childrenRect.width + spacing
                                     anchors.verticalCenter: parent.verticalCenter
                                     spacing: Units.dp(24)
 
                                     IconButton {
-                                        id: btn_bookmark
-                                        color: root.current_icon_color
+                                        id: btnBookmark
+                                        color: root.currentIconColor
                                         iconName: "action/bookmark_border"
                                         anchors.verticalCenter: parent.verticalCenter
                                         onClicked: toggleActiveTabBookmark();
                                     }
 
                                     IconButton {
-                                        id: btn_downloads
-                                        color: if (downloads_drawer.active_downloads){ theme.accentColor } else {root.current_icon_color}
+                                        id: btnDownloads
+                                        color: if (downloadsDrawer.activeDownloads){ theme.accentColor } else {root.currentIconColor}
                                         iconName : "file/file_download"
                                         anchors.verticalCenter: parent.verticalCenter
-                                        onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)
+                                        onClicked: downloadsDrawer.open(btnDownloads)// downloadsPopup.open(btnDownloads)
 
                                         Rectangle {
-                                            visible: downloads_drawer.active_downloads
+                                            visible: downloadsDrawer.activeDownloads
                                             z: -1
                                             width: parent.width + Units.dp(5)
                                             height: parent.height + Units.dp(5)
@@ -595,11 +717,11 @@ ApplicationWindow {
                                     }
 
                                     IconButton {
-                                        id: btn_menu
-                                        color: root.current_icon_color
+                                        id: btnMenu
+                                        color: root.currentIconColor
                                         iconName : "navigation/more_vert"
                                         anchors.verticalCenter: parent.verticalCenter
-                                        onClicked: overflow_menu.open(btn_menu)
+                                        onClicked: overflowMenu.open(btnMenu)
 
                                     }
 
@@ -611,7 +733,7 @@ ApplicationWindow {
                         }
 
                         Rectangle {
-                            id: bookmark_bar
+                            id: bookmarkBar
                             color: toolbar.color
                             height: if (visible) { Units.dp(48) } else {0}
                             width: parent.width
@@ -620,10 +742,10 @@ ApplicationWindow {
                                 anchors.fill: parent
                                 anchors.margins: Units.dp(5)
                                 anchors.leftMargin: Units.dp(24)
-                                contentWidth: bookmark_container.implicitWidth + Units.dp(16)
+                                contentWidth: bookmarkContainer.implicitWidth + Units.dp(16)
 
                                 Row {
-                                    id: bookmark_container
+                                    id: bookmarkContainer
                                     anchors.fill: parent
                                     spacing: Units.dp(15)
 
@@ -641,7 +763,7 @@ ApplicationWindow {
 
 
                         Dropdown {
-                            id: overflow_menu
+                            id: overflowMenu
                             objectName: "overflowMenu"
 
                             width: Units.dp(250)
@@ -671,42 +793,42 @@ ApplicationWindow {
                                 ListItem.Standard {
                                     text: qsTr("History")
                                     iconName: "action/history"
-                                    onClicked: { overflow_menu.close(); history_drawer.open(); }
+                                    onClicked: { overflowMenu.close(); historyDrawer.open(); }
                                 }
 
                                 ListItem.Standard {
                                     text: qsTr("Fullscreen")
                                     iconName: "navigation/fullscreen"
-                                    onClicked: if (!root.fullscreen) {root.start_fullscreen_mode(); overflow_menu.close()}
+                                    onClicked: if (!root.fullscreen) {root.startFullscreenMode(); overflowMenu.close()}
 
                                    }
 
                                 ListItem.Standard {
                                     text: qsTr("Search")
                                     iconName: "action/search"
-                                    onClicked: { overflow_menu.close(); root.show_search_overlay();}
+                                    onClicked: { overflowMenu.close(); root.showSearchOverlay();}
                                 }
 
                                 ListItem.Standard {
                                     text: qsTr("Bookmark")
-                                    visible: root.app.integrated_addressbars
+                                    visible: root.app.integratedAddressbars
                                     iconName: "action/bookmark_border"
-                                    onClicked: {  overflow_menu.close(); root.toggleActiveTabBookmark();}
+                                    onClicked: {  overflowMenu.close(); root.toggleActiveTabBookmark();}
                                 }
 
                                 ListItem.Standard {
                                     text: qsTr("Add to dash")
-                                    //visible: root.app.integrated_addressbars
+                                    //visible: root.app.integratedAddressbars
                                     iconName: "action/dashboard"
-                                    onClicked: { overflow_menu.close(); TabManager.add_to_dash(activeTab.webview.url, activeTab.webview.title, false); }
+                                    onClicked: { overflowMenu.close(); root.addToDash(activeTab.webview.url, activeTab.webview.title, activeTab.customColor); }
                                 }
 
                                 ListItem.Standard {
                                     text: qsTr("View source")
-                                    //visible: root.app.integrated_addressbars
+                                    //visible: root.app.integratedAddressbars
                                     iconName: "action/code"
                                     onClicked: {
-                                      overflow_menu.close();
+                                      overflowMenu.close();
                                       activeTabViewSourceCode();
                                     }
                                 }
@@ -714,7 +836,7 @@ ApplicationWindow {
                                 ListItem.Standard {
                                     text: qsTr("Settings")
                                     iconName: "action/settings"
-                                    onClicked: { overflow_menu.close(); settings_drawer.open(); }
+                                    onClicked: { overflowMenu.close(); settingsDrawer.open(); }
                                 }
                             }
                         }
@@ -723,119 +845,11 @@ ApplicationWindow {
 
                 }
 
-
-        /*View {
-            visible: !root.fullscreen
-            id: titlebar
-            width: parent.width
-            height: if (root.app.integrated_addressbars) {flickable.height + bookmark_bar.height} else {flickable.height + toolbar.height + bookmark_bar.height}
-
-            elevation: Units.dp(2)
-
-            Flickable {
-                id: flickable
-                width: parent.width
-                height: root._tab_height
-                contentHeight: height
-                contentWidth: tab_row.width + btn_add_tab.width + Units.dp(100)
-
-                Behavior on contentX {
-                    SmoothedAnimation { duration: 100 }
-                }
-
-                onFlickStarted: {
-                    // TODO: Set current tab back to normal state
-                }
-
-                Row {
-                    id: tab_row
-                    x: if (this.children.length > 0 ){flickable.x + 0} else {parent.x}
-                    spacing: 0 // root._tabs_spacing
-                    anchors.rightMargin: Units.dp(50)
-                }
-
-                Rectangle {
-                    id: btn_add_tab
-
-                    anchors.left: tab_row.right
-                    visible: !(flickable.contentWidth > flickable.width)
-
-                    color: root._tab_background_color
-                    height: root._tab_height
-                    width: Units.dp(48)
-                    IconButton {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: root._icon_color
-                        iconName: "content/add"
-
-                        onClicked: TabManager.add_tab();
-                    }
-                }
-
-            }
-
-            Rectangle {
-                id: toolbar_integrated
-                //elevation: if (flickable.contentWidth > flickable.width) { Units.dp(2) } else {0}
-                anchors.top: flickable.top
-                anchors.bottom: flickable.bottom
-                anchors.right: flickable.right
-                width: if (root.app.integrated_addressbars) { btn_add_tab_integrated.width + btn_downloads_integrated.width + btn_menu_integrated.width + Units.dp(24)*3 } else { Units.dp(48) }
-
-                IconButton {
-                    id: btn_add_tab_integrated
-                    visible: (flickable.contentWidth > flickable.width)
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: btn_downloads_integrated.left
-                    anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 12 }
-                    color: root._icon_color
-                    iconName: "content/add"
-
-                    onClicked: TabManager.add_tab();
-                }
-
-                IconButton {
-                    id: btn_downloads_integrated
-                    visible: root.app.integrated_addressbars && downloads_drawer.active_downloads
-                    width: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
-                    color: if (downloads_drawer.active_downloads){ theme.accentColor } else { root._icon_color }
-                    iconName : "file/file_download"
-                    anchors.right: btn_menu_integrated.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: if (root.app.integrated_addressbars && downloads_drawer.active_downloads) { Units.dp(24) } else { 0 }
-                    onClicked: downloads_drawer.open(btn_downloads)// downloads_popup.open(btn_downloads)
-
-                    Rectangle {
-                        visible: downloads_drawer.active_downloads
-                        z: -1
-                        width: parent.width + Units.dp(5)
-                        height: parent.height + Units.dp(5)
-                        anchors.centerIn: parent
-                        color: "white"
-                        radius: width*0.5
-                    }
-                }
-
-                IconButton {
-                    id: btn_menu_integrated
-                    visible: root.app.integrated_addressbars
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins:if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
-                    width: if (root.app.integrated_addressbars) { Units.dp(24) } else { 0 }
-                    color: root._icon_color
-                    iconName : "navigation/more_vert"
-                    onClicked: overflow_menu.open(btn_menu_integrated)
-
-                }
-
-            }*/
         }
 
 
         Rectangle {
-            id: fullscreen_bar
+            id: fullscreenBar
             z: 5
             visible: root.fullscreen
             anchors.top: parent.top
@@ -860,7 +874,7 @@ ApplicationWindow {
                 Text {
                     text: root.activeTab.webview.title
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: root.font_family
+                    font.family: root.fontFamily
                 }
 
             }
@@ -871,7 +885,7 @@ ApplicationWindow {
                 anchors.rightMargin: Units.dp(7)
                 iconName: "navigation/fullscreen_exit"
                 onClicked: {
-                    root.end_fullscreen_mode();
+                    root.endFullscreenMode();
                 }
             }
 
@@ -914,21 +928,21 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
 
             Item {
-                id: web_container
+                id: webContainer
                 anchors.fill: parent
             }
 
         }
     }
 
-    SettingsDrawer { id: settings_drawer }
+    SettingsDrawer { id: settingsDrawer }
 
-    DownloadsDrawer { id: downloads_drawer }
+    DownloadsDrawer { id: downloadsDrawer }
 
-    HistoryDrawer { id: history_drawer }
+    HistoryDrawer { id: historyDrawer }
 
     View {
-        id: website_search_overlay
+        id: websiteSearchOverlay
         visible: false
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -944,7 +958,7 @@ ApplicationWindow {
             spacing: Units.dp(24)
 
             TextField {
-                id: txt_search
+                id: txtSearch
                 placeholderText: qsTr("Search")
                 errorColor: "red"
                 onAccepted: activeTabFindText(text)
@@ -953,13 +967,13 @@ ApplicationWindow {
 
             IconButton {
                 iconName: "hardware/keyboard_arrow_up"
-                onClicked: activeTabFindText(txt_search.text, true)
+                onClicked: activeTabFindText(txtSearch.text, true)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             IconButton {
                 iconName: "hardware/keyboard_arrow_down"
-                onClicked: activeTabFindText(txt_search.text)
+                onClicked: activeTabFindText(txtSearch.text)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -970,8 +984,8 @@ ApplicationWindow {
             anchors.verticalCenter: parent.verticalCenter
             anchors.rightMargin: Units.dp(24)
             iconName: "navigation/close"
-            color: root._icon_color
-            onClicked: root.hide_search_overlay()
+            color: root.iconColor
+            onClicked: root.hideSearchOverlay()
         }
     }
 
@@ -980,16 +994,16 @@ ApplicationWindow {
     }
 
     Snackbar {
-        id: snackbar_tab_close
+        id: snackbarTabClose
         property string url: ""
         buttonText: qsTr("Reopen")
         onClicked: {
-            TabManager.add_tab(url);
+            root.addTab(url);
         }
     }
 
     Dialog {
-        id: dlg_certificate_error
+        id: dlgCertificateError
 
         property var page
         property var error
@@ -1011,15 +1025,15 @@ ApplicationWindow {
             error.rejectCertificate();
         }
 
-        function show_error(error) {
+        function showError(error) {
             error.defer();
             url = error.url;
-            dlg_certificate_error.error = error;
-            dlg_certificate_error.show();
+            dlgCertificateError.error = error;
+            dlgCertificateError.show();
         }
     }
     Window {
-         id: subWindow_source
+         id: subWindowSource
          width: 555
          height: 333
          visible: false
@@ -1028,9 +1042,9 @@ ApplicationWindow {
          Controls.ScrollView {
             anchors.fill: parent
             Text {
-              id: source_code
+              id: sourceCode
               x:5
-              width: subWindow_source.width - 30
+              width: subWindowSource.width - 30
               textFormat: Text.PlainText
               wrapMode: Text.WrapAnywhere
               text: "source"
@@ -1038,12 +1052,15 @@ ApplicationWindow {
         }
     }
     Component.onCompleted: {
+        // Add tab
+        addTab();
+
         // Profile handling
-        root.app.default_profile.downloadRequested.connect(root.downloadRequested);
+        root.app.defaultProfile.downloadRequested.connect(root.downloadRequested);
 
         // Bookmark handling
-        TabManager.load_bookmarks();
-        root.app.bookmarks_changed.connect(TabManager.reload_bookmarks)
+        root.loadBookmarks();
+        root.app.changedBookmarks.connect(root.reloadBookmarks)
     }
 
 }

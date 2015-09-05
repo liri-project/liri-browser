@@ -7,16 +7,16 @@ import Material.ListItems 0.1 as ListItem
 Item {
     id: item
     property string title
-    property string favicon_url
+    property string faviconUrl
     property string url
-    property int maximum_width: Units.dp(148)
+    property int maximumWidth: Units.dp(148)
 
     property color color: "white"
 
     height: parent.height
     width: row.childrenRect.width
 
-    property int maximum_text_width: maximum_width - favicon.width - Units.dp(16)
+    property int maximumTextWidth: maximumWidth - favicon.width - Units.dp(16)
 
     Row {
         id: row
@@ -25,27 +25,27 @@ Item {
 
         Image {
             id: favicon
-            source: favicon_url
+            source: faviconUrl
             width: Units.dp(18)
             height: Units.dp(18)
             anchors.verticalCenter: parent.verticalCenter
         }
 
         Text {
-            id: lbl_title
+            id: lblTitle
             text: title
-            color: root.current_icon_color
+            color: root.currentIconColor
             elide: Text.ElideRight
             smooth: true
             clip: true
-            font.family: root.font_family
+            font.family: root.fontFamily
 
-            width: maximum_text_width
+            width: maximumTextWidth
             anchors.verticalCenter: parent.verticalCenter
 
             Component.onCompleted:  {
-                if (paintedWidth > maximum_text_width) {
-                    width= maximum_text_width
+                if (paintedWidth > maximumTextWidth) {
+                    width= maximumTextWidth
                 }
                 else{
                         width=paintedWidth
@@ -56,12 +56,12 @@ Item {
     }
 
     MouseArea {
-        id: mouse_area
+        id: mouseArea
         anchors.fill:  parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: {
              if(mouse.button & Qt.RightButton) {
-                context_menu.open(parent, context_menu.width-parent.width)
+                contextMenu.open(parent, contextMenu.width-parent.width)
              }
              else
                  root.addTab(item.url);
@@ -69,7 +69,7 @@ Item {
     }
 
     Dropdown {
-        id: context_menu
+        id: contextMenu
 
         width: Units.dp(250)
         height: columnView.height + Units.dp(16)
@@ -82,21 +82,21 @@ Item {
             ListItem.Standard {
                 text: qsTr("Edit")
                 iconName: "image/edit"
-                onClicked: edit_dialog.open(item);
+                onClicked: editDialog.open(item);
             }
 
             ListItem.Standard {
                 text: qsTr("Add to dash")
                 iconName: "action/dashboard"
-                onClicked: root.get_tab_manager().add_to_dash(url, title, color);
+                onClicked: root.addToDash(url, title, color);
             }
 
             ListItem.Standard {
                 text: qsTr("Delete")
                 iconName: "action/delete"
                 onClicked: {
-                    root.remove_bookmark(item.url);
-                    context_menu.close();
+                    root.removeBookmark(item.url);
+                    contextMenu.close();
                 }
             }
 
@@ -104,7 +104,7 @@ Item {
     }
 
     Popover {
-        id: edit_dialog
+        id: editDialog
 
         width: Units.dp(400)
         height: col.childrenRect.height + Units.dp(24)
@@ -123,7 +123,7 @@ Item {
                 Text {
                     id: name
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: root.font_family
+                    font.family: root.fontFamily
                     text: qsTr("Edit bookmark")
                 }
 
@@ -131,13 +131,13 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     iconName: "navigation/close"
-                    onClicked: edit_dialog.close()
+                    onClicked: editDialog.close()
                 }
 
             }
 
             TextField {
-                id: txt_edit_title
+                id: txtEditTitle
                 placeholderText: qsTr("Title")
                 floatingLabel: true
                 text: item.title
@@ -145,7 +145,7 @@ Item {
             }
 
             TextField {
-                id: txt_edit_url
+                id: txtEditUrl
                 placeholderText: qsTr("URL")
                 floatingLabel: true
                 text: item.url
@@ -154,33 +154,33 @@ Item {
             }
 
             TextField {
-                id: txt_edit_favicon_url
+                id: txtEditFaviconUrl
                 placeholderText: qsTr("Icon URL")
                 floatingLabel: true
-                text: item.favicon_url
+                text: item.faviconUrl
                 width: parent.width
             }
 
         }
 
         Button {
-            id: btn_edit_cancel
+            id: btnEditCancel
             anchors.bottom: parent.bottom
             anchors.bottomMargin: Units.dp(24)
-            anchors.right: btn_edit_apply.left
+            anchors.right: btnEditApply.left
 
             text: qsTr("Cancel")
 
             onClicked: {
-                txt_edit_title.text = item.title;
-                txt_edit_url.text = item.url;
-                txt_edit_favicon_url.text = item.favicon_url;
-                edit_dialog.close();
+                txtEditTitle.text = item.title;
+                txtEditUrl.text = item.url;
+                txtEditFaviconUrl.text = item.faviconUrl;
+                editDialog.close();
             }
         }
 
         Button {
-            id: btn_edit_apply
+            id: btnEditApply
 
             anchors.bottom: parent.bottom
             anchors.bottomMargin: Units.dp(24)
@@ -190,8 +190,8 @@ Item {
             text: qsTr("Apply")
 
             onClicked: {
-                root.get_tab_manager().change_bookmark(item.url, txt_edit_title.text, txt_edit_url.text, txt_edit_favicon_url.text);
-                edit_dialog.close();
+                root.changeBookmark(item.url, txtEditTitle.text, txtEditUrl.text, txtEditFaviconUrl.text);
+                editDialog.close();
             }
         }
 

@@ -47,9 +47,9 @@ NavigationDrawer {
             text: ""
             height:60
             TextField {
-                id: txt_home_url
+                id: txtHomeUrl
                 width: parent.width * 0.9
-                text: root.app.home_url
+                text: root.app.homeUrl
                 placeholderText: qsTr("Start page")
                 floatingLabel: true
                 anchors.centerIn: parent
@@ -72,8 +72,8 @@ NavigationDrawer {
                 anchors.fill: parent
                 spacing: Units.dp(12)
                 CheckBox {
-                    id: chb_dashboard
-                    checked: root.app.new_tab_page
+                    id: chbDashboard
+                    checked: root.app.newTabPage
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Label {
@@ -83,7 +83,7 @@ NavigationDrawer {
                 }
             }
             onClicked: {
-                chb_dashboard.checked = !chb_dashboard.checked
+                chbDashboard.checked = !chbDashboard.checked
             }
         }
 
@@ -92,8 +92,8 @@ NavigationDrawer {
                 anchors.fill: parent
                 spacing: Units.dp(12)
                 CheckBox {
-                    id: chb_integrated_addressbars
-                    checked: root.app.integrated_addressbars
+                    id: chbIntegratedAddressbars
+                    checked: root.app.integratedAddressbars
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Label {
@@ -103,7 +103,7 @@ NavigationDrawer {
                 }
             }
             onClicked: {
-                chb_integrated_addressbars.checked = !chb_integrated_addressbars.checked
+                chbIntegratedAddressbars.checked = !chbIntegratedAddressbars.checked
             }
         }
 
@@ -112,8 +112,8 @@ NavigationDrawer {
                 anchors.fill: parent
                 spacing: Units.dp(12)
                 CheckBox {
-                    id: chb_tabs_entirely_colorized
-                    checked: root.app.tabs_entirely_colorized
+                    id: chbTabsEntirelyColorized
+                    checked: root.app.tabsEntirelyColorized
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Label {
@@ -123,7 +123,7 @@ NavigationDrawer {
                 }
             }
             onClicked: {
-                chb_tabs_entirely_colorized.checked = !chb_tabs_entirely_colorized.checked
+                chbTabsEntirelyColorized.checked = !chbTabsEntirelyColorized.checked
             }
         }
 
@@ -138,14 +138,14 @@ NavigationDrawer {
         }
 
         ListItem.Standard  {
-            id:primary_chooser
+            id:primaryChooser
             text: qsTr('Primary Color')
             Rectangle {
-                id: primarycolor_sample
+                id: primarycolorSample
                 width:30
                 height:30
                 radius: width*0.5
-                color: primary_color_picker.color
+                color: primaryColorPicker.color
                 anchors {
                         top: parent.top
                         right: parent.right
@@ -154,20 +154,20 @@ NavigationDrawer {
                 }
                 MouseArea {
                     anchors.fill: parent
-                    onPressed: primary_color_picker.open(primarycolor_sample, Units.dp(4), Units.dp(-4))
+                    onPressed: primaryColorPicker.open(primarycolorSample, Units.dp(4), Units.dp(-4))
                 }
             }
         }
 
         ListItem.Standard  {
-            id:accent_chooser
+            id:accentChooser
             text: qsTr('Accent Color')
             Rectangle {
-                id: accentcolor_sample
+                id: accentcolorSample
                 width:30
                 height:30
                 radius: width*0.5
-                color: accent_color_picker.color
+                color: accentColorPicker.color
                 anchors {
                         top: parent.top
                         right: parent.right
@@ -176,18 +176,18 @@ NavigationDrawer {
                 }
                 MouseArea {
                     anchors.fill: parent
-                    onPressed: accent_color_picker.open(accentcolor_sample, Units.dp(4), Units.dp(-4))
+                    onPressed: accentColorPicker.open(accentcolorSample, Units.dp(4), Units.dp(-4))
                 }
             }
         }
 
         ColorPicker {
-            id: primary_color_picker
+            id: primaryColorPicker
             color: theme.primaryColor
         }
 
         ColorPicker {
-            id: accent_color_picker
+            id: accentColorPicker
             color: theme.accentColor
         }
 
@@ -209,17 +209,12 @@ NavigationDrawer {
                 elevation: 1
                 backgroundColor: Theme.accentColor
                 onClicked: {
-                    theme.primaryColor = primary_color_picker.color;
-                    theme.accentColor = accent_color_picker.color;
-                    root.app.home_url = txt_home_url.text;
-                    root.app.integrated_addressbars = chb_integrated_addressbars.checked;
-                    root.app.tabs_entirely_colorized = chb_tabs_entirely_colorized.checked;
-                    root.app.new_tab_page = chb_dashboard.checked;
-                    var tabs = root.get_tab_manager().open_tabs;
-                    for (var i=0; i<tabs.length; i++) {
-                        var tab = tabs[i];
-                        tab.update_colors();
-                    }
+                    theme.primaryColor = primaryColorPicker.color;
+                    theme.accentColor = accentColorPicker.color;
+                    root.app.homeUrl = txtHomeUrl.text;
+                    root.app.integratedAddressbars = chbIntegratedAddressbars.checked;
+                    root.app.tabsEntirelyColorized = chbTabsEntirelyColorized.checked;
+                    root.app.newTabPage = chbDashboard.checked;
                     drawer.close();
                 }
             }
@@ -227,12 +222,12 @@ NavigationDrawer {
                 text: qsTr("Abort")
                 elevation: 1
                 onClicked: {
-                    accent_color_picker.color = theme.accentColor;
-                    primary_color_picker.color = theme.primaryColor;
-                    txt_home_url.text = root.app.home_url;
-                    chb_dashboard.checked = root.app.new_tab_page;
-                    chb_integrated_addressbars.checked = root.app.integrated_addressbars;
-                    chb_tabs_entirely_colorized.checked = root.app.tabs_entirely_colorized;
+                    accentColorPicker.color = theme.accentColor;
+                    primaryColorPicker.color = theme.primaryColor;
+                    txtHomeUrl.text = root.app.homeUrl;
+                    chbDashboard.checked = root.app.newTabPage;
+                    chbIntegratedAddressbars.checked = root.app.integratedAddressbars;
+                    chbTabsEntirelyColorized.checked = root.app.tabsEntirelyColorized;
                     drawer.close();
                 }
             }

@@ -5,51 +5,51 @@ import Qt.labs.settings 1.0
 QtObject {
     id: application
 
-    property string home_url: "https://www.google.de"
+    property string homeUrl: "https://www.google.de"
 
     property var bookmarks: []
-    signal bookmarks_changed()
+    signal changedBookmarks ()
 
-    property bool integrated_addressbars: false
-    property bool tabs_entirely_colorized: false
+    property bool integratedAddressbars: false
+    property bool tabsEntirelyColorized: false
 
-    property bool new_tab_page: true
+    property bool newTabPage: true
 
-    property ListModel history_model: ListModel {
-        id: history_model
+    property ListModel historyModel: ListModel {
+        id: historyModel
         dynamicRoles: true
     }
 
-    property ListModel dashboard_model: ListModel {
-        id: dashboard_model
+    property ListModel dashboardModel: ListModel {
+        id: dashboardModel
         dynamicRoles: true
     }
 
     property QtObject settings: Settings {
-        property alias home_url: application.home_url
-        property alias new_tab_page: application.new_tab_page
+        property alias homeUrl: application.homeUrl
+        property alias newTabPage: application.newTabPage
         property var bookmarks
         property var history
         property var dashboard
-        property alias integrated_addressbars: application.integrated_addressbars
-        property alias tabs_entirely_colorized: application.tabs_entirely_colorized
+        property alias integratedAddressbars: application.integratedAddressbars
+        property alias tabsEntirelyColorized: application.tabsEntirelyColorized
     }
 
 
-    property QtObject default_profile: WebEngineProfile {
+    property QtObject defaultProfile: WebEngineProfile {
         storageName: "Default"
     }
 
-    property Component browser_window_component: BrowserWindow {
+    property Component browserWindowComponent: BrowserWindow {
         app: application
     }
 
     function createWindow (){
-        var newWindow = browser_window_component.createObject(application)
+        var newWindow = browserWindowComponent.createObject(application)
         return newWindow
     }
     function createDialog(request) {
-        var newDialog = browser_window_component.createObject(application)
+        var newDialog = browserWindowComponent.createObject(application)
         var tab = newDialog.addTab("about:blank")
         request.openIn(tab.webview.view)
         return newDialog
@@ -70,23 +70,23 @@ QtObject {
 
         // Load the browser history
         var locale = Qt.locale()
-        var current_date = new Date()
-        var date_string = current_date.toLocaleDateString();
+        var currentDate = new Date()
+        var dateString = currentDate.toLocaleDateString();
 
-        var current_item_date = date_string;
+        var currentItemDate = dateString;
         for (var i=0; i<application.settings.history.length; i++){
             var item = application.settings.history[i];
-            if (current_item_date != item.date) {
-                application.history_model.append({"title": item.date, "url": false, "favicon_url": false, "date": item.date, "type": "date", color: item.color})
-                current_item_date = item.date
+            if (currentItemDate != item.date) {
+                application.historyModel.append({"title": item.date, "url": false, "faviconUrl": false, "date": item.date, "type": "date", color: item.color})
+                currentItemDate = item.date
             }
-            application.history_model.append(item);
+            application.historyModel.append(item);
         }
 
         // Load the dashboard model
         for (var i=0; i<application.settings.dashboard.length; i++){
             var item = application.settings.dashboard[i];
-            application.dashboard_model.append(item);
+            application.dashboardModel.append(item);
         }
 
     }
@@ -96,18 +96,18 @@ QtObject {
 
         // Save the browser history
         var history = [];
-        for (var i=0; i<application.history_model.count; i++){
-            var item = application.history_model.get(i);
+        for (var i=0; i<application.historyModel.count; i++){
+            var item = application.historyModel.get(i);
             if (item.type !== "date")
-                history.push({"title": item.title, "url": item.url, "favicon_url": item.favicon_url, "date": item.date, "type": item.type, "color": item.color});
+                history.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl, "date": item.date, "type": item.type, "color": item.color});
         }
         application.settings.history = history;
 
         // Save the dashboard model
         var dashboard = [];
-        for (var i=0; i<application.dashboard_model.count; i++){
-            var item = application.dashboard_model.get(i);
-            dashboard.push({"title": item.title, "url": item.url, "icon_url": item.icon_url, "bg_color": item.bg_color, "fg_color": item.fg_color, "uid": item.uid})
+        for (var i=0; i<application.dashboardModel.count; i++){
+            var item = application.dashboardModel.get(i);
+            dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
         }
         application.settings.dashboard = dashboard;
     }
