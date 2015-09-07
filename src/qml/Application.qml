@@ -7,6 +7,8 @@ QtObject {
 
     property string homeUrl: "https://www.google.de"
 
+	property string searchEngine: "google"
+
     property var bookmarks: []
     signal changedBookmarks ()
 
@@ -27,6 +29,7 @@ QtObject {
 
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl
+		property alias searceEngine: application.searchEngine
         property alias newTabPage: application.newTabPage
         property var bookmarks
         property var history
