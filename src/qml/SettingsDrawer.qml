@@ -56,28 +56,28 @@ NavigationDrawer {
             }
         }
 
-    		ListItem.Standard {
+    	ListItem.Standard {
             text: ""
             height:60
-      			MenuField {
+      	    MenuField {
                 id: menuSearchEngine
-        				property string selectedEngine: model[selectedIndex].toLowerCase();
+                property string selectedEngine: model[selectedIndex].toLowerCase();
                 width: parent.width * 0.9
-        				model: getListedSearchEngines()
-        				helperText: "Search Engine"
-        				anchors.centerIn: parent
+                model: getListedSearchEngines()
+                helperText: "Search Engine"
+                anchors.centerIn: parent
 
-        				function getListedSearchEngines() {
-          					if(root.app.searchEngine == "duckduckgo")
-          						  return ["DuckDuckGo", "Google", "Yahoo"]
-          					else if(root.app.searchEngine == "yahoo")
-          					     return ["Yahoo", "Google", "DuckDuckGo"]
-          					else
-          					     return ["Google", "DuckDuckGo", "Yahoo"]
-        				}
-      			}
+     		function getListedSearchEngines() {
+  		    if(root.app.searchEngine == "duckduckgo")
+  		        return ["DuckDuckGo", "Google", "Yahoo"]
+  		    else if(root.app.searchEngine == "yahoo")
+  		        return ["Yahoo", "Google", "DuckDuckGo"]
+  		    else
+  		        return ["Google", "DuckDuckGo", "Yahoo"]
+		}
+      	    }
             anchors.bottomMargin: 30
-    		}
+        }
 
         Item {
             height: Units.dp(48)
