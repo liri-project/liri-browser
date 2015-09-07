@@ -109,7 +109,7 @@ ApplicationWindow {
                 }
             }
         }
-        else if (url !== "about:blank")
+        else if (url.lastIndexOf('http://', 0) !== 0 &&  url.lastIndexOf('https://', 0) !== 0 && url !== "about:blank")
             url = "http://www.google.com/search?q=" + url;
         return url;
     }
