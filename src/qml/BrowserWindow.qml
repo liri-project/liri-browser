@@ -40,7 +40,7 @@ ApplicationWindow {
         property alias height: root.height
         property alias primaryColor: theme.primaryColor
         property alias accentColor: theme.accentColor
-		property alias searchEngine: root.searchEngine
+	property alias searchEngine: root.searchEngine
     }
 
     /* Style Settings */
@@ -62,7 +62,7 @@ ApplicationWindow {
 
     property string fontFamily: "Roboto"
 
-	  property string searchEngine: "google"
+    property string searchEngine: "google"
 
     property alias txtSearch: txtSearch
     property alias downloadsDrawer: downloadsDrawer
@@ -113,13 +113,13 @@ ApplicationWindow {
             }
         }
         else if (url.lastIndexOf('http://', 0) !== 0 &&  url.lastIndexOf('https://', 0) !== 0 && url !== "about:blank") {
-      			if(root.app.searchEngine == "duckduckgo")
-        				url = "https://duckduckgo.com/?q=" + url;
-      			else if(root.app.searchEngine == "yahoo")
-        				url = "https://search.yahoo.com/search?q=" + url;
-      			else
-        				url = "https://www.google.com/search?q=" + url;
-      		}
+      	    if(root.app.searchEngine == "duckduckgo")
+     	        url = "https://duckduckgo.com/?q=" + url;
+      	    else if(root.app.searchEngine == "yahoo")
+	        url = "https://search.yahoo.com/search?q=" + url;
+      	    else
+	        url = "https://www.google.com/search?q=" + url;
+      	}
         return url;
     }
 
