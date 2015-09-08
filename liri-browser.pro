@@ -36,3 +36,6 @@ include(deployment.pri)
 
 DISTFILES += \
     src/qml/TabBarItemDelegate.qml
+
+# Windows icon
+RC_ICONS += liri-browser.ico
