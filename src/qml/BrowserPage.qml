@@ -12,6 +12,8 @@ Item {
     property alias listView: tabBar.listView
     property alias bookmarksBar: bookmarksBar
     property alias bookmarkContainer: bookmarksBar.bookmarkContainer
+    property alias txtSearch: txtSearch
+    property alias websiteSearchOverlay: websiteSearchOverlay
 
     function updateToolbar () {
         toolbar.update()
@@ -22,6 +24,7 @@ Item {
             name: qsTr("New window")
             iconName: "action/open_in_new"
             onTriggered: app.createWindow()
+            visible: root.app.enableNewWindowAction
         },
         /*Action {
             name: qsTr("Save page")
@@ -100,11 +103,64 @@ Item {
 
             BrowserToolbar { id: toolbar }
 
-            BookmarksBar { id: bookmarksBar }
+            BookmarksBar {
+                id: bookmarksBar
+                visible: app.bookmarks.length > 0
+            }
         }
     }
 
     FullscreenBar { id: fullscreenBar }
+
+    View {
+        id: websiteSearchOverlay
+        visible: false
+        anchors.top: titlebar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: Units.dp(48)
+        elevation: Units.dp(4)
+        z: 2
+
+        Row {
+            anchors.fill: parent
+            anchors.margins: Units.dp(5)
+            anchors.leftMargin: Units.dp(24)
+            anchors.rightMargin: Units.dp(24)
+            spacing: Units.dp(24)
+
+            TextField {
+                id: txtSearch
+                placeholderText: qsTr("Search")
+                errorColor: "red"
+                onAccepted: activeTabFindText(text)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            IconButton {
+                iconName: "hardware/keyboard_arrow_up"
+                onClicked: activeTabFindText(txtSearch.text, true)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            IconButton {
+                iconName: "hardware/keyboard_arrow_down"
+                onClicked: activeTabFindText(txtSearch.text)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+        }
+
+        IconButton {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.rightMargin: Units.dp(24)
+            iconName: "navigation/close"
+            color: root.iconColor
+            onClicked: root.hideSearchOverlay()
+        }
+    }
+
 
     Item {
         anchors {
@@ -139,6 +195,7 @@ Item {
                     id: listItem
                     text: modelData.name
                     iconSource: modelData.iconSource
+                    visible: modelData.visible
                     onClicked: {
                         overflowMenu.close()
                         modelData.triggered(listItem)

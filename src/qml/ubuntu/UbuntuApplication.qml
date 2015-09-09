@@ -6,6 +6,7 @@ Item {
 
     property string webEngine: "oxide"
     property bool enableShortCuts: false
+    property bool enableNewWindowAction: false
 
     property string homeUrl: "https://www.google.de"
 
@@ -72,6 +73,7 @@ Item {
             settings.history = [];
 
         application.bookmarks = settings.bookmarks;
+        console.log("BOOMARKS,", bookmarks)
 
         // Load the browser history
         var locale = Qt.locale()

@@ -7,6 +7,7 @@ Item {
 
     property string webEngine: "qtwebengine"
     property bool enableShortCuts: true
+    property bool enableNewWindowAction: true
 
     property string homeUrl: "https://www.google.de"
 

@@ -61,7 +61,8 @@ ApplicationWindow {
 
     property string searchEngine: "google"
 
-    property alias txtSearch: txtSearch
+    property alias txtSearch: page.txtSearch
+    property alias websiteSearchOverlay: page.websiteSearchOverlay
     property alias downloadsDrawer: downloadsDrawer
     property alias iconConnectionType: page.iconConnectionType
 
@@ -168,7 +169,7 @@ ApplicationWindow {
 
     function addBookmark(title, url, faviconUrl, color){
         root.app.bookmarks.push({title: title, url: url, faviconUrl: faviconUrl, color: color});
-        changedBookmarks();
+        root.app.changedBookmarks();
     }
 
     function changeBookmark(url, title, newUrl, faviconUrl){
@@ -177,7 +178,7 @@ ApplicationWindow {
                 root.app.bookmarks[i].url = newUrl;
                 root.app.bookmarks[i].title = title;
                 root.app.bookmarks[i].faviconUrl = faviconUrl;
-                changedBookmarks();
+                root.app.changedBookmarks();
                 return true;
             }
         }
@@ -189,7 +190,7 @@ ApplicationWindow {
         for (var i=0; i<root.app.bookmarks.length; i++){
             if (root.app.bookmarks[i].url == url){
                 root.app.bookmarks.splice(i, 1);
-                changedBookmarks();
+                root.app.changedBookmarks();
                 return true;
             }
         }
@@ -460,54 +461,6 @@ ApplicationWindow {
 
     HistoryDrawer { id: historyDrawer }
 
-    View {
-        id: websiteSearchOverlay
-        visible: false
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: Units.dp(48)
-        elevation: Units.dp(4)
-
-        Row {
-            anchors.fill: parent
-            anchors.margins: Units.dp(5)
-            anchors.leftMargin: Units.dp(24)
-            anchors.rightMargin: Units.dp(24)
-            spacing: Units.dp(24)
-
-            TextField {
-                id: txtSearch
-                placeholderText: qsTr("Search")
-                errorColor: "red"
-                onAccepted: activeTabFindText(text)
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-            IconButton {
-                iconName: "hardware/keyboard_arrow_up"
-                onClicked: activeTabFindText(txtSearch.text, true)
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-            IconButton {
-                iconName: "hardware/keyboard_arrow_down"
-                onClicked: activeTabFindText(txtSearch.text)
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-        }
-
-        IconButton {
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.rightMargin: Units.dp(24)
-            iconName: "navigation/close"
-            color: root.iconColor
-            onClicked: root.hideSearchOverlay()
-        }
-    }
-
     Snackbar {
         id: snackbar
     }
@@ -580,12 +533,12 @@ ApplicationWindow {
         // Add tab
         addTab();
 
-        // Profile handling
-        root.app.defaultProfile.downloadRequested.connect(root.downloadRequested);
-
         // Bookmark handling
         root.loadBookmarks();
         root.app.changedBookmarks.connect(root.reloadBookmarks)
+
+        // Profile handling
+        root.app.defaultProfile.downloadRequested.connect(root.downloadRequested);
     }
 
 }
