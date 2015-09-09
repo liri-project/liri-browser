@@ -38,4 +38,7 @@ DISTFILES += \
     src/qml/TabBarItemDelegate.qml
 
 # Windows icon
-RC_ICONS += liri-browser.ico
+RC_ICONS = icons/liri-browser.ico
+
+# OS X icon
+ICON = icons/liri-browser.icns
