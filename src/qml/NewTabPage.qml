@@ -3,33 +3,41 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
+import QtQuick.Layouts 1.1
 
-Rectangle {
+Item {
     id: pageRoot
     anchors.fill: parent
 
-    Text {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: textDescription.top
-        font.family: root.fontFamily
-        text: qsTr("Nothing here, yet")
-        visible: root.app.dashboardModel.count === 0
-        font.pixelSize: 24
-        color: root.iconColor
-    }
-
-    Text {
-        id: textDescription
-        horizontalAlignment: Text.AlignHCenter
-        width: parent.width - Units.dp(48)
+    ColumnLayout {
         anchors.centerIn: parent
-        font.family: root.fontFamily
-        text: qsTr('You can add items by clicking on the menu item "Add to dash" on any website or by right clicking on a bookmark.')
-        clip: true
-        wrapMode: Text.WordWrap
         visible: root.app.dashboardModel.count === 0
-        font.pixelSize: 16
-        color: root.iconColor
+        width: parent.width - Units.dp(32)
+
+        Icon {
+            name: "social/public"
+            size: Units.dp(48)
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        Label {
+            text: qsTr("Welcome to Liri!")
+            style: "title"
+            color: Theme.light.subTextColor
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        Label {
+            text: qsTr("Your bookmarks and frequently visited sites will appear here")
+
+            wrapMode: Text.WordWrap
+            horizontalAlignment: Text.AlignHCenter
+            style: "subheading"
+            color: Theme.light.subTextColor
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+        }
     }
 
     GridView {
@@ -281,10 +289,6 @@ Rectangle {
                 editDialog.close();
             }
         }
-
     }
-
-
-
 }
 

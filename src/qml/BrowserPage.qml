@@ -104,6 +104,7 @@ Page {
         z: 5
 
         elevation: 2
+        fullWidth: true
 
         Column {
             id: titlebarContents
