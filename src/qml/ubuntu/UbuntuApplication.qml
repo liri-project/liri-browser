@@ -1,16 +1,15 @@
 import QtQuick 2.1
-import QtWebEngine 1.1
 import Qt.labs.settings 1.0
 
 Item {
     id: application
 
-    property string webEngine: "qtwebengine"
-    property bool enableShortCuts: true
+    property string webEngine: "oxide"
+    property bool enableShortCuts: false
 
     property string homeUrl: "https://www.google.de"
 
-	property string searchEngine: "google"
+    property string searchEngine: "google"
 
     property var bookmarks: []
     signal changedBookmarks ()
@@ -30,9 +29,9 @@ Item {
         dynamicRoles: true
     }
 
-    property QtObject settings: Settings {
+    property var settings: Settings {
         property alias homeUrl: application.homeUrl
-		property alias searceEngine: application.searchEngine
+        property alias searceEngine: application.searchEngine
         property alias newTabPage: application.newTabPage
         property var bookmarks
         property var history
@@ -42,13 +41,13 @@ Item {
     }
 
 
-    property QtObject defaultProfile: WebEngineProfile {
-        storageName: "Default"
-    }
+    //property QtObject defaultProfile: WebEngineProfile {
+    //    storageName: "Default"
+    //}
 
-    property Component browserWindowComponent: BrowserWindow {
-        app: application
-    }
+    //property Component browserWindowComponent: BrowserWindow {
+    //    app: application
+    //}
 
     function createWindow (){
         var newWindow = browserWindowComponent.createObject(application)

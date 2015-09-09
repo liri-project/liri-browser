@@ -2,8 +2,7 @@ import QtQuick 2.4
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
-import QtQuick.Controls 1.3 as Controls
-import QtWebEngine 1.1
+import QtQuick.Controls 1.2 as Controls
 import QtQuick.Dialogs 1.1
 import Qt.labs.settings 1.0
 
@@ -317,7 +316,12 @@ ApplicationWindow {
             u = root.app.homeUrl;
         }
 
-        var webviewComponent = Qt.createComponent ("BrowserWebView.qml");
+        var webviewComponent;
+
+        if (app.webEngine === "qtwebengine")
+            webviewComponent = Qt.createComponent ("BrowserWebView.qml");
+        else if (app.webEngine === "oxide")
+            webviewComponent = Qt.createComponent ("BrowserOxideWebView.qml");
         var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, profile: root.app.defaultProfile, uid: lastTabUID});
         var modelData = {
             url: url,
@@ -444,7 +448,9 @@ ApplicationWindow {
 
     /** ------------- **/
 
-    ShortcutActions {}
+    Item {
+        id: shortCutActionsContainer
+    }
 
     initialPage: BrowserPage { id: page }
 
@@ -565,6 +571,12 @@ ApplicationWindow {
         }
     }
     Component.onCompleted: {
+        // Create shortcut actions
+        if (app.enableShortCuts) {
+            var component = Qt.createComponent("ShortcutActions.qml");
+            component.createObject(shortCutActionsContainer);
+        }
+
         // Add tab
         addTab();
 

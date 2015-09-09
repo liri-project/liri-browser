@@ -2,7 +2,7 @@ import QtQuick 2.4
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
-import QtQuick.Controls 1.3 as Controls
+import QtQuick.Controls 1.2 as Controls
 
 Rectangle {
     id: fullscreenBar
