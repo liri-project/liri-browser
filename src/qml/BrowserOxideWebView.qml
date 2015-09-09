@@ -48,12 +48,15 @@ Item {
 
     WebContext {
         id: webcontext
+        property string defaultUserAgent: "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+        property string mobileUserAgent: "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19 "
         userScripts: [
             UserScript {
                 context: usContext
                 url: Qt.resolvedUrl("ubuntu/oxide-user.js")
             }
         ]
+        userAgent: mobile ? mobileUserAgent : defaultUserAgent
     }
 
     WebView {

@@ -69,6 +69,8 @@ ApplicationWindow {
     property bool fullscreen: false
     property bool secureConnection: false
 
+    property bool mobile: true
+
 
     /* Functions */
 

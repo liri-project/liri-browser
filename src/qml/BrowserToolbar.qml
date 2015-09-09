@@ -49,6 +49,7 @@ Rectangle {
             enabled: root.activeTab.webview.canGoForward
             onClicked: root.activeTab.webview.goForward()
             color: root.currentIconColor
+            visible: root.activeTab.webview.canGoForward || !mobile
         }
 
         IconButton {
@@ -77,7 +78,7 @@ Rectangle {
             color: root.currentIconColor
             iconName: "content/add"
             onClicked: addTab()
-            visible: !tabBar.visible
+            visible: !tabBar.visible && !mobile
         }
 
         IconButton {
@@ -85,6 +86,7 @@ Rectangle {
             color: root.currentIconColor
             iconName: "action/bookmark_border"
             onClicked: toggleActiveTabBookmark()
+            visible: !mobile
         }
 
         IconButton {
@@ -92,6 +94,7 @@ Rectangle {
             color: downloadsDrawer.activeDownloads ? Theme.accentColor : root.currentIconColor
             iconName: "file/file_download"
             onClicked: downloadsDrawer.open(downloadsButton)
+            visible: !mobile
 
             Rectangle {
                 visible: downloadsDrawer.activeDownloads
