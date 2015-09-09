@@ -20,11 +20,9 @@ ApplicationWindow {
 
     theme {
         id: theme
-        //backgroundColor: ""
         primaryColor: "#2196F3"
         primaryDarkColor: "#1976D2"
         accentColor: "#4CAF50"
-        //tabHighlightColor: ""
     }
 
     /* User Settings */
@@ -40,7 +38,7 @@ ApplicationWindow {
         property alias height: root.height
         property alias primaryColor: theme.primaryColor
         property alias accentColor: theme.accentColor
-	property alias searchEngine: root.searchEngine
+        property alias searchEngine: root.searchEngine
     }
 
     /* Style Settings */
@@ -66,8 +64,7 @@ ApplicationWindow {
 
     property alias txtSearch: txtSearch
     property alias downloadsDrawer: downloadsDrawer
-    property alias iconConnectionType: iconConnectionType
-    //property alias flickable: flickable
+    property alias iconConnectionType: page.iconConnectionType
 
     property bool fullscreen: false
     property bool secureConnection: false
@@ -201,23 +198,23 @@ ApplicationWindow {
     }
 
     function clearBookmarks(){
-        for(var i = bookmarkContainer.children.length; i > 0 ; i--) {
-            bookmarkContainer.children[i-1].destroy();
-      }
+        for(var i = page.bookmarkContainer.children.length; i > 0 ; i--) {
+            page.bookmarkContainer.children[i-1].destroy();
+        }
     }
 
-    function loadBookmarks(){
+    function loadBookmarks() {
         root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
         var bookmarkComponent = Qt.createComponent("BookmarkItem.qml");
         for (var i=0; i<root.app.bookmarks.length; i++){
             var b = root.app.bookmarks[i];
-            var bookmarkObject = bookmarkComponent.createObject(bookmarkContainer, { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
+            var bookmarkObject = bookmarkComponent.createObject(page.bookmarkContainer, { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
         }
 
         if (root.app.bookmarks.length > 0)
-            bookmarkBar.visible = true;
+            page.bookmarksBar.visible = true;
         else
-            bookmarkBar.visible = false;
+            page.bookmarksBar.visible = false;
     }
 
     function reloadBookmarks(){
@@ -253,8 +250,6 @@ ApplicationWindow {
         }
     }
 
-
-
     /** NEW FUNCTIONS AND PROPERTIES **/
 
     property var activeTab
@@ -284,7 +279,7 @@ ApplicationWindow {
             activeTab.webview.visible = true;
             activeTabHistory.push(activeTab.uid);
         }
-        updateToolbar();
+        page.updateToolbar();
     }
 
     function getTabModelDataByUID (uid) {
@@ -323,7 +318,7 @@ ApplicationWindow {
         }
 
         var webviewComponent = Qt.createComponent ("BrowserWebView.qml");
-        var webview = webviewComponent.createObject(webContainer, {url: u, newTabPage: ntp, profile: root.app.defaultProfile, uid: lastTabUID});
+        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, profile: root.app.defaultProfile, uid: lastTabUID});
         var modelData = {
             url: url,
             webview: webview,
@@ -366,7 +361,7 @@ ApplicationWindow {
     function ensureTabIsVisible(t) {
         if (typeof(t) === "number") {
             var modelIndex = getTabModelIndexByUID(t);
-            listView.positionViewAtIndex(modelIndex, ListView.Visible);
+            page.listView.positionViewAtIndex(modelIndex, ListView.Visible);
         }
     }
 
@@ -412,7 +407,7 @@ ApplicationWindow {
             snackbar.open(qsTr('Added bookmark "%1"').arg(title));
             addBookmark(title, url, icon, activeTab.customColor);
         }
-        updateToolbar ();
+        page.updateToolbar ();
     }
 
     function activeTabFindText(text, backward) {
@@ -436,19 +431,10 @@ ApplicationWindow {
       });
     }
 
-    function updateToolbar () {
-        var url = activeTab.webview.url;
-
-        if (isBookmarked(url))
-            btnBookmark.iconName = "action/bookmark";
-        else
-            btnBookmark.iconName = "action/bookmark_border";
-    }
-
     /* Events */
 
     function activeTabUrlChanged() {
-        updateToolbar ();
+        page.updateToolbar ();
     }
 
     function downloadRequested(download) {
@@ -460,489 +446,7 @@ ApplicationWindow {
 
     ShortcutActions {}
 
-    initialPage: Rectangle {
-        id: page
-
-        View {
-            id: titlebar
-
-            width: parent.width
-            height: if (root.app.integratedAddressbars) {tabBar.height + bookmarkBar.height} else {tabBar.height + toolbar.height + bookmarkBar.height}
-
-            elevation: 2
-
-                Rectangle {
-                    id: tabBar
-                    height: root.tabHeight
-                    color: root.tabBackgroundColor
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    ListView {
-                        id: listView
-
-                        anchors.top: parent.top
-                        anchors.left: parent.left
-                        anchors.bottom: parent.bottom
-                        anchors.right: toolbarIntegrated.left
-
-                        orientation: ListView.Horizontal
-                        spacing: Units.dp(1)
-                        interactive: mouseArea.draggingId == -1
-
-                        model: tabsModel
-
-                        delegate: TabBarItemDelegate {}
-
-                        MouseArea {
-                                id: mouseArea
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                property int index: listView.indexAt(mouseX + listView.contentX, mouseY)
-                                property int draggingId: -1
-                                property int activeIndex
-                                propagateComposedEvents: true
-
-                                onClicked: mouse.accepted = false;
-
-                                onPressed: if (root.activeTabInEditMode) {mouse.accepted = false;}
-
-                                onPressAndHold: {
-                                    if (root.activeTabInEditMode) {mouse.accepted = false;}
-                                    else {
-                                        var item = listView.itemAt(mouseX + listView.contentX, mouseY);
-                                        if(item !== null) {
-                                            //root.activeTab = item;
-                                            draggingId = listView.model.get(activeIndex=index).uid;
-                                        }
-                                    }
-
-                                }
-                                onReleased: {
-                                    if (activeTab.uid !== draggingId)
-                                        getTabModelDataByUID(draggingId).state = "inactive";
-                                    else
-                                        getTabModelDataByUID(draggingId).state = "active";
-                                    draggingId = -1
-                                    mouse.accepted = false;
-                                }
-                                onPositionChanged: {
-                                    if (draggingId != -1 && index != -1 && index != activeIndex) {
-                                        listView.model.move(activeIndex, activeIndex = index, 1);
-                                    }
-                                    mouse.accepted = false;
-
-                                }
-                                onDoubleClicked: {
-                                    mouse.accepted = false;
-                                }
-
-                                onWheel: {
-                                    listView.flick(wheel.angleDelta.y*10, 0);
-                                }
-                         }
-
-                    }
-
-                    View {
-                        id: toolbarIntegrated
-                        elevation: Units.dp(2)
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.right: parent.right
-                        width: if (root.app.integratedAddressbars) { btnAddTabIntegrated.width + btnDownloadsIntegrated.width + btnMenuIntegrated.width + Units.dp(24)*3 } else { Units.dp(48) }
-
-                        IconButton {
-                            id: btnAddTabIntegrated
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.right: btnDownloadsIntegrated.left
-                            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
-                            color: root.iconColor
-                            iconName: "content/add"
-
-                            onClicked: addTab();
-                        }
-
-                        IconButton {
-                            id: btnDownloadsIntegrated
-                            visible: root.app.integratedAddressbars && downloadsDrawer.activeDownloads
-                            width: if (root.app.integratedAddressbars && downloadsDrawer.activeDownloads) { Units.dp(24) } else { 0 }
-                            color: if (downloadsDrawer.activeDownloads){ theme.accentColor } else { root.iconColor }
-                            iconName : "file/file_download"
-                            anchors.right: btnMenuIntegrated.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.margins: if (root.app.integratedAddressbars && downloadsDrawer.activeDownloads) { Units.dp(24) } else { 0 }
-                            onClicked: downloadsDrawer.open(btnDownloads)// downloadsPopup.open(btnDownloads)
-
-                            Rectangle {
-                                visible: downloadsDrawer.activeDownloads
-                                z: -1
-                                width: parent.width + Units.dp(5)
-                                height: parent.height + Units.dp(5)
-                                anchors.centerIn: parent
-                                color: "white"
-                                radius: width*0.5
-                            }
-                        }
-
-                        IconButton {
-                            id: btnMenuIntegrated
-                            visible: root.app.integratedAddressbars
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 0 }
-                            width: if (root.app.integratedAddressbars) { Units.dp(24) } else { 0 }
-                            color: root.iconColor
-                            iconName : "navigation/more_vert"
-                            onClicked: overflowMenu.open(btnMenuIntegrated)
-
-                        }
-
-                    }
-
-                }
-
-                Item {
-                    id: toolbarContainer
-                    anchors.top: tabBar.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Column {
-                        anchors.fill: parent
-
-                        Rectangle {
-                            id: toolbar
-                            visible: !integratedAddressbars
-                            //anchors.fill: parent
-                            height: Units.dp(64)
-                            width: parent.width
-                            color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
-
-                            Row {
-                                anchors.fill: parent
-                                anchors.leftMargin: Units.dp(24)
-                                spacing: Units.dp(24)
-
-                                IconButton {
-                                    id: btnGoBack
-                                    iconName : "navigation/arrow_back"
-                                    enabled: root.activeTab.webview.canGoBack
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: root.activeTab.webview.goBack()
-                                    color: root.currentIconColor
-                                }
-
-                                IconButton {
-                                    id: btnGoForward
-                                    iconName : "navigation/arrow_forward"
-                                    enabled: root.activeTab.webview.canGoForward
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: root.activeTab.webview.goForward()
-                                    color: root.currentIconColor
-                                }
-
-                                IconButton {
-                                    id: btnRefresh
-                                    hoverAnimation: true
-                                    iconName : "navigation/refresh"
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    color: root.currentIconColor
-                                    visible: !activeTab.webview.loading
-                                    onClicked: activeTab.webview.reload()
-                                }
-
-                                LoadingIndicator {
-                                    id: prgLoading
-                                    visible: activeTab.webview.loading
-                                    width: btnRefresh.width
-                                    height: btnRefresh.height
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-
-                                Rectangle {
-                                    width: parent.width - this.x - rightToolbar.width - parent.spacing
-                                    radius: Units.dp(2)
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    height: parent.height - Units.dp(16)
-                                    color: root.addressBarColor
-                                    opacity: 0.5
-
-                                    Icon {
-                                        x: Units.dp(16)
-                                        id: iconConnectionType
-                                        name: root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
-                                        color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
-                                        anchors.verticalCenter: parent.verticalCenter
-                                    }
-
-                                    TextField {
-                                        id: txtUrl
-                                        anchors.fill: parent
-                                        anchors.leftMargin: iconConnectionType.x + iconConnectionType.width + Units.dp(16)
-                                        anchors.rightMargin: Units.dp(24)
-                                        anchors.topMargin: Units.dp(4)
-                                        showBorder: false
-                                        text: root.activeTab.webview.url
-                                        placeholderText: qsTr("Input search or web address")
-                                        opacity: 1
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        textColor: root.tabTextColorActive
-                                        onAccepted: setActiveTabURL(text);
-                                    }
-
-                                }
-
-                                Row {
-                                    id: rightToolbar
-                                    width: childrenRect.width + spacing
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    spacing: Units.dp(24)
-
-                                    IconButton {
-                                        id: btnBookmark
-                                        color: root.currentIconColor
-                                        iconName: "action/bookmark_border"
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        onClicked: toggleActiveTabBookmark();
-                                    }
-
-                                    IconButton {
-                                        id: btnDownloads
-                                        color: if (downloadsDrawer.activeDownloads){ theme.accentColor } else {root.currentIconColor}
-                                        iconName : "file/file_download"
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        onClicked: downloadsDrawer.open(btnDownloads)// downloadsPopup.open(btnDownloads)
-
-                                        Rectangle {
-                                            visible: downloadsDrawer.activeDownloads
-                                            z: -1
-                                            width: parent.width + Units.dp(5)
-                                            height: parent.height + Units.dp(5)
-                                            anchors.centerIn: parent
-                                            color: "white"
-                                            radius: width*0.5
-                                        }
-                                    }
-
-                                    IconButton {
-                                        id: btnMenu
-                                        color: root.currentIconColor
-                                        iconName : "navigation/more_vert"
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        onClicked: overflowMenu.open(btnMenu)
-
-                                    }
-
-                                    Rectangle { width: Units.dp(24)} // placeholder
-
-                                }
-
-                            }
-                        }
-
-                        Rectangle {
-                            id: bookmarkBar
-                            color: toolbar.color
-                            height: if (visible) { Units.dp(48) } else {0}
-                            width: parent.width
-
-                            Flickable {
-                                anchors.fill: parent
-                                anchors.margins: Units.dp(5)
-                                anchors.leftMargin: Units.dp(24)
-                                contentWidth: bookmarkContainer.implicitWidth + Units.dp(16)
-
-                                Row {
-                                    id: bookmarkContainer
-                                    anchors.fill: parent
-                                    spacing: Units.dp(15)
-
-                                }
-
-                            }
-
-                            Behavior on height {
-                                NumberAnimation {
-                                    duration: 200
-                                    easing.type: Easing.InOutQuad
-                                }
-                            }
-                        }
-
-
-                        Dropdown {
-                            id: overflowMenu
-                            objectName: "overflowMenu"
-
-                            width: Units.dp(250)
-                            height: columnView.height + Units.dp(16)
-
-                            ColumnLayout {
-                                id: columnView
-                                width: parent.width
-                                anchors.centerIn: parent
-
-                                ListItem.Standard {
-                                    text: qsTr("New window")
-                                    iconName: "action/open_in_new"
-                                    onClicked: app.createWindow()
-                                }
-
-                                /*ListItem.Standard {
-                                    text: qsTr("Save page")
-                                    iconName: "content/save"
-                                }
-
-                                ListItem.Standard {
-                                    text: qsTr("Print page")
-                                    iconName: "action/print"
-                                }*/
-
-                                ListItem.Standard {
-                                    text: qsTr("History")
-                                    iconName: "action/history"
-                                    onClicked: { overflowMenu.close(); historyDrawer.open(); }
-                                }
-
-                                ListItem.Standard {
-                                    text: qsTr("Fullscreen")
-                                    iconName: "navigation/fullscreen"
-                                    onClicked: if (!root.fullscreen) {root.startFullscreenMode(); overflowMenu.close()}
-
-                                   }
-
-                                ListItem.Standard {
-                                    text: qsTr("Search")
-                                    iconName: "action/search"
-                                    onClicked: { overflowMenu.close(); root.showSearchOverlay();}
-                                }
-
-                                ListItem.Standard {
-                                    text: qsTr("Bookmark")
-                                    visible: root.app.integratedAddressbars
-                                    iconName: "action/bookmark_border"
-                                    onClicked: {  overflowMenu.close(); root.toggleActiveTabBookmark();}
-                                }
-
-                                ListItem.Standard {
-                                    text: qsTr("Add to dash")
-                                    //visible: root.app.integratedAddressbars
-                                    iconName: "action/dashboard"
-                                    onClicked: { overflowMenu.close(); root.addToDash(activeTab.webview.url, activeTab.webview.title, activeTab.customColor); }
-                                }
-
-                                ListItem.Standard {
-                                    text: qsTr("View source")
-                                    //visible: root.app.integratedAddressbars
-                                    iconName: "action/code"
-                                    onClicked: {
-                                      overflowMenu.close();
-                                      activeTabViewSourceCode();
-                                    }
-                                }
-
-                                ListItem.Standard {
-                                    text: qsTr("Settings")
-                                    iconName: "action/settings"
-                                    onClicked: { overflowMenu.close(); settingsDrawer.open(); }
-                                }
-                            }
-                        }
-
-                    }
-
-                }
-
-        }
-
-
-        Rectangle {
-            id: fullscreenBar
-            z: 5
-            visible: root.fullscreen
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: Units.dp(48)
-
-            Row {
-                anchors.fill: parent
-                anchors.leftMargin: Units.dp(24)
-                anchors.rightMargin: Units.dp(24)
-                spacing: Units.dp(24)
-
-                Image {
-                    source: root.activeTab.webview.icon
-                    width: Units.dp(18)
-                    height: Units.dp(18)
-                    anchors.verticalCenter: parent.verticalCenter
-
-                }
-
-                Text {
-                    text: root.activeTab.webview.title
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.family: root.fontFamily
-                }
-
-            }
-
-            IconButton {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: Units.dp(7)
-                iconName: "navigation/fullscreen_exit"
-                onClicked: {
-                    root.endFullscreenMode();
-                }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                propagateComposedEvents: true
-
-                onEntered: {
-                    parent.opacity = 1.0;
-                }
-
-                onExited: {
-                    parent.opacity = 0.0;
-                }
-
-            }
-
-            Behavior on opacity { NumberAnimation {duration: 300} }
-            onVisibleChanged: {
-                if (visible)
-                    var timer = Qt.createQmlObject("import QtQuick 2.0; Timer {}", parent);
-                    timer.interval = 1500;
-                    timer.repeat = false;
-                    timer.triggered.connect(function () {
-                        opacity = 0
-                    });
-
-                    timer.start();
-            }
-
-        }
-
-
-        Item {
-            anchors.top: if (fullscreen){parent.top} else { titlebar.bottom}
-            anchors.topMargin: Units.dp(2)
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-
-            Item {
-                id: webContainer
-                anchors.fill: parent
-            }
-
-        }
-    }
+    initialPage: BrowserPage { id: page }
 
     SettingsDrawer { id: settingsDrawer }
 
