@@ -69,7 +69,7 @@ ApplicationWindow {
     property bool fullscreen: false
     property bool secureConnection: false
 
-    property bool mobile: true
+    property bool mobile: Device.isMobile
 
 
     /* Functions */
