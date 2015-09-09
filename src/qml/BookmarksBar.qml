@@ -9,7 +9,11 @@ Rectangle {
 
     color: toolbar.color
     height: visible ? Units.dp(48) : 0
-    width: parent.width
+
+    anchors {
+        left: parent.left
+        right: parent.right
+    }
 
     property alias bookmarkContainer: bookmarkContainer
 

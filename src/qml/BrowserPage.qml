@@ -80,26 +80,27 @@ Item {
         id: titlebar
 
         width: parent.width
-        height: root.app.integratedAddressbars ? tabBar.height + bookmarksBar.height
-                                               : tabBar.height + toolbar.height + bookmarksBar.height
+        height: titlebarContents.height
 
         elevation: 2
 
-        BrowserTabBar { id: tabBar }
+        Column {
+            id: titlebarContents
 
-        Item {
-            id: toolbarContainer
-            anchors.top: tabBar.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            Column {
-                anchors.fill: parent
-
-                BrowserToolbar { id: toolbar }
-
-                BookmarksBar { id: bookmarksBar }
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
             }
+
+            BrowserTabBar {
+                id: tabBar
+                visible: tabsModel.count > 1
+            }
+
+            BrowserToolbar { id: toolbar }
+
+            BookmarksBar { id: bookmarksBar }
         }
     }
 

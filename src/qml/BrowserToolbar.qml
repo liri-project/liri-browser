@@ -10,8 +10,12 @@ Rectangle {
     color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
     visible: !integratedAddressbars
 
-    height: Units.dp(64)
-    width: parent.width
+    height: Units.dp(56)
+
+    anchors {
+        left: parent.left
+        right: parent.right
+    }
 
     property alias iconConnectionType: omnibox.iconConnectionType
 
@@ -26,10 +30,10 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.leftMargin: Units.dp(24)
-        anchors.rightMargin: Units.dp(24)
+        anchors.leftMargin: spacing
+        anchors.rightMargin: spacing
 
-        spacing: Units.dp(24)
+        spacing: Units.dp(16)
 
         Layout.alignment: Qt.AlignVCenter
 
@@ -57,6 +61,9 @@ Rectangle {
 
         LoadingIndicator {
             visible: activeTab.webview.loading
+            width: Units.dp(24)
+            height: Units.dp(24)
+            dashThickness: Units.dp(2)
         }
 
         Omnibox {
@@ -64,6 +71,13 @@ Rectangle {
 
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height - Units.dp(16)
+        }
+
+        IconButton {
+            color: root.currentIconColor
+            iconName: "content/add"
+            onClicked: addTab()
+            visible: !tabBar.visible
         }
 
         IconButton {
