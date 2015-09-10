@@ -1,4 +1,5 @@
 # Copy translation files
+
 #copydata.commands = $(COPY_DIR) $$PWD/translations $$OUT_PWD
 #first.depends = $(first) copydata
 #export(first.depends)

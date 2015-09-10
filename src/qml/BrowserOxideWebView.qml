@@ -11,13 +11,14 @@ Item {
     property var uid
     property alias webview: webview
     property bool newTabPage
+    property bool settingsTabPage
 
     /* Wrapping WebEngineView functionality */
     property alias page: webview.page
     property alias url: webview.url
     //property alias profile: webview.profile
     property alias icon: webview.icon
-    property string title: newTabPage ? qsTr("New tab") : webview.title
+    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : webview.title
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
@@ -237,5 +238,13 @@ Item {
         visible: newTabPage
         anchors.fill: parent
     }
+
+
+    SettingsTabPage {
+        id: itemSettingsTabPage
+        visible: settingsTabPage && !newTabPage
+        anchors.fill: parent
+    }
+
 
 }

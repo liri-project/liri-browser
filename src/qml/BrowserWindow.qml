@@ -71,9 +71,7 @@ ApplicationWindow {
     property bool fullscreen: false
     property bool secureConnection: false
 
-    property bool mobile: Device.isMobile
-    // FIXME: Device.isMobile doesn't detect BQ Aqauris E4.5 Ubuntu Edition as mobile :/
-
+    property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(900)
 
     /* Functions */
 
@@ -331,7 +329,7 @@ ApplicationWindow {
             else
               u = getValidUrl(url);
         }
-        else if (root.app.newTabPage) {
+        else if (root.app.newTabPage && !stp) {
             ntp = true;
         }
         else {
@@ -420,6 +418,7 @@ ApplicationWindow {
         if (url == "liri://settings") {
             u = url;
             activeTab.webview.settingsTabPage = true;
+            activeTab.webview.newTabPage = false;
         }
         else {
             var u = getValidUrl(url);

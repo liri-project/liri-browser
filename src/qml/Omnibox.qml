@@ -40,7 +40,8 @@ Rectangle {
         placeholderText: qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive
-        onTextChanged: isASearchQuery(text) ? connectionTypeIcon.name = "action/search" : connectionTypeIcon.name = "social/public"
+        onTextChanged: isASearchQuery(text) ? connectionTypeIcon.name = "action/search" : connectionTypeIcon.name = "social/public"
         onAccepted: setActiveTabURL(text)
+
     }
 }
