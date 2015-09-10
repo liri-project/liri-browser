@@ -1,5 +1,4 @@
 import QtQuick 2.1
-import QtWebEngine 1.1
 import Qt.labs.settings 1.0
 
 Item {
@@ -14,7 +13,7 @@ Item {
 
     property string searchEngine: "google"
 
-    property string sourcetemp: "test"
+    property string sourcetemp: "unknown"
     property string sourceHighlightTheme: "monokai_sublime"
 
     property var bookmarks: []
@@ -37,7 +36,7 @@ Item {
 
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl
-		    property alias searceEngine: application.searchEngine
+            property alias searceEngine: application.searchEngine
         property alias sourceHighlightTheme: application.sourceHighlightTheme
         property alias newTabPage: application.newTabPage
         property var bookmarks
@@ -45,29 +44,6 @@ Item {
         property var dashboard
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
-    }
-
-
-    property QtObject defaultProfile: WebEngineProfile {
-        storageName: "Default"
-    }
-
-    property Component browserWindowComponent: BrowserWindow {
-        app: application
-    }
-
-    function createWindow (){
-        var newWindow = browserWindowComponent.createObject(application)
-        return newWindow
-    }
-    function createDialog(request) {
-        var newDialog = browserWindowComponent.createObject(application)
-        var tab = newDialog.addTab("about:blank")
-        request.openIn(tab.webview.view)
-        return newDialog
-    }
-    function load() {
-        var browserWindow = createWindow()
     }
 
     Component.onCompleted: {

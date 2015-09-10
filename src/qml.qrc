@@ -4,7 +4,6 @@
         <file>qml/BrowserWebView.qml</file>
         <file>qml/BookmarkItem.qml</file>
         <file>qml/ShortcutActions.qml</file>
-        <file>qml/Application.qml</file>
         <file>qml/BrowserWindow.qml</file>
         <file>qml/DownloadsDrawer.qml</file>
         <file>qml/ColorPicker.qml</file>
@@ -19,5 +18,9 @@
         <file>qml/BookmarksBar.qml</file>
         <file>qml/FullscreenBar.qml</file>
         <file>qml/Omnibox.qml</file>
+        <file>qml/BaseApplication.qml</file>
+        <file>qml/Settings.qml</file>
+        <file>qml/SettingsPage.qml</file>
+        <file>qml/DesktopApplication.qml</file>
     </qresource>
 </RCC>

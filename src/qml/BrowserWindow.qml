@@ -17,11 +17,12 @@ ApplicationWindow {
     width: 1000
     height: 640
 
+
     theme {
         id: theme
-        primaryColor: "#2196F3"
-        primaryDarkColor: "#1976D2"
-        accentColor: "#4CAF50"
+        primaryColor: "#F44336"
+        primaryDarkColor: "#D32F2F"
+        accentColor: "#FF5722"
     }
 
     /* User Settings */
@@ -494,6 +495,8 @@ ApplicationWindow {
 
     HistoryDrawer { id: historyDrawer }
 
+    SettingsPage {id: settingsPage }
+
     Snackbar {
         id: snackbar
     }
@@ -537,6 +540,7 @@ ApplicationWindow {
             dlgCertificateError.show();
         }
     }
+
     Component.onCompleted: {
         // Create shortcut actions
         if (app.enableShortCuts) {

@@ -15,7 +15,8 @@ QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp
 
-RESOURCES += src/qml.qrc
+RESOURCES += \
+    src/qml.qrc
 
 TRANSLATIONS += translations/de_DE.ts \
                 translations/ru_RU.ts \

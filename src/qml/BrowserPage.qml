@@ -4,8 +4,12 @@ import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 
-Item {
+Page {
     id: page
+
+    actionBar {
+        hidden: true
+    }
 
     property alias webContainer: webContainer
     property alias iconConnectionType: toolbar.iconConnectionType
@@ -81,7 +85,12 @@ Item {
         Action {
             name: qsTr("Settings")
             iconName: "action/settings"
-            onTriggered: addTab("liri://settings")
+            onTriggered: {
+                if (mobile)
+                    pageStack.push(settingsPage);
+                else
+                    addTab("liri://settings");
+            }
         }
     ]
 
