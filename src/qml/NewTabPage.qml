@@ -9,11 +9,12 @@ Item {
     id: pageRoot
     anchors.fill: parent
 
-    property var sortedBookmarks: sortByKey(root.app.bookmarks, "title")
+    readonly property var sortedBookmarks: sortByKey(root.app.bookmarks, "title")
+    readonly property var frequentSites: root.app.frequentSites
 
     ColumnLayout {
         anchors.centerIn: parent
-        visible: sortedBookmarks.length === 0
+        visible: sortedBookmarks.length === 0 && frequentSites.length === 0
         width: parent.width - Units.dp(32)
 
         Icon {
@@ -69,77 +70,29 @@ Item {
 
                 Repeater {
                     model: sortedBookmarks
-                    delegate: View {
-                        width: itemColumn.width
-                        height: itemColumn.height
-
-                        tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.05) : Qt.rgba(0,0,0,0)
-                        radius: Units.dp(2)
-
-                        Ink {
-                            id: ink
-                            anchors.fill: parent
-                            acceptedButtons: Qt.LeftButton | Qt.RightButton
-                            onClicked: {
-                                if (mouse.button == Qt.LeftButton) {
-                                    setActiveTabURL(modelData.url)
-                                } else {
-                                    contextMenu.bookmark = modelData
-                                    contextMenu.open(ink, mouse.x, mouse.y)
-                                }
-                            }
-                        }
-
-                        Column {
-                            id: itemColumn
-                            anchors.centerIn: parent
-                            height: Units.dp(120)
-                            width: height
-
-                            Item {
-                                id: imageRect
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: height
-                                height: parent.height - label.height
-
-                                Icon {
-                                    anchors.centerIn: parent
-                                    size: parent.height * 0.75
-                                    name: "social/public"
-
-                                    visible: image.status !== Image.Ready
-                                }
-
-                                Image {
-                                    id: image
-                                    anchors.centerIn: parent
-                                    height: parent.height * 0.75
-                                    width: height
-                                    fillMode: Image.PreserveAspectFit
-                                    visible: image.status === Image.Ready
-
-                                    source: modelData.faviconUrl
-                                }
-                            }
-
-                            Label {
-                                id: label
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: parent.width - Units.dp(16)
-                                height: baseLabel.height + Units.dp(8)
-                                horizontalAlignment: Text.AlignHCenter
-                                wrapMode: Text.Wrap
-                                text: modelData.title
-                                maximumLineCount: 2
-                            }
-                        }
-                    }
+                    delegate: siteDelegate
                 }
             }
 
             ListItem.Subheader {
                 text: "Frequently Visited"
-                visible: false // TODO: frequentSites.length > 0
+                visible: frequentSites.length > 0
+            }
+
+            Flow {
+                width: parent.width
+                spacing: Units.dp(8)
+
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: Units.dp(16)
+                }
+
+                Repeater {
+                    model: frequentSites
+                    delegate: siteDelegate
+                }
             }
         }
     }
@@ -198,7 +151,7 @@ Item {
         property var bookmark: {"title": "", "url": "", "iconUrl": "", "bgColor": "white"}
 
         onBookmarkChanged: {
-            colorChooser.color = modelItem.bgColor || "white";
+            colorChooser.color = bookmark.bgColor || "white";
         }
 
         dismissOnTap: false
@@ -232,7 +185,7 @@ Item {
                 id: txtEditTitle
                 placeholderText: qsTr("Title")
                 floatingLabel: true
-                text: editDialog.modelItem.title
+                text: editDialog.bookmark.title
                 width: parent.width
             }
 
@@ -240,7 +193,7 @@ Item {
                 id: txtEditUrl
                 placeholderText: qsTr("URL")
                 floatingLabel: true
-                text: editDialog.modelItem.url
+                text: editDialog.bookmark.url
                 width: parent.width
 
             }
@@ -249,7 +202,7 @@ Item {
                 id: txtEditIconUrl
                 placeholderText: qsTr("Icon URL")
                 floatingLabel: true
-                text: editDialog.modelItem.iconUrl
+                text: editDialog.bookmark.iconUrl
                 width: parent.width
             }
 
@@ -286,12 +239,82 @@ Item {
             text: qsTr("Apply")
 
             onClicked: {
-                editDialog.modelItem.title = txtEditTitle.text;
-                editDialog.modelItem.url = txtEditUrl.text;
-                editDialog.modelItem.iconUrl = txtEditIconUrl.text;
-                editDialog.modelItem.bgColor = colorChooser.color;
-                editDialog.modelItem.fgColor = root.getTextColorForBackground(colorChooser.color.toString());
+                editDialog.bookmark.title = txtEditTitle.text;
+                editDialog.bookmark.url = txtEditUrl.text;
+                editDialog.bookmark.iconUrl = txtEditIconUrl.text;
+                editDialog.bookmark.bgColor = colorChooser.color;
+                editDialog.bookmark.fgColor = root.getTextColorForBackground(colorChooser.color.toString());
                 editDialog.close();
+            }
+        }
+    }
+
+    Component {
+        id: siteDelegate
+
+        View {
+            width: itemColumn.width
+            height: itemColumn.height
+
+            tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.05) : Qt.rgba(0,0,0,0)
+            radius: Units.dp(2)
+
+            Ink {
+                id: ink
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onClicked: {
+                    if (mouse.button == Qt.LeftButton) {
+                        setActiveTabURL(modelData.url)
+                    } else {
+                        contextMenu.bookmark = modelData
+                        contextMenu.open(ink, mouse.x, mouse.y)
+                    }
+                }
+            }
+
+            Column {
+                id: itemColumn
+                anchors.centerIn: parent
+                height: Units.dp(120)
+                width: height
+
+                Item {
+                    id: imageRect
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: height
+                    height: parent.height - label.height
+
+                    Icon {
+                        anchors.centerIn: parent
+                        size: parent.height * 0.75
+                        name: "social/public"
+
+                        visible: image.status !== Image.Ready
+                    }
+
+                    Image {
+                        id: image
+                        anchors.centerIn: parent
+                        height: parent.height * 0.75
+                        width: height
+                        fillMode: Image.PreserveAspectFit
+                        visible: image.status === Image.Ready
+
+                        source: modelData.faviconUrl
+                    }
+                }
+
+                Label {
+                    id: label
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width - Units.dp(16)
+                    height: baseLabel.height + Units.dp(8)
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    text: modelData.title
+                    maximumLineCount: 2
+                }
             }
         }
     }

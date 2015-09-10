@@ -23,5 +23,6 @@
         <file>qml/DesktopApplication.qml</file>
         <file>qml/TabsList.qml</file>
         <file>qml/TabsListPage.qml</file>
+        <file>qml/url.js</file>
     </qresource>
 </RCC>
