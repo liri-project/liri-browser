@@ -65,7 +65,7 @@ Rectangle {
 
             ListItem.Standard {
                 text: ""
-                height:60
+                height: Units.dp(60)
                 TextField {
                     id: txtHomeUrl
                     width: parent.width - 30
@@ -82,7 +82,7 @@ Rectangle {
 
             ListItem.Standard {
                 text: ""
-                height:60
+                height: Units.dp(60)
                 MenuField {
                     id: menuSearchEngine
                     anchors {
@@ -197,8 +197,8 @@ Rectangle {
                 text: qsTr('Primary Color')
                 Rectangle {
                     id: primarycolorSample
-                    width:30
-                    height:30
+                    width: Units.dp(30)
+                    height: width
                     radius: width*0.5
                     color: primaryColorPicker.color
                     anchors {
@@ -218,8 +218,8 @@ Rectangle {
                 text: qsTr('Accent Color')
                 Rectangle {
                     id: accentcolorSample
-                    width:30
-                    height:30
+                    width: Units.dp(30)
+                    height: width
                     radius: width*0.5
                     color: accentColorPicker.color
                     anchors {
@@ -236,7 +236,7 @@ Rectangle {
 
             ListItem.Standard {
                   text: ""
-                  height:60
+                  height: Units.dp(60)
                   MenuField {
                       id: menuSourceHighlightTheme
                       anchors {
