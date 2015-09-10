@@ -14,32 +14,36 @@ Rectangle {
 
         anchors.fill: parent
         contentHeight: settings_col.height
-
-        Column {
+        View {
+            id: view
+            height: label.height + Units.dp(30)
+            width: parent.width
+            Label {
+                id: label
+                anchors {
+                    left: parent.left
+                    leftMargin: 30
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+                text:  qsTr("Settings")
+                style: "title"
+                font.pixelSize: Units.dp(30)
+            }
+        }
+        Row {
+          width: parent.width
+          anchors {
+            left: parent.left
+            top: parent.top
+            topMargin: view.height + 10
+            leftMargin: 30
+          }
+          spacing:30
+          Column {
             id: settings_col
             width: parent.width/2 - 60
-            anchors {
-              top: parent.top
-              left: parent.left
-              leftMargin: 30
-            }
             spacing: Units.dp(0)
-            View {
-                id: view
-                height: label.height + Units.dp(30)
-                width: parent.width
-                Label {
-                    id: label
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        bottom: parent.bottom
-                    }
-                    text:  qsTr("Settings")
-                    style: "title"
-                    font.pixelSize: Units.dp(30)
-                }
-            }
 
             Item {
               height: Units.dp(60)
@@ -164,100 +168,100 @@ Rectangle {
                     chbTabsEntirelyColorized.checked = !chbTabsEntirelyColorized.checked
                 }
             }
-
-
-        Item {
-            height: Units.dp(60)
-            width: parent.width
-            Label {
-                style: "title"
-                text: qsTr("Theme")
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
-
-        ListItem.Standard  {
-            id:primaryChooser
-            text: qsTr('Primary Color')
-            Rectangle {
-                id: primarycolorSample
-                width:30
-                height:30
-                radius: width*0.5
-                color: primaryColorPicker.color
-                anchors {
-                        top: parent.top
-                        right: parent.right
-                        rightMargin:20
-                        topMargin:5
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: primaryColorPicker.open(primarycolorSample, Units.dp(4), Units.dp(-4))
-                }
-            }
-        }
-
-        ListItem.Standard  {
-            id:accentChooser
-            text: qsTr('Accent Color')
-            Rectangle {
-                id: accentcolorSample
-                width:30
-                height:30
-                radius: width*0.5
-                color: accentColorPicker.color
-                anchors {
-                        top: parent.top
-                        right: parent.right
-                        rightMargin:20
-                        topMargin:5
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: accentColorPicker.open(accentcolorSample, Units.dp(4), Units.dp(-4))
-                }
-            }
-        }
-
-        ListItem.Standard {
-              text: ""
-              height:60
-              MenuField {
-                  id: menuSourceHighlightTheme
-                  anchors {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: 15
-                  }
-                  property string selectedSourceHighlightTheme: model[selectedIndex].toLowerCase().replace(" ","_");
-                  width: parent.width - 30
-                  model: getListedSourceHighlightThemes()
-                  helperText: "Syntax-highlighting theme for source-code viewing"
-
-                  function getListedSourceHighlightThemes() {
-                    if(root.app.sourceHighlightTheme == "zenburn")
-                        return ["Zenburn", "Monokai Sublime", "Solarized Light"]
-                    else if(root.sourceHighlightTheme == "solarized_light")
-                        return ["Solarized Light", "Monokai Sublime", "Zenburn"]
-                    else
-                        return ["Monokai Sublime", "Zenburn", "Solarized Light"]
-                  }
-              }
-              anchors.bottomMargin: 30
           }
+          Column {
+            width: parent.width/2 - 60
+            spacing: Units.dp(0)
+            Item {
+                height: Units.dp(60)
+                width: parent.width
+                Label {
+                    style: "title"
+                    text: qsTr("Theme")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
 
-        ColorPicker {
-            id: primaryColorPicker
-            color: theme.primaryColor
+            ListItem.Standard  {
+                id:primaryChooser
+                text: qsTr('Primary Color')
+                Rectangle {
+                    id: primarycolorSample
+                    width:30
+                    height:30
+                    radius: width*0.5
+                    color: primaryColorPicker.color
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            topMargin:5
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressed: primaryColorPicker.open(primarycolorSample, Units.dp(4), Units.dp(-4))
+                    }
+                }
+            }
+
+            ListItem.Standard  {
+                id:accentChooser
+                text: qsTr('Accent Color')
+                Rectangle {
+                    id: accentcolorSample
+                    width:30
+                    height:30
+                    radius: width*0.5
+                    color: accentColorPicker.color
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            topMargin:5
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressed: accentColorPicker.open(accentcolorSample, Units.dp(4), Units.dp(-4))
+                    }
+                }
+            }
+
+            ListItem.Standard {
+                  text: ""
+                  height:60
+                  MenuField {
+                      id: menuSourceHighlightTheme
+                      anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: 15
+                      }
+                      property string selectedSourceHighlightTheme: model[selectedIndex].toLowerCase().replace(" ","_");
+                      width: parent.width - 20
+                      model: getListedSourceHighlightThemes()
+                      helperText: "Syntax-highlighting theme for source-code viewing"
+
+                      function getListedSourceHighlightThemes() {
+                        if(root.app.sourceHighlightTheme == "zenburn")
+                            return ["Zenburn", "Monokai Sublime", "Solarized Light"]
+                        else if(root.sourceHighlightTheme == "solarized_light")
+                            return ["Solarized Light", "Monokai Sublime", "Zenburn"]
+                        else
+                            return ["Monokai Sublime", "Zenburn", "Solarized Light"]
+                      }
+                  }
+                  anchors.bottomMargin: 30
+              }
+
+            ColorPicker {
+                id: primaryColorPicker
+                color: theme.primaryColor
+            }
+
+            ColorPicker {
+                id: accentColorPicker
+                color: theme.accentColor
+            }
+          }
         }
-
-        ColorPicker {
-            id: accentColorPicker
-            color: theme.accentColor
-        }
-
-    }
   }
     View {
         anchors {
