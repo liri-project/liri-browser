@@ -41,5 +41,14 @@ Rectangle {
         opacity: 1
         textColor: root.tabTextColorActive
         onAccepted: setActiveTabURL(text)
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                if (mobile)
+                    txtUrl.selectAll();
+                mouse.accepted = false;
+            }
+        }
     }
 }
