@@ -14,6 +14,7 @@ Item {
     property string searchEngine: "google"
 
     property string sourcetemp: "test"
+    property string sourceHighlightTheme: "zenburn"
 
     property var bookmarks: []
     signal changedBookmarks ()
@@ -35,7 +36,8 @@ Item {
 
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl
-		property alias searceEngine: application.searchEngine
+		    property alias searceEngine: application.searchEngine
+        property alias sourceHighlightTheme: application.sourceHighlightTheme
         property alias newTabPage: application.newTabPage
         property var bookmarks
         property var history

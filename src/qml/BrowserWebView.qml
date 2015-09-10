@@ -149,6 +149,11 @@ Item {
                 if(!loading && url.toString().substring(0,57)=="http://liri-browser.github.io/sourcecodeviewer/index.html") {
                   runJavaScript("
                     function setSource(){
+                        var head = document.head, link = document.createElement('link');
+                        link.type = 'text/css';
+                        link.rel = 'stylesheet';
+                        link.href = 'http://softwaremaniacs.org/media/soft/highlight/styles/" + root.app.sourceHighlightTheme +".css';
+                        head.appendChild(link);
                         var sc = '<!DOCTYPE html><html>' + decodeURI(\"" + root.app.sourcetemp + "\") + '</html>';
                         sc = style_html(sc, {
                           'indent_size': 2,
@@ -161,6 +166,7 @@ Item {
                         sc = sc.replace(/>/g, '&gt');
                         document.getElementById('source_container').innerHTML = sc;
                         hljs.highlightBlock(document.getElementById('source_container'));
+                        document.getElementById('source_container').style.fontFamily = 'Hack';
                     }
                     setSource();");
                 }
