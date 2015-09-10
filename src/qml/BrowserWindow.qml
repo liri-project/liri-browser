@@ -329,7 +329,7 @@ ApplicationWindow {
             else
               u = getValidUrl(url);
         }
-        else if (root.app.newTabPage) {
+        else if (root.app.newTabPage && !stp) {
             ntp = true;
         }
         else {
@@ -418,6 +418,7 @@ ApplicationWindow {
         if (url == "liri://settings") {
             u = url;
             activeTab.webview.settingsTabPage = true;
+            activeTab.webview.newTabPage = false;
         }
         else {
             var u = getValidUrl(url);
