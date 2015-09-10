@@ -22,5 +22,7 @@
         <file>qml/Settings.qml</file>
         <file>qml/SettingsPage.qml</file>
         <file>qml/DesktopApplication.qml</file>
+        <file>qml/TabsList.qml</file>
+        <file>qml/TabsListPage.qml</file>
     </qresource>
 </RCC>
