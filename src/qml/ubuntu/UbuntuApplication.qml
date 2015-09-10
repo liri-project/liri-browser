@@ -10,6 +10,8 @@ Item {
 
     property string homeUrl: "https://www.google.de"
 
+    property string sourcetemp: "test"
+
     property string searchEngine: "google"
 
     property var bookmarks: []

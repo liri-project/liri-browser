@@ -437,6 +437,7 @@ ApplicationWindow {
     function activeTabViewSourceCode () {
       activeTab.webview.runJavaScript("function getSource() { return '' + document.documentElement.innerHTML + '';} getSource() ",
           function(content){
+              console.log(content)
             addTab("http://liri-browser.github.io/sourcecodeviewer/index.html");
             root.app.sourcetemp = content;
             root.app.sourcetemp = root.app.sourcetemp.replace(/\r?\n|\r/g,"");
