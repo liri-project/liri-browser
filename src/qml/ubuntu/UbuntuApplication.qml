@@ -11,6 +11,7 @@ Item {
     property string homeUrl: "https://www.google.de"
 
     property string sourcetemp: "test"
+    property string sourceHighlightTheme: "zenburn"
 
     property string searchEngine: "google"
 
@@ -36,6 +37,7 @@ Item {
         property alias homeUrl: application.homeUrl
         property alias searceEngine: application.searchEngine
         property alias newTabPage: application.newTabPage
+        property alias sourceHighlightTheme: application.sourceHighlightTheme
         property var bookmarks
         property var history
         property var dashboard
