@@ -43,8 +43,13 @@ Item {
         webview.reload();
     }
 
-    function findText (text, flags, callback){
-        webview.findText(text, flags, callback);
+    function findText (text, backward, callback){
+        webview.findController.text = text;
+        if (backward)
+            webview.findController.previous();
+        else
+            webview.findController.next();
+        callback(webview.findController.count > 0);
     }
 
     WebContext {

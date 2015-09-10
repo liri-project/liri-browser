@@ -131,19 +131,24 @@ Item {
 
             TextField {
                 id: txtSearch
+                height: parent.height - Units.dp(8)
+                width: root.mobile ? parent.width - iconPrevious.width - iconNext.width - Units.dp(96): Units.dp(256)
+                anchors.verticalCenter: parent.verticalCenter
+                showBorder: true
                 placeholderText: qsTr("Search")
                 errorColor: "red"
                 onAccepted: activeTabFindText(text)
-                anchors.verticalCenter: parent.verticalCenter
             }
 
             IconButton {
+                id: iconPrevious
                 iconName: "hardware/keyboard_arrow_up"
                 onClicked: activeTabFindText(txtSearch.text, true)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             IconButton {
+                id: iconNext
                 iconName: "hardware/keyboard_arrow_down"
                 onClicked: activeTabFindText(txtSearch.text)
                 anchors.verticalCenter: parent.verticalCenter

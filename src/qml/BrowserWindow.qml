@@ -444,15 +444,19 @@ ApplicationWindow {
 
     function activeTabFindText(text, backward) {
         var flags
-        if (backward)
-            flags |= WebEngineView.FindBackward
-        activeTab.webview.findText(text, flags, function(success) {
-            if (success)
-                root.txtSearch.hasError = false;
-            else{
-                root.txtSearch.hasError = true;
-            }
-        });
+        if (root.app.webEngine === "qtwebengine") {
+            if (backward)
+                flags |= WebEngineView.FindBackward
+            activeTab.webEngine.findText(text, flags, function(success) {
+                root.txtSearch.hasError = !success;
+            });
+        }
+        else if (root.app.webEngine === "oxide") {
+            activeTab.webview.findText(text, backward, function(success) {
+                root.txtSearch.hasError = !success;
+            });
+        }
+
 
     }
 
