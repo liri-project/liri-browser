@@ -110,11 +110,25 @@ Component {
                     Image {
                         id: icon
                         //visible: iconUrl !== ""
-                        visible: !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
+                        visible: isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && modelData.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         width: webview.loading ?  0 : Units.dp(20)
                         height: Units.dp(20)
                         anchors.verticalCenter: parent.verticalCenter
                         source: modelData.webview.icon
+                        property var isAFavicon: true
+                        onStatusChanged: {
+                            if (icon.status == Image.Error || icon.status == Image.Null)
+                                isAFavicon = false;
+                            else
+                                isAFavicon = true;
+                        }
+                    }
+
+                    Icon {
+                        id: iconNoFavicon
+                        name: "action/description"
+                        visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
+                        anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Icon {
@@ -128,6 +142,13 @@ Component {
                         id: iconSettings
                         name: "action/settings"
                         visible: modelData.webview.settingsTabPage
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Icon {
+                        id: iconSource
+                        name: "action/code"
+                        visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
