@@ -6,6 +6,7 @@ Item {
     id: application
 
     property string webEngine: "qtwebengine"
+    property string platform: "unknown/desktop"
     property bool enableShortCuts: true
     property bool enableNewWindowAction: true
 

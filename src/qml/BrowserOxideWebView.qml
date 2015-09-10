@@ -146,6 +146,8 @@ Item {
                         }
                         else{
                             root.getTabModelDataByUID(uid).customColor = false;
+                            root.getTabModelDataByUID(uid).customColorLight = false;
+                            root.getTabModelDataByUID(uid).customTextColor = false;
                         }
                 });
 

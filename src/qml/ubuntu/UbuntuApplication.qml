@@ -5,6 +5,7 @@ Item {
     id: application
 
     property string webEngine: "oxide"
+    property string platform: "converged/ubuntu"
     property bool enableShortCuts: false
     property bool enableNewWindowAction: false
 

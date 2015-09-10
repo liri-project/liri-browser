@@ -14,7 +14,8 @@ Rectangle {
     Icon {
         id: connectionTypeIcon
 
-        name: root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
+        property bool searchIcon: false
+        name: if (searchIcon) {"action/search"} else {root.activeTab.webview.secureConnection ? "action/lock" : "social/public"}
         color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
 
         anchors {
@@ -40,8 +41,25 @@ Rectangle {
         placeholderText: qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive
-        onTextChanged: isASearchQuery(text) ? connectionTypeIcon.name = "action/search" : connectionTypeIcon.name = "social/public"
+        onTextChanged: isASearchQuery(text) ? connectionTypeIcon.searchIcon = true : connectionTypeIcon.searchIcon = false;
         onAccepted: setActiveTabURL(text)
 
+
+        MouseArea {
+            anchors.fill: parent
+            propagateComposedEvents: true
+
+            onPressed: {
+                if (root.app.platform !== "converged/ubuntu" || !root.mobile)
+                    mouse.accepted = false;
+            }
+
+            onClicked: {
+                if (root.app.platform === "converged/ubuntu" && root.mobile)
+                    ubuntuOmniboxOverlay.show();
+            }
+        }
+
     }
+
 }

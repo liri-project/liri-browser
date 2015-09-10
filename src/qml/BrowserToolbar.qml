@@ -18,6 +18,7 @@ Rectangle {
     }
 
     property alias iconConnectionType: omnibox.iconConnectionType
+    property var ubuntuOmniboxOverlay
 
     function update() {
         var url = activeTab.webview.url;
@@ -114,6 +115,16 @@ Rectangle {
             onClicked: overflowMenu.open(overflowButton)
         }
     }
+
+    Component.onCompleted: {
+        if (root.app.platform === "converged/ubuntu") {
+            var overlayComponent = Qt.createComponent("UbuntuOmniboxOverlay.qml");
+            console.log(">", overlayComponent)
+            ubuntuOmniboxOverlay = overlayComponent.createObject(toolbar, {})
+            console.log(">", overlayObject)
+        }
+    }
+
 }
 
 
