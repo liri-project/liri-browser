@@ -475,8 +475,6 @@ ApplicationWindow {
 
     initialPage: BrowserPage { id: page }
 
-    SettingsDrawer { id: settingsDrawer }
-
     DownloadsDrawer { id: downloadsDrawer }
 
     HistoryDrawer { id: historyDrawer }
