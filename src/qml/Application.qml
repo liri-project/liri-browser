@@ -14,7 +14,7 @@ Item {
 	  property string searchEngine: "google"
 
     property string sourcetemp: "test"
-    property string sourceHighlightTheme: "zenburn"
+    property string sourceHighlightTheme: "monokai_sublime"
 
     property var bookmarks: []
     signal changedBookmarks ()
