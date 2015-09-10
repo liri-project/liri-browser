@@ -115,7 +115,6 @@ Item {
                     newTabPage = false;
                 }
             }
-
             else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
                 // Looking for custom tab bar colors
                 runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
@@ -147,6 +146,24 @@ Item {
                     root.app.historyModel.insert(0, item);
                 }
 
+                if(!loading && url.toString().substring(0,57)=="http://liri-browser.github.io/sourcecodeviewer/index.html") {
+                  runJavaScript("
+                    function setSource(){
+                        var sc = '<!DOCTYPE html><html>' + decodeURI(\"" + root.app.sourcetemp + "\") + '</html>';
+                        sc = style_html(sc, {
+                          'indent_size': 2,
+                          'indent_char': ' ',
+                          'max_char': 48,
+                          'brace_style': 'expand',
+                          'unformatted': ['a', 'sub', 'sup', 'b', 'i', 'u']
+                        });
+                        sc = sc.replace(/</g, '&lt');
+                        sc = sc.replace(/>/g, '&gt');
+                        document.getElementById('source_container').innerHTML = sc;
+                        hljs.highlightBlock(document.getElementById('source_container'));
+                    }
+                    setSource();");
+                }
             }
 
             else if (loadRequest.status === WebEngineView.LoadFailedStatus) {
