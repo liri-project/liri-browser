@@ -125,6 +125,17 @@ ApplicationWindow {
         return url;
     }
 
+    function isASearchQuery(url) {
+      if (url.indexOf('.') !== -1){
+          if (url.lastIndexOf('http://', 0) !== 0){
+              if (url.lastIndexOf('https://', 0) !== 0){
+                  return false;
+              }
+          }
+      }
+      else
+        return true;
+    }
 
     function getBetterIcon(url, title, color, callback){
         var doc = new XMLHttpRequest();
