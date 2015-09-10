@@ -26,6 +26,12 @@ Item {
             onTriggered: app.createWindow()
             visible: root.app.enableNewWindowAction
         },
+        Action {
+            name: qsTr("New tab")
+            iconName: "content/add"
+            onTriggered: addTab();
+            visible: root.mobile
+        },
         /*Action {
             name: qsTr("Save page")
             iconName: "content/save"
@@ -56,7 +62,7 @@ Item {
         },
         Action {
             name: qsTr("Bookmark")
-            visible: root.app.integratedAddressbars
+            visible: root.app.integratedAddressbars || root.mobile
             iconName: "action/bookmark_border"
             onTriggered: root.toggleActiveTabBookmark()
         },

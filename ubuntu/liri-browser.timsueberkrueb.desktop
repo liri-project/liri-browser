@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Liri Browser
 Exec=qmlscene $@ src/qml/ubuntu/Main.qml
-Icon=icons/liri-browser.png
+Icon=icons/liri-browser-ubuntu.png
 Terminal=false
 Type=Application
 X-Ubuntu-Touch=true
