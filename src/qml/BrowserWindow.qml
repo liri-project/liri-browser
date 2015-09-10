@@ -311,9 +311,14 @@ ApplicationWindow {
 
     function addTab(url, background) {
         var u;
-        var ntp = false;
+        var ntp = false, stp = false;
         if (url){
-            u = getValidUrl(url);
+            if (url == "liri://settings") {
+                stp = true;
+                u = url;
+            }
+            else
+              u = getValidUrl(url);
         }
         else if (root.app.newTabPage) {
             ntp = true;
@@ -328,7 +333,7 @@ ApplicationWindow {
             webviewComponent = Qt.createComponent ("BrowserWebView.qml");
         else if (app.webEngine === "oxide")
             webviewComponent = Qt.createComponent ("BrowserOxideWebView.qml");
-        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, profile: root.app.defaultProfile, uid: lastTabUID});
+        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp ,profile: root.app.defaultProfile, uid: lastTabUID});
         var modelData = {
             url: url,
             webview: webview,
@@ -401,8 +406,15 @@ ApplicationWindow {
     }
 
     function setActiveTabURL(url) {
-        var u = getValidUrl(url);
-        activeTab.webview.url = u;
+        if (url == "liri://settings") {
+            u = url;
+            activeTab.webview.settingsTabPage = true;
+        }
+        else {
+            var u = getValidUrl(url);
+            activeTab.webview.settingsTabPage = false;
+            activeTab.webview.url = u;
+        }
     }
 
     function toggleActiveTabBookmark() {
@@ -463,8 +475,6 @@ ApplicationWindow {
     }
 
     initialPage: BrowserPage { id: page }
-
-    SettingsDrawer { id: settingsDrawer }
 
     DownloadsDrawer { id: downloadsDrawer }
 
