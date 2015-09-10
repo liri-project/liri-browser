@@ -8,12 +8,14 @@ import Material.Extras 0.1
 Rectangle {
     id: settingsRoot
     anchors.fill: parent
+    property bool mobileMode: width < Units.dp(640)
 
     Flickable {
         id: flickable
 
         anchors.fill: parent
-        contentHeight: settings_col.height
+        contentHeight: grid.childrenRect.height + Units.dp(48) + viewBottom.height + view.height
+
         View {
             id: view
             height: label.height + Units.dp(30)
@@ -22,7 +24,7 @@ Rectangle {
                 id: label
                 anchors {
                     left: parent.left
-                    leftMargin: 30
+                    leftMargin: 30
                     right: parent.right
                     bottom: parent.bottom
                 }
@@ -31,7 +33,11 @@ Rectangle {
                 font.pixelSize: Units.dp(30)
             }
         }
-        Row {
+
+        Grid {
+          id: grid
+          columns: mobileMode ? 1 : 2
+
           width: parent.width
           anchors {
             left: parent.left
@@ -40,9 +46,11 @@ Rectangle {
             leftMargin: 30
           }
           spacing:30
+
+
           Column {
-            id: settings_col
-            width: parent.width/2 - 60
+            id: colSettings
+            width: !mobileMode ? parent.width/2 - Units.dp(60) : parent.width - Units.dp(60)
             spacing: Units.dp(0)
 
             Item {
@@ -72,7 +80,7 @@ Rectangle {
                 }
             }
 
-          ListItem.Standard {
+            ListItem.Standard {
                 text: ""
                 height:60
                 MenuField {
@@ -87,14 +95,14 @@ Rectangle {
                     model: getListedSearchEngines()
                     helperText: "Search Engine"
 
-            function getListedSearchEngines() {
-              if(root.app.searchEngine == "duckduckgo")
-                  return ["DuckDuckGo", "Google", "Yahoo"]
-              else if(root.app.searchEngine == "yahoo")
-                  return ["Yahoo", "Google", "DuckDuckGo"]
-              else
-                  return ["Google", "DuckDuckGo", "Yahoo"]
-        }
+                    function getListedSearchEngines() {
+                      if(root.app.searchEngine == "duckduckgo")
+                          return ["DuckDuckGo", "Google", "Yahoo"]
+                      else if(root.app.searchEngine == "yahoo")
+                          return ["Yahoo", "Google", "DuckDuckGo"]
+                      else
+                          return ["Google", "DuckDuckGo", "Yahoo"]
+                    }
                 }
                 anchors.bottomMargin: 30
             }
@@ -169,8 +177,10 @@ Rectangle {
                 }
             }
           }
+
           Column {
-            width: parent.width/2 - 60
+            id: colTheme
+            width: !mobileMode ? parent.width/2 - Units.dp(60) : parent.width - Units.dp(60)
             spacing: Units.dp(0)
             Item {
                 height: Units.dp(60)
@@ -178,7 +188,7 @@ Rectangle {
                 Label {
                     style: "title"
                     text: qsTr("Theme")
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
 
@@ -261,9 +271,11 @@ Rectangle {
                 color: theme.accentColor
             }
           }
-        }
-  }
+       }
+    }
+
     View {
+        id: viewBottom
         anchors {
             left: parent.left
             right: parent.right

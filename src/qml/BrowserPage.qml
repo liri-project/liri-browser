@@ -85,6 +85,8 @@ Item {
         width: parent.width
         height: titlebarContents.height
 
+        z: 5
+
         elevation: 2
 
         Column {

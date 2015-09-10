@@ -6,6 +6,7 @@ import QtQuick.Controls 1.2 as Controls
 
 Rectangle {
     id: toolbar
+    z: 1
 
     color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
     visible: !integratedAddressbars
