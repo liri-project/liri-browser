@@ -26,6 +26,8 @@ Item {
 
     property string usContext: "messaging://"
 
+    property var preview
+
 
     function goBack() {
         webview.goBack();
@@ -199,6 +201,10 @@ Item {
                     }
                     setSource();");*/
                 }
+
+                webview.grabToImage(function(result) {
+                    preview = result.image;
+                });
 
             }
 

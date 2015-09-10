@@ -72,7 +72,19 @@ ApplicationWindow {
     property bool fullscreen: false
     property bool secureConnection: false
 
-    property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(900)
+    property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(1000) || width < Units.dp(640)
+
+    property var activeTab
+    property var activeTabItem
+    property var lastActiveTab
+    property var activeTabHistory: []
+
+    property int lastTabUID: 0
+
+    property ListModel tabsModel: ListModel {}
+
+    property bool activeTabInEditMode: false
+    property var activeTabInEditModeItem
 
     /* Functions */
 
@@ -265,20 +277,6 @@ ApplicationWindow {
         }
     }
 
-    /** NEW FUNCTIONS AND PROPERTIES **/
-
-    property var activeTab
-    property var activeTabItem
-    property var lastActiveTab
-    property var activeTabHistory: []
-
-    property int lastTabUID: 0
-
-    property ListModel tabsModel: ListModel {}
-
-    property bool activeTabInEditMode: false
-    property var activeTabInEditModeItem
-
     onActiveTabChanged: {
         // Handle last active tab
         if (lastActiveTab !== undefined && lastActiveTab !== null && lastActiveTab !== false) {
@@ -379,6 +377,12 @@ ApplicationWindow {
                     modelData.webview.destroy();
                     tabsModel.remove(getTabModelIndexByUID(t));
                 });
+            }
+            else {
+                var modelData = getTabModelDataByUID(t);
+                modelData.webview.visible = false;
+                modelData.webview.destroy();
+                tabsModel.remove(getTabModelIndexByUID(t));
             }
         }
     }
@@ -495,7 +499,9 @@ ApplicationWindow {
 
     HistoryDrawer { id: historyDrawer }
 
-    SettingsPage {id: settingsPage }
+    SettingsPage { id: settingsPage }
+
+    TabsListPage { id: tabsListPage }
 
     Snackbar {
         id: snackbar

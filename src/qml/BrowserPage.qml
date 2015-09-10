@@ -115,7 +115,7 @@ Page {
 
             BrowserTabBar {
                 id: tabBar
-                visible: tabsModel.count > 1
+                visible: tabsModel.count > 1 && !root.mobile
             }
 
             BrowserToolbar { id: toolbar }

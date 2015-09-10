@@ -6,10 +6,9 @@ import QtQuick.Controls 1.2 as Controls
 
 Rectangle {
     id: toolbar
-    z: 1
 
     color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
-    visible: !integratedAddressbars
+    visible: !root.app.integratedAddressbars
 
     height: Units.dp(56)
 
@@ -35,7 +34,7 @@ Rectangle {
         anchors.leftMargin: spacing
         anchors.rightMargin: spacing
 
-        spacing: Units.dp(16)
+        spacing: Units.dp(24)
 
         Layout.alignment: Qt.AlignVCenter
 
@@ -74,6 +73,13 @@ Rectangle {
 
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height - Units.dp(16)
+        }
+
+        IconButton {
+            color: root.currentIconColor
+            iconName: "action/tab"
+            onClicked: pageStack.push(tabsListPage);
+            visible: mobile
         }
 
         IconButton {

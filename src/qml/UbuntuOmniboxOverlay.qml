@@ -11,6 +11,7 @@ Rectangle {
     color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
 
     function show() {
+        textField.text = root.activeTab.webview.url;
         visible = true;
         textField.forceActiveFocus();
         textField.selectAll();
@@ -39,6 +40,9 @@ Rectangle {
         anchors.right: hideButton.left
         anchors.leftMargin: Material.Units.dp(15)
         anchors.rightMargin: Material.Units.dp(15)
+
+        inputMethodHints: Qt.ImhUrlCharactersOnly
+
         onTextChanged: isASearchQuery(text) ? connectionIcon.name = "action/search" :  connectionIcon.name = "social/public"
         onAccepted: {
             setActiveTabURL(text);

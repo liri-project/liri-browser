@@ -6,7 +6,6 @@ import QtQuick.Controls 1.2 as Controls
 
 Rectangle {
     id: tabBar
-    z: 1
 
     height: root.tabHeight
     color: root.tabBackgroundColor

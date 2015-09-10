@@ -38,7 +38,7 @@ Rectangle {
 
         showBorder: false
         text: root.activeTab.webview.url
-        placeholderText: qsTr("Search or enter website name")
+        placeholderText: mobile ? qsTr("Search") : qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive
         onTextChanged: isASearchQuery(text) ? connectionTypeIcon.searchIcon = true : connectionTypeIcon.searchIcon = false;

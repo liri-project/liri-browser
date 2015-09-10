@@ -9,4 +9,5 @@ BaseApplication {
     property string platform: "converged/ubuntu"
     property bool enableShortCuts: false
     property bool enableNewWindowAction: false
+    property bool newTabPage: false
 }
