@@ -110,7 +110,7 @@ Component {
                     Image {
                         id: icon
                         //visible: iconUrl !== ""
-                        visible: !modelData.webview.loading && !modelData.webview.newTabPage
+                        visible: !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
                         width: webview.loading ?  0 : Units.dp(20)
                         height: Units.dp(20)
                         anchors.verticalCenter: parent.verticalCenter
@@ -121,6 +121,13 @@ Component {
                         id: iconDashboard
                         name: "action/dashboard"
                         visible: modelData.webview.newTabPage
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Icon {
+                        id: iconSettings
+                        name: "action/settings"
+                        visible: modelData.webview.settingsTabPage
                         anchors.verticalCenter: parent.verticalCenter
                     }
 

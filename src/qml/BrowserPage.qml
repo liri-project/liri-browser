@@ -75,7 +75,7 @@ Item {
         Action {
             name: qsTr("Settings")
             iconName: "action/settings"
-            onTriggered: settingsDrawer.open()
+            onTriggered: addTab("liri://settings")
         }
     ]
 
@@ -205,4 +205,3 @@ Item {
         }
     }
 }
-
