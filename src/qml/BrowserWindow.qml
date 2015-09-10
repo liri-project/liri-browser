@@ -61,6 +61,8 @@ ApplicationWindow {
 
     property string searchEngine: "google"
 
+    property string sourcetemp: "test"
+
     property alias txtSearch: page.txtSearch
     property alias websiteSearchOverlay: page.websiteSearchOverlay
     property alias downloadsDrawer: downloadsDrawer
@@ -432,9 +434,13 @@ ApplicationWindow {
     }
 
     function activeTabViewSourceCode () {
-      activeTab.webview.runJavaScript("function getSource() { return document.documentElement.innerHTML;} getSource() ",
+      activeTab.webview.runJavaScript("function getSource() { return '' + document.documentElement.innerHTML + '';} getSource() ",
           function(content){
-            addTab("http://liri-browser.github.io/sourcecodeviewer/index.html?c=" + content);
+            addTab("http://liri-browser.github.io/sourcecodeviewer/index.html");
+            root.app.sourcetemp = content;
+            root.app.sourcetemp = root.app.sourcetemp.replace(/\r?\n|\r/g,"");
+            root.app.sourcetemp = root.app.sourcetemp.replace(/    /g,"");
+            root.app.sourcetemp = encodeURI(root.app.sourcetemp);
       });
     }
 
@@ -504,25 +510,6 @@ ApplicationWindow {
             url = error.url;
             dlgCertificateError.error = error;
             dlgCertificateError.show();
-        }
-    }
-    Window {
-         id: subWindowSource
-         width: 555
-         height: 333
-         visible: false
-         title: "Source of "
-         flags: Qt.SubWindow
-         Controls.ScrollView {
-            anchors.fill: parent
-            Text {
-              id: sourceCode
-              x:5
-              width: subWindowSource.width - 30
-              textFormat: Text.PlainText
-              wrapMode: Text.WrapAnywhere
-              text: "source"
-            }
         }
     }
     Component.onCompleted: {

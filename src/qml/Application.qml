@@ -11,7 +11,9 @@ Item {
 
     property string homeUrl: "https://www.google.de"
 
-	property string searchEngine: "google"
+	  property string searchEngine: "google"
+
+    property string sourcetemp: "test"
 
     property var bookmarks: []
     signal changedBookmarks ()
