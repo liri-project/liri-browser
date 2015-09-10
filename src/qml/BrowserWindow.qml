@@ -70,6 +70,7 @@ ApplicationWindow {
     property bool secureConnection: false
 
     property bool mobile: Device.isMobile
+    // FIXME: Device.isMobile doesn't detect BQ Aqauris E4.5 Ubuntu Edition as mobile :/
 
 
     /* Functions */
