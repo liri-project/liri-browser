@@ -79,8 +79,6 @@ Item {
                 browserWebView.secureConnection = true;
             else
                 browserWebView.secureConnection = false;
-            if (root.activeTab.webview == browserWebView)
-                activeTabUrlChanged();
         }
 
         /*settings.autoLoadImages: appSettings.autoLoadImages

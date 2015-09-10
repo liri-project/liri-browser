@@ -9,9 +9,11 @@ Item {
     id: pageRoot
     anchors.fill: parent
 
+    property var sortedBookmarks: sortByKey(root.app.bookmarks, "title")
+
     ColumnLayout {
         anchors.centerIn: parent
-        visible: root.app.dashboardModel.count === 0
+        visible: sortedBookmarks.length === 0
         width: parent.width - Units.dp(32)
 
         Icon {
@@ -40,123 +42,126 @@ Item {
         }
     }
 
-    GridView {
-        id: grid
+    Flickable {
+        anchors.fill: parent
 
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        cellWidth: 165; cellHeight: 130
-        width: parent.width - Units.dp(128)
-        height: parent.height -  Units.dp(128)
-        model: root.app.dashboardModel
-        delegate: delegate
+        contentHeight: column.height
+        contentWidth: width
 
-        Component {
-            id: delegate
-            Item {
-                id: item
-                width: grid.cellWidth-5; height: grid.cellHeight-5;
-                Rectangle {
-                    id: box
-                    parent: grid
-                    x: item.x; y: item.y;
+        Column {
+            id: column
+            width: parent.width
 
-                    border.color: Qt.rgba(0,0,0,0.2)
-                    radius: Units.dp(2)
+            ListItem.Subheader {
+                text: "Bookmarks"
+                visible: sortedBookmarks.length > 0
+            }
 
-                    color: bgColor
+            Flow {
+                width: parent.width
+                spacing: Units.dp(8)
 
-                    width: item.width; height: item.height;
-                    property int uid: (index >= 0) ? grid.model.get(index).uid : -1
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: Units.dp(16)
+                }
 
-                    Behavior on x {
-                        NumberAnimation { duration: 100 }
-                    }
-                    Behavior on y {
-                        NumberAnimation { duration: 100 }
-                    }
+                Repeater {
+                    model: sortedBookmarks
+                    delegate: View {
+                        width: itemColumn.width
+                        height: itemColumn.height
 
-                    Image {
-                        anchors.centerIn: parent
-                        width: if (implicitWidth > Units.dp(64)) { Units.dp(64) } else { implicitWidth }
-                        height: if (implicitHeight > Units.dp(64)) { Units.dp(64) } else { implicitHeight }
+                        tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.05) : Qt.rgba(0,0,0,0)
+                        radius: Units.dp(2)
 
-                        source: iconUrl
-                    }
-
-                    Text {
-                        color: fgColor
-                        font.family: root.fontFamily
-                        anchors.bottom: parent.bottom
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        horizontalAlignment: Text.AlignHCenter
-                        anchors.margins: Units.dp(16)
-                        text: title
-                        font.pixelSize: Units.dp(14)
-                        elide: Text.ElideRight
-                        width: parent.width - Units.dp(10)
-                        clip: true
-
-                    }
-
-                    states: [
-                        State {
-                            name: "active"; when: gridMouseArea.activeId == box.uid
-                            PropertyChanges {target: box; x: gridMouseArea.mouseX-80; y: gridMouseArea.mouseY-45; z: 10}
+                        Ink {
+                            id: ink
+                            anchors.fill: parent
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton
+                            onClicked: {
+                                if (mouse.button == Qt.LeftButton) {
+                                    setActiveTabURL(modelData.url)
+                                } else {
+                                    contextMenu.bookmark = modelData
+                                    contextMenu.open(ink, mouse.x, mouse.y)
+                                }
+                            }
                         }
-                    ]
-                }
-            }
-        }
 
-        MouseArea {
-            id: gridMouseArea
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-            anchors.fill: parent
-            hoverEnabled: true
-            preventStealing : true
-            property int index: grid.indexAt(mouseX, mouseY)
-            property int activeId: -1
-            property int activeIndex
+                        Column {
+                            id: itemColumn
+                            anchors.centerIn: parent
+                            height: Units.dp(120)
+                            width: height
 
-            onPressAndHold: {
-                activeId = grid.model.get(activeIndex=index).uid
-            }
-            onReleased: {
-                activeId = -1
-            }
-            onPositionChanged: {
-                if (activeId != -1 && index != -1 && index != activeIndex) {
-                    grid.model.move(activeIndex, activeIndex = index, 1)
-                }
-            }
-            onClicked: {
-                if(mouse.button & Qt.LeftButton) {
-                    if (index != -1) {
-                        newTabPage = false;
-                        var url = grid.model.get(activeIndex=index).url;
-                        root.setActiveTabURL(url);
+                            Item {
+                                id: imageRect
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: height
+                                height: parent.height - label.height
+
+                                Icon {
+                                    anchors.centerIn: parent
+                                    size: parent.height * 0.75
+                                    name: "social/public"
+
+                                    visible: image.status !== Image.Ready
+                                }
+
+                                Image {
+                                    id: image
+                                    anchors.centerIn: parent
+                                    height: parent.height * 0.75
+                                    width: height
+                                    fillMode: Image.PreserveAspectFit
+                                    visible: image.status === Image.Ready
+
+                                    source: modelData.faviconUrl
+                                }
+                            }
+
+                            Label {
+                                id: label
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width - Units.dp(16)
+                                height: baseLabel.height + Units.dp(8)
+                                horizontalAlignment: Text.AlignHCenter
+                                wrapMode: Text.Wrap
+                                text: modelData.title
+                                maximumLineCount: 2
+                            }
+                        }
                     }
                 }
-                else {
-                    if (index != -1) {
-                        var m = grid.model.get(activeIndex=index);
-                        contextMenu.open(grid, -grid.width+mouseX + contextMenu.width, mouseY)
+            }
 
-                    }
-                }
+            ListItem.Subheader {
+                text: "Frequently Visited"
+                visible: false // TODO: frequentSites.length > 0
             }
         }
-
     }
 
+    // Used for calculating the height of the tile labels
+    Label {
+        id: baseLabel
+        visible: false
+        height: maximumLineCount/lineCount * implicitHeight
+        text: "1\n2\n"
+        maximumLineCount: 2
+    }
 
     Dropdown {
         id: contextMenu
 
         width: Units.dp(250)
         height: columnView.height + Units.dp(16)
+
+        anchor: Item.TopLeft
+
+        property var bookmark
 
         ColumnLayout {
             id: columnView
@@ -167,8 +172,8 @@ Item {
                 text: qsTr("Edit")
                 iconName: "image/edit"
                 onClicked: {
-                    editDialog.modelItem = grid.model.get(gridMouseArea.index);
-                    editDialog.open(pageRoot, 0, -pageRoot.height/2 - editDialog.height);
+                    editDialog.bookmark = contextMenu.bookmark
+                    editDialog.open()
                 }
             }
 
@@ -176,11 +181,11 @@ Item {
                 text: qsTr("Delete")
                 iconName: "action/delete"
                 onClicked: {
-                    grid.model.remove(gridMouseArea.index)
-                    contextMenu.close();
+                    removeBookmark(contextMenu.bookmark.url)
+                    snackbar.open(qsTr('Removed bookmark %1').arg(contextMenu.bookmark.title));
+                    contextMenu.close()
                 }
             }
-
         }
     }
 
@@ -190,10 +195,10 @@ Item {
         width: Units.dp(400)
         height: Units.dp(345)
 
-        property var modelItem: {"title": "", "url": "", "iconUrl": "", "bgColor": "white"}
-        onModelItemChanged: {
-            colorChooser.color = modelItem.bgColor || "white";
+        property var bookmark: {"title": "", "url": "", "iconUrl": "", "bgColor": "white"}
 
+        onBookmarkChanged: {
+            colorChooser.color = modelItem.bgColor || "white";
         }
 
         dismissOnTap: false

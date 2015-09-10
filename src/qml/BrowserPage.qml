@@ -13,14 +13,8 @@ Page {
 
     property alias webContainer: webContainer
     property alias listView: tabBar.listView
-    property alias bookmarksBar: bookmarksBar
-    property alias bookmarkContainer: bookmarksBar.bookmarkContainer
     property alias txtSearch: txtSearch
     property alias websiteSearchOverlay: websiteSearchOverlay
-
-    function updateToolbar () {
-        toolbar.update()
-    }
 
     property list<Action> overflowActions: [
         Action {
@@ -105,6 +99,7 @@ Page {
 
         elevation: 2
         fullWidth: true
+        z: 5
 
         Column {
             id: titlebarContents
@@ -123,11 +118,6 @@ Page {
             BrowserToolbar {
                 id: toolbar
                 visible: !root.fullscreen && !root.app.integratedAddressbars
-            }
-
-            BookmarksBar {
-                id: bookmarksBar
-                visible: app.bookmarks.length > 0 && !root.fullscreen && !root.mobile
             }
         }
     }

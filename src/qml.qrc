@@ -15,7 +15,6 @@
         <file>qml/BrowserPage.qml</file>
         <file>qml/BrowserTabBar.qml</file>
         <file>qml/BrowserToolbar.qml</file>
-        <file>qml/BookmarksBar.qml</file>
         <file>qml/FullscreenBar.qml</file>
         <file>qml/Omnibox.qml</file>
         <file>qml/BaseApplication.qml</file>

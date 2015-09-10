@@ -23,15 +23,6 @@ Rectangle {
 
     property var ubuntuOmniboxOverlay
 
-    function update() {
-        var url = activeTab.webview.url;
-
-        if (isBookmarked(url))
-            bookmarkButton.iconName = "action/bookmark";
-        else
-            bookmarkButton.iconName = "action/bookmark_border";
-    }
-
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: spacing
@@ -87,7 +78,7 @@ Rectangle {
         IconButton {
             id: bookmarkButton
             color: root.currentIconColor
-            iconName: "action/bookmark_border"
+            iconName: isBookmarked(activeTab.webview.url) ? "action/bookmark" : "action/bookmark_border"
             onClicked: toggleActiveTabBookmark()
             visible: !mobile
         }

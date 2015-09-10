@@ -114,6 +114,8 @@ ApplicationWindow {
     }
 
     function getValidUrl(url) {
+        url = String(url)
+
         if (url.indexOf('.') !== -1){
             if (url.lastIndexOf('http://', 0) !== 0){
                 if (url.lastIndexOf('https://', 0) !== 0){
@@ -192,7 +194,8 @@ ApplicationWindow {
 
     function addBookmark(title, url, faviconUrl, color){
         root.app.bookmarks.push({title: title, url: url, faviconUrl: faviconUrl, color: color});
-        root.app.changedBookmarks();
+        // Trigger updates of QML bindings
+        root.app.bookmarks = root.app.bookmarks;
     }
 
     function changeBookmark(url, title, newUrl, faviconUrl){
@@ -201,7 +204,8 @@ ApplicationWindow {
                 root.app.bookmarks[i].url = newUrl;
                 root.app.bookmarks[i].title = title;
                 root.app.bookmarks[i].faviconUrl = faviconUrl;
-                root.app.changedBookmarks();
+                // Trigger updates of QML bindings
+                root.app.bookmarks = root.app.bookmarks;
                 return true;
             }
         }
@@ -213,35 +217,12 @@ ApplicationWindow {
         for (var i=0; i<root.app.bookmarks.length; i++){
             if (root.app.bookmarks[i].url == url){
                 root.app.bookmarks.splice(i, 1);
-                root.app.changedBookmarks();
+                // Trigger updates of QML bindings
+                root.app.bookmarks = root.app.bookmarks;
                 return true;
             }
         }
         return false;
-    }
-
-    function clearBookmarks(){
-        for(var i = page.bookmarkContainer.children.length; i > 0 ; i--) {
-            page.bookmarkContainer.children[i-1].destroy();
-        }
-    }
-
-    function loadBookmarks() {
-        root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
-        var bookmarkComponent = Qt.createComponent("BookmarkItem.qml");
-        for (var i=0; i<root.app.bookmarks.length; i++){
-            var b = root.app.bookmarks[i];
-            var bookmarkObject = bookmarkComponent.createObject(page.bookmarkContainer, { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
-        }
-    }
-
-    function reloadBookmarks(){
-        clearBookmarks();
-        loadBookmarks();
-    }
-
-    function bookmarksChanged() {
-        root.app.changedBookmarks();
     }
 
     function shadeColor(color, percent) {
@@ -283,7 +264,6 @@ ApplicationWindow {
             activeTab.webview.visible = true;
             activeTabHistory.push(activeTab.uid);
         }
-        page.updateToolbar();
     }
 
     function getTabModelDataByUID (uid) {
@@ -433,7 +413,6 @@ ApplicationWindow {
             snackbar.open(qsTr('Added bookmark "%1"').arg(title));
             addBookmark(title, url, icon, activeTab.customColor);
         }
-        page.updateToolbar ();
     }
 
     function activeTabFindText(text, backward) {
@@ -451,12 +430,6 @@ ApplicationWindow {
             root.app.sourcetemp = root.app.sourcetemp.replace(/    /g,"");
             root.app.sourcetemp = encodeURI(root.app.sourcetemp);
         });
-    }
-
-    /* Events */
-
-    function activeTabUrlChanged() {
-        page.updateToolbar ();
     }
 
     /** ------------- **/
@@ -533,9 +506,5 @@ ApplicationWindow {
 
         // Add tab
         addTab();
-
-        // Bookmark handling
-        root.loadBookmarks();
-        root.app.changedBookmarks.connect(root.reloadBookmarks)
     }
 }
