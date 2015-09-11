@@ -112,24 +112,13 @@ Rectangle {
 
         IconButton {
             id: btnDownloadsIntegrated
-            visible: root.app.integratedAddressbars && downloadsDrawer.activeDownloads
-            width: root.app.integratedAddressbars && downloadsDrawer.activeDownloads ? Units.dp(24) : 0
-            color: downloadsDrawer.activeDownloads ? Theme.accentColor : root.iconColor
-            iconName: "file/file_download"
+            visible: root.app.integratedAddressbars && downloadsDrawer.hasDownloads
+            width: visible ? Units.dp(24) : 0
+            color: downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
             anchors.right: btnMenuIntegrated.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.margins: root.app.integratedAddressbars && downloadsDrawer.activeDownloads ? Units.dp(24) : 0
-            onClicked: downloadsDrawer.open(btnDownloads)
-
-            Rectangle {
-                visible: downloadsDrawer.activeDownloads
-                z: -1
-                width: parent.width + Units.dp(5)
-                height: parent.height + Units.dp(5)
-                anchors.centerIn: parent
-                color: "white"
-                radius: width*0.5
-            }
+            anchors.margins: visible ? Units.dp(24) : 0
+            onClicked: downloadsDrawer.open()
         }
 
         IconButton {

@@ -1,5 +1,7 @@
 import QtQuick 2.1
 import Qt.labs.settings 1.0
+import QtWebEngine 1.1
+import Material.Extras 0.1
 
 Item {
     id: application
@@ -34,14 +36,81 @@ Item {
         dynamicRoles: true
     }
 
+    // TODO: Does this make sense in BaseApplication, or
+    property ListModel downloadsModel: ListModel {
+        id: downloadsModel
+        dynamicRoles: true
+
+        property bool hasActiveDownloads
+        property bool hasDownloads: count > 0
+
+        function loadHistory() {
+            if (application.settings.downloads) {
+                downloadsModel.clear()
+
+                for (var i = 0; i < application.settings.downloads.length; i++) {
+                    var download = application.settings.downloads[i]
+
+                    downloadsModel.append({ modelData: download })
+                }
+            }
+        }
+
+        function saveHistory(teardown) {
+            // Save a history of downloads
+            var list = [];
+            for (var i = 0; i < downloadsModel.count; i++) {
+                var download = downloadsModel.get(i).modelData
+                var state = download.state === WebEngineDownloadItem.DownloadInProgress ||
+                            download.state === WebEngineDownloadItem.DownloadRequested
+                        ? WebEngineDownloadItem.DownloadCancelled
+                        : download.state
+
+                list.push({
+                    "path": download.path,
+                    "state": state,
+                    "receivedBytes": download.receivedBytes,
+                    "totalBytes": download.totalBytes
+                })
+
+                if (teardown && download.hasOwnProperty("cancel"))
+                    download.cancel()
+            }
+            application.settings.downloads = list;
+        }
+
+        function downloadsChanged() {
+            hasActiveDownloads = ListUtils.filteredCount(downloadsModel, function(download) {
+                return download.state === WebEngineDownloadItem.DownloadInProgress
+            }) > 0
+
+            saveHistory()
+        }
+
+        function clearFinished() {
+            for (var i = 0; i < downloadsModel.count;) {
+                var download = downloadsModel.get(i).modelData
+
+                if (download.state !== WebEngineDownloadItem.DownloadInProgress) {
+                    remove(i)
+                } else {
+                    i++
+                }
+            }
+
+            saveHistory()
+        }
+    }
+
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl
-            property alias searceEngine: application.searchEngine
+        property alias searceEngine: application.searchEngine
         property alias sourceHighlightTheme: application.sourceHighlightTheme
         property alias newTabPage: application.newTabPage
         property var bookmarks
         property var history
         property var dashboard
+        property var downloads
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
     }
@@ -77,6 +146,7 @@ Item {
             application.dashboardModel.append(item);
         }
 
+        downloadsModel.loadHistory()
     }
 
     Component.onDestruction: {
@@ -98,6 +168,7 @@ Item {
             dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
         }
         application.settings.dashboard = dashboard;
-    }
 
+        downloadsModel.saveHistory(true)
+    }
 }

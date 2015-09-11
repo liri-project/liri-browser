@@ -99,20 +99,10 @@ Rectangle {
 
         IconButton {
             id: downloadsButton
-            color: downloadsDrawer.activeDownloads ? Theme.accentColor : root.currentIconColor
+            color: downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
             iconName: "file/file_download"
             onClicked: downloadsDrawer.open(downloadsButton)
-            visible: !mobile
-
-            Rectangle {
-                visible: downloadsDrawer.activeDownloads
-                z: -1
-                width: parent.width + Units.dp(5)
-                height: parent.height + Units.dp(5)
-                anchors.centerIn: parent
-                color: "white"
-                radius: width*0.5
-            }
+            visible: !mobile && downloadsModel.hasDownloads
         }
 
         IconButton {

@@ -7,6 +7,15 @@ BaseApplication {
 
     property QtObject defaultProfile: WebEngineProfile {
         storageName: "Default"
+
+        onDownloadRequested: {
+            downloadsModel.insert(0, { modelData: download })
+            // TODO: Should we confirm the download and location first?
+            download.accept()
+            download.stateChanged.connect(downloadsModel.downloadsChanged)
+
+            downloadsModel.downloadsChanged()
+        }
     }
 
     property Component browserWindowComponent: BrowserWindow {

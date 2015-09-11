@@ -482,11 +482,6 @@ ApplicationWindow {
         page.updateToolbar ();
     }
 
-    function downloadRequested(download) {
-        downloadRequested(download);
-    }
-
-
     /** ------------- **/
 
     Item {
@@ -560,9 +555,5 @@ ApplicationWindow {
         // Bookmark handling
         root.loadBookmarks();
         root.app.changedBookmarks.connect(root.reloadBookmarks)
-
-        // Profile handling
-        root.app.defaultProfile.downloadRequested.connect(root.downloadRequested);
     }
-
 }
