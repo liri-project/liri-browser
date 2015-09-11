@@ -365,8 +365,13 @@ ApplicationWindow {
                     modelData.webview.visible = false;
                     modelData.webview.destroy();
                     tabsModel.remove(getTabModelIndexByUID(t));
+                    // Was the last tab closed?
+                    if (tabsModel.count === 0) {
+                        addTab();
+                    }
                 });
-            } else {
+            }
+            else {
                 var modelData = getTabModelDataByUID(t);
                 modelData.webview.visible = false;
                 modelData.webview.destroy();
