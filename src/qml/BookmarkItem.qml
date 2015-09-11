@@ -86,12 +86,6 @@ Item {
             }
 
             ListItem.Standard {
-                text: qsTr("Add to dash")
-                iconName: "action/dashboard"
-                onClicked: root.addToDash(url, title, color);
-            }
-
-            ListItem.Standard {
                 text: qsTr("Delete")
                 iconName: "action/delete"
                 onClicked: {

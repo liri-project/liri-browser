@@ -65,12 +65,6 @@ Page {
             onTriggered: root.toggleActiveTabBookmark()
         },
         Action {
-            name: qsTr("Add to dash")
-            visible: !root.mobile && !activeTab.webview.newTabPage && !activeTab.webview.sourceTapPage
-            iconName: "action/dashboard"
-            onTriggered: root.addToDash(activeTab.webview.url, activeTab.webview.title, activeTab.customColor)
-        },
-        Action {
             name: qsTr("View source")
             visible: !activeTab.webview.newTabPage && !activeTab.webview.settingsTabPage && !activeTab.webview.sourceTapPage
             iconName: "action/code"
@@ -96,10 +90,8 @@ Page {
         height: titlebarContents.height
 
         z: 5
-
         elevation: 2
         fullWidth: true
-        z: 5
 
         Column {
             id: titlebarContents

@@ -164,26 +164,6 @@ ApplicationWindow {
         doc.send();
     }
 
-    function addToDash(url, title, color) {
-        var uidMax = 0;
-        for (var i=0; i<root.app.dashboardModel.count; i++) {
-            if (root.app.dashboardModel.get(i).uid > uidMax){
-                uidMax = root.app.dashboardModel.get(i).uid;
-            }
-        }
-
-        getBetterIcon(url, title, color, function(url, title, color, iconUrl){
-            var fgColor
-            if (color)
-                fgColor = getTextColorForBackground(color.toString())
-            else
-                fgColor = "black"
-            root.app.dashboardModel.append({"title": title, "url": url.toString(), "iconUrl": iconUrl.toString(), "uid": uidMax+1, "bgColor": color || "white", "fgColor": fgColor});
-            //: %1 is a title
-            snackbar.open(qsTr('Added website "%1" to dash').arg(title));
-        });
-    }
-
     function isBookmarked(url){
         for (var i=0; i<root.app.bookmarks.length; i++){
             if (root.app.bookmarks[i].url === url)
