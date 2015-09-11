@@ -12,6 +12,10 @@ Rectangle {
 
     height: Units.dp(56)
 
+    property bool darkBackground: Theme.isDarkColor(color)
+    property color textColor: Theme.lightDark(color, Theme.light.textColor, Theme.dark.textColor)
+    property color iconColor: Theme.lightDark(color, Theme.light.iconColor, Theme.dark.iconColor)
+
     anchors {
         left: parent.left
         right: parent.right
@@ -98,10 +102,25 @@ Rectangle {
 
         IconButton {
             id: downloadsButton
-            color: root.app.webengine === "qtwebengine" && downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
+            color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads
+                   ? Theme.lightDark(toolbar.color, Theme.accentColor, Theme.dark.iconColor)
+                   : root.currentIconColor
             iconName: "file/file_download"
             onClicked: downloadsDrawer.open(downloadsButton)
-            visible: root.app.webengine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
+            visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
+
+            ProgressCircle {
+                anchors.centerIn: parent
+                width: parent.width + Units.dp(16)
+                height: width
+                z: -1
+
+                color: downloadsButton.color
+
+                indeterminate: false
+                value: downloadsModel.overallProgress
+                visible: downloadsModel.hasActiveDownloads
+            }
         }
 
         IconButton {

@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtWebEngine 1.1
 import Qt.labs.settings 1.0
+import Material.Extras 0.1
 
 BaseApplication {
     id: application
@@ -13,8 +14,11 @@ BaseApplication {
             // TODO: Should we confirm the download and location first?
             download.accept()
             download.stateChanged.connect(downloadsModel.downloadsChanged)
+            download.receivedBytesChanged.connect(downloadsModel.progressChanged)
 
             downloadsModel.downloadsChanged()
+
+            console.log("Starting download to " + download.path)
         }
     }
 
@@ -28,6 +32,8 @@ BaseApplication {
 
         property bool hasActiveDownloads
         property bool hasDownloads: count > 0
+
+        property real overallProgress
 
         function loadHistory() {
             if (application.settings.downloads) {
@@ -72,6 +78,17 @@ BaseApplication {
             saveHistory()
         }
 
+        function progressChanged() {
+            var activeDownloads = ListUtils.filter(downloadsModel, function(download) {
+                return download.state === WebEngineDownloadItem.DownloadInProgress
+            })
+
+            var receivedBytes = ListUtils.sum(activeDownloads, "receivedBytes")
+            var totalBytes = ListUtils.sum(activeDownloads, "totalBytes")
+
+            overallProgress = receivedBytes/totalBytes
+        }
+
         function clearFinished() {
             for (var i = 0; i < downloadsModel.count;) {
                 var download = downloadsModel.get(i).modelData
@@ -87,7 +104,7 @@ BaseApplication {
         }
     }
 
-    function createWindow (){
+    function createWindow() {
         var newWindow = browserWindowComponent.createObject(application)
         return newWindow
     }

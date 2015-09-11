@@ -525,9 +525,9 @@ ApplicationWindow {
         }
 
         // Create download drawer
-        if (app.webengine === "qtwebengine") {
+        if (app.webEngine === "qtwebengine") {
             var component = Qt.createComponent("DownloadsDrawer.qml");
-            downloadsDrawer = component.createObject(shortCutActionsContainer);
+            downloadsDrawer = component.createObject(page);
         }
 
 

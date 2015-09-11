@@ -1,6 +1,5 @@
 import QtQuick 2.1
 import Qt.labs.settings 1.0
-import Material.Extras 0.1
 
 Item {
     id: application
