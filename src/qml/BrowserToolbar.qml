@@ -58,10 +58,9 @@ Rectangle {
 
         IconButton {
             hoverAnimation: true
-            iconName: "navigation/refresh"
+            iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
             color: root.currentIconColor
-            enabled: !activeTab.webview.loading
-            onClicked: activeTab.webview.reload()
+            onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
         }
 
         Omnibox {
@@ -132,5 +131,3 @@ Rectangle {
     }
 
 }
-
-

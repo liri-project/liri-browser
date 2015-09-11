@@ -43,6 +43,10 @@ Item {
         webview.reload();
     }
 
+    function stop() {
+        webview.stop();
+    }
+
     function findText (text, backward, callback){
         var flags;
         if (backward)
