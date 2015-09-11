@@ -60,15 +60,8 @@ Rectangle {
             hoverAnimation: true
             iconName: "navigation/refresh"
             color: root.currentIconColor
-            visible: !activeTab.webview.loading
+            enabled: !activeTab.webview.loading
             onClicked: activeTab.webview.reload()
-        }
-
-        LoadingIndicator {
-            visible: activeTab.webview.loading
-            width: Units.dp(24)
-            height: Units.dp(24)
-            dashThickness: Units.dp(2)
         }
 
         Omnibox {

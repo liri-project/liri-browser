@@ -23,11 +23,11 @@ Item {
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
     property bool secureConnection: false
+    property real progress: webview.loadProgress/100
 
     property string usContext: "messaging://"
 
     property var preview
-
 
     function goBack() {
         webview.goBack();

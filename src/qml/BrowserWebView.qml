@@ -25,6 +25,7 @@ Item {
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
     property bool secureConnection: false
+    property real progress: webview.loadProgress/100
 
     function goBack() {
         webview.goBack();
