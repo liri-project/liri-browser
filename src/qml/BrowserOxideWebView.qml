@@ -45,6 +45,10 @@ Item {
         webview.reload();
     }
 
+    function stop() {
+        webview.stop();
+    }
+
     function findText (text, backward, callback){
         webview.findController.text = text;
         if (backward)
