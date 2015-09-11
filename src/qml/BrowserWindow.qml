@@ -438,17 +438,9 @@ ApplicationWindow {
 
     function activeTabFindText(text, backward) {
         var flags
-        if (root.app.webEngine === "qtwebengine") {
-            if (backward)
-                flags |= WebEngineView.FindBackward
-            activeTab.webEngine.findText(text, flags, function(success) {
-                root.txtSearch.hasError = !success;
-            });
-        } else if (root.app.webEngine === "oxide") {
-            activeTab.webview.findText(text, backward, function(success) {
-                root.txtSearch.hasError = !success;
-            });
-        }
+        activeTab.webview.findText(text, backward, function(success) {
+            root.txtSearch.hasError = !success;
+        });
     }
 
     function activeTabViewSourceCode () {

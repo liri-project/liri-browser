@@ -41,12 +41,12 @@ Item {
         webview.reload();
     }
 
-    function findText (text, backward){
-        webview.findController.text = text;
+    function findText (text, backward, callback){
+        var flags;
         if (backward)
-            webview.findController.previous();
-        else
-            webview.findController.next();
+            flags |= WebEngineView.FindBackward
+        webview.findText(text, flags, callback);
+
     }
 
     WebEngineView {
