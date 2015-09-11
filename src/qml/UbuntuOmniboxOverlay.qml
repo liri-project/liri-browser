@@ -32,8 +32,11 @@ Rectangle {
 
     TextField {
         id: textField
+
         text: root.activeTab.webview.url
         placeholderText: qsTr("Search or enter website name")
+
+        font.family: root.fontFamily
 
         anchors.left: connectionIcon.right
         anchors.verticalCenter: parent.verticalCenter
@@ -52,7 +55,6 @@ Rectangle {
             if(!activeFocus)
                 hide();
         }
-
     }
 
     Material.IconButton {
