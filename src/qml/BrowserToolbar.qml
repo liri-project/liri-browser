@@ -51,7 +51,8 @@ Rectangle {
             hoverAnimation: true
             iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
             color: root.currentIconColor
-            onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
+            onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
+            enabled: root.activeTab.webview.canReload
         }
 
         Omnibox {
@@ -81,6 +82,7 @@ Rectangle {
             iconName: isBookmarked(activeTab.webview.url) ? "action/bookmark" : "action/bookmark_border"
             onClicked: toggleActiveTabBookmark()
             visible: !mobile
+            enabled: root.activeTab.webview.canBookmark
         }
 
         IconButton {

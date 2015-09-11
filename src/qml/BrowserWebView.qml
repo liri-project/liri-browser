@@ -24,6 +24,8 @@ Item {
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
+    readonly property bool canReload: webview.visible
+    readonly property bool canBookmark: webview.visible
     property bool secureConnection: false
     property real progress: webview.loadProgress/100
 
@@ -200,5 +202,4 @@ Item {
         visible: settingsTabPage && !newTabPage
         anchors.fill: parent
     }
-
 }
