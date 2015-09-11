@@ -60,29 +60,31 @@ Page {
         },
         Action {
             name: qsTr("Search")
+            visible: !activeTab.webview.newTabPage && !activeTab.webview.settingsTabPage
             iconName: "action/search"
             onTriggered: root.showSearchOverlay()
         },
         Action {
             name: qsTr("Bookmark")
-            visible: root.app.integratedAddressbars && !root.mobile
+            visible: root.app.integratedAddressbars && !root.mobile && !activeTab.webview.sourceTapPage
             iconName: "action/bookmark_border"
             onTriggered: root.toggleActiveTabBookmark()
         },
         Action {
             name: qsTr("Add to dash")
-            visible: !root.mobile
+            visible: !root.mobile && !activeTab.webview.newTabPage && !activeTab.webview.sourceTapPage
             iconName: "action/dashboard"
             onTriggered: root.addToDash(activeTab.webview.url, activeTab.webview.title, activeTab.customColor)
         },
         Action {
             name: qsTr("View source")
-            //visible: root.app.integratedAddressbars
+            visible: !activeTab.webview.newTabPage && !activeTab.webview.settingsTabPage && !activeTab.webview.sourceTapPage
             iconName: "action/code"
             onTriggered: activeTabViewSourceCode()
         },
         Action {
             name: qsTr("Settings")
+            visible: !activeTab.webview.settingsTabPage
             iconName: "action/settings"
             onTriggered: {
                 if (mobile)

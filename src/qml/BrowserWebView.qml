@@ -13,6 +13,7 @@ Item {
     property alias view: webview
     property bool newTabPage
     property bool settingsTabPage
+    property bool sourceTapPage: url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
 
     /* Wrapping WebEngineView functionality */
     property alias page: webview.page
