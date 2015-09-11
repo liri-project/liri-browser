@@ -26,14 +26,15 @@ BaseApplication {
         var newWindow = browserWindowComponent.createObject(application)
         return newWindow
     }
+
     function createDialog(request) {
         var newDialog = browserWindowComponent.createObject(application)
         var tab = newDialog.addTab("about:blank")
         request.openIn(tab.webview.view)
         return newDialog
     }
+
     function load() {
         var browserWindow = createWindow()
     }
-
 }

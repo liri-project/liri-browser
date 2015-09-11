@@ -17,7 +17,6 @@ ApplicationWindow {
     width: 1000
     height: 640
 
-
     theme {
         id: theme
         primaryColor: "#F44336"
@@ -28,7 +27,6 @@ ApplicationWindow {
     /* User Settings */
 
     property variant win;
-
 
     property Settings settings: Settings {
         id: settings
@@ -67,10 +65,8 @@ ApplicationWindow {
     property alias txtSearch: page.txtSearch
     property alias websiteSearchOverlay: page.websiteSearchOverlay
     property alias downloadsDrawer: downloadsDrawer
-    property alias iconConnectionType: page.iconConnectionType
 
     property bool fullscreen: false
-    property bool secureConnection: false
 
     property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(1000) || width < Units.dp(640)
 
@@ -320,18 +316,16 @@ ApplicationWindow {
     function addTab(url, background) {
         var u;
         var ntp = false, stp = false;
-        if (url){
+        if (url) {
             if (url == "liri://settings") {
                 stp = true;
                 u = url;
+            } else {
+                u = getValidUrl(url);
             }
-            else
-              u = getValidUrl(url);
-        }
-        else if (root.app.newTabPage && !stp) {
+        } else if (root.app.newTabPage && !stp) {
             ntp = true;
-        }
-        else {
+        } else {
             u = root.app.homeUrl;
         }
 
@@ -377,8 +371,7 @@ ApplicationWindow {
                     modelData.webview.destroy();
                     tabsModel.remove(getTabModelIndexByUID(t));
                 });
-            }
-            else {
+            } else {
                 var modelData = getTabModelDataByUID(t);
                 modelData.webview.visible = false;
                 modelData.webview.destroy();
@@ -408,13 +401,11 @@ ApplicationWindow {
         if (tabsModel.count > 1) {
             if (activeTabHistory.length > 0) {
                 setActiveTab(activeTabHistory[activeTabHistory.length-1], true, callback);
-            }
-            else {
+            } else {
                 callback();
                 setActiveTab(getUIDByModelIndex(0), true);
             }
-        }
-        else {
+        } else {
             callback();
         }
     }
@@ -424,8 +415,7 @@ ApplicationWindow {
             u = url;
             activeTab.webview.settingsTabPage = true;
             activeTab.webview.newTabPage = false;
-        }
-        else {
+        } else {
             var u = getValidUrl(url);
             activeTab.webview.settingsTabPage = false;
             activeTab.webview.url = u;
@@ -439,8 +429,7 @@ ApplicationWindow {
         if (isBookmarked(url)) {
             snackbar.open(qsTr('Removed bookmark %1').arg(title));
             removeBookmark(url)
-        }
-        else {
+        } else {
             snackbar.open(qsTr('Added bookmark "%1"').arg(title));
             addBookmark(title, url, icon, activeTab.customColor);
         }
@@ -455,25 +444,21 @@ ApplicationWindow {
             activeTab.webEngine.findText(text, flags, function(success) {
                 root.txtSearch.hasError = !success;
             });
-        }
-        else if (root.app.webEngine === "oxide") {
+        } else if (root.app.webEngine === "oxide") {
             activeTab.webview.findText(text, backward, function(success) {
                 root.txtSearch.hasError = !success;
             });
         }
-
-
     }
 
     function activeTabViewSourceCode () {
-      activeTab.webview.runJavaScript("function getSource() { return '' + document.documentElement.innerHTML + '';} getSource() ",
-          function(content){
+        activeTab.webview.runJavaScript("function getSource() { return '' + document.documentElement.innerHTML + '';} getSource() ", function(content) {
             addTab("http://liri-browser.github.io/sourcecodeviewer/index.html");
             root.app.sourcetemp = content;
             root.app.sourcetemp = root.app.sourcetemp.replace(/\r?\n|\r/g,"");
             root.app.sourcetemp = root.app.sourcetemp.replace(/    /g,"");
             root.app.sourcetemp = encodeURI(root.app.sourcetemp);
-      });
+        });
     }
 
     /* Events */

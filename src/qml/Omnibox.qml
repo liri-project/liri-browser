@@ -9,13 +9,11 @@ Rectangle {
     color: root.addressBarColor
     opacity: 0.5
 
-    property alias iconConnectionType: connectionTypeIcon
-
     Icon {
         id: connectionTypeIcon
 
         property bool searchIcon: false
-        name: if (searchIcon) {"action/search"} else {root.activeTab.webview.secureConnection ? "action/lock" : "social/public"}
+        name: searchIcon ? "action/search" : root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
         color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
 
         anchors {

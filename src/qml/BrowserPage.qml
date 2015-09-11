@@ -12,7 +12,6 @@ Page {
     }
 
     property alias webContainer: webContainer
-    property alias iconConnectionType: toolbar.iconConnectionType
     property alias listView: tabBar.listView
     property alias bookmarksBar: bookmarksBar
     property alias bookmarkContainer: bookmarksBar.bookmarkContainer

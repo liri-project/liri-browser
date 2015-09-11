@@ -17,7 +17,6 @@ Rectangle {
         right: parent.right
     }
 
-    property alias iconConnectionType: omnibox.iconConnectionType
     property var ubuntuOmniboxOverlay
 
     function update() {

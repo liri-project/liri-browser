@@ -36,7 +36,7 @@ Item {
         dynamicRoles: true
     }
 
-    // TODO: Does this make sense in BaseApplication, or
+    // TODO: Does this make sense in BaseApplication, or the desktop subclass?
     property ListModel downloadsModel: ListModel {
         id: downloadsModel
         dynamicRoles: true
