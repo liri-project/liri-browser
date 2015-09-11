@@ -97,10 +97,6 @@ Item {
                 activeTabUrlChanged();
         }
 
-        /*settings.autoLoadImages: appSettings.autoLoadImages
-                     settings.javascriptEnabled: appSettings.javaScriptEnabled
-                     settings.errorPageEnabled: appSettings.errorPageEnabled*/
-
          onCertificateError: {
              dlgCertificateError.showError(error);
          }
@@ -123,19 +119,21 @@ Item {
              }
          }
 
-         /*onFullScreenRequested: {
-             console.log("onFullScreenRequested")
-             if (request.toggleOn) {
+         onFullscreenRequested: {
+             webview.fullscreen = fullscreen;
+             if (fullscreen) {
                  root.startFullscreenMode();
              }
              else {
                  root.endFullscreenMode();
              }
-             request.accept();
-         }*/
+         }
+
+         onDownloadRequested: {
+             Qt.openUrlExternally(request.url)
+         }
 
          onLoadingChanged: {
-             console.log(JSON.stringify(loadEvent))
             if (loadEvent.type === 0) {
                 if (newTabPage) {
                     newTabPage = false;
@@ -208,7 +206,7 @@ Item {
 
             }
 
-            else if (loadRequest.isError) {
+            else if (loadEvent.isError) {
                 root.setActiveTabURL('about:blank');
             }
          }

@@ -114,7 +114,7 @@ Rectangle {
             id: btnDownloadsIntegrated
             visible: root.app.integratedAddressbars && downloadsDrawer.hasDownloads
             width: visible ? Units.dp(24) : 0
-            color: downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
+            color: root.app.webengine === "qtwebengine" && downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
             anchors.right: btnMenuIntegrated.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: visible ? Units.dp(24) : 0

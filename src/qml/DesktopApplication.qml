@@ -102,4 +102,12 @@ BaseApplication {
     function load() {
         var browserWindow = createWindow()
     }
+
+    Component.onCompleted: {
+        downloadsModel.loadHistory()
+    }
+
+    Component.onDestruction: {
+        downloadsModel.saveHistory(true);
+    }
 }

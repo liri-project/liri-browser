@@ -98,10 +98,10 @@ Rectangle {
 
         IconButton {
             id: downloadsButton
-            color: downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
+            color: root.app.webengine === "qtwebengine" && downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
             iconName: "file/file_download"
             onClicked: downloadsDrawer.open(downloadsButton)
-            visible: !mobile && downloadsModel.hasDownloads
+            visible: root.app.webengine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
         }
 
         IconButton {
@@ -115,9 +115,7 @@ Rectangle {
     Component.onCompleted: {
         if (root.app.platform === "converged/ubuntu") {
             var overlayComponent = Qt.createComponent("UbuntuOmniboxOverlay.qml");
-            console.log(">", overlayComponent)
             ubuntuOmniboxOverlay = overlayComponent.createObject(toolbar, {})
-            console.log(">", overlayObject)
         }
     }
 

@@ -16,7 +16,6 @@ BrowserWindow {
                 (Screen.height == 960) &&
                 (Screen.pixelDensity.toFixed(2) == 3.94) &&
                 (Screen.logicalPixelDensity.toFixed(2) == 3.94)
-        console.log("BQ?", bq45)
         if (bq45) {
             Units.multiplier = 2;
         }

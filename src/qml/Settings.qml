@@ -119,6 +119,7 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: !root.mobile
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -139,6 +140,7 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: !root.mobile
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)

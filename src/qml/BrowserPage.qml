@@ -65,13 +65,13 @@ Page {
         },
         Action {
             name: qsTr("Bookmark")
-            visible: root.app.integratedAddressbars || root.mobile
+            visible: root.app.integratedAddressbars && !root.mobile
             iconName: "action/bookmark_border"
             onTriggered: root.toggleActiveTabBookmark()
         },
         Action {
             name: qsTr("Add to dash")
-            //visible: root.app.integratedAddressbars
+            visible: !root.mobile
             iconName: "action/dashboard"
             onTriggered: root.addToDash(activeTab.webview.url, activeTab.webview.title, activeTab.customColor)
         },
@@ -114,14 +114,17 @@ Page {
 
             BrowserTabBar {
                 id: tabBar
-                visible: tabsModel.count > 1 && !root.mobile
+                visible: tabsModel.count > 1 && !root.mobile && !root.fullscreen
             }
 
-            BrowserToolbar { id: toolbar }
+            BrowserToolbar {
+                id: toolbar
+                visible: !root.fullscreen && !root.app.integratedAddressbars
+            }
 
             BookmarksBar {
                 id: bookmarksBar
-                visible: app.bookmarks.length > 0
+                visible: app.bookmarks.length > 0 && !root.fullscreen && !root.mobile
             }
         }
     }
@@ -136,7 +139,7 @@ Page {
         anchors.right: parent.right
         height: Units.dp(48)
         elevation: 2
-        z: 2
+        z: 5
 
         Row {
             anchors.fill: parent

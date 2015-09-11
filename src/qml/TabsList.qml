@@ -17,9 +17,6 @@ Item {
             property color defaultTextColor: root.tabTextColorActive
             property color textColor: (root.app.tabsEntirelyColorized && model.customTextColor) ? model.customTextColor: defaultTextColor
 
-
-            onBackgroundColorChanged: console.log(backgroundColor, model.customColor)
-
             width: parent.width
             height: Units.dp(48)
 

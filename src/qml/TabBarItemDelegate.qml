@@ -197,13 +197,20 @@ Component {
                 MouseArea {
                     anchors.fill: parent
 
+                    acceptedButtons: Qt.AllButtons
+
                     onClicked: {
-                        var isAlreadyActive = (rectContainer.state == "active")
-                        root.activeTab = modelData;
-                        if (isAlreadyActive && root.app.integratedAddressbars && mouse.x < closeButton.x) {
-                            item.editModeActive = true;
+                        if (mouse.button === Qt.LeftButton) {
+                            var isAlreadyActive = (rectContainer.state == "active")
+                            root.activeTab = modelData;
+                            if (isAlreadyActive && root.app.integratedAddressbars && mouse.x < closeButton.x) {
+                                item.editModeActive = true;
+                            }
+                            mouse.accepted = false;
                         }
-                        mouse.accepted = false;
+                        else if (mouse.button === Qt.MiddleButton) {
+                            removeTab(uid);
+                        }
                     }
                 }
             }

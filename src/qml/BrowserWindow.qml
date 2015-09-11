@@ -64,7 +64,7 @@ ApplicationWindow {
 
     property alias txtSearch: page.txtSearch
     property alias websiteSearchOverlay: page.websiteSearchOverlay
-    property alias downloadsDrawer: downloadsDrawer
+    property var downloadsDrawer
 
     property bool fullscreen: false
 
@@ -233,11 +233,6 @@ ApplicationWindow {
             var b = root.app.bookmarks[i];
             var bookmarkObject = bookmarkComponent.createObject(page.bookmarkContainer, { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
         }
-
-        if (root.app.bookmarks.length > 0)
-            page.bookmarksBar.visible = true;
-        else
-            page.bookmarksBar.visible = false;
     }
 
     function reloadBookmarks(){
@@ -475,8 +470,6 @@ ApplicationWindow {
 
     initialPage: BrowserPage { id: page }
 
-    DownloadsDrawer { id: downloadsDrawer }
-
     HistoryDrawer { id: historyDrawer }
 
     SettingsPage { id: settingsPage }
@@ -533,6 +526,13 @@ ApplicationWindow {
             var component = Qt.createComponent("ShortcutActions.qml");
             component.createObject(shortCutActionsContainer);
         }
+
+        // Create download drawer
+        if (app.webengine === "qtwebengine") {
+            var component = Qt.createComponent("DownloadsDrawer.qml");
+            downloadsDrawer = component.createObject(shortCutActionsContainer);
+        }
+
 
         // Add tab
         addTab();

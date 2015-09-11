@@ -1,6 +1,5 @@
 import QtQuick 2.1
 import Qt.labs.settings 1.0
-import QtWebEngine 1.1
 import Material.Extras 0.1
 
 Item {
@@ -79,8 +78,6 @@ Item {
             var item = application.settings.dashboard[i];
             application.dashboardModel.append(item);
         }
-
-        downloadsModel.loadHistory()
     }
 
     Component.onDestruction: {
@@ -102,7 +99,5 @@ Item {
             dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
         }
         application.settings.dashboard = dashboard;
-
-        downloadsModel.saveHistory(true)
     }
 }
