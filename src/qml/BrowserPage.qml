@@ -143,6 +143,11 @@ Page {
         elevation: 2
         z: 5
 
+        onVisibleChanged: {
+            if (!visible)
+                activeTabFindText("");
+        }
+
         Row {
             anchors.fill: parent
             anchors.margins: Units.dp(5)
