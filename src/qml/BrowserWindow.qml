@@ -441,7 +441,7 @@ ApplicationWindow {
         if (root.app.webEngine === "qtwebengine") {
             if (backward)
                 flags |= WebEngineView.FindBackward
-            activeTab.webEngine.findText(text, flags, function(success) {
+            activeTab.webview.findText(text, flags, function(success) {
                 root.txtSearch.hasError = !success;
             });
         } else if (root.app.webEngine === "oxide") {
