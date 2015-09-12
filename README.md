@@ -14,11 +14,6 @@ Liri's user interface is designed according to Google's Material Design which le
 
 The name "liri" comes from the Albanian word for freedom. Liri Browser was former named "Material Browser".
 
-## Demo
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=7CbvpyzsQ0g" target="_blank"><img src="http://img.youtube.com/vi/7CbvpyzsQ0g/0.jpg" alt="video" width="240" height="180" border="10" /></a>
-
-https://youtu.be/7CbvpyzsQ0g
-
 ## Screenshots
 ![Screenshot](screenshots/screenshot_01.png)
 ![Screenshot](screenshots/screenshot_02.png)
@@ -27,10 +22,20 @@ https://youtu.be/7CbvpyzsQ0g
 Please help us translating this application! Read this guide to get started:
 https://github.com/liri-browser/liri-browser/wiki/Translations
 
-## Downloads
+# Downloads
 Check out the [downloads section](https://github.com/liri-browser/liri-browser/releases) and download the package for your platform.
 
-### Linux
+## Linux
+
+### Ubuntu & Debian
+Download and install our .deb-package.
+
+### Arch Linux
+You get Liri Browser from the AUR: 
+* https://aur.archlinux.org/packages/liri-browser/
+* https://aur.archlinux.org/packages/liri-browser-git/
+
+### Any Linux
 * Download `liri-browser-X.X-linux-portable.zip`
 * Extract the files
 * Run `run-liri.sh` inside the extracted directory
@@ -41,11 +46,10 @@ Check out the [downloads section](https://github.com/liri-browser/liri-browser/r
 * `cd` into your Downloads directory
 * Run `pkcon --allow-untrusted install-local liri-browser.timsueberkrueb_X.X_multi.click`
 
-### Windows
-TBD
+### Windows & Mac OS X
+Just download and extract the ZIP-file for your platform and run the executable.
 
-### Mac OS X
-TBD
+*Note for Windows users:* Expect some performance issues.
 
 ## Build on Linux
 
