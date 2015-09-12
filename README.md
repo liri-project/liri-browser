@@ -27,7 +27,27 @@ https://youtu.be/7CbvpyzsQ0g
 Please help us translating this application! Read this guide to get started:
 https://github.com/liri-browser/liri-browser/wiki/Translations
 
-## Installation on Linux
+## Downloads
+Check out the [downloads section](https://github.com/liri-browser/liri-browser/releases) and download the package for your platform.
+
+### Linux
+* Download `liri-browser-X.X-linux-portable.zip`
+* Extract the files
+* Run `run-liri.sh` inside the extracted directory
+
+### Ubuntu Touch
+* Download `liri-browser.timsueberkrueb_X.X_multi.click` on your device
+* Open the terminal app or connect remotely by using adb shell or SSH
+* `cd` into your Downloads directory
+* Run `pkcon --allow-untrusted install-local liri-browser.timsueberkrueb_X.X_multi.click`
+
+### Windows
+TBD
+
+### Mac OS X
+TBD
+
+## Build on Linux
 
 ### Simple Installation Script
 If you just want to try Liri Browser out you can use our simple installation script. It will download and install Qt 5.5 and all necessary dependencies:
