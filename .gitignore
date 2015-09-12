@@ -53,3 +53,11 @@ liri-browser.vcxproj
 liri-browser.vcxproj.filters
 liri-browser.vcxproj.user
 liri-browser.opensdf
+
+# Ubuntu
+.ubuntu-sdk-deploy
+*.click
+lib/
+
+# Oxide
+TransportSecurity

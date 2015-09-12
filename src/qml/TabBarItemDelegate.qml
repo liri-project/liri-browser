@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.4
+import QtQuick.Controls 1.2
 
 import Material 0.1
 
@@ -110,17 +110,45 @@ Component {
                     Image {
                         id: icon
                         //visible: iconUrl !== ""
-                        visible: !modelData.webview.loading && !modelData.webview.newTabPage
+                        visible: isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && modelData.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         width: webview.loading ?  0 : Units.dp(20)
                         height: Units.dp(20)
                         anchors.verticalCenter: parent.verticalCenter
                         source: modelData.webview.icon
+                        property var isAFavicon: true
+                        onStatusChanged: {
+                            if (icon.status == Image.Error || icon.status == Image.Null)
+                                isAFavicon = false;
+                            else
+                                isAFavicon = true;
+                        }
+                    }
+
+                    Icon {
+                        id: iconNoFavicon
+                        name: "action/description"
+                        visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
+                        anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Icon {
                         id: iconDashboard
                         name: "action/dashboard"
                         visible: modelData.webview.newTabPage
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Icon {
+                        id: iconSettings
+                        name: "action/settings"
+                        visible: modelData.webview.settingsTabPage
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Icon {
+                        id: iconSource
+                        name: "action/code"
+                        visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -169,13 +197,20 @@ Component {
                 MouseArea {
                     anchors.fill: parent
 
+                    acceptedButtons: Qt.AllButtons
+
                     onClicked: {
-                        var isAlreadyActive = (rectContainer.state == "active")
-                        root.activeTab = modelData;
-                        if (isAlreadyActive && root.app.integratedAddressbars && mouse.x < closeButton.x) {
-                            item.editModeActive = true;
+                        if (mouse.button === Qt.LeftButton) {
+                            var isAlreadyActive = (rectContainer.state == "active")
+                            root.activeTab = modelData;
+                            if (isAlreadyActive && root.app.integratedAddressbars && mouse.x < closeButton.x) {
+                                item.editModeActive = true;
+                            }
+                            mouse.accepted = false;
                         }
-                        mouse.accepted = false;
+                        else if (mouse.button === Qt.MiddleButton) {
+                            removeTab(uid);
+                        }
                     }
                 }
             }

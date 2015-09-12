@@ -4,14 +4,25 @@
         <file>qml/BrowserWebView.qml</file>
         <file>qml/BookmarkItem.qml</file>
         <file>qml/ShortcutActions.qml</file>
-        <file>qml/Application.qml</file>
         <file>qml/BrowserWindow.qml</file>
-        <file>qml/SettingsDrawer.qml</file>
         <file>qml/DownloadsDrawer.qml</file>
         <file>qml/ColorPicker.qml</file>
         <file>qml/HistoryDrawer.qml</file>
         <file>qml/NewTabPage.qml</file>
+        <file>qml/SettingsTabPage.qml</file>
         <file>qml/ColorChooser.qml</file>
         <file>qml/TabBarItemDelegate.qml</file>
+        <file>qml/BrowserPage.qml</file>
+        <file>qml/BrowserTabBar.qml</file>
+        <file>qml/BrowserToolbar.qml</file>
+        <file>qml/BookmarksBar.qml</file>
+        <file>qml/FullscreenBar.qml</file>
+        <file>qml/Omnibox.qml</file>
+        <file>qml/BaseApplication.qml</file>
+        <file>qml/Settings.qml</file>
+        <file>qml/SettingsPage.qml</file>
+        <file>qml/DesktopApplication.qml</file>
+        <file>qml/TabsList.qml</file>
+        <file>qml/TabsListPage.qml</file>
     </qresource>
 </RCC>

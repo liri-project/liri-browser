@@ -2,7 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
-
+import QtWebEngine 1.1
+import QtQuick.Layouts 1.1
 
 NavigationDrawer {
     id: drawer
@@ -10,147 +11,111 @@ NavigationDrawer {
     mode: "right"
     width: Units.dp(350)    
 
-    property bool activeDownloads:listView.count
+    View {
+        id: downloadsTitle
+        height: Units.dp(56)
+        width: parent.width
+        elevation: listView.contentY > 0 ? 1 : 0
+        backgroundColor: "white"
+        z: 1
 
-    function append(download) {
-        downloadModel.append(download)
-        downloadModel.downloads.push(download)
-    }
+        RowLayout {
+            anchors {
+                left: parent.left
+                right: parent.right
+                leftMargin: Units.dp(16)
+                rightMargin: Units.dp(16)
+                verticalCenter: parent.verticalCenter
+            }
 
-    Column {
-        anchors.fill: parent
-        anchors.margins: Units.dp(24)
-        spacing: Units.dp(5)
+            spacing: Units.dp(8)
 
-        View {
-            id: downloadTitle
-            height: label.height + Units.dp(30)
-            width: parent.width
             Label {
-                id: label
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    bottom: parent.bottom
-                    leftMargin: Units.dp(16)
-                    rightMargin: Units.dp(16)
-                    centerIn:parent
-                }
+                Layout.fillWidth: true
                 text: qsTr("Downloads")
                 style: "title"
-                font.pixelSize: Units.dp(24)
+                elide: Text.ElideRight
+            }
+
+            Button {
+                text: qsTr("Clear")
+                onClicked: {
+                    downloadsModel.clearFinished()
+                    if (downloadsModel.count == 0)
+                        downloadsDrawer.close()
+                }
             }
         }
-
-        Item {
-            width: parent.width
-            height: parent.height - downloadTitle.height
-
-            ListModel {
-                id: downloadModel
-                property var downloads: []
-            }
-
-            function append(download) {
-                downloadModel.append(download)
-                downloadModel.downloads.push(download)
-            }
-
-            Component {
-                id: downloadItemDelegate
-
-                Rectangle {
-                    width: listView.width
-                    height: childrenRect.height
-                    anchors.margins: 10
-                    radius: Units.dp(3)
-                    color: "transparent"
-                    Rectangle {
-                        id: pogressBar
-
-                        property real progress: downloadModel.downloads[index]
-                                               ? downloadModel.downloads[index].receivedBytes / downloadModel.downloads[index].totalBytes : 0
-
-                        radius: 3
-                        color: width === listView.width ? "#4CAF50" : "#448AFF"
-                        width: listView.width * progress
-                        height: Units.dp(48)
-
-                        Behavior on width {
-                            SmoothedAnimation { duration: 100 }
-                        }
-
-
-                    }
-
-                    Text {
-                        id: label
-                        text: path
-                        color: if (pogressBar.width === listView.width) { "white" } else { "black" }
-                        font.family: root.fontFamily
-                        font.pixelSize: Units.dp(14)
-                        elide: Text.ElideLeft
-                        clip: true
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                            left: parent.left
-                            right: btnCancel.left
-                            leftMargin: Units.dp(5)
-                            rightMargin: Units.dp(5)
-                        }
-                    }
-
-                    IconButton {
-                        id: btnCancel
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.rightMargin: Units.dp(12)
-                        iconName: "navigation/cancel"
-                        color: if (pogressBar.width === listView.width) { "white" } else { "black" }
-                        onClicked: {
-                            var download = downloadModel.downloads[index]
-
-                            download.cancel();
-
-                            downloadModel.downloads = downloadModel.downloads.filter(function (el) {
-                                return el.id !== download.id;
-                            });
-                            downloadModel.remove(index)
-                        }
-                    }
-
-                }
-
-            }
-
-            ScrollView {
-                anchors.fill: parent
-                ListView {
-                    id: listView
-                    anchors.fill: parent
-
-                    spacing: 5
-
-                    model: downloadModel
-                    delegate: downloadItemDelegate
-
-                    Text {
-                        visible: !listView.count
-                        font.family: root.fontFamily
-                        text: qsTr("No active downloads")
-                        anchors.top: downloadTitle.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-
-            }
-
-
-        }
-
     }
 
+    ScrollView {
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: downloadsTitle.bottom
+            bottom: parent.bottom
+        }
 
+        // NOTE: Now empty state placeholder is necessary because the drawer can't be opened
+        // unless there is at least one download
+        ListView {
+            id: listView
 
+            bottomMargin: Units.dp(8)
+            interactive: count > 0
+            model: downloadsModel
+            delegate: ListItem.Subtitled {
+                id: listItem
 
+                interactive: download.state === WebEngineDownloadItem.DownloadCompleted
+
+                property var download: downloadsModel.get(index).modelData
+
+                text: {
+                    var index = download.path.lastIndexOf("/")
+                    return download.path.substring(index + 1)
+                }
+                subText: {
+                    if (listItem.download.state === WebEngineDownloadItem.DownloadRequested) {
+                        return qsTr("Awaiting confirmation")
+                    } else if (listItem.download.state === WebEngineDownloadItem.DownloadInProgress) {
+                        return qsTr("Downloading...")
+                    } else if (listItem.download.state === WebEngineDownloadItem.DownloadCompleted) {
+                        return qsTr("Completed")
+                    } else if (listItem.download.state === WebEngineDownloadItem.DownloadCancelled) {
+                        return qsTr("Cancelled")
+                    } else if (listItem.download.state === WebEngineDownloadItem.DownloadInterrupted) {
+                        return qsTr("Download failed")
+                    } else {
+                        return qsTr("Unknown state!")
+                    }
+                }
+
+                content: ProgressBar {
+                    id: progressBar
+
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: parent.width
+
+                    property bool completed: value == maximumValue
+
+                    value: listItem.download.receivedBytes
+                    maximumValue: listItem.download.totalBytes
+                    visible: listItem.download.state === WebEngineDownloadItem.DownloadInProgress
+                }
+                secondaryItem: IconButton {
+                    anchors.centerIn: parent
+                    iconName: "navigation/cancel"
+                    visible: listItem.download.state === WebEngineDownloadItem.DownloadInProgress
+                    onClicked: {
+                        listItem.download.cancel();
+                    }
+                }
+
+                onClicked: {
+                    Qt.openUrlExternally("file://" + download.path)
+                }
+            }
+        }
+    }
 }

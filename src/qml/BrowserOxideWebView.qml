@@ -1,7 +1,6 @@
 import QtQuick 2.4
 import Material 0.1
-import QtWebEngine 1.1
-
+import com.canonical.Oxide 1.0
 
 Item {
     id: browserWebView
@@ -10,15 +9,14 @@ Item {
     visible: false
 
     property var uid
-    property alias view: webview
+    property alias webview: webview
     property bool newTabPage
     property bool settingsTabPage
-    property bool sourceTapPage: url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
 
     /* Wrapping WebEngineView functionality */
     property alias page: webview.page
     property alias url: webview.url
-    property alias profile: webview.profile
+    //property alias profile: webview.profile
     property alias icon: webview.icon
     property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : webview.title
     property alias loading: webview.loading
@@ -26,6 +24,10 @@ Item {
     property alias canGoForward: webview.canGoForward
     property bool secureConnection: false
     property real progress: webview.loadProgress/100
+
+    property string usContext: "messaging://"
+
+    property var preview
 
     function goBack() {
         webview.goBack();
@@ -48,18 +50,34 @@ Item {
     }
 
     function findText (text, backward, callback){
-        var flags;
+        webview.findController.text = text;
         if (backward)
-            flags |= WebEngineView.FindBackward
-        webview.findText(text, flags, callback);
-
+            webview.findController.previous();
+        else
+            webview.findController.next();
+        callback(webview.findController.count > 0);
     }
 
-    WebEngineView {
+    WebContext {
+        id: webcontext
+        property string defaultUserAgent: "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+        property string mobileUserAgent: "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19 "
+        userScripts: [
+            UserScript {
+                context: usContext
+                url: Qt.resolvedUrl("ubuntu/oxide-user.js")
+            }
+        ]
+        userAgent: mobile ? mobileUserAgent : defaultUserAgent
+    }
+
+    WebView {
         id: webview
         property var page
         anchors.fill: parent
-        visible: !newTabPage && !settingsTabPage
+        visible: !newTabPage
+
+        context: webcontext
 
         onIconChanged: {
             // Set the favicon in history
@@ -83,10 +101,6 @@ Item {
                 activeTabUrlChanged();
         }
 
-        /*settings.autoLoadImages: appSettings.autoLoadImages
-                     settings.javascriptEnabled: appSettings.javaScriptEnabled
-                     settings.errorPageEnabled: appSettings.errorPageEnabled*/
-
          onCertificateError: {
              dlgCertificateError.showError(error);
          }
@@ -109,24 +123,28 @@ Item {
              }
          }
 
-         onFullScreenRequested: {
-             console.log("onFullScreenRequested")
-             if (request.toggleOn) {
+         onFullscreenRequested: {
+             webview.fullscreen = fullscreen;
+             if (fullscreen) {
                  root.startFullscreenMode();
              }
              else {
                  root.endFullscreenMode();
              }
-             request.accept();
+         }
+
+         onDownloadRequested: {
+             Qt.openUrlExternally(request.url)
          }
 
          onLoadingChanged: {
-            if (loadRequest.status === WebEngineView.LoadStartedStatus) {
+            if (loadEvent.type === 0) {
                 if (newTabPage) {
                     newTabPage = false;
                 }
             }
-            else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
+
+            else if (loadEvent.type === 2) {
                 // Looking for custom tab bar colors
                 runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
                     function(content){
@@ -159,37 +177,76 @@ Item {
                     root.app.historyModel.insert(0, item);
                 }
 
-                if(!loading && url.toString().substring(0,57)=="http://liri-browser.github.io/sourcecodeviewer/index.html") {
-                    runJavaScript("
-                      function setSource(){
-                          var head = document.head, link = document.createElement('link');
-                          link.type = 'text/css';
-                          link.rel = 'stylesheet';
-                          link.href = 'http://softwaremaniacs.org/media/soft/highlight/styles/" + root.app.sourceHighlightTheme +".css';
-                          head.appendChild(link);
-                          var sc = '<!DOCTYPE html><html>' + decodeURI(\"" + root.app.sourcetemp + "\") + '</html>';
-                          sc = style_html(sc, {
-                            'indent_size': 2,
-                            'indent_char': ' ',
-                            'max_char': 48,
-                            'brace_style': 'expand',
-                            'unformatted': ['a', 'sub', 'sup', 'b', 'i', 'u']
-                          });
-                          sc = sc.replace(/</g, '&lt');
-                          sc = sc.replace(/>/g, '&gt');
-                          document.getElementById('source_container').innerHTML = sc;
-                          hljs.highlightBlock(document.getElementById('source_container'));
-                          document.getElementById('source_container').style.fontFamily = 'Hack';
-                      }
-                      setSource();");
+                if(!loading && url.toString().substring(0,57) == "http://liri-browser.github.io/sourcecodeviewer/index.html") {
+
+                    setSource(root.app.sourceHighlightTheme, root.app.sourcetemp)
+                    /*runJavaScript("
+                    function setSource(){
+                        var head = document.head, link = document.createElement('link');
+                        link.type = 'text/css';
+                        link.rel = 'stylesheet';
+                        link.href = 'http://softwaremaniacs.org/media/soft/highlight/styles/" + root.app.sourceHighlightTheme +".css';
+                        head.appendChild(link);
+                        var sc = '<!DOCTYPE html><html>' + decodeURI(\"" + root.app.sourcetemp + "\") + '</html>';
+                        sc = style_html(sc, {
+                          'indent_size': 2,
+                          'indent_char': ' ',
+                          'max_char': 48,
+                          'brace_style': 'expand',
+                          'unformatted': ['a', 'sub', 'sup', 'b', 'i', 'u']
+                        });
+                        sc = sc.replace(/</g, '&lt');
+                        sc = sc.replace(/>/g, '&gt');
+                        document.getElementById('source_container').innerHTML = sc;
+                        hljs.highlightBlock(document.getElementById('source_container'));
+                        document.getElementById('source_container').style.fontFamily = 'Hack';
+                    }
+                    setSource();");*/
                 }
+
+                webview.grabToImage(function(result) {
+                    preview = result.image;
+                });
+
             }
 
-            else if (loadRequest.status === WebEngineView.LoadFailedStatus) {
+            else if (loadEvent.isError) {
                 root.setActiveTabURL('about:blank');
             }
          }
+
+         function getHTML(callback) {
+             var req = webview.rootFrame.sendMessage(usContext, "GET_HTML", {})
+             req.onreply = function (msg) {
+                 callback(msg.html);
+             }
+             req.onerror = function (code, explanation) {
+                 console.log("Error " + code + ": " + explanation)
+             }
+         }
+
+         function runJavaScript(js, callback) {
+             var req = webview.rootFrame.sendMessage(usContext, "RUN_JAVASCRIPT", {script: js})
+             req.onreply = function (msg) {
+                 callback(msg.result);
+             }
+             req.onerror = function (code, explanation) {
+                 console.log("Error " + code + ": " + explanation)
+             }
+         }
+
+         function setSource(theme, temp) {
+             var req = webview.rootFrame.sendMessage(usContext, "SET_SOURCE", {theme: theme, temp: temp})
+             req.onreply = function (msg) {
+                 callback(msg.result);
+             }
+             req.onerror = function (code, explanation) {
+                 console.log("Error " + code + ": " + explanation)
+             }
+
+         }
     }
+
 
     NewTabPage {
         id: itemNewTabPage
@@ -197,10 +254,12 @@ Item {
         anchors.fill: parent
     }
 
+
     SettingsTabPage {
         id: itemSettingsTabPage
         visible: settingsTabPage && !newTabPage
         anchors.fill: parent
     }
+
 
 }

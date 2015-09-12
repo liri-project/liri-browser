@@ -1,9 +1,10 @@
 # Copy translation files
-copydata.commands = $(COPY_DIR) $$PWD/translations $$OUT_PWD
-first.depends = $(first) copydata
-export(first.depends)
-export(copydata.commands)
-QMAKE_EXTRA_TARGETS += first copydata
+
+#copydata.commands = $(COPY_DIR) $$PWD/translations $$OUT_PWD
+#first.depends = $(first) copydata
+#export(first.depends)
+#export(copydata.commands)
+#QMAKE_EXTRA_TARGETS += first copydata
 
 TEMPLATE = app
 
@@ -14,7 +15,8 @@ QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp
 
-RESOURCES += src/qml.qrc
+RESOURCES += \
+    src/qml.qrc
 
 TRANSLATIONS += translations/de_DE.ts \
                 translations/ru_RU.ts \
@@ -38,4 +40,7 @@ DISTFILES += \
     src/qml/TabBarItemDelegate.qml
 
 # Windows icon
-RC_ICONS += liri-browser.ico
+RC_ICONS = icons/liri-browser.ico
+
+# OS X icon
+ICON = icons/liri-browser.icns

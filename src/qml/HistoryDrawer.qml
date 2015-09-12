@@ -10,80 +10,102 @@ NavigationDrawer {
     mode: "right"
     width: Units.dp(350)
 
-    Column {
-        anchors.fill: parent
-        anchors.margins: Units.dp(24)
-        spacing: Units.dp(5)
+    View {
+        id: historyTitle
+        height: Units.dp(56)
+        width: parent.width
+        elevation: listView.contentY > 0 ? 1 : 0
+        backgroundColor: "white"
+        z: 1
 
-        View {
-            id: historyTitle
-            height: label.height + Units.dp(30)
-            width: parent.width
-            Label {
-                id: label
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    bottom: parent.bottom
-                    leftMargin: Units.dp(16)
-                    rightMargin: Units.dp(16)
-                    centerIn:parent
-                }
-                text:  qsTr("History")
-                style: "title"
-                font.pixelSize: Units.dp(24)
+        Label {
+            id: label
+            anchors {
+                left: parent.left
+                right: parent.right
+                leftMargin: Units.dp(16)
+                rightMargin: Units.dp(16)
+                verticalCenter: parent.verticalCenter
             }
+            text: qsTr("History")
+            style: "title"
         }
-
-        Component {
-            id: historyItemDelegate
-            ListItem.Standard {
-                text: title
-                textColor: if (type == "date") { "black" } else { root.tabTextColorActive }
-                iconName: if (type === "date") { "device/accessTime" } else { "" }
-                action: Image {
-                    anchors.centerIn: parent
-                    source: if (faviconUrl) { faviconUrl } else { "" }
-                    height: Units.dp(16)
-                    width: Units.dp(16)
-                }
-                onClicked: {
-                    if (type === "entry")
-                        root.addTab(url);
-                }
-            }
-        }
-
-        Item {
-            width: parent.width
-            height: parent.height - historyTitle.height
-
-
-            ScrollView {
-                anchors.fill: parent
-                ListView {
-                    id: listView
-                    anchors.fill: parent
-
-                    spacing: 5
-
-                    model: root.app.historyModel
-                    delegate: historyItemDelegate
-
-                    Text {
-                        visible: !listView.count
-                        font.family: root.fontFamily
-                        text: qsTr("No history found")
-                        anchors.top: historyTitle.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-
-            }
-
-
-        }
-
     }
 
+    ScrollView {
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: historyTitle.bottom
+            bottom: parent.bottom
+        }
+
+        ListView {
+            id: listView
+
+            bottomMargin: Units.dp(8)
+            interactive: count > 0
+            model: root.app.historyModel
+            delegate: historyItemDelegate
+
+            Column {
+                visible: listView.count == 0
+                anchors.centerIn: parent
+                spacing: Units.dp(8)
+
+                Icon {
+                    name: "action/history"
+                    size: Units.dp(48)
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                Label {
+                    style: "subheading"
+                    color: Theme.light.subTextColor
+                    text: qsTr("No history found")
+                    font.pixelSize: Units.dp(17)
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+            }
+        }
+    }
+
+    Component {
+        id: historyItemDelegate
+
+        Item {
+            height: childrenRect.height
+
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
+
+            ListItem.Subheader {
+                text: title
+                visible: type == "date"
+            }
+
+            ListItem.Standard {
+                visible: type == "entry"
+                text: title
+                action: [
+                    Image {
+                        id: favImage
+                        anchors.centerIn: parent
+                        source: faviconUrl ? faviconUrl : ""
+                        height: Units.dp(20)
+                        width: Units.dp(20)
+                    },
+                    Icon {
+                        anchors.centerIn: parent
+                        name: "social/public"
+                        size: Units.dp(22)
+                        visible: favImage.status !== Image.Ready
+                    }
+                ]
+                onClicked: root.addTab(url)
+            }
+        }
+    }
 }

@@ -1,13 +1,20 @@
 import QtQuick 2.1
-import QtWebEngine 1.1
 import Qt.labs.settings 1.0
 
-QtObject {
+Item {
     id: application
+
+    property string webEngine: "qtwebengine"
+    property string platform: "unknown/desktop"
+    property bool enableShortCuts: true
+    property bool enableNewWindowAction: true
 
     property string homeUrl: "https://www.google.de"
 
-	property string searchEngine: "google"
+    property string searchEngine: "google"
+
+    property string sourcetemp: "unknown"
+    property string sourceHighlightTheme: "monokai_sublime"
 
     property var bookmarks: []
     signal changedBookmarks ()
@@ -29,36 +36,15 @@ QtObject {
 
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl
-		property alias searceEngine: application.searchEngine
+        property alias searceEngine: application.searchEngine
+        property alias sourceHighlightTheme: application.sourceHighlightTheme
         property alias newTabPage: application.newTabPage
         property var bookmarks
         property var history
         property var dashboard
+        property var downloads
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
-    }
-
-
-    property QtObject defaultProfile: WebEngineProfile {
-        storageName: "Default"
-    }
-
-    property Component browserWindowComponent: BrowserWindow {
-        app: application
-    }
-
-    function createWindow (){
-        var newWindow = browserWindowComponent.createObject(application)
-        return newWindow
-    }
-    function createDialog(request) {
-        var newDialog = browserWindowComponent.createObject(application)
-        var tab = newDialog.addTab("about:blank")
-        request.openIn(tab.webview.view)
-        return newDialog
-    }
-    function load() {
-        var browserWindow = createWindow()
     }
 
     Component.onCompleted: {
@@ -91,7 +77,6 @@ QtObject {
             var item = application.settings.dashboard[i];
             application.dashboardModel.append(item);
         }
-
     }
 
     Component.onDestruction: {
@@ -114,5 +99,4 @@ QtObject {
         }
         application.settings.dashboard = dashboard;
     }
-
 }

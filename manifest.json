@@ -1,0 +1,19 @@
+{
+    "name": "liri-browser.timsueberkrueb",
+    "description": "A minimalistic, material-design webbrowser",
+    "architecture": [
+        "armhf",
+        "i386",
+        "amd64"
+    ],
+    "title": "Liri Browser",
+    "hooks": {
+        "liri-browser.timsueberkrueb": {
+            "apparmor": "ubuntu/liri-browser.timsueberkrueb.apparmor",
+            "desktop": "ubuntu/liri-browser.timsueberkrueb.desktop"
+        }
+    },
+    "version": "0.3",
+    "maintainer": "Tim Süberkrüb <tim.sueberkrueb@web.de>",
+    "framework": "ubuntu-sdk-15.04"
+}
