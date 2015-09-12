@@ -41,6 +41,11 @@ You get Liri Browser from the AUR:
 * Run `run-liri.sh` inside the extracted directory
 
 ### Ubuntu Touch
+Liri Browser is available as early preview in the Ubuntu Store:
+
+https://uappexplorer.com/app/liri-browser.timsueberkrueb
+
+Manual Installation
 * Download `liri-browser.timsueberkrueb_X.X_multi.click` on your device
 * Open the terminal app or connect remotely by using adb shell or SSH
 * `cd` into your Downloads directory
