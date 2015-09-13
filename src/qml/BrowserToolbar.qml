@@ -67,7 +67,7 @@ Rectangle {
             id: omnibox
 
             Layout.fillWidth: true
-            Layout.preferredHeight: parent.height
+            height: parent.height - Units.dp(16)
         }
 
         IconButton {
