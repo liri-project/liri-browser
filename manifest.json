@@ -13,7 +13,7 @@
             "desktop": "ubuntu/liri-browser.timsueberkrueb.desktop"
         }
     },
-    "version": "0.3",
+    "version": "0.3.1",
     "maintainer": "Tim Süberkrüb <tim.sueberkrueb@web.de>",
     "framework": "ubuntu-sdk-15.04"
 }
