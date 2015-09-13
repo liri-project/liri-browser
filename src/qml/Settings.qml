@@ -98,11 +98,13 @@ Rectangle {
 
                     function getListedSearchEngines() {
                       if(root.app.searchEngine == "duckduckgo")
-                          return ["DuckDuckGo", "Google", "Yahoo"]
+                          return ["DuckDuckGo", "Google", "Yahoo", "Bing"]
+                      else if(root.app.searchEngine == "bing")
+                          return ["Bing", "Google", "Yahoo", "DuckDuckGo"]
                       else if(root.app.searchEngine == "yahoo")
-                          return ["Yahoo", "Google", "DuckDuckGo"]
+                          return ["Yahoo", "Google", "DuckDuckGo", "Bing"]
                       else
-                          return ["Google", "DuckDuckGo", "Yahoo"]
+                          return ["Google", "DuckDuckGo", "Yahoo", "Bing"]
                     }
                 }
                 anchors.bottomMargin: 30
@@ -177,6 +179,15 @@ Rectangle {
                 }
                 onClicked: {
                     chbTabsEntirelyColorized.checked = !chbTabsEntirelyColorized.checked
+                }
+            }
+
+            ListItem.Subheader {
+                Label {
+                    z: 20
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.topMargin: parent.BottomLeft
+                    text: qsTr("Current Browser Version: 0.3")
                 }
             }
           }

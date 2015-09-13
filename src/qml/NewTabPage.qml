@@ -84,6 +84,7 @@ Rectangle {
                         anchors.right: parent.right
                         horizontalAlignment: Text.AlignHCenter
                         anchors.margins: Units.dp(16)
+                        anchors.bottomMargin: Units.dp(4)
                         text: title
                         font.pixelSize: Units.dp(14)
                         elide: Text.ElideRight
