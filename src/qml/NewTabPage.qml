@@ -271,8 +271,6 @@ Rectangle {
             anchors.rightMargin: Units.dp(24)
             anchors.right: parent.right
 
-            backgroundColor: Theme.accentColor
-
             text: qsTr("Apply")
 
             onClicked: {
