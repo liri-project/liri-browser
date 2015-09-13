@@ -82,7 +82,7 @@ NavigationDrawer {
                 Label {
                     style: "subheading"
                     color: Theme.light.subTextColor
-                    text: qsTr("No history found")
+                    text: qsTr("No browser history found")
                     font.pixelSize: Units.dp(17)
                     anchors.horizontalCenter: parent.horizontalCenter
                 }

@@ -181,6 +181,15 @@ Rectangle {
                     chbTabsEntirelyColorized.checked = !chbTabsEntirelyColorized.checked
                 }
             }
+
+            ListItem.Subheader {
+                Label {
+                    z: 20
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.topMargin: parent.BottomLeft
+                    text: qsTr("Current Browser Version: 0.3")
+                }
+            }
           }
 
           Column {
