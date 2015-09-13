@@ -9,7 +9,7 @@ Item {
     property bool enableShortCuts: true
     property bool enableNewWindowAction: true
 
-    property string homeUrl: "https://www.google.de"
+    property string homeUrl: "https://www.google.com"
 
     property string searchEngine: "google"
 

@@ -10,4 +10,7 @@ BaseApplication {
     property bool enableShortCuts: false
     property bool enableNewWindowAction: false
     property bool newTabPage: false
+
+    property string homeUrl: "http://start.ubuntu.com/"
+
 }

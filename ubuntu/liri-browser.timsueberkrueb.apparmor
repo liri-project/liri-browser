@@ -2,7 +2,8 @@
     "policy_groups": [
         "networking",
         "webview",
-        "connectivity"
+        "connectivity",
+        "audio"
     ],
     "policy_version": 1.3
 }

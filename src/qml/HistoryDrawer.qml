@@ -46,7 +46,7 @@ NavigationDrawer {
             backgroundColor: Theme.accentColor
 
             onClicked: {
-                application.historyModel.clear()
+                root.app.historyModel.clear()
             }
         }
 
