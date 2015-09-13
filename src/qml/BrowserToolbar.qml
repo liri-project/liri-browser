@@ -10,7 +10,7 @@ Rectangle {
     color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
     visible: !root.app.integratedAddressbars
 
-    height: Units.dp(56)
+    height: Units.dp(46)
 
     property bool darkBackground: Theme.isDarkColor(color)
     property color textColor: Theme.lightDark(color, Theme.light.textColor, Theme.dark.textColor)
@@ -60,7 +60,7 @@ Rectangle {
             hoverAnimation: true
             iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
             color: root.currentIconColor
-            onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
+            onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
         }
 
         Omnibox {

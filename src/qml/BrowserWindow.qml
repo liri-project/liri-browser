@@ -125,9 +125,11 @@ ApplicationWindow {
       	    if(root.app.searchEngine == "duckduckgo")
      	        url = "https://duckduckgo.com/?q=" + url;
       	    else if(root.app.searchEngine == "yahoo")
-	        url = "https://search.yahoo.com/search?q=" + url;
+                url = "https://search.yahoo.com/search?q=" + url;
+            else if(root.app.searchEngine == "bing")
+                url = "http://www.bing.com/search?q=" + url;
       	    else
-	        url = "https://www.google.com/search?q=" + url;
+                url = "https://www.google.com/search?q=" + url;
       	}
         return url;
     }
