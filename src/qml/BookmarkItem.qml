@@ -4,7 +4,7 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 
 
-Item {
+Item {    
     id: item
     property string title
     property string faviconUrl
