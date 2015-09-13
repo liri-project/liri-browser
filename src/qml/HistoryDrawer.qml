@@ -30,6 +30,26 @@ NavigationDrawer {
             text: qsTr("History")
             style: "title"
         }
+
+        Button {
+            id: clearHistory
+            text: qsTr("Clear History")
+            elevation: 1
+
+            anchors {
+                right: parent.right
+                leftMargin: Units.dp(16)
+                rightMargin: Units.dp(16)
+                verticalCenter: parent.verticalCenter
+            }
+
+            backgroundColor: Theme.accentColor
+
+            onClicked: {
+                application.historyModel.clear()
+            }
+        }
+
     }
 
     ScrollView {
