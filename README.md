@@ -27,18 +27,13 @@ Check out the [downloads section](https://github.com/liri-browser/liri-browser/r
 
 ## Linux
 
-### Ubuntu & Debian
+### Ubuntu & Debian (64 bit only)
 Download and install our .deb-package.
 
 ### Arch Linux
 You get Liri Browser from the AUR: 
 * https://aur.archlinux.org/packages/liri-browser/
 * https://aur.archlinux.org/packages/liri-browser-git/
-
-### Any Linux
-* Download `liri-browser-X.X-linux-portable.zip`
-* Extract the files
-* Run `run-liri.sh` inside the extracted directory
 
 ### Ubuntu Touch
 Liri Browser is available as early preview in the Ubuntu Store:
@@ -50,6 +45,11 @@ Manual Installation
 * Open the terminal app or connect remotely by using adb shell or SSH
 * `cd` into your Downloads directory
 * Run `pkcon --allow-untrusted install-local liri-browser.timsueberkrueb_X.X_multi.click`
+
+### Any Linux (64 bit only)
+* Download `liri-browser-X.X-linux-portable.zip`
+* Extract the files
+* Run `run-liri.sh` inside the extracted directory
 
 ### Windows & Mac OS X
 Just download and extract the ZIP-file for your platform and run the executable.
