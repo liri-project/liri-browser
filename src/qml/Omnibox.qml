@@ -94,7 +94,8 @@ Rectangle {
         anchors {
             left: connectionTypeIcon.right
             right: parent.right
-            verticalCenter: parent.verticalCenter
+            top: parent.top
+            bottom: parent.bottom
             leftMargin: Units.dp(16)
             rightMargin: Units.dp(16)
         }
