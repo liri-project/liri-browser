@@ -1,11 +1,17 @@
 import QtQuick 2.4
 import Material 0.1
 import QtQuick.Window 2.0
+import QtSystemInfo 5.0
 
 import ".."
 
 BrowserWindow {
     id: root
+
+    ScreenSaver {
+        screenSaverEnabled: !Qt.application.active
+    }
+
     app: UbuntuApplication {
 
     }
