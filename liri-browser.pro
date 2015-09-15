@@ -21,10 +21,10 @@ RESOURCES += \
 TRANSLATIONS += translations/de_DE.ts \
                 translations/ru_RU.ts \
                 translations/fr_FR.ts \
+                translations/es_CR.ts \
                 translations/es_ES.ts \
                 translations/pt_BR.ts \
                 translations/pt_PT.ts
-
 
 OTHER_FILES += translations/*.qm
 
