@@ -24,5 +24,13 @@
         <file>qml/DesktopApplication.qml</file>
         <file>qml/TabsList.qml</file>
         <file>qml/TabsListPage.qml</file>
+        <file>translations/ar_MA.qm</file>
+        <file>translations/de_DE.qm</file>
+        <file>translations/es_CR.qm</file>
+        <file>translations/es_ES.qm</file>
+        <file>translations/fr_FR.qm</file>
+        <file>translations/pt_BR.qm</file>
+        <file>translations/pt_PT.qm</file>
+        <file>translations/ru_RU.qm</file>
     </qresource>
 </RCC>

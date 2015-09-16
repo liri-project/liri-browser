@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     app.installTranslator(&qtTranslator);
 
     QTranslator translator;
-    translator.load("translations/" + QLocale::system().name());
+    translator.load(":/translations/" + QLocale::system().name());
     app.installTranslator(&translator);
 
     // Initialize QtWebEngine
