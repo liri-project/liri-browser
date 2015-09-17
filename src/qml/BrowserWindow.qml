@@ -5,8 +5,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Dialogs 1.1
 import Qt.labs.settings 1.0
+import "./MaterialWindow"
 
-ApplicationWindow {
+MaterialWindow {
     id: root
 
     property QtObject app
@@ -32,8 +33,8 @@ ApplicationWindow {
         id: settings
         property alias x: root.x
         property alias y: root.y
-        property alias width: root.width
-        property alias height: root.height
+        //property alias width: root.width
+        //property alias height: root.height
         property alias primaryColor: theme.primaryColor
         property alias accentColor: theme.accentColor
         property alias searchEngine: root.searchEngine
@@ -467,7 +468,7 @@ ApplicationWindow {
         id: shortCutActionsContainer
     }
 
-    initialPage: BrowserPage { id: page }
+    initialPageFrameLess: BrowserPage { id: page }
 
     HistoryDrawer { id: historyDrawer }
 

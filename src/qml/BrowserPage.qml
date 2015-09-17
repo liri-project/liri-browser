@@ -97,13 +97,15 @@ Page {
 
     View {
         id: titlebar
-
+        backgroundColor: "transparent"
+        anchors.top: parent.top
+        anchors.topMargin: tabsModel.count > 1 || root.app.integratedAddressbars ? -Units.dp(40) : 0
         width: parent.width
         height: titlebarContents.height
 
         z: 5
 
-        elevation: 2
+        elevation: 0
 
         Column {
             id: titlebarContents

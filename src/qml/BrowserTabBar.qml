@@ -3,17 +3,20 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
+import "./MaterialWindow"
 
 Rectangle {
     id: tabBar
 
     height: root.tabHeight
-    color: root.tabBackgroundColor
-
+    //color: root.tabBackgroundColor
+    color: "transparent"
     anchors {
         left: parent.left
         right: parent.right
+        rightMargin: Units.dp(100)
     }
+
 
     property alias listView: listView
 
@@ -95,6 +98,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        visible: false
         width: root.app.integratedAddressbars ? btnAddTabIntegrated.width + btnDownloadsIntegrated.width +
                                                 btnMenuIntegrated.width + 3 * Units.dp(24)
                                               : Units.dp(48)

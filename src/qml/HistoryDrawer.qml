@@ -9,7 +9,7 @@ NavigationDrawer {
     z: 25
     mode: "right"
     width: Units.dp(350)
-
+    visible: anchors.rightMargin != -width - Units.dp(10)
     View {
         id: historyTitle
         height: Units.dp(56)

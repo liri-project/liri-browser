@@ -9,8 +9,8 @@ NavigationDrawer {
     id: drawer
     z: 25
     mode: "right"
-    width: Units.dp(350)    
-
+    width: Units.dp(350)
+    visible: anchors.rightMargin != -width - Units.dp(10)
     View {
         id: downloadsTitle
         height: Units.dp(56)

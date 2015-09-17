@@ -11,7 +11,7 @@ typedef QGuiApplication Application;
 #include <QtQml/QQmlContext>
 #include <QtWebEngine/qtwebengineglobal.h>
 #include <QtWebEngine/QtWebEngine>
-
+#include "qml/MaterialWindow/cursor.h"
 
 int main(int argc, char **argv)
 {
@@ -38,6 +38,6 @@ int main(int argc, char **argv)
     //appEngine.rootContext()->setContextProperty("utils", &utils);
     appEngine.load(QUrl("qrc:/qml/DesktopApplication.qml"));
     QMetaObject::invokeMethod(appEngine.rootObjects().first(), "load");
-
+    appEngine.rootContext()->setContextProperty("G_Cursor",new Cursor);
     return app.exec();
 }

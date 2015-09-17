@@ -4,10 +4,10 @@ import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 
-Rectangle {
+View {
     id: toolbar
-
-    color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
+    elevation:0
+    backgroundColor: activeTab.customColor ? activeTab.customColor : root.tabColorActive
     visible: !root.app.integratedAddressbars
 
     height: root.mobile ? Units.dp(64) : Units.dp(56)
@@ -81,7 +81,7 @@ Rectangle {
             color: root.currentIconColor
             iconName: "content/add"
             onClicked: addTab()
-            visible: !tabBar.visible && !mobile
+            visible: !mobile
         }
 
         IconButton {
