@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 
 RowLayout {
-    spacing: Units.dp(5)
+    spacing: Units.dp(10)
     anchors {
         right: parent.right
         rightMargin:spacing
