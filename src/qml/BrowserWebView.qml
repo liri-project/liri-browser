@@ -1,5 +1,8 @@
 import QtQuick 2.4
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.1
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.1
 
 
@@ -189,6 +192,36 @@ Item {
                 root.setActiveTabURL('about:blank');
             }
          }
+
+         onLinkHovered: {
+             clickDetector.checkMenu(hoveredUrl)
+         }
+    }
+
+    MouseArea {
+        id: clickDetector
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        preventStealing: true
+        propagateComposedEvents: true
+        property string hoverUrl
+        property string tempUrl
+
+        function checkMenu(hUrl){
+            hoverUrl = hUrl
+        }
+
+        onPressed: {
+            if(hoverUrl == "")
+                return
+            else{
+                tempUrl = hoverUrl
+                linkRightClickMenu.open(clickDetector, -clickDetector.width + mouseX + linkRightClickMenu.width, mouseY)
+            }
+        }
+
+        onReleased:
+            hoverUrl = ""
     }
 
     NewTabPage {
@@ -203,4 +236,112 @@ Item {
         anchors.fill: parent
     }
 
+    function getPageTitle(url, callback){
+        var doc = new XMLHttpRequest();
+        doc.onreadystatechange = function() {
+            if (doc.readyState == XMLHttpRequest.DONE) {
+                //console.log(doc.responseText);
+                var json = JSON.parse(doc.responseText);
+                if ("error" in json) {
+                    console.log("An error occurred parsing the website")
+                    callback(url)
+                }
+                else {
+                    callback(json["title"][0])
+                }
+            }
+        }
+        doc.open("get", url);
+        doc.setRequestHeader("Content-Encoding", "UTF-8");
+        doc.send();
+    }
+
+    Dropdown {
+        id: linkRightClickMenu
+        width: Units.dp(250)
+        height: columnView.height + Units.dp(16)
+
+        ColumnLayout{
+            id: columnView
+            width: parent.width
+            anchors.centerIn: parent
+
+            ListItem.Standard {
+                text: qsTr("Open in new tab")
+                iconName: "action/open_in_new"
+                onClicked: {
+                    root.addTab(clickDetector.tempUrl)
+                    clickDetector.tempUrl = ""
+                    linkRightClickMenu.close()
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Open in new window")
+                iconName: "action/open_in_new"
+                onClicked: {
+                    app.createWindow().setActiveTabURL(clickDetector.tempUrl)
+                    clickDetector.tempUrl = ""
+                    linkRightClickMenu.close()
+                }
+            }
+        }
+
+    }
+
+    // Non-material design menus, will re-implement the rest of the features as a Dropdown once I figure out how to extract
+    // the title of a webpage without loading it (through URL alone)
+
+    /*MenuItem{
+        id: newTab
+        text: qsTr("Open in new tab")
+        onTriggered: {
+            root.addTab(clickDetector.hoverUrl)
+        }
+    }
+
+    MenuItem{
+        id: newWindow
+        text: qsTr("Open in new window")
+        onTriggered: {
+            app.createWindow().setActiveTabURL(clickDetector.hoverUrl)
+        }
+    }
+
+    MenuSeparator{}
+
+    MenuItem{
+        id: copyLink
+        text: qsTr("Copy link")
+    }
+
+    MenuSeparator{}
+
+    MenuItem{
+        id: addToBookmarks
+        text: qsTr("Add link to bookmarks")
+        onTriggered: {
+            var tmp = webview.url
+            webview.url = clickDetector.hoverUrl
+            root.getBetterIcon(webview.url, webview.title, activeTab.customColor, function(url, title, color, iconUrl){
+                root.addBookmark(title, url, iconUrl, color)
+            })
+            webview.url = tmp
+        }
+    }
+
+    MenuItem{
+        id: addToDash
+        text: qsTr("Add link to dash")
+        onTriggered: {
+            getPageTitle(clickDetector.hoverUrl, function(titl){
+              console.log(titl)
+            })
+
+            //var tmp = webview.url
+            //webview.url = clickDetector.hoverUrl
+            //root.addToDash(webview.url, webview.title, activeTab.customColor)
+            //webview.url = tmp
+        }
+    }*/
 }
