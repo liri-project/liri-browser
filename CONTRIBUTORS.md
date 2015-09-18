@@ -3,6 +3,7 @@
 The list of contributors is sorted alphabetical based on the last names. 
 
 ## Code
+* Ilya87 (https://github.com/Ilya87)
 * Pierre Jacquier (https://github.com/pierremtb)
 * Corbin Matschull (https://github.com/Polyg0n)
 * Andrew Penkrat (https://github.com/Aldrog)
@@ -13,9 +14,15 @@ The list of contributors is sorted alphabetical based on the last names.
 The list of languages is sorted alphabetical.
 
 ## Translations
+* Arabic
+  * Karim Oulad Chalha (https://github.com/karim88) 
+* Brazilian Portuguese
+  * Alexandre Oliveira (https://github.com/RockyTV)  
 * French
   * Pierre Jacquier (https://github.com/pierremtb)
 * German
   * Tim Süberkrüb (https://github.com/tim-sueberkrueb)
 * Russian
   * Andrew Penkrat (https://github.com/Aldrog)
+* Spanish
+  * Ozkar L. Garcell (https://github.com/codeshard) 
