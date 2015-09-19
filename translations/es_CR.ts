@@ -114,14 +114,39 @@
 <context>
     <name>BrowserWebView</name>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="23"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>New tab</source>
         <translation>Nueva pestaña</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="23"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>Settings</source>
         <translation>Ajustes</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="283"/>
+        <source>Open in new tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="293"/>
+        <source>Open in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="303"/>
+        <source>Copy URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="313"/>
+        <source>Add to bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="327"/>
+        <source>Add to dash</source>
+        <translation type="unfinished">Añadir al tablero</translation>
     </message>
 </context>
 <context>
@@ -304,12 +329,12 @@
 <context>
     <name>Omnibox</name>
     <message>
-        <location filename="../src/qml/Omnibox.qml" line="104"/>
+        <location filename="../src/qml/Omnibox.qml" line="105"/>
         <source>Search</source>
         <translation>Buscar</translation>
     </message>
     <message>
-        <location filename="../src/qml/Omnibox.qml" line="104"/>
+        <location filename="../src/qml/Omnibox.qml" line="105"/>
         <source>Search or enter website name</source>
         <translation>Buscar o ingresar el nombre de un sitio web</translation>
     </message>

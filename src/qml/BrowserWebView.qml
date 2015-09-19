@@ -217,7 +217,13 @@ Item {
                 return
             else{
                 tempUrl = hoverUrl
-                linkRightClickMenu.open(clickDetector, -clickDetector.width + mouseX + linkRightClickMenu.width, mouseY)
+                var putX = mouseX
+                var putY = mouseY
+                if(mouseY + linkRightClickMenu.height > clickDetector.height)
+                    putY -= linkRightClickMenu.height
+                if(mouseX + linkRightClickMenu.width > clickDetector.width)
+                    putX -= linkRightClickMenu.width
+                linkRightClickMenu.open(clickDetector, -clickDetector.width + putX + linkRightClickMenu.width, putY)
             }
         }
 
@@ -244,19 +250,21 @@ Item {
     function getPageTitle(url, callback){
         var doc = new XMLHttpRequest();
         doc.onreadystatechange = function() {
-            if (doc.readyState == XMLHttpRequest.DONE) {
-                //console.log(doc.responseText);
+            if (doc.readyState === 4) {
                 var json = JSON.parse(doc.responseText);
                 if ("error" in json) {
                     console.log("An error occurred parsing the website")
                     callback(url)
                 }
                 else {
-                    callback(json["title"][0])
+                    if(json[1] === undefined)
+                        callback(url)
+                    else
+                        callback(json[1])
                 }
             }
         }
-        doc.open("get", url);
+        doc.open("get", "http://decenturl.com/api-title?u=" + url);
         doc.setRequestHeader("Content-Encoding", "UTF-8");
         doc.send();
     }
@@ -296,66 +304,44 @@ Item {
                 iconName: "content/content_copy"
                 onClicked: {
                     clip.copyText(clickDetector.tempUrl)
+                    clickDetector.tempUrl = ""
                     linkRightClickMenu.close()
                 }
             }
+
+            ListItem.Standard {
+                text: qsTr("Add to bookmarks")
+                iconName: "action/bookmark_border"
+                onClicked: {
+                    getPageTitle(clickDetector.tempUrl, function(titl){
+                        getBetterIcon(clickDetector.tempUrl, titl, activeTab.customColor, function(url, title, color, iconUrl){
+                            addBookmark(title, url, iconUrl, color)
+                            clickDetector.tempUrl = ""
+                            linkRightClickMenu.close()
+                        })
+                    })
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Add to dash")
+                iconName: "action/dashboard"
+                onClicked: {
+                    getPageTitle(clickDetector.tempUrl, function(titl){
+                        addToDash(clickDetector.tempUrl, titl, activeTab.customColor)
+                        clickDetector.tempUrl = ""
+                        linkRightClickMenu.close()
+                    })
+                }
+            }
+
+            // TODO: Figure out how to save a URL locally
+
+            /*ListItem.Standard {
+                text: qsTr("Save as...")
+                iconName: "file/file_download"
+            }*/
         }
 
     }
-
-    // Non-material design menus, will re-implement the rest of the features as a Dropdown once I figure out how to extract
-    // the title of a webpage without loading it (through URL alone)
-
-    /*MenuItem{
-        id: newTab
-        text: qsTr("Open in new tab")
-        onTriggered: {
-            root.addTab(clickDetector.hoverUrl)
-        }
-    }
-
-    MenuItem{
-        id: newWindow
-        text: qsTr("Open in new window")
-        onTriggered: {
-            app.createWindow().setActiveTabURL(clickDetector.hoverUrl)
-        }
-    }
-
-    MenuSeparator{}
-
-    MenuItem{
-        id: copyLink
-        text: qsTr("Copy link")
-    }
-
-    MenuSeparator{}
-
-    MenuItem{
-        id: addToBookmarks
-        text: qsTr("Add link to bookmarks")
-        onTriggered: {
-            var tmp = webview.url
-            webview.url = clickDetector.hoverUrl
-            root.getBetterIcon(webview.url, webview.title, activeTab.customColor, function(url, title, color, iconUrl){
-                root.addBookmark(title, url, iconUrl, color)
-            })
-            webview.url = tmp
-        }
-    }
-
-    MenuItem{
-        id: addToDash
-        text: qsTr("Add link to dash")
-        onTriggered: {
-            getPageTitle(clickDetector.hoverUrl, function(titl){
-              console.log(titl)
-            })
-
-            //var tmp = webview.url
-            //webview.url = clickDetector.hoverUrl
-            //root.addToDash(webview.url, webview.title, activeTab.customColor)
-            //webview.url = tmp
-        }
-    }*/
 }

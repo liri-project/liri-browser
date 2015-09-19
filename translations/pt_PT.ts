@@ -114,29 +114,39 @@
 <context>
     <name>BrowserWebView</name>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="26"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>New tab</source>
         <translation>Novo separador</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="26"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>Settings</source>
         <translation>Opções</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="270"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="283"/>
         <source>Open in new tab</source>
         <translation>Abrir num novo separador</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="280"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="293"/>
         <source>Open in new window</source>
         <translation>Abrir numa nova janela</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="290"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="303"/>
         <source>Copy URL</source>
         <translation>Copiar URL</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="313"/>
+        <source>Add to bookmarks</source>
+        <translation>Adicionar aos marcadores</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="327"/>
+        <source>Add to dash</source>
+        <translation>Adicionar ao painel</translation>
     </message>
 </context>
 <context>
