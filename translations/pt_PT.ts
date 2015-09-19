@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<TS version="2.1" language="pt_PT">
 <context>
     <name>BookmarkItem</name>
     <message>
@@ -114,14 +114,29 @@
 <context>
     <name>BrowserWebView</name>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="23"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="26"/>
         <source>New tab</source>
         <translation>Novo separador</translation>
     </message>
     <message>
-        <location filename="../src/qml/BrowserWebView.qml" line="23"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="26"/>
         <source>Settings</source>
         <translation>Opções</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="270"/>
+        <source>Open in new tab</source>
+        <translation>Abrir num novo separador</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="280"/>
+        <source>Open in new window</source>
+        <translation>Abrir numa nova janela</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="290"/>
+        <source>Copy URL</source>
+        <translation>Copiar URL</translation>
     </message>
 </context>
 <context>
@@ -305,12 +320,12 @@
 <context>
     <name>Omnibox</name>
     <message>
-        <location filename="../src/qml/Omnibox.qml" line="104"/>
+        <location filename="../src/qml/Omnibox.qml" line="105"/>
         <source>Search</source>
         <translation>Pesquisa</translation>
     </message>
     <message>
-        <location filename="../src/qml/Omnibox.qml" line="104"/>
+        <location filename="../src/qml/Omnibox.qml" line="105"/>
         <source>Search or enter website name</source>
         <translatorcomment>URL would be a better term for &quot;website name&quot;, at least in portuguese</translatorcomment>
         <translation>Pesquisar ou escrever URL</translation>

@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.1
+import Clipboard 1.0
 
 
 Item {
@@ -236,6 +237,10 @@ Item {
         anchors.fill: parent
     }
 
+    Clipboard {
+        id: clip
+    }
+
     function getPageTitle(url, callback){
         var doc = new XMLHttpRequest();
         doc.onreadystatechange = function() {
@@ -282,6 +287,15 @@ Item {
                 onClicked: {
                     app.createWindow().setActiveTabURL(clickDetector.tempUrl)
                     clickDetector.tempUrl = ""
+                    linkRightClickMenu.close()
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Copy URL")
+                iconName: "content/content_copy"
+                onClicked: {
+                    clip.copyText(clickDetector.tempUrl)
                     linkRightClickMenu.close()
                 }
             }
