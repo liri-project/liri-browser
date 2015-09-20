@@ -1,6 +1,10 @@
 import QtQuick 2.4
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.1
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.1
+import Clipboard 1.0
 
 
 Item {
@@ -189,6 +193,42 @@ Item {
                 root.setActiveTabURL('about:blank');
             }
          }
+
+         onLinkHovered: {
+             clickDetector.checkMenu(hoveredUrl)
+         }
+    }
+
+    MouseArea {
+        id: clickDetector
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        preventStealing: true
+        propagateComposedEvents: true
+        property string hoverUrl
+        property string tempUrl
+
+        function checkMenu(hUrl){
+            hoverUrl = hUrl
+        }
+
+        onPressed: {
+            if(hoverUrl == "")
+                return
+            else{
+                tempUrl = hoverUrl
+                var putX = mouseX
+                var putY = mouseY
+                if(mouseY + linkRightClickMenu.height > clickDetector.height)
+                    putY -= linkRightClickMenu.height
+                if(mouseX + linkRightClickMenu.width > clickDetector.width)
+                    putX -= linkRightClickMenu.width
+                linkRightClickMenu.open(clickDetector, -clickDetector.width + putX + linkRightClickMenu.width, putY)
+            }
+        }
+
+        onReleased:
+            hoverUrl = ""
     }
 
     NewTabPage {
@@ -203,4 +243,105 @@ Item {
         anchors.fill: parent
     }
 
+    Clipboard {
+        id: clip
+    }
+
+    function getPageTitle(url, callback){
+        var doc = new XMLHttpRequest();
+        doc.onreadystatechange = function() {
+            if (doc.readyState === 4) {
+                var json = JSON.parse(doc.responseText);
+                if ("error" in json) {
+                    console.log("An error occurred parsing the website")
+                    callback(url)
+                }
+                else {
+                    if(json[1] === undefined)
+                        callback(url)
+                    else
+                        callback(json[1])
+                }
+            }
+        }
+        doc.open("get", "http://decenturl.com/api-title?u=" + url);
+        doc.setRequestHeader("Content-Encoding", "UTF-8");
+        doc.send();
+    }
+
+    Dropdown {
+        id: linkRightClickMenu
+        width: Units.dp(250)
+        height: columnView.height + Units.dp(16)
+
+        ColumnLayout{
+            id: columnView
+            width: parent.width
+            anchors.centerIn: parent
+
+            ListItem.Standard {
+                text: qsTr("Open in new tab")
+                iconName: "action/open_in_new"
+                onClicked: {
+                    root.addTab(clickDetector.tempUrl)
+                    clickDetector.tempUrl = ""
+                    linkRightClickMenu.close()
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Open in new window")
+                iconName: "action/open_in_new"
+                onClicked: {
+                    app.createWindow().setActiveTabURL(clickDetector.tempUrl)
+                    clickDetector.tempUrl = ""
+                    linkRightClickMenu.close()
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Copy URL")
+                iconName: "content/content_copy"
+                onClicked: {
+                    clip.copyText(clickDetector.tempUrl)
+                    clickDetector.tempUrl = ""
+                    linkRightClickMenu.close()
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Add to bookmarks")
+                iconName: "action/bookmark_border"
+                onClicked: {
+                    getPageTitle(clickDetector.tempUrl, function(titl){
+                        getBetterIcon(clickDetector.tempUrl, titl, activeTab.customColor, function(url, title, color, iconUrl){
+                            addBookmark(title, url, iconUrl, color)
+                            clickDetector.tempUrl = ""
+                            linkRightClickMenu.close()
+                        })
+                    })
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Add to dash")
+                iconName: "action/dashboard"
+                onClicked: {
+                    getPageTitle(clickDetector.tempUrl, function(titl){
+                        addToDash(clickDetector.tempUrl, titl, activeTab.customColor)
+                        clickDetector.tempUrl = ""
+                        linkRightClickMenu.close()
+                    })
+                }
+            }
+
+            // TODO: Figure out how to save a URL locally
+
+            /*ListItem.Standard {
+                text: qsTr("Save as...")
+                iconName: "file/file_download"
+            }*/
+        }
+
+    }
 }
