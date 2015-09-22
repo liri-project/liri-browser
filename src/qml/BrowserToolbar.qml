@@ -81,7 +81,7 @@ View {
             color: root.currentIconColor
             iconName: "content/add"
             onClicked: addTab()
-            visible: !mobile
+            visible: !mobile && (root.app.customFrame || tabsModel.count == 1)
         }
 
         IconButton {
@@ -119,10 +119,11 @@ View {
             id: overflowButton
             color: root.currentIconColor
             iconName : "navigation/more_vert"
-            onClicked: overflowMenu.open(overflowButton)
+            onClicked:  {
+                overflowMenu.open(overflowButton)
+            }
         }
     }
-
     Component.onCompleted: {
         if (root.app.platform === "converged/ubuntu") {
             var overlayComponent = Qt.createComponent("UbuntuOmniboxOverlay.qml");

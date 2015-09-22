@@ -10,11 +10,11 @@ Rectangle {
 
     height: root.tabHeight
     //color: root.tabBackgroundColor
-    color: "transparent"
+    color: root.app.customFrame ? "transparent" : "#EFEFEF"
     anchors {
         left: parent.left
         right: parent.right
-        rightMargin: Units.dp(100)
+        rightMargin: root.app.customFrame ? Units.dp(100) : 0
     }
 
 
@@ -98,7 +98,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        visible: false
+        visible: !root.app.customFrame
         width: root.app.integratedAddressbars ? btnAddTabIntegrated.width + btnDownloadsIntegrated.width +
                                                 btnMenuIntegrated.width + 3 * Units.dp(24)
                                               : Units.dp(48)

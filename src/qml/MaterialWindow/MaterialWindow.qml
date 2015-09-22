@@ -5,8 +5,8 @@ import QtGraphicalEffects 1.0
 ApplicationWindow {
     title: "Application Name"
     color: "transparent"
-    flags:   Qt.FramelessWindowHint
-    id: __window
+    flags:   root.app.customFrame ? Qt.FramelessWindowHint : Qt.Window
+    id: __window
     width: 1000
     height: 640
     theme {
@@ -24,8 +24,8 @@ ApplicationWindow {
     ResizeArea{
         id:resizeArea
         anchors.fill: parent
-        dragHeight: systemBar.height
-        anchors.margins: 8
+        dragHeight: root.app.customFrame ? systemBar.height : 0
+        anchors.margins: root.app.customFrame ? 8 : 0
         target: __window
         minSize: Qt.size(600,400)
         enabled: true
@@ -33,9 +33,9 @@ ApplicationWindow {
         RectangularGlow {
             id: outGlow
             anchors.fill: frame
-            anchors.margins: 5
-            anchors.bottomMargin: 0   /*底部阴影没有缩进因此底部阴影颜色最浓*/
-            glowRadius: 10
+            anchors.margins: root.app.customFrame ? 5 : 0
+            anchors.bottomMargin: 0
+            glowRadius: root.app.customFrame ? 10 : 0
             spread: 0.1
             color: "#A0000000"
             cornerRadius: frame.radius + glowRadius
@@ -45,20 +45,20 @@ ApplicationWindow {
             id: frame
             border{width: 0; color: activeTab.customColor ? colorLuminance(activeTab.customColor, -0.1) : "#EFEFEF"}
             anchors.fill: parent
-            anchors.margins: 9
+            anchors.margins: root.app.customFrame ? 9 : 0
             color: "white"
             smooth: true
-            radius: 3
 
             SystemBar {
                 id: systemBar
+                visible: root.app.customFrame
             }
 
             Toolbar {
                 id: __toolbar
                 anchors.margins: 1
                 anchors.topMargin: 0
-                anchors.top: systemBar.bottom
+                anchors.top: systemBar.bottom
             }
 
             PageStack {
@@ -67,7 +67,7 @@ ApplicationWindow {
                 anchors {
                 left: parent.left
                 right: parent.right
-                top: __toolbar.bottom
+                top: root.app.customFrame ?  __toolbar.bottom : parent.top
                 bottom: parent.bottom
             }
 
@@ -84,9 +84,9 @@ ApplicationWindow {
         states: [
             State {
                 name: "2"   /*Windowed*/
-                PropertyChanges { target: resizeArea; anchors.margins: 8; enabled: true }
+                PropertyChanges { target: resizeArea; anchors.margins: root.app.customFrame ? 8 : 0; enabled: true }
                 PropertyChanges { target: outGlow; visible: true }
-                PropertyChanges { target: frame; anchors.margins: 4; border.width: 0;  }
+                PropertyChanges { target: frame; anchors.margins: root.app.customFrame ? 4 : 0; border.width: 0;  }
             },
             State {
                 name: "4"   /*FullScreen*/

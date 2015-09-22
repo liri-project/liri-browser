@@ -98,8 +98,8 @@ Page {
     View {
         id: titlebar
         backgroundColor: "transparent"
-        anchors.top: parent.top
-        anchors.topMargin: tabsModel.count > 1 || root.app.integratedAddressbars ? -Units.dp(40) : 0
+        anchors.top: parent.top
+        anchors.topMargin: (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ? -Units.dp(40) : 0
         width: parent.width
         height: titlebarContents.height
 
