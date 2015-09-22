@@ -13,7 +13,8 @@ QT += qml quick widgets svg xml webengine #webview (for android)
 
 QTPLUGIN += qsvg
 
-SOURCES += src/main.cpp
+SOURCES += src/main.cpp \
+    src/clipboardadapter.cpp
 
 RESOURCES += \
     src/qml.qrc \
@@ -47,3 +48,6 @@ RC_ICONS = icons/liri-browser.ico
 
 # OS X icon
 ICON = icons/liri-browser.icns
+
+HEADERS += \
+    src/clipboardadapter.h
