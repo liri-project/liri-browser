@@ -119,9 +119,7 @@ View {
             id: overflowButton
             color: root.currentIconColor
             iconName : "navigation/more_vert"
-            onClicked:  {
-                overflowMenu.open(overflowButton)
-            }
+            onClicked: overflowMenu.open(overflowButton)
         }
     }
     Component.onCompleted: {

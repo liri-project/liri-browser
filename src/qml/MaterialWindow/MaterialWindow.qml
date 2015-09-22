@@ -61,6 +61,7 @@ ApplicationWindow {
                 anchors.top: systemBar.bottom
             }
 
+
             PageStack {
                 id: __pageStack
                 initialItem: __window.initialPageFrameLess
@@ -74,6 +75,20 @@ ApplicationWindow {
             onPushed: __toolbar.push(page)
             onPopped: __toolbar.pop()
             onReplaced: __toolbar.replace(page)
+            }
+
+            OverlayLayer {
+                    id: dialogOverlayLayer
+                    objectName: "dialogOverlayLayer"
+                }
+
+            OverlayLayer {
+                id: tooltipOverlayLayer
+                objectName: "tooltipOverlayLayer"
+            }
+
+            OverlayLayer {
+                id: overlayLayer
             }
 
         }
