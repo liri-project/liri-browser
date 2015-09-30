@@ -129,6 +129,7 @@ Component {
                         name: "action/description"
                         visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
                         anchors.verticalCenter: parent.verticalCenter
+                        color: root.iconColor
                     }
 
                     Icon {

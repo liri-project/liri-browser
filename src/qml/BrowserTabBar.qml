@@ -8,12 +8,14 @@ Rectangle {
     id: tabBar
 
     height: root.tabHeight
-    color: root.tabBackgroundColor
-
+    //color: root.tabBackgroundColor
+    color: root.app.customFrame ? "transparent" : "#EFEFEF"
     anchors {
         left: parent.left
         right: parent.right
+        rightMargin: root.app.customFrame ? Units.dp(100) : 0
     }
+
 
     property alias listView: listView
 
@@ -95,6 +97,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        visible: !root.app.customFrame
         width: root.app.integratedAddressbars ? btnAddTabIntegrated.width + btnDownloadsIntegrated.width +
                                                 btnMenuIntegrated.width + 3 * Units.dp(24)
                                               : Units.dp(48)

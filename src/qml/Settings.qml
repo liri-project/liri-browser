@@ -182,14 +182,26 @@ Rectangle {
                 }
             }
 
-            ListItem.Subheader {
-                Label {
-                    z: 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.topMargin: parent.BottomLeft
-                    text: qsTr("Current Browser Version: 0.3")
+            ListItem.Standard {
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
+                        id: chbCustomFrame
+                        checked: root.app.customFrame
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Material window frame (EXPERIMENTAL)")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                    }
+                }
+                onClicked: {
+                    chbCustomFrame.checked = !chbCustomFrame.checked
                 }
             }
+
           }
 
           Column {
@@ -284,6 +296,24 @@ Rectangle {
                 id: accentColorPicker
                 color: theme.accentColor
             }
+
+            Item {
+                height: Units.dp(60)
+                width: parent.width
+                Label {
+                    style: "title"
+                    text: qsTr("About")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            ListItem.Subheader {
+                Label {
+                    z: 20
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Current Browser Version: 0.3")
+                }
+            }
           }
        }
     }
@@ -315,6 +345,8 @@ Rectangle {
                     root.app.integratedAddressbars = chbIntegratedAddressbars.checked;
                     root.app.tabsEntirelyColorized = chbTabsEntirelyColorized.checked;
                     root.app.newTabPage = chbDashboard.checked;
+                    root.app.customFrame = chbCustomFrame.checked;
+                    console.log(root.app.customFrame);
                     drawer.close();
                 }
             }
@@ -328,6 +360,7 @@ Rectangle {
                     chbDashboard.checked = root.app.newTabPage;
                     chbIntegratedAddressbars.checked = root.app.integratedAddressbars;
                     chbTabsEntirelyColorized.checked = root.app.tabsEntirelyColorized;
+                    chbCustomFrame.checked = root.app.customFrame;
                     drawer.close();
                 }
             }

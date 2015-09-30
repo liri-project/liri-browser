@@ -7,13 +7,15 @@ import QtQuick.Controls 1.2 as Controls
 Rectangle {
     id: bookmarksBar
 
-    color: toolbar.color
+    color: toolbar.backgroundColor
     height: visible ? Units.dp(48) : 0
 
     anchors {
         left: parent.left
         right: parent.right
     }
+
+
 
     property alias bookmarkContainer: bookmarkContainer
 
