@@ -11,7 +11,8 @@ typedef QGuiApplication Application;
 #include <QtQml/QQmlContext>
 #include <QtWebEngine/qtwebengineglobal.h>
 #include <QtWebEngine/QtWebEngine>
-#include "qml/MaterialWindow/cursor.h"
+#include "cursor/cursor.h"
+#include "clipboardadapter.h"
 
 int main(int argc, char **argv)
 {
@@ -36,6 +37,7 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine appEngine;
     //appEngine.rootContext()->setContextProperty("utils", &utils);
+	qmlRegisterType<ClipBoardAdapter>("Clipboard", 1, 0, "Clipboard");
     appEngine.load(QUrl("qrc:/qml/DesktopApplication.qml"));
     QMetaObject::invokeMethod(appEngine.rootObjects().first(), "load");
     appEngine.rootContext()->setContextProperty("G_Cursor",new Cursor);

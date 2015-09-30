@@ -14,14 +14,15 @@ QT += qml quick widgets svg xml webengine #webview (for android)
 QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \
-    src/cursor/cursor.cpp
+    src/cursor/cursor.cpp \
+    src/clipboardadapter.cpp
 
 HEADERS += \
     src/cursor/cursor.h
 
 RESOURCES += \
     src/qml.qrc \
-    
+
 
 TRANSLATIONS += src/translations/de_DE.ts \
                 src/translations/ru_RU.ts \
@@ -51,3 +52,6 @@ RC_ICONS = icons/liri-browser.ico
 
 # OS X icon
 ICON = icons/liri-browser.icns
+
+HEADERS += \
+    src/clipboardadapter.h
