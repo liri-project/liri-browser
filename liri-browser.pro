@@ -14,10 +14,10 @@ QT += qml quick widgets svg xml webengine #webview (for android)
 QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \
-    src/qml/MaterialWindow/cursor.cpp
+    src/cursor/cursor.cpp
 
 HEADERS += \
-    src/qml/MaterialWindow/cursor.h
+    src/cursor/cursor.h
 
 RESOURCES += \
     src/qml.qrc \

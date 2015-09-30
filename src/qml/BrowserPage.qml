@@ -6,7 +6,6 @@ import QtQuick.Controls 1.2 as Controls
 
 Page {
     id: page
-
     actionBar {
         hidden: true
     }

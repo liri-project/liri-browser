@@ -5,7 +5,6 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Dialogs 1.1
 import Qt.labs.settings 1.0
-import "./MaterialWindow"
 
 MaterialWindow {
     id: root
@@ -14,7 +13,6 @@ MaterialWindow {
 
     title: activeTab ? (activeTab.webview.title || qsTr("Loading")) + " - Liri Browser" : "Liri Browser"
     visible: true
-
     width: 1000
     height: 640
 
@@ -28,6 +26,8 @@ MaterialWindow {
     /* User Settings */
 
     property variant win;
+
+    property bool customFrame: false
 
     property Settings settings: Settings {
         id: settings
@@ -468,7 +468,7 @@ MaterialWindow {
         id: shortCutActionsContainer
     }
 
-    initialPageFrameLess: BrowserPage { id: page }
+    initialPage: BrowserPage { id: page }
 
     HistoryDrawer { id: historyDrawer }
 

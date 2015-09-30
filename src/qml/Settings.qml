@@ -346,6 +346,7 @@ Rectangle {
                     root.app.tabsEntirelyColorized = chbTabsEntirelyColorized.checked;
                     root.app.newTabPage = chbDashboard.checked;
                     root.app.customFrame = chbCustomFrame.checked;
+                    console.log(root.app.customFrame);
                     drawer.close();
                 }
             }
