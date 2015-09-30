@@ -9,6 +9,8 @@ Item {
     property bool enableShortCuts: true
     property bool enableNewWindowAction: true
 
+    property bool customFrame: true
+
     property string homeUrl: "https://www.google.com"
 
     property string searchEngine: "google"
@@ -45,6 +47,7 @@ Item {
         property var downloads
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
+        property alias customFrame: application.customFrame
     }
 
     Component.onCompleted: {

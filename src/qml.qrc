@@ -24,6 +24,10 @@
         <file>qml/DesktopApplication.qml</file>
         <file>qml/TabsList.qml</file>
         <file>qml/TabsListPage.qml</file>
+        <file>qml/MaterialWindow.qml</file>
+        <file>qml/ResizeArea.qml</file>
+        <file>qml/SystemBar.qml</file>
+        <file>qml/SystemButtons.qml</file>
         <file>translations/ar_MA.qm</file>
         <file>translations/de_DE.qm</file>
         <file>translations/es_CR.qm</file>
