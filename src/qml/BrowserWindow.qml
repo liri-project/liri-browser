@@ -29,6 +29,9 @@ MaterialWindow {
 
     property bool customFrame: false
 
+    property bool snappedRight: false
+    property bool snappedLeft: false
+
     property Settings settings: Settings {
         id: settings
         property alias x: root.x

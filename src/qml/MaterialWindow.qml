@@ -192,16 +192,16 @@ Controls.ApplicationWindow {
         states: [
             State {
                 name: "2"
-                PropertyChanges { target: resizeArea; anchors.margins: root.app.customFrame ? 5 : 0; enabled: true }
-                PropertyChanges { target: __pageStack; anchors.margins: root.app.customFrame ? 10 : 0 }
-                PropertyChanges { target: __toolbar; anchors.margins: root.app.customFrame ? 10 : 0 }
-                PropertyChanges { target: systemBar; anchors.margins: root.app.customFrame ? 10 : 0 }
+                PropertyChanges { target: resizeArea; anchors.margins: root.app.customFrame && !root.snappedRight && !root.snappedLeft ? 5 : 0; enabled: true }
+                PropertyChanges { target: __pageStack; anchors.margins: root.app.customFrame && !root.snappedRight && !root.snappedLeft  ? 10 : 0 }
+                PropertyChanges { target: __toolbar; anchors.margins: root.app.customFrame && !root.snappedRight  && !root.snappedLeft ? 10 : 0 }
+                PropertyChanges { target: systemBar; anchors.margins: root.app.customFrame && !root.snappedRight  && !root.snappedLeft ? 10 : 0 }
                 PropertyChanges { target: outGlow; visible: true }
             },
             State {
                 name: "4"
                 PropertyChanges { target: resizeArea; anchors.margins: 0; enabled: false }
-                PropertyChanges { target: __pageStack; anchors.margins: 0; anchors.topMargin: systemBar.height }
+                PropertyChanges { target: __pageStack; anchors.margins: 0; anchors.topMargin: root.app.customFrame ? systemBar.height : 0}
                 PropertyChanges { target: systemBar; anchors.margins: 0 }
                 PropertyChanges { target: __toolbar; anchors.margins: 0 }
                 PropertyChanges { target: outGlow; visible: false }

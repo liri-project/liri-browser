@@ -1,4 +1,5 @@
 import QtQuick 2.5
+import QtQuick.Window 2.2
 
 MouseArea{
     id: mouseArea
@@ -62,8 +63,20 @@ MouseArea{
                 if("md" == rFlag){
                     geometry.x = oGeometry.x + xChange;
                     geometry.y = oGeometry.y + yChange;
+                    root.snappedRight = false;
+                    root.snappedLeft = false;
                     if(geometry.y < (-3*systemBar.height/4)) {
                         root.visibility = 4;
+                    }
+                    if(geometry.x < -100) {
+                        geometry.width = Screen.desktopAvailableWidth / 2;
+                        geometry.height = Screen.desktopAvailableHeight;
+                        root.snappedLeft = true;
+                    }
+                    if(geometry.x > Screen.desktopAvailableWidth - geometry.width + 100) {
+                        geometry.width = Screen.desktopAvailableWidth / 2;
+                        geometry.height = Screen.desktopAvailableHeight;
+                        root.snappedRight = true;
                     }
                 }
 
