@@ -27,7 +27,7 @@ MaterialWindow {
 
     property variant win;
 
-    property bool customFrame: false
+    property bool customFrame: false
 
     property Settings settings: Settings {
         id: settings
@@ -58,6 +58,8 @@ MaterialWindow {
     property color currentIconColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
 
     property string fontFamily: "Roboto"
+
+    property alias omniboxText: page
 
     property string searchEngine: "google"
 

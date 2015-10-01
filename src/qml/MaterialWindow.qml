@@ -13,7 +13,7 @@ Controls.ApplicationWindow {
      */
     property bool clientSideDecorations
     flags:   root.app.customFrame ? Qt.FramelessWindowHint : Qt.Window
-    color: "transparent"
+    color: "transparent"
     /*!
        \qmlproperty Page initialPage
 
@@ -43,7 +43,7 @@ Controls.ApplicationWindow {
     ResizeArea{
         id:resizeArea
         anchors.fill: parent
-        dragHeight: systemBar.height + 50
+        dragHeight: systemBar.height + 50
         anchors.margins: root.app.customFrame ? 5 : 0
         target: __window
         minSize: Qt.size(100,100)
@@ -55,7 +55,7 @@ Controls.ApplicationWindow {
             height: __pageStack.height + __toolbar.height - parent.anchors.margins * 2 + systemBar.height
             x: 10
             y: 10
-            visible: root.app.customFrame
+            visible: root.app.customFrame
             glowRadius: 10
             spread: 0.1
             color: "#A0000000"
@@ -77,8 +77,8 @@ Controls.ApplicationWindow {
             right: parent.right
             top: __toolbar.bottom
             bottom: parent.bottom
-            margins: root.app.customFrame ? 10 : 0
-            topMargin: root.app.customFrame ? systemBar.height : 0
+            margins: root.app.customFrame ? 10 : 0
+            topMargin: root.app.customFrame ? systemBar.height : 0
         }
 
         onPushed: __toolbar.push(page)
@@ -89,7 +89,7 @@ Controls.ApplicationWindow {
     Toolbar {
         id: __toolbar
         clientSideDecorations: app.clientSideDecorations
-        anchors.margins : root.app.customFrame ? 10 : 0
+        anchors.margins : root.app.customFrame ? 10 : 0
     }
 
     OverlayLayer {
@@ -185,6 +185,28 @@ Controls.ApplicationWindow {
             return Device.type === Device.phone || Device.type === Device.phablet
                     ? Units.dp(48) : Device.type == Device.tablet ? Units.dp(56) : Units.dp(64)
         })
+    }
+
+    Item{
+        state:__window.visibility
+        states: [
+            State {
+                name: "2"
+                PropertyChanges { target: resizeArea; anchors.margins: root.app.customFrame ? 5 : 0; enabled: true }
+                PropertyChanges { target: __pageStack; anchors.margins: root.app.customFrame ? 10 : 0 }
+                PropertyChanges { target: __toolbar; anchors.margins: root.app.customFrame ? 10 : 0 }
+                PropertyChanges { target: systemBar; anchors.margins: root.app.customFrame ? 10 : 0 }
+                PropertyChanges { target: outGlow; visible: true }
+            },
+            State {
+                name: "4"
+                PropertyChanges { target: resizeArea; anchors.margins: 0; enabled: false }
+                PropertyChanges { target: __pageStack; anchors.margins: 0; anchors.topMargin: systemBar.height }
+                PropertyChanges { target: systemBar; anchors.margins: 0 }
+                PropertyChanges { target: __toolbar; anchors.margins: 0 }
+                PropertyChanges { target: outGlow; visible: false }
+            }
+        ]
     }
 
     function colorLuminance(hex, lum) {
