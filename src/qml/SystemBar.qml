@@ -19,6 +19,12 @@ Rectangle {
     	return rgb;
     }
 
+    MouseArea {
+        anchors.fill: parent
+        enabled: root.visibility == 4
+        onDoubleClicked: root.showNormal();
+    }
+
     anchors {
         top: parent.top;
         left: parent.left;
@@ -27,11 +33,11 @@ Rectangle {
         bottomMargin: 0
     }
 
-    height: tabsModel.count > 1 || root.app.integratedAddressbars ? Units.dp(50) : Units.dp(30);
-    color: activeTab.customColor ? colorLuminance(activeTab.customColor, -0.1) : "#EFEFEF"
+    height: tabsModel.count > 1 || root.app.integratedAddressbars ? Units.dp(50) : Units.dp(30);
+    color: activeTab.customColor ? colorLuminance(activeTab.customColor, -0.1) : "#EFEFEF"
 
     SystemButtons {
-        id: sysbuttons
+        id: sysbuttons
         onShowMinimized: __window.showMinimized();
         onShowMaximized: __window.showMaximized();
         onShowNormal: __window.showNormal();

@@ -20,33 +20,30 @@ RowLayout {
 
     IconButton {
         iconName: "navigation/expand_more"
-        width: Units.dp(20)
-        height: width
+        width: Units.dp(20)
+        height: width
         color: Theme.lightDark(colorLuminance(activeTab.customColor,-0.1), Theme.light.iconColor, Theme.dark.iconColor)
         onClicked: showMinimized()
     }
 
     IconButton {
-        iconName: "navigation/fullscreen"
-        width: Units.dp(20)
+        iconName: root.visibility == 4 ? "navigation/fullscreen_exit" : "navigation/fullscreen"
+        width: Units.dp(20)
         id: sysbtn_max
-        height: width
-        property bool isMaximized: false
+        height: width
         color: Theme.lightDark(colorLuminance(activeTab.customColor,-0.1), Theme.light.iconColor, Theme.dark.iconColor)
         onClicked: {
-            if(!isMaximized)
+            if(root.visibility == 2)
                 showMaximized();
             else
                 showNormal();
-            isMaximized = !isMaximized;
-            console.log(isMaximized);
         }
     }
 
     IconButton {
         iconName: "navigation/close"
-        width: Units.dp(20)
-        height: width
+        width: Units.dp(20)
+        height: width
         color: Theme.lightDark(colorLuminance(activeTab.customColor,-0.1), Theme.light.iconColor, Theme.dark.iconColor)
         onClicked: close()
     }

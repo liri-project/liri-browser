@@ -22,7 +22,12 @@ MouseArea{
         }
     }
 
-    onDoubleClicked: __window.visibility == "2" ? __window.showMaximized() : __window.showNormal()
+    onDoubleClicked:{
+        if(root.visibility == 2)
+            root.showMaximized();
+        else
+            root.showNormal();
+    }
 
     onPositionChanged: {
         if(Qt.LeftButton & pressedButtons){
