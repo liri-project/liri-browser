@@ -6,7 +6,6 @@ Page {
     id: page
     title: qsTr("Tabs")
     visible: false
-
     TabsList {
         anchors.fill: parent
     }

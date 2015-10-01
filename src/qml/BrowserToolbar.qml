@@ -73,7 +73,7 @@ View {
         IconButton {
             color: root.currentIconColor
             iconName: "action/tab"
-            onClicked: {pageStack.push(tabsListPage);console.log(overlayLayer.width);}
+            onClicked: {pageStack.push(tabsListPage);}
             visible: mobile
         }
 

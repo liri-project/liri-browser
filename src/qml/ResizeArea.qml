@@ -1,4 +1,4 @@
-import QtQuick 2.4
+import QtQuick 2.5
 
 MouseArea{
     id: mouseArea
@@ -62,6 +62,9 @@ MouseArea{
                 if("md" == rFlag){
                     geometry.x = oGeometry.x + xChange;
                     geometry.y = oGeometry.y + yChange;
+                    if(geometry.y < (-3*systemBar.height/4)) {
+                        root.visibility = 4;
+                    }
                 }
 
                 target.x = geometry.x;
@@ -83,17 +86,17 @@ MouseArea{
             else rFlag += "m"
 
             switch(rFlag){
-            case "lt":
-            case "rb": cursorShape = Qt.SizeFDiagCursor; break;
-            case "lb":
-            case "rt": cursorShape = Qt.SizeBDiagCursor; break;
-            case "ld":
-            case "rd":
-            case "lm":
-            case "rm": cursorShape = Qt.SizeHorCursor; break;
-            case "mt":
-            case "mb": cursorShape = Qt.SizeVerCursor; break;
-            default: cursorShape = Qt.ArrowCursor; break;
+                case "lt":
+                case "rb": cursorShape = Qt.SizeFDiagCursor; break;
+                case "lb":
+                case "rt": cursorShape = Qt.SizeBDiagCursor; break;
+                case "ld":
+                case "rd":
+                case "lm":
+                case "rm": cursorShape = Qt.SizeHorCursor; break;
+                case "mt":
+                case "mb": cursorShape = Qt.SizeVerCursor; break;
+                default: cursorShape = Qt.ArrowCursor; break;
             }
         }
     }
