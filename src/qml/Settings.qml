@@ -287,6 +287,21 @@ Rectangle {
                   anchors.bottomMargin: 30
               }
 
+              ListItem.Standard  {
+                  id: buttonSitesColor
+                  height: Units.dp(60)
+                  Button {
+                      text: "Sites Color chooser"
+                      elevation: 1
+                      anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: 15
+                      }
+                      onClicked: pageStack.push(sitesColorPage)
+                  }
+              }
+
             ColorPicker {
                 id: primaryColorPicker
                 color: theme.primaryColor

@@ -85,6 +85,13 @@ MaterialWindow {
 
     property ListModel tabsModel: ListModel {}
 
+    property ListModel sitesColorModel: ListModel {
+        ListElement {
+            domain: "youtube.com"
+            color: "red"
+        }
+    }
+
     property bool activeTabInEditMode: false
     property var activeTabInEditModeItem
 
@@ -480,6 +487,8 @@ MaterialWindow {
     SettingsPage { id: settingsPage }
 
     TabsListPage { id: tabsListPage }
+
+    SitesColorPage { id: sitesColorPage }
 
     Snackbar {
         id: snackbar
