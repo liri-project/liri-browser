@@ -11,11 +11,11 @@ Component {
         height: root.tabHeight
         width: editModeActive ? root.tabWidthEdit : root.tabWidth
 
-        property color inactiveColor: (root.app.tabsEntirelyColorized && modelData.customColorLight) ? modelData.customColorLight: root.tabColorInactive
-        property color activeColor: (root.app.tabsEntirelyColorized && modelData.customColor) ? modelData.customColor: root.tabColorActive
+        property color inactiveColor: root.app.darkTheme ? shadeColor(root.app.darkThemeColor,0.05) : (root.app.tabsEntirelyColorized && modelData.customColorLight) ? modelData.customColorLight: root.tabColorInactive
+        property color activeColor: root.app.darkTheme ? root.app.darkThemeColor : (root.app.tabsEntirelyColorized && modelData.customColor) ? modelData.customColor: root.tabColorActive
         property color backgroundColor: (rectContainer.state == "active") ? activeColor : inactiveColor
         property color defaultTextColor: (rectContainer.state == "active") ? root.tabTextColorActive : root.tabTextColorInactive
-        property color textColor: (root.app.tabsEntirelyColorized && modelData.customTextColor) ? modelData.customTextColor: defaultTextColor
+        property color textColor: root.app.darkTheme && (rectContainer.state == "active") ? shadeColor(root.app.darkThemeColor,0.6) : (root.app.tabsEntirelyColorized && modelData.customTextColor) ? modelData.customTextColor: defaultTextColor
         //property color draggingColor: root.TabColorDragging
         property alias state: rectContainer.state
 
@@ -126,14 +126,15 @@ Component {
 
                     Icon {
                         id: iconNoFavicon
+                        color:  item.textColor
                         name: "action/description"
                         visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
                         anchors.verticalCenter: parent.verticalCenter
-                        color: root.iconColor
                     }
 
                     Icon {
                         id: iconDashboard
+                        color:  item.textColor
                         name: "action/dashboard"
                         visible: modelData.webview.newTabPage
                         anchors.verticalCenter: parent.verticalCenter
@@ -142,6 +143,7 @@ Component {
                     Icon {
                         id: iconSettings
                         name: "action/settings"
+                        color:  item.textColor
                         visible: modelData.webview.settingsTabPage
                         anchors.verticalCenter: parent.verticalCenter
                     }

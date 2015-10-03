@@ -7,6 +7,7 @@ import Material.ListItems 0.1 as ListItem
 Rectangle {
     id: pageRoot
     anchors.fill: parent
+    color: root.app.darkTheme ? root.app.darkThemeColor : "white"
 
     Text {
         anchors.horizontalCenter: parent.horizontalCenter

@@ -9,6 +9,8 @@ Rectangle {
     id: settingsRoot
     anchors.fill: parent
     property bool mobileMode: width < Units.dp(640)
+    property string textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+    color: root.app.darkTheme ? root.app.darkThemeColor : "white"
 
     Flickable {
         id: flickable
@@ -30,6 +32,7 @@ Rectangle {
                 }
                 text:  qsTr("Settings")
                 style: "title"
+                color: settingsRoot.textColor
                 font.pixelSize: Units.dp(30)
             }
         }
@@ -58,6 +61,7 @@ Rectangle {
               width: parent.width
               Label {
                   style: "title"
+                  color: settingsRoot.textColor
                   text: qsTr("General")
                   anchors.verticalCenter: parent.verticalCenter
               }
@@ -70,6 +74,7 @@ Rectangle {
                     id: txtHomeUrl
                     width: parent.width - 30
                     height: Units.dp(36)
+                    color: settingsRoot.textColor
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -116,6 +121,7 @@ Rectangle {
                 Label {
                     style: "title"
                     text: qsTr("Appearance")
+                    color: settingsRoot.textColor
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -134,6 +140,7 @@ Rectangle {
                         text: qsTr("Enable dashboard")
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
                     }
                 }
                 onClicked: {
@@ -155,6 +162,7 @@ Rectangle {
                         text: qsTr("Integrated addressbars")
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
                     }
                 }
                 onClicked: {
@@ -175,6 +183,7 @@ Rectangle {
                         text: qsTr("Colorize the entire tab and toolbar")
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
                     }
                 }
                 onClicked: {
@@ -195,6 +204,7 @@ Rectangle {
                         text: qsTr("Material window frame (EXPERIMENTAL)")
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
                     }
                 }
                 onClicked: {
@@ -214,13 +224,60 @@ Rectangle {
                 Label {
                     style: "title"
                     text: qsTr("Theme")
+                    color: settingsRoot.textColor
                     anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            ListItem.Standard  {
+                id:darkToogle
+                text: qsTr('Dark theme')
+                textColor: settingsRoot.textColor
+                Switch {
+                    id: swDarkTheme
+                    checked: root.app.darkTheme
+                    darkBackground: root.app.darkTheme
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+            ListItem.Standard {
+                id: darkThemeOptions
+                visible: swDarkTheme.checked
+                height: 80
+                anchors{
+                    left: parent.left
+                    margins: 20
+                }
+                ExclusiveGroup { id: optionGroup }
+                Column {
+                    spacing: 0
+                    RadioButton {
+                        id: rdDarkThemeAlwaysOn
+                        checked: true
+                        text: "Always on"
+                        darkBackground: root.app.darkTheme
+                        canToggle: true
+                        exclusiveGroup: optionGroup
+                    }
+
+                    RadioButton {
+                        id: rdDarkThemeOnAtNight
+                        text: "Only on between 7pm and 7am"
+                        darkBackground: root.app.darkTheme
+                        canToggle: true
+                        exclusiveGroup: optionGroup
+                    }
                 }
             }
 
             ListItem.Standard  {
                 id:primaryChooser
                 text: qsTr('Primary Color')
+                textColor: settingsRoot.textColor
                 Rectangle {
                     id: primarycolorSample
                     width: Units.dp(30)
@@ -242,6 +299,7 @@ Rectangle {
             ListItem.Standard  {
                 id:accentChooser
                 text: qsTr('Accent Color')
+                textColor: settingsRoot.textColor
                 Rectangle {
                     id: accentcolorSample
                     width: Units.dp(30)
@@ -261,6 +319,7 @@ Rectangle {
             }
 
             ListItem.Standard {
+                  id: srcListItem
                   text: ""
                   height: Units.dp(60)
                   MenuField {
@@ -291,7 +350,7 @@ Rectangle {
                   id: buttonSitesColor
                   height: Units.dp(60)
                   Button {
-                      text: "Sites Color chooser"
+                      text: "Sites Color chooser"
                       elevation: 1
                       anchors {
                         verticalCenter: parent.verticalCenter
@@ -319,6 +378,7 @@ Rectangle {
                     style: "title"
                     text: qsTr("About")
                     anchors.verticalCenter: parent.verticalCenter
+                    color: settingsRoot.textColor
                 }
             }
 
@@ -327,6 +387,7 @@ Rectangle {
                     z: 20
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Current Browser Version: 0.3")
+                    color: settingsRoot.textColor
                 }
             }
           }
@@ -343,6 +404,7 @@ Rectangle {
 
         elevation: 2
         height: Units.dp(60)
+        backgroundColor: root.app.darkTheme ? shadeColor(root.app.darkThemeColor, 0.05) : "white"
         Row {
             spacing:10
             anchors.verticalCenter: parent.verticalCenter
@@ -361,7 +423,7 @@ Rectangle {
                     root.app.tabsEntirelyColorized = chbTabsEntirelyColorized.checked;
                     root.app.newTabPage = chbDashboard.checked;
                     root.app.customFrame = chbCustomFrame.checked;
-                    console.log(root.app.customFrame);
+                    root.app.darkTheme = rdDarkThemeAlwaysOn.checked ? swDarkTheme.checked : root.app.isNight
                     drawer.close();
                 }
             }

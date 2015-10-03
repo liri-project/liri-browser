@@ -7,7 +7,7 @@ import QtQuick.Controls 1.2 as Controls
 View {
     id: toolbar
     elevation:0
-    backgroundColor: activeTab.customColor ? activeTab.customColor : root.tabColorActive
+    backgroundColor: root.app.darkTheme ? root.app.darkThemeColor : activeTab.customColor ? activeTab.customColor : root.tabColorActive
     visible: !root.app.integratedAddressbars
 
     height: root.mobile ? Units.dp(64) : Units.dp(56)

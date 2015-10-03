@@ -11,7 +11,7 @@ RowLayout {
         rightMargin:spacing
         verticalCenter: parent.verticalCenter
     }
-
+    property string iconsColor: root.app.darkTheme ? shadeColor(root.app.darkThemeColor, 0.5) : Theme.lightDark(parent.color, Theme.light.iconColor, Theme.dark.iconColor)
     signal showMinimized;
     signal showMaximized;
     signal showFullScreen;
@@ -22,7 +22,7 @@ RowLayout {
         iconName: "navigation/expand_more"
         width: Units.dp(20)
         height: width
-        color: Theme.lightDark(colorLuminance(activeTab.customColor,-0.1), Theme.light.iconColor, Theme.dark.iconColor)
+        color: parent.iconsColor
         onClicked: showMinimized()
     }
 
@@ -31,7 +31,7 @@ RowLayout {
         width: Units.dp(20)
         id: sysbtn_max
         height: width
-        color: Theme.lightDark(colorLuminance(activeTab.customColor,-0.1), Theme.light.iconColor, Theme.dark.iconColor)
+        color: parent.iconsColor
         onClicked: {
             if(root.visibility == 2)
                 showMaximized();
@@ -44,23 +44,7 @@ RowLayout {
         iconName: "navigation/close"
         width: Units.dp(20)
         height: width
-        color: Theme.lightDark(colorLuminance(activeTab.customColor,-0.1), Theme.light.iconColor, Theme.dark.iconColor)
+        color: parent.iconsColor
         onClicked: close()
-    }
-
-    function colorLuminance(hex, lum) {
-    	hex = String(hex).replace(/[^0-9a-f]/gi, '');
-    	if (hex.length < 6) {
-    	       hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-    	}
-    	lum = lum || 0;
-    	var rgb = "#", c, i;
-    	for (i = 0; i < 3; i++) {
-    		c = parseInt(hex.substr(i*2,2), 16);
-    		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-    		rgb += ("00"+c).substr(c.length);
-    	}
-
-    	return rgb;
     }
 }

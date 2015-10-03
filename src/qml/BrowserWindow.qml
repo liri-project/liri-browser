@@ -85,7 +85,7 @@ MaterialWindow {
 
     property ListModel tabsModel: ListModel {}
 
-    property ListModel sitesColorModel: ListModel {
+    property ListModel sitesColorModel: ListModel {
         ListElement {
             domain: "youtube.com"
             color: "red"
@@ -488,7 +488,7 @@ MaterialWindow {
 
     TabsListPage { id: tabsListPage }
 
-    SitesColorPage { id: sitesColorPage }
+    SitesColorPage { id: sitesColorPage }
 
     Snackbar {
         id: snackbar
