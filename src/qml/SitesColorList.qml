@@ -30,6 +30,14 @@ Item {
 
                 delegate: ListItem.Standard {
                     text: listView.model.get(index).domain
+                    TextField {
+                        text: listView.model.get(index).color
+                        anchors{
+                            margins: Units.dp(10)
+                            right: parent.right
+                            verticalCenter: parent.verticalCenter
+                         }
+                    }
                 }
 
             }

@@ -140,9 +140,18 @@ Item {
                             root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
                         }
                         else{
-                            root.getTabModelDataByUID(uid).customColor = false;
-                            root.getTabModelDataByUID(uid).customColorLight = false;
-                            root.getTabModelDataByUID(uid).customTextColor = false;
+                            var customColor = searchForCustomColor(url.toString());
+                            console.log(customColor)
+                            if(customColor != "none") {
+                                root.getTabModelDataByUID(uid).customColor = customColor;
+                                root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(customColor, 0.6);
+                                root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(customColor);
+                            }
+                            else {
+                                root.getTabModelDataByUID(uid).customColor = false;
+                                root.getTabModelDataByUID(uid).customColorLight = false;
+                                root.getTabModelDataByUID(uid).customTextColor = false;
+                            }
                         }
                 });
 

@@ -88,7 +88,7 @@ MaterialWindow {
     property ListModel sitesColorModel: ListModel {
         ListElement {
             domain: "youtube.com"
-            color: "red"
+            color: "#E62117"
         }
     }
 
@@ -145,6 +145,25 @@ MaterialWindow {
                 url = "https://www.google.com/search?q=" + url;
       	}
         return url;
+    }
+
+    function searchForCustomColor(url) {
+        var domains = url.split(".")
+        if(domains[0].indexOf("://") != 1)
+            domains[0]=domains[0].substring(domains[0].indexOf("://")+3,domains[0].length)
+        if(domains[0] == "www")
+            domains.shift()
+        var domains_l = domains.length;
+        if(domains[domains_l-1].indexOf("/") != -1)
+            domains[domains_l-1] = domains[domains_l-1].substring(0,domains[domains_l-1].indexOf("/"))
+        var domain = domains.join(".")
+        var nb=sitesColorModel.count,i,result = "none"
+        console.log(domain)
+        for(i=0;i<nb;i++) {
+            if (sitesColorModel.get(i).domain == domain)
+                result=sitesColorModel.get(i).color
+        }
+        return result
     }
 
     function isASearchQuery(url) {
