@@ -3,9 +3,10 @@ import Material 0.1
 
 ProgressCircle {
     id: indicator
+    color: "white"
 
     SequentialAnimation {
-        running: true
+        running: !root.app.darkTheme
         loops: Animation.Infinite
 
         ColorAnimation {

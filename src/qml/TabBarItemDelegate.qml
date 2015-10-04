@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.2
-
+import QtQuick.Controls.Styles.Material 0.1
 import Material 0.1
 
 Component {
@@ -222,6 +222,7 @@ Component {
         Rectangle {
             id: rectEdit
             visible: item.editModeActive
+            color: backgroundColor
 
             anchors.fill: parent
 
@@ -307,6 +308,7 @@ Component {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     text: modelData.webview.url
+                    style: TextFieldStyle { textColor: root.iconColor }
                     showBorder: false
                     onAccepted: {
                         item.editModeActive = false;

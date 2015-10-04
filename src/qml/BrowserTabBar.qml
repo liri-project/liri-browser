@@ -9,7 +9,7 @@ Rectangle {
 
     height: root.tabHeight
     //color: root.tabBackgroundColor
-    color: root.app.customFrame ? "transparent" : "#EFEFEF"
+    color: root.app.customFrame ? "transparent" : root.app.darkTheme ? root.app.darkThemeColor : "#EFEFEF"
     anchors {
         left: parent.left
         right: parent.right
@@ -91,9 +91,9 @@ Rectangle {
          }
     }
 
-    View {
+    Rectangle {
         id: toolbarIntegrated
-        elevation: Units.dp(2)
+        color: tabBar.color
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -115,9 +115,12 @@ Rectangle {
 
         IconButton {
             id: btnDownloadsIntegrated
-            visible: root.app.integratedAddressbars && downloadsDrawer.hasDownloads
+            iconName: "file/file_download"
+            visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
             width: visible ? Units.dp(24) : 0
-            color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
+            color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads
+                   ? Theme.lightDark(toolbar.color, Theme.accentColor, Theme.dark.iconColor)
+                   : root.currentIconColor
             anchors.right: btnMenuIntegrated.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: visible ? Units.dp(24) : 0

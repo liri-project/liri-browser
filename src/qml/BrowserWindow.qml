@@ -21,6 +21,7 @@ MaterialWindow {
         primaryColor: "#F44336"
         primaryDarkColor: "#D32F2F"
         accentColor: "#FF5722"
+        backgroundColor: app.darkTheme ? app.darkThemeColor : "#f3f3f3"
     }
 
     /* User Settings */
@@ -55,7 +56,7 @@ MaterialWindow {
     property alias tabIndicatorColor: theme.accentColor
     property color tabTextColorActive: "#212121"
     property color tabTextColorInactive: "#757575"
-    property color iconColor: "#7b7b7b"
+    property color iconColor: app.darkTheme ? "white" : "#7b7b7b"
     property color addressBarColor: "#e0e0e0"
     property color currentTextColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
     property color currentIconColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
