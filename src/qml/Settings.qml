@@ -79,7 +79,6 @@ Rectangle {
                         selectionColor: theme.accentColor
                         textColor: settingsRoot.textColor
                         placeholderTextColor: settingsRoot.textColor
-                        Component.onCompleted: background.color = "white"
                     }
                     anchors {
                       verticalCenter: parent.verticalCenter
