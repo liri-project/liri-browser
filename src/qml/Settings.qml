@@ -205,6 +205,40 @@ Rectangle {
                     anchors.fill: parent
                     spacing: Units.dp(12)
                     CheckBox {
+                        id: chbCustomSitesColors
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.customSitesColors
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Use custom sites colors")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+                    Button {
+                        text: "Sites Color chooser"
+                        elevation: 1
+                        anchors {
+                          verticalCenter: parent.verticalCenter
+                        }
+                        onClicked: {
+                            root.customSitesColorsIsOpened = true
+                            pageStack.push(sitesColorPage)
+                        }
+                    }
+
+                }
+                onClicked: {
+                    chbCustomSitesColors.checked = !chbCustomSitesColors.checked
+                }
+            }
+
+            ListItem.Standard {
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
                         id: chbCustomFrame
                         darkBackground: root.app.darkTheme
                         checked: root.app.customFrame
@@ -216,6 +250,7 @@ Rectangle {
                         font.pixelSize: Units.dp(16)
                         color: settingsRoot.textColor
                     }
+
                 }
                 onClicked: {
                     chbCustomFrame.checked = !chbCustomFrame.checked
@@ -356,21 +391,6 @@ Rectangle {
                   anchors.bottomMargin: 30
               }
 
-              ListItem.Standard  {
-                  id: buttonSitesColor
-                  height: Units.dp(60)
-                  Button {
-                      text: "Sites Color chooser"
-                      elevation: 1
-                      anchors {
-                        verticalCenter: parent.verticalCenter
-                        left: parent.left
-                        leftMargin: 15
-                      }
-                      onClicked: pageStack.push(sitesColorPage)
-                  }
-              }
-
             ColorPicker {
                 id: primaryColorPicker
                 color: theme.primaryColor
@@ -434,6 +454,7 @@ Rectangle {
                     root.app.newTabPage = chbDashboard.checked;
                     root.app.customFrame = chbCustomFrame.checked;
                     root.app.darkTheme = rdDarkThemeAlwaysOn.checked ? swDarkTheme.checked : root.app.isNight
+                    root.app.customSitesColors = chbCustomSitesColors.checked
                     drawer.close();
                 }
             }

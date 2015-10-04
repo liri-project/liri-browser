@@ -46,6 +46,24 @@ Item {
         dynamicRoles: true
     }
 
+    property bool customSitesColors: true
+
+    property ListModel customSitesColorsModel: ListModel {
+        id: customSitesColorsModel
+        dynamicRoles: true
+    }
+
+    property ListModel presetSitesColorsModel: ListModel {
+        id: presetSitesColorsModel
+        dynamicRoles: true
+    }
+
+    property string sitesColorsPresets: "[ \
+            {'domain':'facebook.com', 'color': '#3b5998'} , \
+            {'domain':'linkedin.com', 'color': '#646464'} , \
+            {'domain':'twitter.com', 'color': '#00aced'} \
+        ]"
+
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl
         property alias searceEngine: application.searchEngine
@@ -55,6 +73,8 @@ Item {
         property var history
         property var dashboard
         property var downloads
+        property var customsitescolors
+        property bool customSitesColors: application.customSitesColors
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
         property alias customFrame: application.customFrame
@@ -77,7 +97,8 @@ Item {
         var dateString = currentDate.toLocaleDateString();
 
         var currentItemDate = dateString;
-        for (var i=0; i<application.settings.history.length; i++){
+        var history_l = application.settings.history.length
+        for (var i=0; i<history_l; i++){
             var item = application.settings.history[i];
             if (currentItemDate != item.date) {
                 application.historyModel.append({"title": item.date, "url": false, "faviconUrl": false, "date": item.date, "type": "date", color: item.color})
@@ -85,6 +106,15 @@ Item {
             }
             application.historyModel.append(item);
         }
+
+        // Load custom sites color
+        var presets = eval(application.sitesColorsPresets)
+
+        for (var t in presets)
+          application.presetSitesColorsModel.append(presets[t])
+
+        for (var z in application.settings.customsitescolors)
+            application.customSitesColorsModel.append(application.settings.customsitescolors[z])
 
         // Load the dashboard model
         for (var i=0; i<application.settings.dashboard.length; i++){
@@ -112,5 +142,13 @@ Item {
             dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
         }
         application.settings.dashboard = dashboard;
+
+        // Save sites color model
+        var customsitescolors = [];
+        for (var i=0; i<application.customSitesColorsModel.count; i++){
+            var item = application.customSitesColorsModel.get(i);
+            customsitescolors.push({"domain": item.domain, "color": item.color})
+        }
+        application.settings.customsitescolors = customsitescolors;
     }
 }

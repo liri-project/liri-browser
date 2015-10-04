@@ -73,7 +73,7 @@ View {
         IconButton {
             color: root.currentIconColor
             iconName: "action/tab"
-            onClicked: {pageStack.push(tabsListPage);}
+            onClicked: {pageStack.push(tabsListPage);root.tabsListIsOpened = true}
             visible: mobile
         }
 

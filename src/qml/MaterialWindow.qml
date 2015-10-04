@@ -58,11 +58,15 @@ Controls.ApplicationWindow {
             top: __toolbar.bottom
             bottom: parent.bottom
             margins: root.app.customFrame ? 10 : 0
-            topMargin: root.app.customFrame ? systemBar.height : 0
+            topMargin: root.tabsListIsOpened || root.customSitesColorsIsOpened ? 0 : root.app.customFrame ? systemBar.height :  0
         }
 
         onPushed: __toolbar.push(page)
-        onPopped: __toolbar.pop(page)
+        onPopped: {
+             __toolbar.pop(page)
+            root.tabsListIsOpened = false
+            root.customSitesColorsIsOpened = false
+        }
         onReplaced: __toolbar.replace(page)
     }
 
@@ -70,6 +74,14 @@ Controls.ApplicationWindow {
         id: __toolbar
         clientSideDecorations: app.clientSideDecorations
         anchors.margins : root.app.customFrame ? 10 : 0
+        SystemButtons {
+            id: sysbutton
+            visible: !root.mobile
+            onShowMinimized: __window.showMinimized();
+            onShowMaximized: __window.showMaximized();
+            onShowNormal: __window.showNormal();
+            onClose: __window.close();
+        }
     }
 
     OverlayLayer {

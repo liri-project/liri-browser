@@ -140,8 +140,7 @@ Item {
                             root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
                         }
                         else{
-                            var customColor = searchForCustomColor(url.toString());
-                            console.log(customColor)
+                            var customColor = root.app.customSitesColors ? searchForCustomColor(url.toString()) : "none";
                             if(customColor != "none") {
                                 root.getTabModelDataByUID(uid).customColor = customColor;
                                 root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(customColor, 0.6);
