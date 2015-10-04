@@ -4,6 +4,7 @@ import QtQuick.Controls 1.2
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
+import QtQuick.Controls.Styles.Material 0.1
 
 Rectangle {
     id: settingsRoot
@@ -74,7 +75,11 @@ Rectangle {
                     id: txtHomeUrl
                     width: parent.width - 30
                     height: Units.dp(36)
-                    color: settingsRoot.textColor
+                    style: TextFieldStyle {
+                        selectionColor: theme.accentColor
+                        textColor: settingsRoot.textColor
+                        placeholderTextColor: settingsRoot.textColor
+                    }
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -91,6 +96,7 @@ Rectangle {
                 height: Units.dp(60)
                 MenuField {
                     id: menuSearchEngine
+
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -133,6 +139,7 @@ Rectangle {
                     spacing: Units.dp(12)
                     CheckBox {
                         id: chbDashboard
+                        darkBackground: root.app.darkTheme
                         checked: root.app.newTabPage
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -155,6 +162,7 @@ Rectangle {
                     spacing: Units.dp(12)
                     CheckBox {
                         id: chbIntegratedAddressbars
+                        darkBackground: root.app.darkTheme
                         checked: root.app.integratedAddressbars
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -176,6 +184,7 @@ Rectangle {
                     spacing: Units.dp(12)
                     CheckBox {
                         id: chbTabsEntirelyColorized
+                        darkBackground: root.app.darkTheme
                         checked: root.app.tabsEntirelyColorized
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -197,6 +206,7 @@ Rectangle {
                     spacing: Units.dp(12)
                     CheckBox {
                         id: chbCustomFrame
+                        darkBackground: root.app.darkTheme
                         checked: root.app.customFrame
                         anchors.verticalCenter: parent.verticalCenter
                     }

@@ -9,11 +9,11 @@ Rectangle {
 
     height: root.tabHeight
     //color: root.tabBackgroundColor
-    color: root.app.customFrame ? "transparent" : "#EFEFEF"
+    color: root.app.customFrame ? "transparent" : root.app.darkTheme ? root.app.darkThemeColor : "#EFEFEF"
     anchors {
         left: parent.left
-        right: parent.right
         rightMargin: root.app.customFrame ? Units.dp(100) : 0
+        right: parent.right
     }
 
 
@@ -26,8 +26,9 @@ Rectangle {
             top: parent.top
             bottom: parent.bottom
             left: parent.left
-            right: toolbarIntegrated.left
+            //right: toolbarIntegrated.left
         }
+        width: contentItem.width < (tabBar.width - toolbarIntegrated.width) ? contentItem.width : parent.width - toolbarIntegrated.width
 
         orientation: ListView.Horizontal
         spacing: Units.dp(1)
@@ -39,7 +40,13 @@ Rectangle {
 
         MouseArea {
             id: mouseArea
-            anchors.fill: parent
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+
             hoverEnabled: true
             property int index: listView.indexAt(mouseX + listView.contentX, mouseY)
             property int draggingId: -1
@@ -55,6 +62,7 @@ Rectangle {
             }
 
             onPressAndHold: {
+                console.log("!")
                 if (root.activeTabInEditMode) {
                     mouse.accepted = false;
                 } else {
@@ -91,22 +99,36 @@ Rectangle {
          }
     }
 
-    View {
+    IconButton {
+        id: btnAddTabFloating
+        visible: listView.width + toolbarIntegrated.width + width + Units.dp(24) < tabBar.width
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: listView.right
+        anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
+        color: root.iconColor
+        iconName: "content/add"
+
+        onClicked: addTab();
+    }
+
+    Rectangle {
         id: toolbarIntegrated
-        elevation: Units.dp(2)
+        color: tabBar.color
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         visible: !root.app.customFrame
-        width: root.app.integratedAddressbars ? btnAddTabIntegrated.width + btnDownloadsIntegrated.width +
+        width: root.app.integratedAddressbars ? btnAddTab.width + btnDownloadsIntegrated.width +
                                                 btnMenuIntegrated.width + 3 * Units.dp(24)
                                               : Units.dp(48)
 
         IconButton {
-            id: btnAddTabIntegrated
+            id: btnAddTab
+            visible: !btnAddTabFloating.visible
+            width: visible ? Units.dp(24) : 0
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: btnDownloadsIntegrated.left
-            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
+            anchors.margins: if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
             color: root.iconColor
             iconName: "content/add"
 
@@ -115,9 +137,12 @@ Rectangle {
 
         IconButton {
             id: btnDownloadsIntegrated
-            visible: root.app.integratedAddressbars && downloadsDrawer.hasDownloads
+            iconName: "file/file_download"
+            visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
             width: visible ? Units.dp(24) : 0
-            color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads ? Theme.accentColor : root.currentIconColor
+            color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads
+                   ? Theme.lightDark(toolbar.color, Theme.accentColor, Theme.dark.iconColor)
+                   : root.currentIconColor
             anchors.right: btnMenuIntegrated.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: visible ? Units.dp(24) : 0

@@ -15,7 +15,7 @@ Item {
 
     property string searchEngine: "google"
 
-    property var darkTheme: true
+    property bool darkTheme: true
 
     function getCurrentHour () {
         var d = new Date()

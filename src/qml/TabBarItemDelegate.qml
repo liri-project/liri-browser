@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.2
-
+import QtQuick.Controls.Styles.Material 0.1
 import Material 0.1
 
 Component {
@@ -222,6 +222,7 @@ Component {
         Rectangle {
             id: rectEdit
             visible: item.editModeActive
+            color: backgroundColor
 
             anchors.fill: parent
 
@@ -243,7 +244,7 @@ Component {
                     enabled: modelData.webview.canGoBack
 
                     onClicked: modelData.webview.goBack()
-                    color: root.iconColor
+                    color: root.currentIconColor
                 }
 
                 IconButton {
@@ -261,7 +262,7 @@ Component {
                     }
 
                     onClicked: modelData.webview.goForward()
-                    color: root.iconColor
+                    color: root.currentIconColor
                 }
 
                 IconButton {
@@ -273,7 +274,7 @@ Component {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: btnGoForward.right
                     anchors.margins: Units.dp(16)
-                    color: root.iconColor
+                    color: root.currentIconColor
                     onClicked: {
                         item.editModeActive = false;
                         modelData.webview.reload();
@@ -307,6 +308,7 @@ Component {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     text: modelData.webview.url
+                    style: TextFieldStyle { textColor: root.iconColor }
                     showBorder: false
                     onAccepted: {
                         item.editModeActive = false;
@@ -320,7 +322,7 @@ Component {
 
                 IconButton {
                     id: btnTxtUrlHide
-                    color: root.iconColor
+                    color: root.currentIconColor
                     anchors.margins: Units.dp(16)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter

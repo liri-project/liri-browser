@@ -5,6 +5,7 @@ Page {
     title: qsTr("Settings")
     visible: false
 
+
     Settings {
         anchors.fill: parent
     }
