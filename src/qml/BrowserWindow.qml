@@ -36,6 +36,8 @@ MaterialWindow {
     property bool tabsListIsOpened: false
     property bool customSitesColorsIsOpened: false
 
+    property bool reduceTabsSizes: (tabWidth * tabsModel.count) > root.width - 200
+
     property Settings settings: Settings {
         id: settings
         property alias x: root.x
@@ -50,7 +52,7 @@ MaterialWindow {
     /* Style Settings */
     property color tabBackgroundColor: "#f1f1f1"
     property int tabHeight: Units.dp(40)
-    property int tabWidth: Units.dp(200)
+    property int tabWidth: !reduceTabsSizes ? Units.dp(200) : Units.dp(50)
     property int tabWidthEdit: Units.dp(400)
     property int tabsSpacing: Units.dp(1)
     property int titlebarHeight: Units.dp(148)
