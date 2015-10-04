@@ -27,7 +27,10 @@ MaterialWindow {
 
     property variant win;
 
-    property bool customFrame: false
+    property bool customFrame: false
+
+    property bool snappedRight: false
+    property bool snappedLeft: false
 
     property Settings settings: Settings {
         id: settings
@@ -59,6 +62,8 @@ MaterialWindow {
 
     property string fontFamily: "Roboto"
 
+    property alias omniboxText: page
+
     property string searchEngine: "google"
 
     property string sourcetemp: "test"
@@ -79,6 +84,13 @@ MaterialWindow {
     property int lastTabUID: 0
 
     property ListModel tabsModel: ListModel {}
+
+    property ListModel sitesColorModel: ListModel {
+        ListElement {
+            domain: "youtube.com"
+            color: "#E62117"
+        }
+    }
 
     property bool activeTabInEditMode: false
     property var activeTabInEditModeItem
@@ -133,6 +145,25 @@ MaterialWindow {
                 url = "https://www.google.com/search?q=" + url;
       	}
         return url;
+    }
+
+    function searchForCustomColor(url) {
+        var domains = url.split(".")
+        if(domains[0].indexOf("://") != 1)
+            domains[0]=domains[0].substring(domains[0].indexOf("://")+3,domains[0].length)
+        if(domains[0] == "www")
+            domains.shift()
+        var domains_l = domains.length;
+        if(domains[domains_l-1].indexOf("/") != -1)
+            domains[domains_l-1] = domains[domains_l-1].substring(0,domains[domains_l-1].indexOf("/"))
+        var domain = domains.join(".")
+        var nb=sitesColorModel.count,i,result = "none"
+        console.log(domain)
+        for(i=0;i<nb;i++) {
+            if (sitesColorModel.get(i).domain == domain)
+                result=sitesColorModel.get(i).color
+        }
+        return result
     }
 
     function isASearchQuery(url) {
@@ -475,6 +506,8 @@ MaterialWindow {
     SettingsPage { id: settingsPage }
 
     TabsListPage { id: tabsListPage }
+
+    SitesColorPage { id: sitesColorPage }
 
     Snackbar {
         id: snackbar

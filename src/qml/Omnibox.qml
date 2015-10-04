@@ -90,7 +90,7 @@ Rectangle {
 
     TextField {
         id: txtUrl
-
+        objectName: "txtUrl"
         anchors {
             left: connectionTypeIcon.right
             right: parent.right

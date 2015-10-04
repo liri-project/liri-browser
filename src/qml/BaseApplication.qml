@@ -15,6 +15,16 @@ Item {
 
     property string searchEngine: "google"
 
+    property var darkTheme: true
+
+    function getCurrentHour () {
+        var d = new Date()
+        return d.getHours()
+    }
+
+    property string darkThemeColor: "#263238"
+    property bool isNight: (getCurrentHour() >= 19 || getCurrentHour() <= 7)
+
     property string sourcetemp: "unknown"
     property string sourceHighlightTheme: "monokai_sublime"
 
@@ -48,6 +58,7 @@ Item {
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
         property alias customFrame: application.customFrame
+        property alias darkTheme: application.darkTheme
     }
 
     Component.onCompleted: {

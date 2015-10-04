@@ -4,9 +4,9 @@ import Material 0.1
 
 Page {
     id: page
-    title: qsTr("Tabs")
+    title: qsTr("Sites color chooser")
     visible: false
-    TabsList {
+    SitesColorList {
         anchors.fill: parent
     }
 

@@ -24,6 +24,8 @@
         <file>qml/DesktopApplication.qml</file>
         <file>qml/TabsList.qml</file>
         <file>qml/TabsListPage.qml</file>
+        <file>qml/SitesColorPage.qml</file>
+        <file>qml/SitesColorList.qml</file>
         <file>qml/MaterialWindow.qml</file>
         <file>qml/ResizeArea.qml</file>
         <file>qml/SystemBar.qml</file>

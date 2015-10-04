@@ -1,4 +1,5 @@
-import QtQuick 2.4
+import QtQuick 2.5
+import QtQuick.Window 2.2
 
 MouseArea{
     id: mouseArea
@@ -22,7 +23,12 @@ MouseArea{
         }
     }
 
-    onDoubleClicked: __window.visibility == "2" ? __window.showMaximized() : __window.showNormal()
+    onDoubleClicked:{
+        if(root.visibility == 2)
+            root.showMaximized();
+        else
+            root.showNormal();
+    }
 
     onPositionChanged: {
         if(Qt.LeftButton & pressedButtons){
@@ -57,6 +63,21 @@ MouseArea{
                 if("md" == rFlag){
                     geometry.x = oGeometry.x + xChange;
                     geometry.y = oGeometry.y + yChange;
+                    root.snappedRight = false;
+                    root.snappedLeft = false;
+                    if(geometry.y < (-3*systemBar.height/4)) {
+                        root.visibility = 4;
+                    }
+                    if(geometry.x < -100) {
+                        geometry.width = Screen.desktopAvailableWidth / 2;
+                        geometry.height = Screen.desktopAvailableHeight;
+                        root.snappedLeft = true;
+                    }
+                    if(geometry.x > Screen.desktopAvailableWidth - geometry.width + 100) {
+                        geometry.width = Screen.desktopAvailableWidth / 2;
+                        geometry.height = Screen.desktopAvailableHeight;
+                        root.snappedRight = true;
+                    }
                 }
 
                 target.x = geometry.x;
@@ -78,17 +99,17 @@ MouseArea{
             else rFlag += "m"
 
             switch(rFlag){
-            case "lt":
-            case "rb": cursorShape = Qt.SizeFDiagCursor; break;
-            case "lb":
-            case "rt": cursorShape = Qt.SizeBDiagCursor; break;
-            case "ld":
-            case "rd":
-            case "lm":
-            case "rm": cursorShape = Qt.SizeHorCursor; break;
-            case "mt":
-            case "mb": cursorShape = Qt.SizeVerCursor; break;
-            default: cursorShape = Qt.ArrowCursor; break;
+                case "lt":
+                case "rb": cursorShape = Qt.SizeFDiagCursor; break;
+                case "lb":
+                case "rt": cursorShape = Qt.SizeBDiagCursor; break;
+                case "ld":
+                case "rd":
+                case "lm":
+                case "rm": cursorShape = Qt.SizeHorCursor; break;
+                case "mt":
+                case "mb": cursorShape = Qt.SizeVerCursor; break;
+                default: cursorShape = Qt.ArrowCursor; break;
             }
         }
     }

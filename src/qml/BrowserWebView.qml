@@ -1,4 +1,4 @@
-import QtQuick 2.4
+import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import Material 0.1
@@ -140,9 +140,18 @@ Item {
                             root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
                         }
                         else{
-                            root.getTabModelDataByUID(uid).customColor = false;
-                            root.getTabModelDataByUID(uid).customColorLight = false;
-                            root.getTabModelDataByUID(uid).customTextColor = false;
+                            var customColor = searchForCustomColor(url.toString());
+                            console.log(customColor)
+                            if(customColor != "none") {
+                                root.getTabModelDataByUID(uid).customColor = customColor;
+                                root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(customColor, 0.6);
+                                root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(customColor);
+                            }
+                            else {
+                                root.getTabModelDataByUID(uid).customColor = false;
+                                root.getTabModelDataByUID(uid).customColorLight = false;
+                                root.getTabModelDataByUID(uid).customTextColor = false;
+                            }
                         }
                 });
 
@@ -202,28 +211,32 @@ Item {
     MouseArea {
         id: clickDetector
         anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.RightButton
         preventStealing: true
         propagateComposedEvents: true
         property string hoverUrl
         property string tempUrl
+        property bool needLinkDropdown: false
 
         function checkMenu(hUrl){
             hoverUrl = hUrl
         }
 
         onPressed: {
-            if(hoverUrl == "")
+            var putX = mouseX
+            var putY = mouseY
+            if(mouseY + webRightClickMenu.height > clickDetector.height)
+                putY -= webRightClickMenu.height
+            if(mouseX + webRightClickMenu.width > clickDetector.width)
+                putX -= webRightClickMenu.width
+            if(hoverUrl == "") {
+                webRightClickMenu.open(clickDetector, -clickDetector.width + putX + webRightClickMenu.width, putY)
                 return
+            }
             else{
                 tempUrl = hoverUrl
-                var putX = mouseX
-                var putY = mouseY
-                if(mouseY + linkRightClickMenu.height > clickDetector.height)
-                    putY -= linkRightClickMenu.height
-                if(mouseX + linkRightClickMenu.width > clickDetector.width)
-                    putX -= linkRightClickMenu.width
-                linkRightClickMenu.open(clickDetector, -clickDetector.width + putX + linkRightClickMenu.width, putY)
+                linkRightClickMenu.open(clickDetector, -clickDetector.width + putX + webRightClickMenu.width, putY)
             }
         }
 
@@ -270,10 +283,70 @@ Item {
     }
 
     Dropdown {
+        id: webRightClickMenu
+        width: Units.dp(250)
+        height: column.height + Units.dp(16)
+        ColumnLayout{
+            id: column
+            width: parent.width
+            anchors.centerIn: parent
+
+            ListItem.Standard {
+                text: qsTr("Reload")
+                iconName: "navigation/refresh"
+                onClicked: {
+                    webview.reload()
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Add to bookmarks")
+                iconName: "action/bookmark_border"
+                onClicked: {
+                    getPageTitle(clickDetector.tempUrl, function(titl){
+                        getBetterIcon(clickDetector.tempUrl, titl, activeTab.customColor, function(url, title, color, iconUrl){
+                            addBookmark(title, url, iconUrl, color)
+                            clickDetector.tempUrl = ""
+                            webRightClickMenu.close()
+                        })
+                    })
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("Add to dash")
+                iconName: "action/dashboard"
+                onClicked: {
+                    getPageTitle(clickDetector.tempUrl, function(titl){
+                        addToDash(clickDetector.tempUrl, titl, activeTab.customColor)
+                        clickDetector.tempUrl = ""
+                        webRightClickMenu.close()
+                    })
+                }
+            }
+
+            ListItem.Standard {
+                text: qsTr("View source")
+                iconName: "action/code"
+                onClicked: {
+                    activeTabViewSourceCode();
+                }
+            }
+
+            // TODO: Figure out how to save a URL locally AND change cursor on link (idk why it doesn't work '--)
+
+            /*ListItem.Standard {
+                text: qsTr("Save as...")
+                iconName: "file/file_download"
+            }*/
+        }
+
+    }
+
+    Dropdown {
         id: linkRightClickMenu
         width: Units.dp(250)
         height: columnView.height + Units.dp(16)
-
         ColumnLayout{
             id: columnView
             width: parent.width
@@ -335,7 +408,7 @@ Item {
                 }
             }
 
-            // TODO: Figure out how to save a URL locally
+            // TODO: Figure out how to save a URL locally AND change cursor on link (idk why it doesn't work '--)
 
             /*ListItem.Standard {
                 text: qsTr("Save as...")
@@ -344,4 +417,6 @@ Item {
         }
 
     }
+
+
 }
