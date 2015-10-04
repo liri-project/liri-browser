@@ -244,7 +244,7 @@ Component {
                     enabled: modelData.webview.canGoBack
 
                     onClicked: modelData.webview.goBack()
-                    color: root.iconColor
+                    color: root.currentIconColor
                 }
 
                 IconButton {
@@ -262,7 +262,7 @@ Component {
                     }
 
                     onClicked: modelData.webview.goForward()
-                    color: root.iconColor
+                    color: root.currentIconColor
                 }
 
                 IconButton {
@@ -274,7 +274,7 @@ Component {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: btnGoForward.right
                     anchors.margins: Units.dp(16)
-                    color: root.iconColor
+                    color: root.currentIconColor
                     onClicked: {
                         item.editModeActive = false;
                         modelData.webview.reload();
@@ -322,7 +322,7 @@ Component {
 
                 IconButton {
                     id: btnTxtUrlHide
-                    color: root.iconColor
+                    color: root.currentIconColor
                     anchors.margins: Units.dp(16)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
