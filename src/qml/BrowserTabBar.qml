@@ -12,8 +12,8 @@ Rectangle {
     color: root.app.customFrame ? "transparent" : root.app.darkTheme ? root.app.darkThemeColor : "#EFEFEF"
     anchors {
         left: parent.left
-        right: parent.right
         rightMargin: root.app.customFrame ? Units.dp(100) : 0
+        right: parent.right
     }
 
 
@@ -26,8 +26,9 @@ Rectangle {
             top: parent.top
             bottom: parent.bottom
             left: parent.left
-            right: toolbarIntegrated.left
+            //right: toolbarIntegrated.left
         }
+        width: tabsModel.count * (root.tabWidth + spacing)
 
         orientation: ListView.Horizontal
         spacing: Units.dp(1)
@@ -39,7 +40,13 @@ Rectangle {
 
         MouseArea {
             id: mouseArea
-            anchors.fill: parent
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+
             hoverEnabled: true
             property int index: listView.indexAt(mouseX + listView.contentX, mouseY)
             property int draggingId: -1
@@ -55,6 +62,7 @@ Rectangle {
             }
 
             onPressAndHold: {
+                console.log("!")
                 if (root.activeTabInEditMode) {
                     mouse.accepted = false;
                 } else {
@@ -91,6 +99,18 @@ Rectangle {
          }
     }
 
+    IconButton {
+        id: btnAddTabFloating
+        visible: listView.width + toolbarIntegrated.width + width + Units.dp(24) < tabBar.width
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: listView.right
+        anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
+        color: root.iconColor
+        iconName: "content/add"
+
+        onClicked: addTab();
+    }
+
     Rectangle {
         id: toolbarIntegrated
         color: tabBar.color
@@ -98,15 +118,17 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         visible: !root.app.customFrame
-        width: root.app.integratedAddressbars ? btnAddTabIntegrated.width + btnDownloadsIntegrated.width +
+        width: root.app.integratedAddressbars ? btnAddTab.width + btnDownloadsIntegrated.width +
                                                 btnMenuIntegrated.width + 3 * Units.dp(24)
                                               : Units.dp(48)
 
         IconButton {
-            id: btnAddTabIntegrated
+            id: btnAddTab
+            visible: !btnAddTabFloating.visible
+            width: visible ? Units.dp(24) : 0
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: btnDownloadsIntegrated.left
-            anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
+            anchors.margins: if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
             color: root.iconColor
             iconName: "content/add"
 
