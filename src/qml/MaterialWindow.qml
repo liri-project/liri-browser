@@ -50,6 +50,21 @@ Controls.ApplicationWindow {
         anchors.margins: 10
     }
 
+    SystemButtons {
+        id: sysbuttons
+        z:90
+        color: bookmarksDrawer.visible || downloadsDrawer.visible || historyDrawer.visible ? "transparent" : systemBar.color
+        onShowMinimized: root.showMinimized();
+        onShowMaximized: root.showMaximized();
+        onShowNormal: root.showNormal();
+        onClose: root.close();
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: 10
+        }
+    }
+
     PageStack {
         id: __pageStack
         anchors {

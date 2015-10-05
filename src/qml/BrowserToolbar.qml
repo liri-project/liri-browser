@@ -81,7 +81,7 @@ View {
             color: root.currentIconColor
             iconName: "content/add"
             onClicked: addTab()
-            visible: !mobile && (root.app.customFrame || tabsModel.count == 1)
+            visible: !mobile && (tabsModel.count == 1)
         }
 
         IconButton {

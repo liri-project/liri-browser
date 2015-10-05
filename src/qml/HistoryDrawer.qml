@@ -22,28 +22,22 @@ NavigationDrawer {
             id: label
             anchors {
                 left: parent.left
-                right: parent.right
                 leftMargin: Units.dp(16)
-                rightMargin: Units.dp(16)
                 verticalCenter: parent.verticalCenter
             }
             text: qsTr("History")
             style: "title"
         }
 
-        Button {
+        IconButton {
             id: clearHistory
-            text: qsTr("Clear History")
-            elevation: 1
 
             anchors {
-                right: parent.right
+                left: label.right
                 leftMargin: Units.dp(16)
-                rightMargin: Units.dp(16)
                 verticalCenter: parent.verticalCenter
             }
-
-            backgroundColor: Theme.accentColor
+            iconName: "action/delete"
 
             onClicked: {
                 root.app.historyModel.clear()
