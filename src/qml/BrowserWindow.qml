@@ -36,7 +36,7 @@ MaterialWindow {
     property bool tabsListIsOpened: false
     property bool customSitesColorsIsOpened: false
 
-    property bool reduceTabsSizes: (tabWidth * tabsModel.count) > root.width - 200
+    property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
 
     property Settings settings: Settings {
         id: settings

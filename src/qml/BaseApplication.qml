@@ -34,6 +34,8 @@ Item {
     property bool integratedAddressbars: false
     property bool tabsEntirelyColorized: false
 
+    property bool allowReducingTabsSizes: false
+
     property bool newTabPage: true
 
     property ListModel bookmarksModel: ListModel {
@@ -91,6 +93,7 @@ Item {
         property alias bookmarksBar: application.bookmarksBar
         property alias bookmarksBarAlwaysOn: application.bookmarksBarAlwaysOn
         property alias bookmarksBarOnlyOnDash: application.bookmarksBarOnlyOnDash
+        property alias allowReducingTabsSizes: application.allowReducingTabsSizes
     }
 
     Component.onCompleted: {
@@ -142,7 +145,7 @@ Item {
 
         // Save the browser history
         var history = [], hM_l = application.historyModel.count;
-        for (i=0; i<hM_l; i++){
+        for (var i=0; i<hM_l; i++){
             var item = application.historyModel.get(i);
             if (item.type !== "date")
                 history.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl, "date": item.date, "type": item.type, "color": item.color});

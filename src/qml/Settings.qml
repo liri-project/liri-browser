@@ -180,6 +180,29 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: !root.mobile
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
+                        id: chbAllowReducingTabsSizes
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.allowReducingTabsSizes
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Responsive tabs (EXPERIMENTAL)")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+                }
+                onClicked: {
+                    chbAllowReducingTabsSizes.checked = !chbAllowReducingTabsSizes.checked
+                }
+            }
+
+            ListItem.Standard {
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -510,6 +533,7 @@ Rectangle {
                     root.app.bookmarksBar = swBookmarksBar.checked
                     root.app.bookmarksBarAlwaysOn = rdBookmarksBarAlwaysOn.checked
                     root.app.bookmarksBarOnlyOnDash = rdBookmarksBarOnlyOnDash.checked
+                    root.app.allowReducingTabsSizes = chbAllowReducingTabsSizes.checked
                     drawer.close();
                 }
             }
