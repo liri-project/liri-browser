@@ -42,25 +42,34 @@ View {
         Layout.alignment: Qt.AlignVCenter
 
         IconButton {
-            iconName: "navigation/arrow_back"
             enabled: root.activeTab.webview.canGoBack
             onClicked: root.activeTab.webview.goBack()
             color: root.currentIconColor
+            action: Action {
+                iconName: "navigation/arrow_back"
+                name: qsTr("Go Back")
+            }
         }
 
         IconButton {
-            iconName: "navigation/arrow_forward"
             enabled: root.activeTab.webview.canGoForward
             onClicked: root.activeTab.webview.goForward()
             color: root.currentIconColor
             visible: root.activeTab.webview.canGoForward || !mobile
+            action: Action {
+                iconName: "navigation/arrow_forward"
+                name: qsTr("Go Forward")
+            }
         }
 
         IconButton {
             hoverAnimation: true
-            iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
             color: root.currentIconColor
             onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
+            action: Action {
+                iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
+                name:!activeTab.webview.loading ? qsTr("Refresh") : qsTr("Stop")
+            }
         }
 
         Omnibox {
@@ -72,24 +81,33 @@ View {
 
         IconButton {
             color: root.currentIconColor
-            iconName: "action/tab"
             onClicked: {pageStack.push(tabsListPage);root.tabsListIsOpened = true}
             visible: mobile
+            action: Action {
+                iconName: "action/tab"
+                name: qsTr("Tabs")
+            }
         }
 
         IconButton {
             color: root.currentIconColor
-            iconName: "content/add"
             onClicked: addTab()
             visible: !mobile && (tabsModel.count == 1)
+            action: Action {
+                iconName: "content/add"
+                name: qsTr("Add a tab")
+            }
         }
 
         IconButton {
             id: bookmarkButton
             color: root.currentIconColor
-            iconName: "action/bookmark_border"
             onClicked: toggleActiveTabBookmark()
             visible: !mobile
+            action: Action {
+                iconName: "action/bookmark_border"
+                name: qsTr("Bookmark this page")
+            }
         }
 
         IconButton {
@@ -97,9 +115,12 @@ View {
             color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads
                    ? Theme.lightDark(toolbar.color, Theme.accentColor, Theme.dark.iconColor)
                    : root.currentIconColor
-            iconName: "file/file_download"
             onClicked: downloadsDrawer.open(downloadsButton)
             visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
+            action: Action {
+                iconName: "file/file_download"
+                name: qsTr("Downloads")
+            }
 
             ProgressCircle {
                 anchors.centerIn: parent
@@ -118,8 +139,11 @@ View {
         IconButton {
             id: overflowButton
             color: root.currentIconColor
-            iconName : "navigation/more_vert"
             onClicked: overflowMenu.open(overflowButton)
+            action: Action {
+                iconName: "navigation/more_vert"
+                name: qsTr("Menu")
+            }
         }
     }
     Component.onCompleted: {
