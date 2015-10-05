@@ -158,13 +158,5 @@ Item {
             customsitescolors.push({"domain": item.domain, "color": item.color})
         }
         application.settings.customsitescolors = customsitescolors;
-
-        // Save bookmarks
-        var bookmarks = [];
-        for (i=0; i<application.bookmarksModel.count; i++){
-            item = application.bookmarksModel.get(i);
-            bookmarks.push({"domain": item.domain, "color": item.color})
-        }
-        application.settings.bookmarks = bookmarks;
     }
 }

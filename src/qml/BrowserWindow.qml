@@ -126,6 +126,7 @@ MaterialWindow {
     }
 
     function getValidUrl(url) {
+        url=""+ url + ""
         if (url.indexOf('.') !== -1){
             if (url.lastIndexOf('http://', 0) !== 0){
                 if (url.lastIndexOf('https://', 0) !== 0){
@@ -276,6 +277,11 @@ MaterialWindow {
     function reloadBookmarks(){
         clearBookmarks();
         loadBookmarks();
+        // Reload the bookmarks model
+        root.app.bookmarksModel.clear()
+        for (var i=0; i<root.app.settings.bookmarks.length; i++) {
+            root.app.bookmarksModel.append(root.app.settings.bookmarks[i]);
+        }
     }
 
     function bookmarksChanged() {
@@ -506,6 +512,8 @@ MaterialWindow {
     initialPage: BrowserPage { id: page }
 
     HistoryDrawer { id: historyDrawer }
+
+    BookmarksDrawer { id: bookmarksDrawer }
 
     SettingsPage { id: settingsPage }
 

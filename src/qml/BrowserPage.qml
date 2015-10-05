@@ -48,6 +48,11 @@ Page {
             onTriggered: historyDrawer.open()
         },
         Action {
+            name: qsTr("Bookmarks")
+            iconName: "action/bookmark"
+            onTriggered: bookmarksDrawer.open()
+        },
+        Action {
             name: qsTr("Fullscreen")
             iconName: "navigation/fullscreen"
             onTriggered: {
