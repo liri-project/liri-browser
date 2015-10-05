@@ -12,6 +12,24 @@ Item {
         }
     }
     Controls.Action {
+        shortcut: "Ctrl+H"
+        onTriggered: {
+            historyDrawer.open();
+        }
+    }
+    Controls.Action {
+        shortcut: "Ctrl+B"
+        onTriggered: {
+            bookmarksDrawer.open();
+        }
+    }
+    Controls.Action {
+        shortcut: "Ctrl+Alt+S"
+        onTriggered: {
+            addTab("liri://settings");
+        }
+    }
+    Controls.Action {
         shortcut: "Ctrl+F"
         onTriggered: {
             root.showSearchOverlay()
