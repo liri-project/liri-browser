@@ -17,6 +17,7 @@ Item {
     property alias view: webview
     property bool newTabPage
     property bool settingsTabPage
+    property bool settingsTabPageSitesColors
     property bool sourceTapPage: url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
 
     /* Wrapping WebEngineView functionality */
@@ -24,7 +25,7 @@ Item {
     property alias url: webview.url
     property alias profile: webview.profile
     property alias icon: webview.icon
-    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : webview.title
+    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : settingsTabPageSitesColors ? qsTr("Sites Colors") : webview.title
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
@@ -252,6 +253,12 @@ Item {
     SettingsTabPage {
         id: itemSettingsTabPage
         visible: settingsTabPage && !newTabPage
+        anchors.fill: parent
+    }
+
+    SitesColorsPage {
+        id: itemSettingsTabPageSitesColors
+        visible: settingsTabPageSitesColors && !newTabPage
         anchors.fill: parent
     }
 

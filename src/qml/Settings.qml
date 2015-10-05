@@ -247,8 +247,7 @@ Rectangle {
                           verticalCenter: parent.verticalCenter
                         }
                         onClicked: {
-                            root.customSitesColorsIsOpened = true
-                            pageStack.push(sitesColorPage)
+                            addTab("liri://settings-sites-colors")
                         }
                     }
 

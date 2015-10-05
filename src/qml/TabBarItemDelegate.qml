@@ -112,7 +112,7 @@ Component {
                     Image {
                         id: icon
                         //visible: iconUrl !== ""
-                        visible: isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && modelData.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
+                        visible: isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && modelData.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         width: webview.loading ?  0 : Units.dp(20)
                         height: Units.dp(20)
                         anchors.verticalCenter: parent.verticalCenter
@@ -130,7 +130,7 @@ Component {
                         id: iconNoFavicon
                         color:  item.textColor
                         name: "action/description"
-                        visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
+                        visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -146,7 +146,7 @@ Component {
                         id: iconSettings
                         name: "action/settings"
                         color:  item.textColor
-                        visible: modelData.webview.settingsTabPage
+                        visible: modelData.webview.settingsTabPage || modelData.webview.settingsTabPageSitesColors
                         anchors.verticalCenter: parent.verticalCenter
                     }
 

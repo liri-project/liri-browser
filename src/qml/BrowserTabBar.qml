@@ -105,7 +105,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: listView.right
         anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
-        color: root.iconColor
+        color: root.iconColorOnCurrentTabDarken
         iconName: "content/add"
 
         onClicked: addTab();
@@ -130,8 +130,8 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: btnDownloadsIntegrated.left
             anchors.margins: root.app.integratedAddressbars ? Units.dp(24) : root.app.customFrame ? 3 : 12
-            anchors.rightMargin: root.app.integratedAddressbars ? Units.dp(24) : root.app.customFrame ? systemBar.width : 12
-            color: root.iconColor
+            anchors.rightMargin: root.app.integratedAddressbars ? Units.dp(24) : root.app.customFrame ? 2 : 12
+            color: root.app.darkTheme ? shadeColor(root.app.darkThemeColor, 0.5) : Theme.lightDark(root.currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor)
             iconName: "content/add"
 
             onClicked: addTab();

@@ -65,7 +65,8 @@ MaterialWindow {
     property color addressBarColor: "#e0e0e0"
     property color currentTextColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
     property color currentIconColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
-
+    property string currentTabColorDarken: app.darkTheme ? shadeColor(app.darkThemeColor, -0.1) : activeTab.customColor ? shadeColor(activeTab.customColor, -0.1) : "#EFEFEF"
+    property string iconColorOnCurrentTabDarken:  app.darkTheme ? shadeColor(app.darkThemeColor, 0.5) : shadeColor("" +Theme.lightDark(currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor) + "",0.4)
     property string fontFamily: "Roboto"
 
     property alias omniboxText: page
@@ -354,12 +355,17 @@ MaterialWindow {
 
     function addTab(url, background) {
         var u;
-        var ntp = false, stp = false;
+        var ntp = false, stp = false, stpsc = false;
         if (url) {
             if (url == "liri://settings") {
                 stp = true;
                 u = url;
-            } else {
+            }
+            else if (url == "liri://settings-sites-colors"){
+                stpsc = true;
+                u = url;
+            }
+            else {
                 u = getValidUrl(url);
             }
         } else if (root.app.newTabPage && !stp) {
@@ -374,7 +380,7 @@ MaterialWindow {
             webviewComponent = Qt.createComponent ("BrowserWebView.qml");
         else if (app.webEngine === "oxide")
             webviewComponent = Qt.createComponent ("BrowserOxideWebView.qml");
-        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp ,profile: root.app.defaultProfile, uid: lastTabUID});
+        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp, settingsTabPageSitesColors: stpsc, profile: root.app.defaultProfile, uid: lastTabUID});
         var modelData = {
             url: url,
             webview: webview,
@@ -459,7 +465,15 @@ MaterialWindow {
             u = url;
             activeTab.webview.settingsTabPage = true;
             activeTab.webview.newTabPage = false;
-        } else {
+            activeTab.webview.settingsTabPageSitesColors = false;
+        }
+        else if (url == "liri://settings-sites-colors"){
+            u = url;
+            activeTab.webview.settingsTabPage = false;
+            activeTab.webview.newTabPage = false;
+            activeTab.webview.settingsTabPageSitesColors = true;
+        }
+        else {
             var u = getValidUrl(url);
             activeTab.webview.settingsTabPage = false;
             activeTab.webview.url = u;
@@ -519,7 +533,7 @@ MaterialWindow {
 
     TabsListPage { id: tabsListPage }
 
-    SitesColorPage { id: sitesColorPage }
+    SitesColorsPage { id: sitesColorsPage }
 
     Snackbar {
         id: snackbar

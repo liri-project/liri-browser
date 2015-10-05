@@ -25,8 +25,8 @@
         <file>qml/DesktopApplication.qml</file>
         <file>qml/TabsList.qml</file>
         <file>qml/TabsListPage.qml</file>
-        <file>qml/SitesColorPage.qml</file>
-        <file>qml/SitesColorList.qml</file>
+        <file>qml/SitesColors.qml</file>
+        <file>qml/SitesColorsList.qml</file>
         <file>qml/MaterialWindow.qml</file>
         <file>qml/ResizeArea.qml</file>
         <file>qml/SystemBar.qml</file>
@@ -39,5 +39,6 @@
         <file>translations/pt_BR.qm</file>
         <file>translations/pt_PT.qm</file>
         <file>translations/ru_RU.qm</file>
+        <file>qml/SitesColorsPage.qml</file>
     </qresource>
 </RCC>

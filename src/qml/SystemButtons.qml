@@ -24,7 +24,7 @@ Rectangle {
         }
 
         spacing: Units.dp(10)
-        property string iconsColor: root.app.darkTheme ? shadeColor(root.app.darkThemeColor, 0.5) : Theme.lightDark(parent.color, Theme.light.iconColor, Theme.dark.iconColor)
+        property string iconsColor: root.iconColorOnCurrentTabDarken
 
         Rectangle {
             width:1
