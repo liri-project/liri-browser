@@ -102,7 +102,6 @@ Component {
                 anchors.fill: parent
                 visible: !item.editModeActive
                 color: backgroundColor
-
                 Row {
                     anchors.fill: parent
                     anchors.leftMargin: Units.dp(20)
