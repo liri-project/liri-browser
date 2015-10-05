@@ -88,26 +88,61 @@ Rectangle {
         }
     }
 
+    Label {
+        id: quickSearchIndicator
+        anchors{
+            left: connectionTypeIcon.right
+            leftMargin: txtUrl.quickSearch != "" ? Units.dp(16) : 0
+            verticalCenter: parent.verticalCenter
+        }
+
+        text: txtUrl.quickSearch
+        visible: txtUrl.quickSearch != ""
+    }
+
     TextField {
         id: txtUrl
         objectName: "txtUrl"
         anchors {
-            left: connectionTypeIcon.right
+            left: quickSearchIndicator.right
             right: parent.right
             top: parent.top
             bottom: parent.bottom
             leftMargin: Units.dp(16)
             rightMargin: Units.dp(16)
         }
-
+        property string quickSearch: ""
+        property string quickSearchURL: ""
         showBorder: false
         text: root.activeTab.webview.url
         placeholderText: mobile ? qsTr("Search") : qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive
         onTextChanged: isASearchQuery(text) ? connectionTypeIcon.searchIcon = true : connectionTypeIcon.searchIcon = false;
-        onAccepted: setActiveTabURL(text)
+        onAccepted: {
+            if(quickSearch == "" && root.app.quickSearches)
+                setActiveTabURL(text)
+            else
+                setActiveTabURL(quickSearchURL + text)
+            quickSearch = ""
+            quickSearchURL = ""
+            text = root.activeTab.webview.url
+        }
 
+        Keys.onTabPressed:{
+            if(text.length == 3) {
+                var item = getInfosOfQuickSearch(text)
+                quickSearch = item.name + ""
+                quickSearchURL = item.url + ""
+                text = ""
+                placeholderText = qsTr("Search...")
+            }
+        }
+        Keys.onBacktabPressed:  {
+                quickSearch = "";
+                placeholderText = qsTr("Search or enter website name")
+                text = ""
+        }
 
         MouseArea {
             anchors.fill: parent

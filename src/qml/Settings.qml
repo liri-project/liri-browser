@@ -262,6 +262,39 @@ Rectangle {
                     anchors.fill: parent
                     spacing: Units.dp(12)
                     CheckBox {
+                        id: chbQuickSearches
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.customSitesColors
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Use Quick Searches in Omnibox")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+                    Button {
+                        text: "Quick Searches Editor"
+                        elevation: 1
+                        anchors {
+                          verticalCenter: parent.verticalCenter
+                        }
+                        onClicked: {
+                            addTab("liri://settings-quick-searches")
+                        }
+                    }
+
+                }
+                onClicked: {
+                    chbQuickSearches.checked = !chbQuickSearches.checked
+                }
+            }
+
+            ListItem.Standard {
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
                         id: chbCustomFrame
                         darkBackground: root.app.darkTheme
                         checked: root.app.customFrame
@@ -533,6 +566,7 @@ Rectangle {
                     root.app.bookmarksBarAlwaysOn = rdBookmarksBarAlwaysOn.checked
                     root.app.bookmarksBarOnlyOnDash = rdBookmarksBarOnlyOnDash.checked
                     root.app.allowReducingTabsSizes = chbAllowReducingTabsSizes.checked
+                    root.app.quickSearches = chbQuickSearches.checked
                     drawer.close();
                 }
             }

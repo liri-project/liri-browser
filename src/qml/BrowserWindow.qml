@@ -355,7 +355,7 @@ MaterialWindow {
 
     function addTab(url, background) {
         var u;
-        var ntp = false, stp = false, stpsc = false;
+        var ntp = false, stp = false, stpsc = false, stpqs = false;
         if (url) {
             if (url == "liri://settings") {
                 stp = true;
@@ -363,6 +363,10 @@ MaterialWindow {
             }
             else if (url == "liri://settings-sites-colors"){
                 stpsc = true;
+                u = url;
+            }
+            else if (url == "liri://settings-quick-searches"){
+                stpqs = true;
                 u = url;
             }
             else {
@@ -380,7 +384,7 @@ MaterialWindow {
             webviewComponent = Qt.createComponent ("BrowserWebView.qml");
         else if (app.webEngine === "oxide")
             webviewComponent = Qt.createComponent ("BrowserOxideWebView.qml");
-        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp, settingsTabPageSitesColors: stpsc, profile: root.app.defaultProfile, uid: lastTabUID});
+        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp, settingsTabPageSitesColors: stpsc, settingsTabPageQuickSearches: stpqs,profile: root.app.defaultProfile, uid: lastTabUID});
         var modelData = {
             url: url,
             webview: webview,
@@ -466,12 +470,21 @@ MaterialWindow {
             activeTab.webview.settingsTabPage = true;
             activeTab.webview.newTabPage = false;
             activeTab.webview.settingsTabPageSitesColors = false;
+            activeTab.webview.settingsTabPageQuickSearches = false;
         }
         else if (url == "liri://settings-sites-colors"){
             u = url;
             activeTab.webview.settingsTabPage = false;
             activeTab.webview.newTabPage = false;
             activeTab.webview.settingsTabPageSitesColors = true;
+            activeTab.webview.settingsTabPageQuickSearches = false;
+        }
+        else if (url == "liri://settings-quick-searches"){
+            u = url;
+            activeTab.webview.settingsTabPage = false;
+            activeTab.webview.newTabPage = false;
+            activeTab.webview.settingsTabPageSitesColors = false;
+            activeTab.webview.settingsTabPageQuickSearches = true;
         }
         else {
             var u = getValidUrl(url);

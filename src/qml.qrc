@@ -40,5 +40,8 @@
         <file>translations/pt_PT.qm</file>
         <file>translations/ru_RU.qm</file>
         <file>qml/SitesColorsPage.qml</file>
+        <file>qml/QuickSearches.qml</file>
+        <file>qml/QuickSearchesList.qml</file>
+        <file>qml/QuickSearchesPage.qml</file>
     </qresource>
 </RCC>

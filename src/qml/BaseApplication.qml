@@ -54,6 +54,7 @@ Item {
     }
 
     property bool customSitesColors: true
+    property bool quickSearches: true
 
     property ListModel customSitesColorsModel: ListModel {
         id: customSitesColorsModel
@@ -65,11 +66,40 @@ Item {
         dynamicRoles: true
     }
 
+    property ListModel customQuickSearchesModel: ListModel {
+        id: customQuickSearchesModel
+        dynamicRoles: true
+    }
+
+    property ListModel presetQuickSearchesModel: ListModel {
+        id: presetQuickSearchesModel
+        dynamicRoles: true
+    }
+
+    function getInfosOfQuickSearch(key) {
+        var name, url, result, i,count = application.customQuickSearchesModel.count, count_pre = application.presetQuickSearchesModel.count;
+        for(i=0;i<count_pre;i++) {
+            if(""+application.presetQuickSearchesModel.get(i).key+"" === key) {
+                result = application.presetQuickSearchesModel.get(i)
+            }
+        }
+        for(i=0;i<count;i++) {
+            if(""+application.customQuickSearchesModel.get(i).key+"" === key) {
+                result = application.customQuickSearchesModel.get(i)
+            }
+        }
+        return result
+    }
+
     property string sitesColorsPresets: "[ \
             {'domain':'facebook.com', 'color': '#3b5998'} , \
             {'domain':'linkedin.com', 'color': '#646464'} , \
             {'domain':'twitter.com', 'color': '#00aced'} , \
             {'domain':'github.com', 'color': '#f5f5f5'} \
+        ]"
+    property string quickSearchesPresets: "[ \
+            {'name':'Youtube', 'key': 'ytb', 'url': 'https://www.youtube.com/results?search_query='}, \
+            {'name':'Google Play Store', 'key': 'gps', 'url': 'https://play.google.com/store/search?q='} \
         ]"
     property bool bookmarksBar: true
     property bool bookmarksBarAlwaysOn: false
@@ -94,6 +124,7 @@ Item {
         property alias bookmarksBarAlwaysOn: application.bookmarksBarAlwaysOn
         property alias bookmarksBarOnlyOnDash: application.bookmarksBarOnlyOnDash
         property alias allowReducingTabsSizes: application.allowReducingTabsSizes
+        property var customquicksearches
     }
 
     Component.onCompleted: {
@@ -138,6 +169,14 @@ Item {
         // Load the bookmarks model
         for (var i=0; i<application.settings.bookmarks.length; i++)
             application.bookmarksModel.append(application.settings.bookmarks[i]);
+
+        var presets_qs = eval(application.quickSearchesPresets)
+        for (t in presets_qs)
+          application.presetQuickSearchesModel.append(presets_qs[t])
+
+        // Load the quick searches model
+        for (var i=0; i<application.settings.customquicksearches.length; i++)
+            application.customQuickSearchesModel.append(application.settings.customquicksearches[i]);
     }
 
     Component.onDestruction: {
@@ -167,5 +206,14 @@ Item {
             customsitescolors.push({"domain": item.domain, "color": item.color})
         }
         application.settings.customsitescolors = customsitescolors;
+
+        // Save quick searches
+        var customquicksearches = [], cqsm_l = application.customQuickSearchesModel.count;
+        for (i=0; i<cqsm_l; i++){
+             item = application.customQuickSearchesModel.get(i);
+            customquicksearches.push({"name": item.name, "key": item.key, "url": item.url})
+        }
+        application.settings.customquicksearches = customquicksearches;
+
     }
 }
