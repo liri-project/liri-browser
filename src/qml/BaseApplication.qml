@@ -88,6 +88,9 @@ Item {
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
         property alias customFrame: application.customFrame
         property alias darkTheme: application.darkTheme
+        property alias bookmarksBar: application.bookmarksBar
+        property alias bookmarksBarAlwaysOn: application.bookmarksBarAlwaysOn
+        property alias bookmarksBarOnlyOnDash: application.bookmarksBarOnlyOnDash
     }
 
     Component.onCompleted: {

@@ -138,11 +138,14 @@ Page {
                           if(root.app.bookmarksBarAlwaysOn) {
                               return true
                           }
-                          else if(root.app.root.app.bookmarksBarOnlyOnDash && activeTab.webview.newTabPage) {
+                          else if(root.app.bookmarksBarOnlyOnDash && activeTab.webview.newTabPage) {
                               return true
                           }
+                          else if(!activeTab.webview.newTabPage && !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn)
+                              return true
                           else
                               return false
+
                       }
                       else
                           return false

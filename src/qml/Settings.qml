@@ -12,6 +12,7 @@ Rectangle {
     property bool mobileMode: width < Units.dp(640)
     property string textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
     color: root.app.darkTheme ? root.app.darkThemeColor : "white"
+    z: -20
 
     Flickable {
         id: flickable
@@ -274,7 +275,7 @@ Rectangle {
             ListItem.Standard {
                 id: bookmarksBarOptions
                 visible: swBookmarksBar.checked
-                height: 80
+                height: 120
                 anchors{
                     left: parent.left
                     margins: 20
@@ -294,6 +295,14 @@ Rectangle {
                         id: rdBookmarksBarOnlyOnDash
                         text: "Only on dashboard"
                         checked: root.app.bookmarksBarOnlyOnDash
+                        canToggle: true
+                        exclusiveGroup: bookmarksOptionGroup
+                    }
+
+                    RadioButton {
+                        id: rdBookmarksBarNotOnDash
+                        text: "Everywhere except on dashboard"
+                        checked: !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn
                         canToggle: true
                         exclusiveGroup: bookmarksOptionGroup
                     }
