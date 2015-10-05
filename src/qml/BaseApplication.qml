@@ -69,6 +69,9 @@ Item {
             {'domain':'twitter.com', 'color': '#00aced'} , \
             {'domain':'github.com', 'color': '#f5f5f5'} \
         ]"
+    property bool bookmarksBar: true
+    property bool bookmarksBarAlwaysOn: false
+    property bool bookmarksBarOnlyOnDash: true
 
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl

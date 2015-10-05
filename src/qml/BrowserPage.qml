@@ -132,7 +132,24 @@ Page {
 
             BookmarksBar {
                 id: bookmarksBar
-                visible: app.bookmarks.length > 0 && !root.fullscreen && !root.mobile
+                visible: {
+                    if(root.app.bookmarksBar && !root.mobile) {
+                      if(app.bookmarks.length > 0) {
+                          if(root.app.bookmarksBarAlwaysOn) {
+                              return true
+                          }
+                          else if(root.app.root.app.bookmarksBarOnlyOnDash && activeTab.webview.newTabPage) {
+                              return true
+                          }
+                          else
+                              return false
+                      }
+                      else
+                          return false
+                    }
+                    else
+                        return false
+                }
             }
         }
     }

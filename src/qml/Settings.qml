@@ -256,6 +256,49 @@ Rectangle {
                     chbCustomFrame.checked = !chbCustomFrame.checked
                 }
             }
+            ListItem.Standard  {
+                id:bookmarksBarToogle
+                text: qsTr('Bookmarks bar')
+                textColor: settingsRoot.textColor
+                Switch {
+                    id: swBookmarksBar
+                    checked: root.app.bookmarksBar
+                    darkBackground: root.app.darkTheme
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+            ListItem.Standard {
+                id: bookmarksBarOptions
+                visible: swBookmarksBar.checked
+                height: 80
+                anchors{
+                    left: parent.left
+                    margins: 20
+                }
+                ExclusiveGroup { id: bookmarksOptionGroup }
+                Column {
+                    spacing: 0
+                    RadioButton {
+                        id: rdBookmarksBarAlwaysOn
+                        checked: root.app.bookmarksBarAlwaysOn
+                        text: "Always on"
+                        canToggle: true
+                        exclusiveGroup: bookmarksOptionGroup
+                    }
+
+                    RadioButton {
+                        id: rdBookmarksBarOnlyOnDash
+                        text: "Only on dashboard"
+                        checked: root.app.bookmarksBarOnlyOnDash
+                        canToggle: true
+                        exclusiveGroup: bookmarksOptionGroup
+                    }
+                }
+            }
 
           }
 
@@ -455,6 +498,9 @@ Rectangle {
                     root.app.customFrame = chbCustomFrame.checked;
                     root.app.darkTheme = rdDarkThemeAlwaysOn.checked ? swDarkTheme.checked : root.app.isNight
                     root.app.customSitesColors = chbCustomSitesColors.checked
+                    root.app.bookmarksBar = swBookmarksBar.checked
+                    root.app.bookmarksBarAlwaysOn = rdBookmarksBarAlwaysOn.checked
+                    root.app.bookmarksBarOnlyOnDash = rdBookmarksBarOnlyOnDash.checked
                     drawer.close();
                 }
             }
