@@ -2,11 +2,17 @@
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
+import QtQuick.Controls.Styles 1.3
+import QtQuick.Layouts 1.1
+import QtQuick.Controls.Styles.Material 0.1
 
 Item {
+    id: item
+    property string color
+    property string textColor
     Rectangle {
         id: flickable
-
+        color: item.color
         anchors.fill: parent
         Row {
             spacing: 10
@@ -21,6 +27,7 @@ Item {
                       anchors.verticalCenter: parent.verticalCenter
                       anchors.left: parent.left
                       anchors.margins: Units.dp(16)
+                      color: item.textColor
                   }
                 }
                 ListView {
@@ -30,7 +37,6 @@ Item {
                     model: root.app.presetSitesColorsModel
                     anchors.left:parent.left
                     anchors.margins: Units.dp(16)
-
                     delegate: ListItem.Standard {
 
                         Row {
@@ -43,17 +49,31 @@ Item {
 
                             TextField {
                                 text: listViewPresets.model.get(index).domain
+                                placeholderText: qsTr("Domain")
+                                floatingLabel: true
                                 anchors{
                                     verticalCenter: parent.verticalCenter
                                  }
                                  onTextChanged: listViewPresets.model.set(index, {"domain": text})
+                                 style: TextFieldStyle {
+                                     selectionColor: theme.accentColor
+                                     textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+                                     placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                 }
                             }
 
                             TextField {
                                 text: listViewPresets.model.get(index).color
                                 onTextChanged: listViewPresets.model.set(index, {"color": text})
+                                placeholderText: qsTr("Color")
+                                floatingLabel: true
                                 anchors{
                                    verticalCenter: parent.verticalCenter
+                                }
+                                style: TextFieldStyle {
+                                    selectionColor: theme.accentColor
+                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
                                 }
                             }
                         }
@@ -73,6 +93,7 @@ Item {
                       anchors.verticalCenter: parent.verticalCenter
                       anchors.margins: Units.dp(16)
                       anchors.left: parent.left
+                      color: item.textColor
                   }
                 }
                 ListView {
@@ -95,22 +116,37 @@ Item {
 
                             TextField {
                                 text: listView.model.get(index).domain
+                                placeholderText: qsTr("Domain")
+                                floatingLabel: true
                                 anchors{
                                     verticalCenter: parent.verticalCenter
                                  }
                                  onTextChanged: listView.model.set(index, {"domain": text})
+                                 style: TextFieldStyle {
+                                     selectionColor: theme.accentColor
+                                     textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+                                     placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                 }
                             }
 
                             TextField {
                                 text: listView.model.get(index).color
+                                placeholderText: qsTr("Color")
+                                floatingLabel: true
                                 onTextChanged: listView.model.set(index, {"color": text})
                                 anchors{
                                    verticalCenter: parent.verticalCenter
+                                }
+                                style: TextFieldStyle {
+                                    selectionColor: theme.accentColor
+                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
                                 }
                             }
 
                             IconButton {
                                 iconName: "action/delete"
+                                color: item.textColor
                                 size: Units.dp(15)
                                 onClicked: listView.model.remove(index)
                                 anchors{
@@ -132,7 +168,7 @@ Item {
             anchors.margins: Units.dp( 48 )
             iconName: "content/add"
             text: qsTr("Add new color")
-            onClicked: root.app.customSitesColorsModel.append({"domain":"Enter here a domain...", "color": "... and a color"})
+            onClicked: root.app.customSitesColorsModel.append({"domain":"", "color": ""})
         }
 
 }

@@ -23,13 +23,15 @@ Rectangle {
             }
             text:  qsTr("Customize sites colors (if no theme-color)")
             style: "title"
-            color: settingsRoot.textColor
+            color: sitesColorsRoot.textColor
             font.pixelSize: Units.dp(30)
         }
     }
     SitesColorsList {
         anchors.fill: parent
         anchors.topMargin: view.height + Units.dp(10)
+        textColor: parent.textColor
+        color: parent.color
     }
 
 }
