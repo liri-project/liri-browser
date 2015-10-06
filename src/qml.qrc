@@ -43,5 +43,6 @@
         <file>qml/QuickSearches.qml</file>
         <file>qml/QuickSearchesList.qml</file>
         <file>qml/QuickSearchesPage.qml</file>
+        <file>qml/MenuFieldThemed.qml</file>
     </qresource>
 </RCC>

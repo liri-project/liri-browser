@@ -95,9 +95,9 @@ Rectangle {
             ListItem.Standard {
                 text: ""
                 height: Units.dp(60)
-                MenuField {
+                MenuFieldThemed {
                     id: menuSearchEngine
-
+                    textColor: "white"
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -343,7 +343,15 @@ Rectangle {
                         checked: root.app.bookmarksBarAlwaysOn
                         text: "Always on"
                         canToggle: true
+                        darkBackground: root.app.darkTheme
                         exclusiveGroup: bookmarksOptionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: !root.app.darkTheme && rdBookmarksBarAlwaysOn.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdBookmarksBarAlwaysOn.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
+                                 }
+                        }
                     }
 
                     RadioButton {
@@ -352,6 +360,14 @@ Rectangle {
                         checked: root.app.bookmarksBarOnlyOnDash
                         canToggle: true
                         exclusiveGroup: bookmarksOptionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: !root.app.darkTheme && rdBookmarksBarOnlyOnDash.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdBookmarksBarOnlyOnDash.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
+                                 }
+                        }
+                        darkBackground: root.app.darkTheme
                     }
 
                     RadioButton {
@@ -360,6 +376,14 @@ Rectangle {
                         checked: !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn
                         canToggle: true
                         exclusiveGroup: bookmarksOptionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: !root.app.darkTheme && rdBookmarksBarNotOnDash.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdBookmarksBarNotOnDash.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
+                            }
+                        }
+                        darkBackground: root.app.darkTheme
                     }
                 }
             }
@@ -414,6 +438,13 @@ Rectangle {
                         darkBackground: root.app.darkTheme
                         canToggle: true
                         exclusiveGroup: optionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: !root.app.darkTheme && rdDarkThemeAlwaysOn.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdDarkThemeAlwaysOn.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
+                                }
+                        }
                     }
 
                     RadioButton {
@@ -422,6 +453,13 @@ Rectangle {
                         darkBackground: root.app.darkTheme
                         canToggle: true
                         exclusiveGroup: optionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: !root.app.darkTheme && rdDarkThemeOnAtNight.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdDarkThemeOnAtNight.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
+                                }
+                        }
                     }
                 }
             }
@@ -474,8 +512,9 @@ Rectangle {
                   id: srcListItem
                   text: ""
                   height: Units.dp(60)
-                  MenuField {
+                  MenuFieldThemed {
                       id: menuSourceHighlightTheme
+                      textColor: "white"
                       anchors {
                         verticalCenter: parent.verticalCenter
                         left: parent.left
