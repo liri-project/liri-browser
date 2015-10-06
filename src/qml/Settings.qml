@@ -10,7 +10,8 @@ Rectangle {
     id: settingsRoot
     anchors.fill: parent
     property bool mobileMode: width < Units.dp(640)
-    property string textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+    property color textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.alpha(Theme.light.textColor,1)
+    property color linesColor: Theme.alpha(textColor, 0.6)
     color: root.app.darkTheme ? root.app.darkThemeColor : "white"
     z: -20
 
@@ -85,8 +86,8 @@ Rectangle {
                     placeholderText: qsTr("Start page")
                     floatingLabel: true
                     style: TextFieldThemed {
-                        helperNotFocusedColor: root.app.darkTheme ? Theme.alpha("#fff", 0.5) : Theme.light.hintColor
-                        textColor: root.app.darkTheme ? "white" : Theme.light.textColor
+                        helperNotFocusedColor: settingsRoot.linesColor
+                        textColor: settingsRoot.textColor
                     }
                 }
             }
@@ -96,9 +97,9 @@ Rectangle {
                 height: Units.dp(60)
                 MenuFieldThemed {
                     id: menuSearchEngine
-                    textColor: root.app.darkTheme ? "white" : theme.dark.textColor
+                    textColor: settingsRoot.textColor
                     helperColor: Theme.accentColor
-                    linesColor: root.app.darkTheme ? Theme.alpha("#fff", 0.6) : Theme.light.hintColor
+                    linesColor: settingsRoot.linesColor
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -338,7 +339,7 @@ Rectangle {
                 }
                 ExclusiveGroup { id: bookmarksOptionGroup }
                 Column {
-                    spacing: 0
+                    spacing: -Units.dp(10)
                     RadioButton {
                         id: rdBookmarksBarAlwaysOn
                         checked: root.app.bookmarksBarAlwaysOn
@@ -350,7 +351,7 @@ Rectangle {
                             label: Label {
                                     text: control.text
                                     style: "button"
-                                    color: !root.app.darkTheme && rdBookmarksBarAlwaysOn.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdBookmarksBarAlwaysOn.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
+                                    color: rdBookmarksBarAlwaysOn.checked ? settingsRoot.textColor : settingsRoot.linesColor
                                  }
                         }
                     }
@@ -365,8 +366,8 @@ Rectangle {
                             label: Label {
                                     text: control.text
                                     style: "button"
-                                    color: !root.app.darkTheme && rdBookmarksBarOnlyOnDash.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdBookmarksBarOnlyOnDash.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
-                                 }
+                                    color: rdBookmarksBarOnlyOnDash.checked ? settingsRoot.textColor : settingsRoot.linesColor
+                                   }
                         }
                         darkBackground: root.app.darkTheme
                     }
@@ -381,7 +382,8 @@ Rectangle {
                             label: Label {
                                     text: control.text
                                     style: "button"
-                                    color: !root.app.darkTheme && rdBookmarksBarNotOnDash.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdBookmarksBarNotOnDash.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
+                                    color:  rdBookmarksBarNotOnDash.checked ? settingsRoot.textColor : settingsRoot.linesColor
+
                             }
                         }
                         darkBackground: root.app.darkTheme
@@ -431,7 +433,7 @@ Rectangle {
                 }
                 ExclusiveGroup { id: optionGroup }
                 Column {
-                    spacing: 0
+                    spacing: -Units.dp(10)
                     RadioButton {
                         id: rdDarkThemeAlwaysOn
                         checked: true
@@ -443,8 +445,8 @@ Rectangle {
                             label: Label {
                                     text: control.text
                                     style: "button"
-                                    color: !root.app.darkTheme && rdDarkThemeAlwaysOn.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdDarkThemeAlwaysOn.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
-                                }
+                                    color: rdDarkThemeAlwaysOn.checked ? settingsRoot.textColor : settingsRoot.linesColor
+                            }
                         }
                     }
 
@@ -458,8 +460,8 @@ Rectangle {
                             label: Label {
                                     text: control.text
                                     style: "button"
-                                    color: !root.app.darkTheme && rdDarkThemeOnAtNight.checked ? settingsRoot.textColor : !root.app.darkTheme ? Theme.alpha(settingsRoot.textColor, 0.7) : rdDarkThemeOnAtNight.checked ? Theme.alpha("#fff", 0.90) : Theme.alpha("#fff", 0.70)
-                                }
+                                    color: rdDarkThemeOnAtNight.checked ? settingsRoot.textColor : settingsRoot.linesColor
+                             }
                         }
                     }
                 }
@@ -515,9 +517,9 @@ Rectangle {
                   height: Units.dp(60)
                   MenuFieldThemed {
                       id: menuSourceHighlightTheme
-                      textColor: root.app.darkTheme ? "white" : theme.light.textColor
+                      textColor: settingsRoot.textColor
                       helperColor: Theme.accentColor
-                      linesColor: root.app.darkTheme ? Theme.alpha("#fff", 0.6) : Theme.light.hintColor
+                      linesColor: settingsRoot.linesColor
                       anchors {
                         verticalCenter: parent.verticalCenter
                         left: parent.left
