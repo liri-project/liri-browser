@@ -45,5 +45,6 @@
         <file>qml/QuickSearchesPage.qml</file>
         <file>qml/MenuFieldThemed.qml</file>
         <file>qml/TextFieldThemed.qml</file>
+        <file>qml/ScrollbarThemed.qml</file>
     </qresource>
 </RCC>

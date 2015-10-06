@@ -603,6 +603,11 @@ Rectangle {
           }
        }
     }
+    ScrollbarThemed {
+        flickableItem: flickable
+        color: settingsRoot.textColor
+        hideTime: 1000
+    }
 
     View {
         id: viewBottom
