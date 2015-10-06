@@ -551,26 +551,6 @@ Rectangle {
                 id: accentColorPicker
                 color: theme.accentColor
             }
-
-            Item {
-                height: Units.dp(60)
-                width: parent.width
-                Label {
-                    style: "title"
-                    text: qsTr("About")
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: settingsRoot.textColor
-                }
-            }
-
-            ListItem.Subheader {
-                Label {
-                    z: 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Current Browser Version: 0.3")
-                    color: settingsRoot.textColor
-                }
-            }
           }
        }
     }
@@ -628,6 +608,15 @@ Rectangle {
                     drawer.close();
                 }
             }
+        }
+        Label {
+            anchors {
+                verticalCenter: parent.verticalCenter
+                right: parent.right
+                margins: Units.dp(10)
+            }
+            text: qsTr("Version: 0.3")
+            color: settingsRoot.textColor
         }
     }
 
