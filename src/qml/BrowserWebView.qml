@@ -193,8 +193,10 @@ Item {
                           sc = sc.replace(/>/g, '&gt');
                           document.getElementById('source_container').innerHTML = sc;
                           hljs.highlightBlock(document.getElementById('source_container'));
-                          document.getElementById('source_container').style.fontFamily = 'Hack';
-                      }
+                          var source_container = document.getElementById('source_container')
+                          source_container.style.fontFamily = '" + root.app.sourceHighlightFont + "';
+                          source_container.style.fontSize = '" + root.app.sourceHighlightFontPixelSize + "px';
+                        }
                       setSource();");
                 }
             }

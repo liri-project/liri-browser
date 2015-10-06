@@ -152,6 +152,7 @@ Component {
                     Icon {
                         id: iconSource
                         name: "action/code"
+                        color:  item.textColor
                         visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         anchors.verticalCenter: parent.verticalCenter
                     }

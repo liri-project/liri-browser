@@ -542,6 +542,55 @@ Rectangle {
                   anchors.bottomMargin: 30
               }
 
+            ListItem.Standard {
+                  id: srcFontItem
+                  text: ""
+                  height: Units.dp(60)
+                  MenuFieldThemed {
+                      id: menuSourceHighlightFont
+                      textColor: settingsRoot.textColor
+                      helperColor: Theme.accentColor
+                      linesColor: settingsRoot.linesColor
+                      anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: 15
+                      }
+                      property string selectedSourceHighlightFont: model[selectedIndex];
+                      width: parent.width - 20
+                      model: getListedSourceHighlightFonts()
+                      helperText: "Font for source-code viewing"
+
+                      function getListedSourceHighlightFonts() {
+                        if(root.app.sourceHighlightFont == "Roboto Mono")
+                            return ["Roboto Mono", "Hack"]
+                        else
+                            return ["Hack", "Roboto Mono"]
+                      }
+                  }
+              }
+
+            ListItem.Standard {
+                text: "Source code font size : " + slSourceHighlightFontSizePixel.value + "px"
+                height: Units.dp(60)
+                textColor: settingsRoot.textColor
+                Slider {
+                    id: slSourceHighlightFontSizePixel
+                    value: root.app.sourceHighlightFontPixelSize
+                    tickmarksEnabled: true
+                    stepSize: 1
+                    minimumValue: 8
+                    maximumValue: 18
+                    darkBackground: root.app.darkTheme
+                    anchors {
+                        right: parent.right
+                        top: parent.top
+                        topMargin: 20
+                        verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+
             ColorPicker {
                 id: primaryColorPicker
                 color: theme.primaryColor
@@ -580,6 +629,8 @@ Rectangle {
                     root.app.homeUrl = txtHomeUrl.text;
                     root.app.searchEngine = menuSearchEngine.selectedEngine;
                     root.app.sourceHighlightTheme = menuSourceHighlightTheme.selectedSourceHighlightTheme;
+                    root.app.sourceHighlightFont = menuSourceHighlightFont.selectedSourceHighlightFont;
+                    root.app.sourceHighlightFontPixelSize = slSourceHighlightFontSizePixel.value
                     root.app.integratedAddressbars = chbIntegratedAddressbars.checked;
                     root.app.tabsEntirelyColorized = chbTabsEntirelyColorized.checked;
                     root.app.newTabPage = chbDashboard.checked;

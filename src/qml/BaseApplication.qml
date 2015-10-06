@@ -27,6 +27,8 @@ Item {
 
     property string sourcetemp: "unknown"
     property string sourceHighlightTheme: "monokai_sublime"
+    property string sourceHighlightFont: "Roboto Mono"
+    property int sourceHighlightFontPixelSize: 12
 
     property var bookmarks: []
     signal changedBookmarks ()
@@ -109,6 +111,8 @@ Item {
         property alias homeUrl: application.homeUrl
         property alias searceEngine: application.searchEngine
         property alias sourceHighlightTheme: application.sourceHighlightTheme
+        property alias sourceHighlightFont: application.sourceHighlightFont
+        property alias sourceHighlightFontPixelSize: application.sourceHighlightFontPixelSize
         property alias newTabPage: application.newTabPage
         property var bookmarks
         property var history
