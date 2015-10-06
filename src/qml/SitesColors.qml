@@ -5,8 +5,8 @@ import Material 0.1
 Rectangle {
     id: sitesColorsRoot
     anchors.fill: parent
-    property bool mobileMode: width < Units.dp(640)
-    property string textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+    property color textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.alpha(Theme.light.textColor,1)
+    property color linesColor: Theme.alpha(textColor, 0.6)
     color: root.app.darkTheme ? root.app.darkThemeColor : "white"
     z: -20
     View {

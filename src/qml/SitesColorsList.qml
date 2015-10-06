@@ -55,10 +55,9 @@ Item {
                                     verticalCenter: parent.verticalCenter
                                  }
                                  onTextChanged: listViewPresets.model.set(index, {"domain": text})
-                                 style: TextFieldStyle {
-                                     selectionColor: theme.accentColor
-                                     textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                     placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                 style: TextFieldThemed {
+                                     helperNotFocusedColor: sitesColorsRoot.linesColor
+                                     textColor: sitesColorsRoot.textColor
                                  }
                             }
 
@@ -70,10 +69,9 @@ Item {
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
-                                style: TextFieldStyle {
-                                    selectionColor: theme.accentColor
-                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                style: TextFieldThemed {
+                                    helperNotFocusedColor: sitesColorsRoot.linesColor
+                                    textColor: sitesColorsRoot.textColor
                                 }
                             }
                         }
@@ -122,10 +120,9 @@ Item {
                                     verticalCenter: parent.verticalCenter
                                  }
                                  onTextChanged: listView.model.set(index, {"domain": text})
-                                 style: TextFieldStyle {
-                                     selectionColor: theme.accentColor
-                                     textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                     placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                 style: TextFieldThemed {
+                                     helperNotFocusedColor: sitesColorsRoot.linesColor
+                                     textColor: sitesColorsRoot.textColor
                                  }
                             }
 
@@ -137,10 +134,9 @@ Item {
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
-                                style: TextFieldStyle {
-                                    selectionColor: theme.accentColor
-                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                style: TextFieldThemed {
+                                    helperNotFocusedColor: sitesColorsRoot.linesColor
+                                    textColor: sitesColorsRoot.textColor
                                 }
                             }
 

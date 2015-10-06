@@ -55,10 +55,9 @@ Item {
                                     verticalCenter: parent.verticalCenter
                                  }
                                  onTextChanged: listViewQPresets.model.set(index, {"name": text})
-                                 style: TextFieldStyle {
-                                     selectionColor: theme.accentColor
-                                     textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                     placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                 style: TextFieldThemed {
+                                     helperNotFocusedColor: quickSearchesRoot.linesColor
+                                     textColor: quickSearchesRoot.textColor
                                  }
                             }
 
@@ -70,10 +69,9 @@ Item {
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
-                                style: TextFieldStyle {
-                                    selectionColor: theme.accentColor
-                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                style: TextFieldThemed {
+                                    helperNotFocusedColor: quickSearchesRoot.linesColor
+                                    textColor: quickSearchesRoot.textColor
                                 }
                             }
 
@@ -85,10 +83,9 @@ Item {
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
-                                style: TextFieldStyle {
-                                    selectionColor: theme.accentColor
-                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                style: TextFieldThemed {
+                                    helperNotFocusedColor: quickSearchesRoot.linesColor
+                                    textColor: quickSearchesRoot.textColor
                                 }
                             }
                         }
@@ -136,10 +133,9 @@ Item {
                                     verticalCenter: parent.verticalCenter
                                  }
                                  onTextChanged: listView.model.set(index, {"name": text})
-                                 style: TextFieldStyle {
-                                     selectionColor: theme.accentColor
-                                     textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                     placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                 style: TextFieldThemed {
+                                     helperNotFocusedColor: quickSearchesRoot.linesColor
+                                     textColor: quickSearchesRoot.textColor
                                  }
                             }
 
@@ -151,10 +147,9 @@ Item {
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
-                                style: TextFieldStyle {
-                                    selectionColor: theme.accentColor
-                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                style: TextFieldThemed {
+                                    helperNotFocusedColor: quickSearchesRoot.linesColor
+                                    textColor: quickSearchesRoot.textColor
                                 }
                             }
 
@@ -166,10 +161,9 @@ Item {
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
-                                style: TextFieldStyle {
-                                    selectionColor: theme.accentColor
-                                    textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
-                                    placeholderTextColor: shadeColor(item.textColor + "", -0.3)
+                                style: TextFieldThemed {
+                                    helperNotFocusedColor: quickSearchesRoot.linesColor
+                                    textColor: quickSearchesRoot.textColor
                                 }
                             }
 
