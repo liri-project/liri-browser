@@ -1,6 +1,7 @@
 import QtQuick 2.4
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
+import Material.Extras 0.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Dialogs 1.1
@@ -608,6 +609,8 @@ MaterialWindow {
 
         // Add tab
         addTab();
+        var txtUrl = Utils.findChild(root,"txtUrl")
+        txtUrl.forceActiveFocus();
 
         // Bookmark handling
         root.loadBookmarks();
