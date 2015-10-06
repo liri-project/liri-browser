@@ -76,11 +76,6 @@ Rectangle {
                     id: txtHomeUrl
                     width: parent.width - 30
                     height: Units.dp(36)
-                    style: TextFieldStyle {
-                        selectionColor: theme.accentColor
-                        textColor: settingsRoot.textColor
-                        placeholderTextColor: settingsRoot.textColor
-                    }
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -89,6 +84,10 @@ Rectangle {
                     text: root.app.homeUrl
                     placeholderText: qsTr("Start page")
                     floatingLabel: true
+                    style: TextFieldThemed {
+                        helperNotFocusedColor: root.app.darkTheme ? Theme.alpha("#fff", 0.5) : Theme.light.hintColor
+                        textColor: root.app.darkTheme ? "white" : Theme.light.textColor
+                    }
                 }
             }
 
