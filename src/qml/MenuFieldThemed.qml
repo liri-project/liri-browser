@@ -39,6 +39,8 @@ Item {
     property color accentColor: Theme.accentColor
     property color errorColor: "#F44336"
     property color textColor
+    property color helperColor
+    property color linesColor
     property alias model: listView.model
 
     property string textRole
@@ -102,7 +104,7 @@ Item {
 
             Icon {
                 id: dropDownIcon
-
+                color: field.linesColor
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                 Layout.preferredWidth: Units.dp(24)
                 Layout.preferredHeight: Units.dp(24)
@@ -167,7 +169,7 @@ Item {
     Rectangle {
         id: underline
 
-        color: field.hasError ? field.errorColor : field.activeFocus ? field.accentColor : Theme.light.hintColor
+        color: field.linesColor
 
         height: field.activeFocus ? Units.dp(2) : Units.dp(1)
 
@@ -199,7 +201,7 @@ Item {
 
         visible: hasHelperText
         font.pixelSize: Units.dp(12)
-        color: field.hasError ? field.errorColor : Qt.darker(Theme.light.hintColor)
+        color: field.helperColor
 
         Behavior on color {
             ColorAnimation { duration: 200 }

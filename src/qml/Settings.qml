@@ -97,7 +97,9 @@ Rectangle {
                 height: Units.dp(60)
                 MenuFieldThemed {
                     id: menuSearchEngine
-                    textColor: "white"
+                    textColor: root.app.darkTheme ? "white" : theme.dark.textColor
+                    helperColor: Theme.accentColor
+                    linesColor: root.app.darkTheme ? Theme.alpha("#fff", 0.6) : Theme.light.hintColor
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -514,7 +516,9 @@ Rectangle {
                   height: Units.dp(60)
                   MenuFieldThemed {
                       id: menuSourceHighlightTheme
-                      textColor: "white"
+                      textColor: root.app.darkTheme ? "white" : theme.light.textColor
+                      helperColor: Theme.accentColor
+                      linesColor: root.app.darkTheme ? Theme.alpha("#fff", 0.6) : Theme.light.hintColor
                       anchors {
                         verticalCenter: parent.verticalCenter
                         left: parent.left
