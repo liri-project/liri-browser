@@ -309,6 +309,7 @@ Item {
                 iconName: "navigation/refresh"
                 onClicked: {
                     webview.reload()
+                    webRightClickMenu.close()
                 }
             }
 
@@ -343,6 +344,7 @@ Item {
                 iconName: "action/code"
                 onClicked: {
                     activeTabViewSourceCode();
+                    webRightClickMenu.close()
                 }
             }
 
