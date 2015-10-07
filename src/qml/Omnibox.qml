@@ -81,9 +81,7 @@ Rectangle {
         name: searchIcon ? "action/search" : root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
         color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
         onColorChanged: {
-            if(){
 
-            }
         }
 
         anchors {
