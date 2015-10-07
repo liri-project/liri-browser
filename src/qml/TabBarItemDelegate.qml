@@ -10,6 +10,8 @@ Component {
         id: item
         height: root.tabHeight
         width: editModeActive ? root.tabWidthEdit : root.tabWidth
+        property int widthWithClose: editModeActive ? root.tabWidthEdit : root.tabWidth*1.7
+        property int widthWithoutClose: editModeActive ? root.tabWidthEdit : root.tabWidth
 
         property color inactiveColor: root.app.darkTheme ? shadeColor(root.app.darkThemeColor,0.05) : (root.app.tabsEntirelyColorized && modelData.customColorLight) ? modelData.customColorLight: root.tabColorInactive
         property color activeColor: root.app.darkTheme ? root.app.darkThemeColor : (root.app.tabsEntirelyColorized && modelData.customColor) ? modelData.customColor: root.tabColorActive
@@ -100,7 +102,6 @@ Component {
                 anchors.fill: parent
                 visible: !item.editModeActive
                 color: backgroundColor
-
                 Row {
                     anchors.fill: parent
                     anchors.leftMargin: Units.dp(20)
@@ -110,7 +111,7 @@ Component {
                     Image {
                         id: icon
                         //visible: iconUrl !== ""
-                        visible: isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && modelData.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
+                        visible: isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && !modelData.webview.settingsTabPageQuickSearches && modelData.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         width: webview.loading ?  0 : Units.dp(20)
                         height: Units.dp(20)
                         anchors.verticalCenter: parent.verticalCenter
@@ -128,7 +129,7 @@ Component {
                         id: iconNoFavicon
                         color:  item.textColor
                         name: "action/description"
-                        visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage
+                        visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && !modelData.webview.settingsTabPageQuickSearches
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -144,13 +145,14 @@ Component {
                         id: iconSettings
                         name: "action/settings"
                         color:  item.textColor
-                        visible: modelData.webview.settingsTabPage
+                        visible: modelData.webview.settingsTabPage || modelData.webview.settingsTabPageSitesColors || modelData.webview.settingsTabPageQuickSearches
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Icon {
                         id: iconSource
                         name: "action/code"
+                        color:  item.textColor
                         visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -173,14 +175,33 @@ Component {
                         clip: true
                         anchors.verticalCenter: parent.verticalCenter
                         font.family: root.fontFamily
-
+                        visible: !root.reduceTabsSizes
                     }
 
                     IconButton {
                         id: closeButton
                         color: item.textColor
                         anchors.verticalCenter: parent.verticalCenter
-                        visible: modelData.hasCloseButton
+                        visible: {
+                            if(modelData.hasCloseButton) {
+                               if(root.reduceTabsSizes) {
+                                   if(rectContainer.state == "active") {
+                                       item.width =  item.widthWithClose
+                                       return true
+                                    }
+                                    else {
+                                       item.width =  item.widthWithoutClose
+                                       return false
+                                    }
+                               }
+                               else
+                                   item.width =  item.widthWithoutClose
+                                   return true
+                             }
+                            else
+                                item.width =  item.widthWithoutClose
+                                return false
+                        }
                         iconName: modelData.closeButtonIconName
                         onClicked: {
                             removeTab(uid);

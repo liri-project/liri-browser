@@ -48,6 +48,11 @@ Page {
             onTriggered: historyDrawer.open()
         },
         Action {
+            name: qsTr("Bookmarks")
+            iconName: "action/bookmark"
+            onTriggered: bookmarksDrawer.open()
+        },
+        Action {
             name: qsTr("Fullscreen")
             iconName: "navigation/fullscreen"
             onTriggered: {
@@ -98,7 +103,7 @@ Page {
         id: titlebar
         backgroundColor: "transparent"
         anchors.top: parent.top
-        anchors.topMargin: (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ? -Units.dp(40) : 0
+        anchors.topMargin: (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ? -Units.dp(50) : 0
         width: parent.width
         height: titlebarContents.height
 
@@ -127,7 +132,27 @@ Page {
 
             BookmarksBar {
                 id: bookmarksBar
-                visible: app.bookmarks.length > 0 && !root.fullscreen && !root.mobile
+                visible: {
+                    if(root.app.bookmarksBar && !root.mobile) {
+                      if(app.bookmarks.length > 0) {
+                          if(root.app.bookmarksBarAlwaysOn) {
+                              return true
+                          }
+                          else if(root.app.bookmarksBarOnlyOnDash && activeTab.webview.newTabPage) {
+                              return true
+                          }
+                          else if(!activeTab.webview.newTabPage && !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn)
+                              return true
+                          else
+                              return false
+
+                      }
+                      else
+                          return false
+                    }
+                    else
+                        return false
+                }
             }
         }
     }

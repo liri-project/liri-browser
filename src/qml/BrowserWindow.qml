@@ -1,6 +1,7 @@
 import QtQuick 2.4
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
+import Material.Extras 0.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Dialogs 1.1
@@ -33,6 +34,11 @@ MaterialWindow {
     property bool snappedRight: false
     property bool snappedLeft: false
 
+    property bool tabsListIsOpened: false
+    property bool customSitesColorsIsOpened: false
+
+    property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
+
     property Settings settings: Settings {
         id: settings
         property alias x: root.x
@@ -47,7 +53,7 @@ MaterialWindow {
     /* Style Settings */
     property color tabBackgroundColor: "#f1f1f1"
     property int tabHeight: Units.dp(40)
-    property int tabWidth: Units.dp(200)
+    property int tabWidth: !reduceTabsSizes ? Units.dp(200) : Units.dp(50)
     property int tabWidthEdit: Units.dp(400)
     property int tabsSpacing: Units.dp(1)
     property int titlebarHeight: Units.dp(148)
@@ -60,7 +66,8 @@ MaterialWindow {
     property color addressBarColor: "#e0e0e0"
     property color currentTextColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
     property color currentIconColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
-
+    property string currentTabColorDarken: app.darkTheme ? shadeColor(app.darkThemeColor, -0.1) : activeTab.customColor ? shadeColor(activeTab.customColor, -0.1) : "#EFEFEF"
+    property string iconColorOnCurrentTabDarken:  app.darkTheme ? shadeColor(app.darkThemeColor, 0.5) : shadeColor("" +Theme.lightDark(currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor) + "",0.4)
     property string fontFamily: "Roboto"
 
     property alias omniboxText: page
@@ -85,13 +92,6 @@ MaterialWindow {
     property int lastTabUID: 0
 
     property ListModel tabsModel: ListModel {}
-
-    property ListModel sitesColorModel: ListModel {
-        ListElement {
-            domain: "youtube.com"
-            color: "#E62117"
-        }
-    }
 
     property bool activeTabInEditMode: false
     property var activeTabInEditModeItem
@@ -128,6 +128,7 @@ MaterialWindow {
     }
 
     function getValidUrl(url) {
+        url=""+ url + ""
         if (url.indexOf('.') !== -1){
             if (url.lastIndexOf('http://', 0) !== 0){
                 if (url.lastIndexOf('https://', 0) !== 0){
@@ -158,11 +159,16 @@ MaterialWindow {
         if(domains[domains_l-1].indexOf("/") != -1)
             domains[domains_l-1] = domains[domains_l-1].substring(0,domains[domains_l-1].indexOf("/"))
         var domain = domains.join(".")
-        var nb=sitesColorModel.count,i,result = "none"
+        var nb=presetSitesColorsModel.count,i,result = "none"
         console.log(domain)
         for(i=0;i<nb;i++) {
-            if (sitesColorModel.get(i).domain == domain)
-                result=sitesColorModel.get(i).color
+            if (presetSitesColorsModel.get(i).domain == domain)
+                result=presetSitesColorsModel.get(i).color
+        }
+        nb=customSitesColorsModel.count;
+        for(i=0;i<nb;i++) {
+            if (customSitesColorsModel.get(i).domain == domain)
+                result=customSitesColorsModel.get(i).color
         }
         return result
     }
@@ -273,6 +279,11 @@ MaterialWindow {
     function reloadBookmarks(){
         clearBookmarks();
         loadBookmarks();
+        // Reload the bookmarks model
+        root.app.bookmarksModel.clear()
+        for (var i=0; i<root.app.settings.bookmarks.length; i++) {
+            root.app.bookmarksModel.append(root.app.settings.bookmarks[i]);
+        }
     }
 
     function bookmarksChanged() {
@@ -345,12 +356,21 @@ MaterialWindow {
 
     function addTab(url, background) {
         var u;
-        var ntp = false, stp = false;
+        var ntp = false, stp = false, stpsc = false, stpqs = false;
         if (url) {
             if (url == "liri://settings") {
                 stp = true;
                 u = url;
-            } else {
+            }
+            else if (url == "liri://settings-sites-colors"){
+                stpsc = true;
+                u = url;
+            }
+            else if (url == "liri://settings-quick-searches"){
+                stpqs = true;
+                u = url;
+            }
+            else {
                 u = getValidUrl(url);
             }
         } else if (root.app.newTabPage && !stp) {
@@ -365,7 +385,7 @@ MaterialWindow {
             webviewComponent = Qt.createComponent ("BrowserWebView.qml");
         else if (app.webEngine === "oxide")
             webviewComponent = Qt.createComponent ("BrowserOxideWebView.qml");
-        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp ,profile: root.app.defaultProfile, uid: lastTabUID});
+        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp, settingsTabPageSitesColors: stpsc, settingsTabPageQuickSearches: stpqs,profile: root.app.defaultProfile, uid: lastTabUID});
         var modelData = {
             url: url,
             webview: webview,
@@ -450,7 +470,24 @@ MaterialWindow {
             u = url;
             activeTab.webview.settingsTabPage = true;
             activeTab.webview.newTabPage = false;
-        } else {
+            activeTab.webview.settingsTabPageSitesColors = false;
+            activeTab.webview.settingsTabPageQuickSearches = false;
+        }
+        else if (url == "liri://settings-sites-colors"){
+            u = url;
+            activeTab.webview.settingsTabPage = false;
+            activeTab.webview.newTabPage = false;
+            activeTab.webview.settingsTabPageSitesColors = true;
+            activeTab.webview.settingsTabPageQuickSearches = false;
+        }
+        else if (url == "liri://settings-quick-searches"){
+            u = url;
+            activeTab.webview.settingsTabPage = false;
+            activeTab.webview.newTabPage = false;
+            activeTab.webview.settingsTabPageSitesColors = false;
+            activeTab.webview.settingsTabPageQuickSearches = true;
+        }
+        else {
             var u = getValidUrl(url);
             activeTab.webview.settingsTabPage = false;
             activeTab.webview.url = u;
@@ -504,11 +541,13 @@ MaterialWindow {
 
     HistoryDrawer { id: historyDrawer }
 
+    BookmarksDrawer { id: bookmarksDrawer }
+
     SettingsPage { id: settingsPage }
 
     TabsListPage { id: tabsListPage }
 
-    SitesColorPage { id: sitesColorPage }
+    SitesColorsPage { id: sitesColorsPage }
 
     Snackbar {
         id: snackbar
@@ -570,6 +609,8 @@ MaterialWindow {
 
         // Add tab
         addTab();
+        var txtUrl = Utils.findChild(root,"txtUrl")
+        txtUrl.forceActiveFocus();
 
         // Bookmark handling
         root.loadBookmarks();

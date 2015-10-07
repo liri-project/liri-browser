@@ -105,7 +105,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: listView.right
         anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
-        color: root.iconColor
+        color: root.iconColorOnCurrentTabDarken
         iconName: "content/add"
 
         onClicked: addTab();
@@ -117,19 +117,21 @@ Rectangle {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        visible: !root.app.customFrame
+        //visible: !root.app.customFrame
         width: root.app.integratedAddressbars ? btnAddTab.width + btnDownloadsIntegrated.width +
                                                 btnMenuIntegrated.width + 3 * Units.dp(24)
                                               : Units.dp(48)
 
         IconButton {
             id: btnAddTab
+            z:30
             visible: !btnAddTabFloating.visible
             width: visible ? Units.dp(24) : 0
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: btnDownloadsIntegrated.left
-            anchors.margins: if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
-            color: root.iconColor
+            anchors.margins: root.app.integratedAddressbars ? Units.dp(24) : root.app.customFrame ? 3 : 12
+            anchors.rightMargin: root.app.integratedAddressbars ? Units.dp(24) : root.app.customFrame ? 2 : 12
+            color: root.app.darkTheme ? shadeColor(root.app.darkThemeColor, 0.5) : Theme.lightDark(root.currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor)
             iconName: "content/add"
 
             onClicked: addTab();

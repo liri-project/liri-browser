@@ -22,9 +22,7 @@ NavigationDrawer {
         RowLayout {
             anchors {
                 left: parent.left
-                right: parent.right
                 leftMargin: Units.dp(16)
-                rightMargin: Units.dp(16)
                 verticalCenter: parent.verticalCenter
             }
 
@@ -37,8 +35,8 @@ NavigationDrawer {
                 elide: Text.ElideRight
             }
 
-            Button {
-                text: qsTr("Clear")
+            IconButton {
+                iconName: "action/done_all"
                 onClicked: {
                     downloadsModel.clearFinished()
                     if (downloadsModel.count == 0)

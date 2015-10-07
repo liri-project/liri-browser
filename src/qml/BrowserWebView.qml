@@ -17,6 +17,8 @@ Item {
     property alias view: webview
     property bool newTabPage
     property bool settingsTabPage
+    property bool settingsTabPageSitesColors
+    property bool settingsTabPageQuickSearches
     property bool sourceTapPage: url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
 
     /* Wrapping WebEngineView functionality */
@@ -24,7 +26,7 @@ Item {
     property alias url: webview.url
     property alias profile: webview.profile
     property alias icon: webview.icon
-    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : webview.title
+    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : settingsTabPageSitesColors ? qsTr("Sites Colors") : settingsTabPageQuickSearches ? qsTr("Quick Searches") : webview.title
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
@@ -140,8 +142,7 @@ Item {
                             root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
                         }
                         else{
-                            var customColor = searchForCustomColor(url.toString());
-                            console.log(customColor)
+                            var customColor = root.app.customSitesColors ? searchForCustomColor(url.toString()) : "none";
                             if(customColor != "none") {
                                 root.getTabModelDataByUID(uid).customColor = customColor;
                                 root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(customColor, 0.6);
@@ -192,8 +193,10 @@ Item {
                           sc = sc.replace(/>/g, '&gt');
                           document.getElementById('source_container').innerHTML = sc;
                           hljs.highlightBlock(document.getElementById('source_container'));
-                          document.getElementById('source_container').style.fontFamily = 'Hack';
-                      }
+                          var source_container = document.getElementById('source_container')
+                          source_container.style.fontFamily = '" + root.app.sourceHighlightFont + "';
+                          source_container.style.fontSize = '" + root.app.sourceHighlightFontPixelSize + "px';
+                        }
                       setSource();");
                 }
             }
@@ -256,6 +259,18 @@ Item {
         anchors.fill: parent
     }
 
+    SitesColorsPage {
+        id: itemSettingsTabPageSitesColors
+        visible: settingsTabPageSitesColors && !newTabPage
+        anchors.fill: parent
+    }
+
+    QuickSearchesPage {
+        id: itemSettingsTabPageQuickSearches
+        visible: settingsTabPageQuickSearches && !newTabPage
+        anchors.fill: parent
+    }
+
     Clipboard {
         id: clip
     }
@@ -296,6 +311,7 @@ Item {
                 iconName: "navigation/refresh"
                 onClicked: {
                     webview.reload()
+                    webRightClickMenu.close()
                 }
             }
 
@@ -330,6 +346,7 @@ Item {
                 iconName: "action/code"
                 onClicked: {
                     activeTabViewSourceCode();
+                    webRightClickMenu.close()
                 }
             }
 

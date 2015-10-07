@@ -10,8 +10,10 @@ Rectangle {
     id: settingsRoot
     anchors.fill: parent
     property bool mobileMode: width < Units.dp(640)
-    property string textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.light.textColor
+    property color textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.alpha(Theme.light.textColor,1)
+    property color linesColor: Theme.alpha(textColor, 0.6)
     color: root.app.darkTheme ? root.app.darkThemeColor : "white"
+    z: -20
 
     Flickable {
         id: flickable
@@ -75,11 +77,6 @@ Rectangle {
                     id: txtHomeUrl
                     width: parent.width - 30
                     height: Units.dp(36)
-                    style: TextFieldStyle {
-                        selectionColor: theme.accentColor
-                        textColor: settingsRoot.textColor
-                        placeholderTextColor: settingsRoot.textColor
-                    }
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -88,15 +85,21 @@ Rectangle {
                     text: root.app.homeUrl
                     placeholderText: qsTr("Start page")
                     floatingLabel: true
+                    style: TextFieldThemed {
+                        helperNotFocusedColor: settingsRoot.linesColor
+                        textColor: settingsRoot.textColor
+                    }
                 }
             }
 
             ListItem.Standard {
                 text: ""
                 height: Units.dp(60)
-                MenuField {
+                MenuFieldThemed {
                     id: menuSearchEngine
-
+                    textColor: settingsRoot.textColor
+                    helperColor: Theme.accentColor
+                    linesColor: settingsRoot.linesColor
                     anchors {
                       verticalCenter: parent.verticalCenter
                       left: parent.left
@@ -179,6 +182,29 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: !root.mobile
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
+                        id: chbAllowReducingTabsSizes
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.allowReducingTabsSizes
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Responsive tabs (EXPERIMENTAL)")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+                }
+                onClicked: {
+                    chbAllowReducingTabsSizes.checked = !chbAllowReducingTabsSizes.checked
+                }
+            }
+
+            ListItem.Standard {
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -205,6 +231,72 @@ Rectangle {
                     anchors.fill: parent
                     spacing: Units.dp(12)
                     CheckBox {
+                        id: chbCustomSitesColors
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.customSitesColors
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Use custom sites colors")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+                    Button {
+                        text: "Sites Color chooser"
+                        elevation: 1
+                        anchors {
+                          verticalCenter: parent.verticalCenter
+                        }
+                        onClicked: {
+                            addTab("liri://settings-sites-colors")
+                        }
+                    }
+
+                }
+                onClicked: {
+                    chbCustomSitesColors.checked = !chbCustomSitesColors.checked
+                }
+            }
+
+            ListItem.Standard {
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
+                        id: chbQuickSearches
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.customSitesColors
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Use Quick Searches in Omnibox")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+                    Button {
+                        text: "Quick Searches Editor"
+                        elevation: 1
+                        anchors {
+                          verticalCenter: parent.verticalCenter
+                        }
+                        onClicked: {
+                            addTab("liri://settings-quick-searches")
+                        }
+                    }
+
+                }
+                onClicked: {
+                    chbQuickSearches.checked = !chbQuickSearches.checked
+                }
+            }
+
+            ListItem.Standard {
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
                         id: chbCustomFrame
                         darkBackground: root.app.darkTheme
                         checked: root.app.customFrame
@@ -216,9 +308,86 @@ Rectangle {
                         font.pixelSize: Units.dp(16)
                         color: settingsRoot.textColor
                     }
+
                 }
                 onClicked: {
                     chbCustomFrame.checked = !chbCustomFrame.checked
+                }
+            }
+            ListItem.Standard  {
+                id:bookmarksBarToogle
+                text: qsTr('Bookmarks bar')
+                textColor: settingsRoot.textColor
+                Switch {
+                    id: swBookmarksBar
+                    checked: root.app.bookmarksBar
+                    darkBackground: root.app.darkTheme
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+            ListItem.Standard {
+                id: bookmarksBarOptions
+                visible: swBookmarksBar.checked
+                height: 120
+                anchors{
+                    left: parent.left
+                    margins: 20
+                }
+                ExclusiveGroup { id: bookmarksOptionGroup }
+                Column {
+                    spacing: -Units.dp(10)
+                    RadioButton {
+                        id: rdBookmarksBarAlwaysOn
+                        checked: root.app.bookmarksBarAlwaysOn
+                        text: "Always on"
+                        canToggle: true
+                        darkBackground: root.app.darkTheme
+                        exclusiveGroup: bookmarksOptionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: rdBookmarksBarAlwaysOn.checked ? settingsRoot.textColor : settingsRoot.linesColor
+                                 }
+                        }
+                    }
+
+                    RadioButton {
+                        id: rdBookmarksBarOnlyOnDash
+                        text: "Only on dashboard"
+                        checked: root.app.bookmarksBarOnlyOnDash
+                        canToggle: true
+                        exclusiveGroup: bookmarksOptionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: rdBookmarksBarOnlyOnDash.checked ? settingsRoot.textColor : settingsRoot.linesColor
+                                   }
+                        }
+                        darkBackground: root.app.darkTheme
+                    }
+
+                    RadioButton {
+                        id: rdBookmarksBarNotOnDash
+                        text: "Everywhere except on dashboard"
+                        checked: !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn
+                        canToggle: true
+                        exclusiveGroup: bookmarksOptionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color:  rdBookmarksBarNotOnDash.checked ? settingsRoot.textColor : settingsRoot.linesColor
+
+                            }
+                        }
+                        darkBackground: root.app.darkTheme
+                    }
                 }
             }
 
@@ -264,7 +433,7 @@ Rectangle {
                 }
                 ExclusiveGroup { id: optionGroup }
                 Column {
-                    spacing: 0
+                    spacing: -Units.dp(10)
                     RadioButton {
                         id: rdDarkThemeAlwaysOn
                         checked: true
@@ -272,6 +441,13 @@ Rectangle {
                         darkBackground: root.app.darkTheme
                         canToggle: true
                         exclusiveGroup: optionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: rdDarkThemeAlwaysOn.checked ? settingsRoot.textColor : settingsRoot.linesColor
+                            }
+                        }
                     }
 
                     RadioButton {
@@ -280,6 +456,13 @@ Rectangle {
                         darkBackground: root.app.darkTheme
                         canToggle: true
                         exclusiveGroup: optionGroup
+                        style: RadioButtonStyle {
+                            label: Label {
+                                    text: control.text
+                                    style: "button"
+                                    color: rdDarkThemeOnAtNight.checked ? settingsRoot.textColor : settingsRoot.linesColor
+                             }
+                        }
                     }
                 }
             }
@@ -332,8 +515,11 @@ Rectangle {
                   id: srcListItem
                   text: ""
                   height: Units.dp(60)
-                  MenuField {
+                  MenuFieldThemed {
                       id: menuSourceHighlightTheme
+                      textColor: settingsRoot.textColor
+                      helperColor: Theme.accentColor
+                      linesColor: settingsRoot.linesColor
                       anchors {
                         verticalCenter: parent.verticalCenter
                         left: parent.left
@@ -356,20 +542,54 @@ Rectangle {
                   anchors.bottomMargin: 30
               }
 
-              ListItem.Standard  {
-                  id: buttonSitesColor
+            ListItem.Standard {
+                  id: srcFontItem
+                  text: ""
                   height: Units.dp(60)
-                  Button {
-                      text: "Sites Color chooser"
-                      elevation: 1
+                  MenuFieldThemed {
+                      id: menuSourceHighlightFont
+                      textColor: settingsRoot.textColor
+                      helperColor: Theme.accentColor
+                      linesColor: settingsRoot.linesColor
                       anchors {
                         verticalCenter: parent.verticalCenter
                         left: parent.left
                         leftMargin: 15
                       }
-                      onClicked: pageStack.push(sitesColorPage)
+                      property string selectedSourceHighlightFont: model[selectedIndex];
+                      width: parent.width - 20
+                      model: getListedSourceHighlightFonts()
+                      helperText: "Font for source-code viewing"
+
+                      function getListedSourceHighlightFonts() {
+                        if(root.app.sourceHighlightFont == "Roboto Mono")
+                            return ["Roboto Mono", "Hack"]
+                        else
+                            return ["Hack", "Roboto Mono"]
+                      }
                   }
               }
+
+            ListItem.Standard {
+                text: "Source code font size : " + slSourceHighlightFontSizePixel.value + "px"
+                height: Units.dp(60)
+                textColor: settingsRoot.textColor
+                Slider {
+                    id: slSourceHighlightFontSizePixel
+                    value: root.app.sourceHighlightFontPixelSize
+                    tickmarksEnabled: true
+                    stepSize: 1
+                    minimumValue: 8
+                    maximumValue: 18
+                    darkBackground: root.app.darkTheme
+                    anchors {
+                        right: parent.right
+                        top: parent.top
+                        topMargin: 20
+                        verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
 
             ColorPicker {
                 id: primaryColorPicker
@@ -380,28 +600,13 @@ Rectangle {
                 id: accentColorPicker
                 color: theme.accentColor
             }
-
-            Item {
-                height: Units.dp(60)
-                width: parent.width
-                Label {
-                    style: "title"
-                    text: qsTr("About")
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: settingsRoot.textColor
-                }
-            }
-
-            ListItem.Subheader {
-                Label {
-                    z: 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Current Browser Version: 0.3")
-                    color: settingsRoot.textColor
-                }
-            }
           }
        }
+    }
+    ScrollbarThemed {
+        flickableItem: flickable
+        color: settingsRoot.textColor
+        hideTime: 1000
     }
 
     View {
@@ -429,11 +634,19 @@ Rectangle {
                     root.app.homeUrl = txtHomeUrl.text;
                     root.app.searchEngine = menuSearchEngine.selectedEngine;
                     root.app.sourceHighlightTheme = menuSourceHighlightTheme.selectedSourceHighlightTheme;
+                    root.app.sourceHighlightFont = menuSourceHighlightFont.selectedSourceHighlightFont;
+                    root.app.sourceHighlightFontPixelSize = slSourceHighlightFontSizePixel.value
                     root.app.integratedAddressbars = chbIntegratedAddressbars.checked;
                     root.app.tabsEntirelyColorized = chbTabsEntirelyColorized.checked;
                     root.app.newTabPage = chbDashboard.checked;
                     root.app.customFrame = chbCustomFrame.checked;
                     root.app.darkTheme = rdDarkThemeAlwaysOn.checked ? swDarkTheme.checked : root.app.isNight
+                    root.app.customSitesColors = chbCustomSitesColors.checked
+                    root.app.bookmarksBar = swBookmarksBar.checked
+                    root.app.bookmarksBarAlwaysOn = rdBookmarksBarAlwaysOn.checked
+                    root.app.bookmarksBarOnlyOnDash = rdBookmarksBarOnlyOnDash.checked
+                    root.app.allowReducingTabsSizes = chbAllowReducingTabsSizes.checked
+                    root.app.quickSearches = chbQuickSearches.checked
                     drawer.close();
                 }
             }
@@ -451,6 +664,15 @@ Rectangle {
                     drawer.close();
                 }
             }
+        }
+        Label {
+            anchors {
+                verticalCenter: parent.verticalCenter
+                right: parent.right
+                margins: Units.dp(10)
+            }
+            text: qsTr("Version: 0.3")
+            color: settingsRoot.textColor
         }
     }
 

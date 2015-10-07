@@ -88,26 +88,112 @@ Rectangle {
         }
     }
 
+    Label {
+        id: quickSearchIndicator
+        anchors{
+            left: connectionTypeIcon.right
+            leftMargin: txtUrl.quickSearch != "" ? Units.dp(16) : 0
+            verticalCenter: parent.verticalCenter
+        }
+
+        text: txtUrl.quickSearch
+        visible: txtUrl.quickSearch != ""
+    }
+
     TextField {
         id: txtUrl
         objectName: "txtUrl"
         anchors {
-            left: connectionTypeIcon.right
+            left: quickSearchIndicator.right
             right: parent.right
             top: parent.top
             bottom: parent.bottom
             leftMargin: Units.dp(16)
             rightMargin: Units.dp(16)
         }
-
+        property string quickSearch: ""
+        property string quickSearchURL: ""
         showBorder: false
+        visible: quickSearch == ""
         text: root.activeTab.webview.url
         placeholderText: mobile ? qsTr("Search") : qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive
         onTextChanged: isASearchQuery(text) ? connectionTypeIcon.searchIcon = true : connectionTypeIcon.searchIcon = false;
-        onAccepted: setActiveTabURL(text)
+        onAccepted: {
+            setActiveTabURL(text)
+            quickSearch = ""
+            quickSearchURL = ""
+        }
 
+        Keys.onTabPressed:{
+            if(text.length == 3) {
+                var item = getInfosOfQuickSearch(text)
+                quickSearch = item.name + ""
+                quickSearchURL = item.url + ""
+                txtUrlQuickSearches.forceActiveFocus()
+            }
+        }
+        Keys.onBacktabPressed:  {
+                quickSearch = "";
+                placeholderText = qsTr("Search or enter website name")
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            propagateComposedEvents: true
+
+            onPressed: {
+                if (root.app.platform !== "converged/ubuntu" || !root.mobile)
+                    mouse.accepted = false;
+            }
+
+            onClicked: {
+                if (root.app.platform === "converged/ubuntu" && root.mobile)
+                    ubuntuOmniboxOverlay.show();
+            }
+        }
+
+    }
+
+    TextField {
+        id: txtUrlQuickSearches
+        anchors {
+            left: quickSearchIndicator.right
+            right: parent.right
+            top: parent.top
+            bottom: parent.bottom
+            leftMargin: Units.dp(16)
+            rightMargin: Units.dp(16)
+        }
+        visible: txtUrl.quickSearch != ""
+        showBorder: false
+        text: ""
+        placeholderText: qsTr("Search...")
+        opacity: 1
+        textColor: root.tabTextColorActive
+        onTextChanged: isASearchQuery(text) ? connectionTypeIcon.searchIcon = true : connectionTypeIcon.searchIcon = false;
+        onAccepted: {
+            if(txtUrl.quickSearch == "" && root.app.quickSearches)
+                console.log(1)
+            else
+                setActiveTabURL(txtUrl.quickSearchURL + text)
+            txtUrl.quickSearch = ""
+            txtUrl.quickSearchURL = ""
+        }
+
+        Keys.onTabPressed:{
+            if(text.length == 3) {
+                var item = getInfosOfQuickSearch(text)
+                txtUrl.quickSearch = item.name + ""
+                txtUrl.quickSearchURL = item.url + ""
+                txtUrl.placeholderText = qsTr("Search...")
+            }
+        }
+        Keys.onBacktabPressed:  {
+                txtUrl.quickSearch = "";
+                txtUrl.placeholderText = qsTr("Search or enter website name")
+        }
 
         MouseArea {
             anchors.fill: parent
