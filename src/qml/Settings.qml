@@ -25,7 +25,7 @@ Rectangle {
 
         View {
             id: view
-            height: label.height + Units.dp(30)
+            height: label.height + Units.dp(35)
             width: parent.width
             Label {
                 id: label
@@ -232,11 +232,15 @@ Rectangle {
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
+
+
+
                     CheckBox {
                         id: chbCustomSitesColors
                         darkBackground: root.app.darkTheme
                         checked: root.app.customSitesColors
                         anchors.verticalCenter: parent.verticalCenter
+
                     }
                     Label {
                         text: qsTr("Use custom sites colors")
@@ -347,6 +351,10 @@ Rectangle {
                         checked: root.app.bookmarksBarAlwaysOn
                         text: "Always on"
                         canToggle: true
+                        anchors{
+                            left: -Units.dp(4)
+                        }
+
                         darkBackground: root.app.darkTheme
                         exclusiveGroup: bookmarksOptionGroup
                         style: RadioButtonStyle {
@@ -517,6 +525,7 @@ Rectangle {
                   id: srcListItem
                   text: ""
                   height: Units.dp(60)
+
                   MenuFieldThemed {
                       id: menuSourceHighlightTheme
                       textColor: settingsRoot.textColor
