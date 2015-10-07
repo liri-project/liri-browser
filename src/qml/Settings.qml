@@ -14,6 +14,8 @@ Rectangle {
     property color linesColor: Theme.alpha(textColor, 0.6)
     color: root.app.darkTheme ? root.app.darkThemeColor : "white"
     z: -20
+    clip: true
+
 
     Flickable {
         id: flickable
