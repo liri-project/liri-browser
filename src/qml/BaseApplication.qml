@@ -93,11 +93,11 @@ Item {
         return result
     }
 
-    property string sitesColorsPresets: "[ \
-            {'domain':'facebook.com', 'color': '#3b5998'} , \
-            {'domain':'linkedin.com', 'color': '#646464'} , \
-            {'domain':'twitter.com', 'color': '#00aced'} , \
-            {'domain':'github.com', 'color': '#f5f5f5'} \
+    property string sitesColorsPresets: "[
+            {'domain':'facebook.com', 'color': '#3b5998'} ,
+            {'domain':'linkedin.com', 'color': '#646464'} ,
+            {'domain':'twitter.com', 'color': '#00aced'} ,
+            {'domain':'github.com', 'color': '#f5f5f5'}
         ]"
     property string quickSearchesPresets: "[ \
             {'name':'Youtube', 'key': 'ytb', 'url': 'https://www.youtube.com/results?search_query='}, \

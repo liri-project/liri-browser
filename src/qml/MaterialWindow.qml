@@ -58,6 +58,7 @@ Controls.ApplicationWindow {
         onShowMaximized: root.showMaximized();
         onShowNormal: root.showNormal();
         onClose: root.close();
+        visible: root.app.customFrame
         anchors {
             right: parent.right
             top: parent.top
