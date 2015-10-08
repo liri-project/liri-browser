@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Material 0.1
+import QtQuick.Controls.Styles.Material 0.1
 
 
 Rectangle {

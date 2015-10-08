@@ -204,6 +204,8 @@ Component {
                         }
                         iconName: modelData.closeButtonIconName
                         onClicked: {
+                            saveThisTabUrl(modelData.webview.url)
+                            console.log(modelData.webview.url)
                             removeTab(uid);
                         }
                     }

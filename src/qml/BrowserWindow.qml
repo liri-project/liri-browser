@@ -93,6 +93,8 @@ MaterialWindow {
 
     property ListModel tabsModel: ListModel {}
 
+    property var closedTabsUrls : []
+
     property bool activeTabInEditMode: false
     property var activeTabInEditModeItem
 
@@ -408,6 +410,7 @@ MaterialWindow {
     function removeTab(t) {
         // t is uid
         if (typeof(t) === "number") {
+
             // Remove all uid references from activeTabHistory:
             while (activeTabHistory.indexOf(t) > -1) {
                 activeTabHistory.splice(activeTabHistory.indexOf(t), 1);
@@ -433,6 +436,17 @@ MaterialWindow {
                 tabsModel.remove(getTabModelIndexByUID(t));
             }
         }
+    }
+
+    function saveThisTabUrl(url) {
+        // Add this tab to the list of recently closed tabs
+        closedTabsUrls.push(url)
+    }
+
+    function reopenLastClosedTab() {
+        var url = closedTabsUrls[closedTabsUrls.length - 1]
+        addTab(url)
+        closedTabsUrls.pop()
     }
 
     function ensureTabIsVisible(t) {

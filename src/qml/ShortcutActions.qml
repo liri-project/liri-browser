@@ -75,6 +75,12 @@ Item {
         }
     }
     Controls.Action {
+        shortcut: "Ctrl+SHIFT+T"
+        onTriggered: {
+            root.reopenLastClosedTab()
+        }
+    }
+    Controls.Action {
         shortcut: "Ctrl+W"
         onTriggered: {
             root.removeTab(activeTab.uid);
