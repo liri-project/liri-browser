@@ -80,6 +80,9 @@ Rectangle {
         property bool searchIcon: false
         name: searchIcon ? "action/search" : root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
         color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
+        onColorChanged: {
+
+        }
 
         anchors {
             left: parent.left
@@ -138,7 +141,6 @@ Rectangle {
                 quickSearch = "";
                 placeholderText = qsTr("Search or enter website name")
         }
-
         MouseArea {
             anchors.fill: parent
             propagateComposedEvents: true
