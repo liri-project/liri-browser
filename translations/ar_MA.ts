@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/qml/BrowserOxideWebView.qml" line="21"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">تبويب جديد</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserOxideWebView.qml" line="21"/>
@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/qml/BrowserPage.qml" line="33"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">تبويبة جديدة</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserPage.qml" line="47"/>
@@ -103,7 +103,7 @@
     <message>
         <location filename="../src/qml/BrowserPage.qml" line="80"/>
         <source>View source</source>
-        <translation type="unfinished">Afficher le code source</translation>
+        <translation type="unfinished">أظهر الشفرة المصدرية</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserPage.qml" line="86"/>
@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">تبويبة جديدة</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="27"/>
@@ -126,22 +126,22 @@
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="283"/>
         <source>Open in new tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">فتح في تبويبة جديدة</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="293"/>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">فتح في نافذة جديدة</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="303"/>
         <source>Copy URL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">نسخ الرابط</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="313"/>
         <source>Add to bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">إظافة إلى العلامات</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="327"/>
@@ -181,7 +181,7 @@
     </message>
     <message>
         <source>View source</source>
-        <translation type="vanished">Afficher le code source</translation>
+        <translation type="vanished">أظهر الشفرة المصدرية</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -190,7 +190,7 @@
     <message>
         <location filename="../src/qml/BrowserWindow.qml" line="14"/>
         <source>Loading</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">تحميل</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWindow.qml" line="183"/>
@@ -201,12 +201,12 @@
     <message>
         <location filename="../src/qml/BrowserWindow.qml" line="432"/>
         <source>Removed bookmark %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">أزيلت العلامة %1</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWindow.qml" line="435"/>
         <source>Added bookmark &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">أضيفت العلامة &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWindow.qml" line="485"/>
@@ -253,37 +253,37 @@
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="41"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">مسح</translation>
     </message>
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="80"/>
         <source>Awaiting confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">في إنتظار الموافقة</translation>
     </message>
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="82"/>
         <source>Downloading...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">جاري التحميل...</translation>
     </message>
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="84"/>
         <source>Completed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">مكتمل</translation>
     </message>
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="86"/>
         <source>Cancelled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ملغاة</translation>
     </message>
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="88"/>
         <source>Download failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">فشل التحميل</translation>
     </message>
     <message>
         <location filename="../src/qml/DownloadsDrawer.qml" line="90"/>
         <source>Unknown state!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">حالة مجهولة!</translation>
     </message>
     <message>
         <source>No active downloads</source>
@@ -300,12 +300,12 @@
     <message>
         <location filename="../src/qml/HistoryDrawer.qml" line="36"/>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">مسح التاريخ</translation>
     </message>
     <message>
         <location filename="../src/qml/HistoryDrawer.qml" line="85"/>
         <source>No browser history found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">لم يتم إيجاد تاريخ التصفح</translation>
     </message>
     <message>
         <source>No history found</source>
@@ -380,7 +380,7 @@
     <message>
         <location filename="../src/qml/Omnibox.qml" line="105"/>
         <source>Search or enter website name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">إبحث أو أدخل اسم الموقع الإلكتروني</translation>
     </message>
 </context>
 <context>
@@ -423,7 +423,7 @@
     <message>
         <location filename="../src/qml/Settings.qml" line="190"/>
         <source>Current Browser Version: 0.3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">نسخة المتصفح الحالية : 0.3</translation>
     </message>
     <message>
         <location filename="../src/qml/Settings.qml" line="204"/>
@@ -448,7 +448,7 @@
     <message>
         <location filename="../src/qml/Settings.qml" line="322"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">إعداد مجددا</translation>
     </message>
 </context>
 <context>
@@ -552,7 +552,7 @@
     <message>
         <location filename="../src/qml/TabsList.qml" line="141"/>
         <source>Add tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">إضافة تبويبة</translation>
     </message>
 </context>
 <context>
@@ -560,7 +560,7 @@
     <message>
         <location filename="../src/qml/TabsListPage.qml" line="7"/>
         <source>Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">تبويبات</translation>
     </message>
 </context>
 <context>
@@ -568,7 +568,7 @@
     <message>
         <location filename="../src/qml/UbuntuOmniboxOverlay.qml" line="37"/>
         <source>Search or enter website name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">إبحث أو أدخل اسم الموقع الإلكتروني</translation>
     </message>
 </context>
 </TS>
