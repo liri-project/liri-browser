@@ -16,7 +16,8 @@ The list of languages is sorted alphabetical.
 
 ## Translations
 * Arabic
-  * Karim Oulad Chalha (https://github.com/karim88) 
+  * Karim Oulad Chalha (https://github.com/karim88)
+  * Fortas Abdeldjalil (https://github.com/Fcmam5)
 * Brazilian Portuguese
   * Alexandre Oliveira (https://github.com/RockyTV)  
 * French
