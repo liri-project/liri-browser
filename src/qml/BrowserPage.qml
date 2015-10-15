@@ -16,6 +16,7 @@ Page {
     property alias bookmarkContainer: bookmarksBar.bookmarkContainer
     property alias txtSearch: txtSearch
     property alias websiteSearchOverlay: websiteSearchOverlay
+    property alias mediaDialog: mediaDialog
 
     function updateToolbar () {
         toolbar.update()
@@ -218,6 +219,15 @@ Page {
         }
     }
 
+    Dialog {
+        id: mediaDialog
+        title: "A media link has been reached"
+        positiveButtonText: "Play in the browser"
+        negativeButtonText: "Download"
+        property string url
+        onAccepted: openPlayer(url)
+        onRejected: setActiveTabURL(url,true)
+    }
 
     Item {
         anchors {

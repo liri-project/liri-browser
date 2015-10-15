@@ -17,6 +17,7 @@ Item {
     property alias view: webview
     property bool newTabPage
     property bool settingsTabPage
+    property bool playerPage
     property bool settingsTabPageSitesColors
     property bool settingsTabPageQuickSearches
     property bool sourceTapPage: url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
@@ -26,12 +27,15 @@ Item {
     property alias url: webview.url
     property alias profile: webview.profile
     property alias icon: webview.icon
-    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : settingsTabPageSitesColors ? qsTr("Sites Colors") : settingsTabPageQuickSearches ? qsTr("Quick Searches") : webview.title
+    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : settingsTabPageSitesColors ? qsTr("Sites Colors") : settingsTabPageQuickSearches ? qsTr("Quick Searches") : playerPage ? qsTr("Player") :  webview.title
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
     property bool secureConnection: false
     property real progress: webview.loadProgress/100
+
+
+    property alias player: itemPlayerPage.player
 
     function goBack() {
         webview.goBack();
@@ -87,6 +91,11 @@ Item {
                 browserWebView.secureConnection = false;
             if (root.activeTab.webview == browserWebView)
                 activeTabUrlChanged();
+            if(isMedia("" + url + "")) {
+
+                console.log("\n\nbi\n\n\nbi\n\n\nbi\n\n\nbi\n\n\nbi\n")
+                setActiveTabURL(url)
+            }
         }
 
         /*settings.autoLoadImages: appSettings.autoLoadImages
@@ -271,6 +280,12 @@ Item {
         anchors.fill: parent
     }
 
+    PlayerPage {
+        id: itemPlayerPage
+        anchors.fill: parent
+        visible: playerPage
+    }
+
     Clipboard {
         id: clip
     }
@@ -385,6 +400,18 @@ Item {
                 onClicked: {
                     app.createWindow().setActiveTabURL(clickDetector.tempUrl)
                     clickDetector.tempUrl = ""
+                    linkRightClickMenu.close()
+                }
+            }
+
+
+
+            ListItem.Standard {
+                text: qsTr("Play in browser")
+                iconName: "av/play_arrow"
+                visible: isMedia(clickDetector.tempUrl)
+                onClicked: {
+                    addTab(encodeURI(clickDetector.tempUrl))
                     linkRightClickMenu.close()
                 }
             }

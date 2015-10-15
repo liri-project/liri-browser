@@ -37,6 +37,9 @@ MaterialWindow {
     property bool tabsListIsOpened: false
     property bool customSitesColorsIsOpened: false
 
+    //Fix for the player
+    property bool noMedia: false
+
     property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
 
     property Settings settings: Settings {
@@ -129,9 +132,23 @@ MaterialWindow {
         });
     }
 
+    function openPlayer(url) {
+        activeTab.webview.settingsTabPage = false;
+        activeTab.webview.newTabPage = false;
+        activeTab.webview.settingsTabPageSitesColors = false;
+        activeTab.webview.settingsTabPageQuickSearches = false;
+        activeTab.webview.playerPage = true;
+        activeTab.webview.player.mrl = url
+    }
+
     function getValidUrl(url) {
         url=""+ url + ""
-        if (url.indexOf('.') !== -1){
+        if(isMedia(url)) {
+            page.mediaDialog.url = url
+            page.mediaDialog.show()
+            return
+        }
+        else if (url.indexOf('.') !== -1){
             if (url.lastIndexOf('http://', 0) !== 0){
                 if (url.lastIndexOf('https://', 0) !== 0){
                     url = 'http://' + url;
@@ -479,13 +496,21 @@ MaterialWindow {
         }
     }
 
-    function setActiveTabURL(url) {
+    function isMedia(url) {
+        if(url.slice(-4) == ".mp3" || url.slice(-4) == ".mp4"  || url.slice(-4) == ".avi")
+            return true
+        else
+            return false
+    }
+
+    function setActiveTabURL(url,todownload) {
         if (url == "liri://settings") {
             u = url;
             activeTab.webview.settingsTabPage = true;
             activeTab.webview.newTabPage = false;
             activeTab.webview.settingsTabPageSitesColors = false;
             activeTab.webview.settingsTabPageQuickSearches = false;
+            activeTab.webview.playerPage = false;
         }
         else if (url == "liri://settings-sites-colors"){
             u = url;
@@ -493,6 +518,7 @@ MaterialWindow {
             activeTab.webview.newTabPage = false;
             activeTab.webview.settingsTabPageSitesColors = true;
             activeTab.webview.settingsTabPageQuickSearches = false;
+            activeTab.webview.playerPage = false;
         }
         else if (url == "liri://settings-quick-searches"){
             u = url;
@@ -500,9 +526,18 @@ MaterialWindow {
             activeTab.webview.newTabPage = false;
             activeTab.webview.settingsTabPageSitesColors = false;
             activeTab.webview.settingsTabPageQuickSearches = true;
+            activeTab.webview.playerPage = false;
+        }
+        else if (url == "liri://player"){
+            u = url;
+            activeTab.webview.settingsTabPage = false;
+            activeTab.webview.newTabPage = false;
+            activeTab.webview.settingsTabPageSitesColors = false;
+            activeTab.webview.settingsTabPageQuickSearches = false;
+            activeTab.webview.playerPage = true;
         }
         else {
-            var u = getValidUrl(url);
+            var u = todownload ? url : getValidUrl(url);
             activeTab.webview.settingsTabPage = false;
             activeTab.webview.url = u;
         }
