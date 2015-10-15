@@ -1,0 +1,3 @@
+[submodule "dependencies/liri-player"]
+	path = dependencies/liri-player
+	url = https://github.com/pierremtb/liri-player
