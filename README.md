@@ -65,6 +65,7 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
 
 ### Dependencies
 * Qt 5.5 and QtWebEngine 1.1 (http://qt.io)
+* libvlc
 * qml-material (https://github.com/papyros/qml-material)
 
 ### Instructions
