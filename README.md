@@ -69,6 +69,8 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
 * qml-material (https://github.com/papyros/qml-material)
 
 ### Instructions
+* Install libvlc (e.g. Ubuntu: `sudo apt-get install libvlc-dev`)
+  * Build hints: https://github.com/RSATom/QmlVlcDemo/wiki/Build-hints 
 * Install Qt 5.5 (https://www.qt.io)
 * Install qml-material
   * git clone https://github.com/papyros/qml-material.git
@@ -79,7 +81,7 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
   * sudo make install
  
 ### Build and Run
-  * git clone https://github.com/liri-browser/liri-browser.git
+  * git clone --recursive https://github.com/liri-browser/liri-browser.git
   * cd liri-browser
   * qmake
   * make
