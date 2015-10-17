@@ -17,10 +17,24 @@ Page {
     property alias txtSearch: txtSearch
     property alias websiteSearchOverlay: websiteSearchOverlay
     property alias mediaDialog: mediaDialog
+    property alias toolbar: toolbar
+
+    backgroundColor: !activeTab.customColor || inkTimer.running ? "white" : activeTab.customColor
+
+    Behavior on backgroundColor {
+        ColorAnimation {
+            duration: 200
+        }
+    }
+
+    property alias ink: ink
+    property alias inkTimer: inkTimer
 
     function updateToolbar () {
         toolbar.update()
     }
+
+
 
     property list<Action> overflowActions: [
         Action {
@@ -107,7 +121,6 @@ Page {
         anchors.topMargin: (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ? -Units.dp(50) : 0
         width: parent.width
         height: titlebarContents.height
-
         z: 5
 
         elevation: 0
@@ -120,6 +133,7 @@ Page {
                 left: parent.left
                 right: parent.right
             }
+
 
             BrowserTabBar {
                 id: tabBar
@@ -269,6 +283,21 @@ Page {
                     }
                 }
             }
+        }
+    }
+
+    Ink {
+        id: ink
+        anchors.fill: parent
+        width: root.width
+        color: activeTab.customColor
+        z:-1
+
+        Timer {
+            id: inkTimer
+            interval: 1000
+            repeat: false
+            onTriggered: {ink.currentCircle.removeCircle()}
         }
     }
 }

@@ -12,5 +12,5 @@ Rectangle {
     }
 
     height: tabsModel.count > 1 || root.app.integratedAddressbars ? Units.dp(50) : Units.dp(30);
-    color:  root.currentTabColorDarken
+    color: /* root.currentTabColorDarken*/ "transparent"
 }

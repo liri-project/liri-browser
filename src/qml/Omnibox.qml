@@ -4,14 +4,15 @@ import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 
-Rectangle {
+View {
     id: omnibox
 
     radius: Units.dp(2)
-    color: root.addressBarColor
-    opacity: 0.5
+    backgroundColor: "white"
+    elevation: 1
+    opacity: 1
 
-    /*
+    /*om
      * Loading progress indicator
      *
      * The outer item provides the actual shape for the progress bar. It is clipped, and has a child rectangle that
@@ -79,7 +80,7 @@ Rectangle {
 
         property bool searchIcon: false
         name: searchIcon ? "action/search" : root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
-        color: root.activeTab.webview.secureConnection ? "green" : root.currentIconColor
+        color: /*root.activeTab.webview.secureConnection ? "green" : root.currentIconColor*/ root.iconColor
         onColorChanged: {
 
         }

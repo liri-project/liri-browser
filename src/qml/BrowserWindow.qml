@@ -39,7 +39,6 @@ MaterialWindow {
 
     //Fix for the player
     property bool noMedia: false
-
     property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
 
     property Settings settings: Settings {
@@ -74,6 +73,8 @@ MaterialWindow {
     property string fontFamily: "Roboto"
 
     property alias omniboxText: page
+
+    property alias toolbar: page.toolbar
 
     property string searchEngine: "google"
 

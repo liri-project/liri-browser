@@ -41,9 +41,10 @@ Controls.ApplicationWindow {
             color: "#A0000000"
             cornerRadius:  glowRadius
 
+
+
         }
     }
-
     SystemBar {
         id: systemBar
         visible: root.app.customFrame
@@ -65,6 +66,9 @@ Controls.ApplicationWindow {
             margins: 10
         }
     }
+
+
+
 
     PageStack {
         id: __pageStack
@@ -100,6 +104,11 @@ Controls.ApplicationWindow {
         }
     }
 
+
+
+
+
+
     OverlayLayer {
         id: dialogOverlayLayer
         objectName: "dialogOverlayLayer"
@@ -134,6 +143,7 @@ Controls.ApplicationWindow {
             promise = null
         }
     }
+
 
     function showError(title, text, secondaryButtonText, retry) {
         if (errorDialog.promise) {

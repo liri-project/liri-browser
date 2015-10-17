@@ -7,11 +7,11 @@ import QtQuick.Controls 1.2 as Controls
 View {
     id: toolbar
     elevation:0
-    backgroundColor: root.app.darkTheme ? root.app.darkThemeColor : activeTab.customColor ? activeTab.customColor : root.tabColorActive
+    //backgroundColor: inkTimer.running ? "white" : root.app.darkTheme ? root.app.darkThemeColor : activeTab.customColor ? activeTab.customColor : root.tabColorActive
+    backgroundColor: "transparent"
     visible: !root.app.integratedAddressbars
 
     height: root.mobile ? Units.dp(64) : Units.dp(56)
-
     property bool darkBackground: Theme.isDarkColor(color)
     property color textColor: Theme.lightDark(color, Theme.light.textColor, Theme.dark.textColor)
     property color iconColor: Theme.lightDark(color, Theme.light.iconColor, Theme.dark.iconColor)
@@ -32,11 +32,15 @@ View {
             bookmarkButton.iconName = "action/bookmark_border";
     }
 
+
+
+
+
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: spacing
         anchors.rightMargin: spacing
-
+        z:20
         spacing: Units.dp(24)
 
         Layout.alignment: Qt.AlignVCenter
@@ -146,11 +150,14 @@ View {
             }
         }
     }
+
     Component.onCompleted: {
         if (root.app.platform === "converged/ubuntu") {
             var overlayComponent = Qt.createComponent("UbuntuOmniboxOverlay.qml");
             ubuntuOmniboxOverlay = overlayComponent.createObject(toolbar, {})
         }
+
+
     }
 
 }

@@ -149,6 +149,11 @@ Item {
                             root.getTabModelDataByUID(uid).customColor = content;
                             root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(content, 0.6);
                             root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
+
+                            console.log(root.initialPage)
+
+                            root.initialPage.ink.createTapCircle(root.width/2, Units.dp(100))
+                            root.initialPage.inkTimer.restart()
                         }
                         else{
                             var customColor = root.app.customSitesColors ? searchForCustomColor(url.toString()) : "none";
