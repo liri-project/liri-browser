@@ -140,7 +140,7 @@ Rectangle {
         IconButton {
             id: btnDownloadsIntegrated
             iconName: "file/file_download"
-            visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
+            visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads && root.app.integratedAddressbars
             width: visible ? Units.dp(24) : 0
             color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads
                    ? Theme.lightDark(toolbar.color, Theme.accentColor, Theme.dark.iconColor)
