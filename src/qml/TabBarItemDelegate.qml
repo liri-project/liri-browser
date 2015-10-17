@@ -15,11 +15,11 @@ Component {
 
         property color inactiveColor: root.app.darkTheme ? shadeColor(root.app.darkThemeColor,0.05) : (root.app.tabsEntirelyColorized && modelData.customColorLight) ? modelData.customColorLight: root.tabColorInactive
         property color activeColor: root.app.darkTheme ? root.app.darkThemeColor : (root.app.tabsEntirelyColorized && modelData.customColor) ? modelData.customColor: root.tabColorActive
-        property color backgroundColor: (rectContainer.state == "active") ? activeColor : inactiveColor
-        property color defaultTextColor: (rectContainer.state == "active") ? root.tabTextColorActive : root.tabTextColorInactive
-        property color textColor: root.app.darkTheme && (rectContainer.state == "active") ? shadeColor(root.app.darkThemeColor,0.6) : (root.app.tabsEntirelyColorized && modelData.customTextColor) ? modelData.customTextColor: defaultTextColor
+        property color backgroundColor: (itemContainer.state == "active") ? activeColor : inactiveColor
+        property color defaultTextColor: (itemContainer.state == "active") ? root.tabTextColorActive : root.tabTextColorInactive
+        property color textColor: root.app.darkTheme && (itemContainer.state == "active") ? shadeColor(root.app.darkThemeColor,0.6) : (root.app.tabsEntirelyColorized && modelData.customTextColor) ? modelData.customTextColor: defaultTextColor
         //property color draggingColor: root.TabColorDragging
-        property alias state: rectContainer.state
+        property alias state: itemContainer.state
 
         property QtObject modelData: listView.model.get(index)
 
@@ -50,8 +50,8 @@ Component {
         }
 
 
-        Rectangle {
-            id: rectContainer
+        Item {
+            id: itemContainer
             anchors.fill: parent
 
             property int uid: (index >= 0) ? listView.model.get(index).uid : -1
@@ -82,7 +82,7 @@ Component {
                 },
 
                 State {
-                    name: "dragging"; when: mouseArea.draggingId == rectContainer.uid
+                    name: "dragging"; when: mouseArea.draggingId == itemContainer.uid
                     PropertyChanges {
                         target: rectDefault
                         //color: item.draggingColor
@@ -185,7 +185,7 @@ Component {
                         visible: {
                             if(modelData.hasCloseButton) {
                                if(root.reduceTabsSizes) {
-                                   if(rectContainer.state == "active") {
+                                   if(itemContainer.state == "active") {
                                        item.width =  item.widthWithClose
                                        return true
                                     }
@@ -214,7 +214,7 @@ Component {
                 Rectangle {
                     id: rectIndicator
                     color: root.tabIndicatorColor
-                    visible: !root.app.tabsEntirelyColorized && rectContainer.state == "active"
+                    visible: !root.app.tabsEntirelyColorized && itemContainer.state == "active"
                     height: Units.dp(1)
                     width: parent.width
                     anchors.bottom: parent.bottom
@@ -227,7 +227,7 @@ Component {
 
                     onClicked: {
                         if (mouse.button === Qt.LeftButton) {
-                            var isAlreadyActive = (rectContainer.state == "active")
+                            var isAlreadyActive = (itemContainer.state == "active")
                             root.activeTab = modelData;
                             if (isAlreadyActive && root.app.integratedAddressbars && mouse.x < closeButton.x) {
                                 item.editModeActive = true;
