@@ -7,7 +7,7 @@ import Material.ListItems 0.1 as ListItem
 Rectangle {
     id: pageRoot
     anchors.fill: parent
-    color: root.app.darkTheme ? root.app.darkThemeColor : "white"
+    color: /*root.app.darkTheme ? root.app.darkThemeColor : "white"*/ "transparent"
 
     Text {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -284,6 +284,19 @@ Rectangle {
             }
         }
 
+    }
+
+    ActionButton {
+        anchors {
+            right:parent.right
+            bottom:parent.bottom
+            margins: Units.dp(20)
+        }
+        iconName: ""
+        onClicked: {
+            root.initialPage.ink.color = "#212121"
+            root.initialPage.ink.createTapCircle(root.width - Units.dp(30),root.height-Units.dp(30))
+        }
     }
 
 
