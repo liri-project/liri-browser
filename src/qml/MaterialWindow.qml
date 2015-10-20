@@ -32,7 +32,7 @@ Controls.ApplicationWindow {
         RectangularGlow {
             id: outGlow
             width: __pageStack.width - parent.anchors.margins * 2
-            height: __pageStack.height + __toolbar.height - parent.anchors.margins * 2 + systemBar.height
+            height: __pageStack.height + __toolbar.height - parent.anchors.margins * 2 //+ systemBar.height
             x: 10
             y: 10
             visible: root.app.customFrame

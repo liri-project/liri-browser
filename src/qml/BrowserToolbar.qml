@@ -49,6 +49,7 @@ View {
             enabled: root.activeTab.webview.canGoBack
             onClicked: root.activeTab.webview.goBack()
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             action: Action {
                 iconName: "navigation/arrow_back"
                 name: qsTr("Go Back")
@@ -59,6 +60,7 @@ View {
             enabled: root.activeTab.webview.canGoForward
             onClicked: root.activeTab.webview.goForward()
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             visible: root.activeTab.webview.canGoForward || !mobile
             action: Action {
                 iconName: "navigation/arrow_forward"
@@ -69,6 +71,7 @@ View {
         IconButton {
             hoverAnimation: true
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
             action: Action {
                 iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
@@ -95,6 +98,7 @@ View {
 
         IconButton {
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: addTab()
             visible: !mobile && (tabsModel.count == 1)
             action: Action {
@@ -106,6 +110,7 @@ View {
         IconButton {
             id: bookmarkButton
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: toggleActiveTabBookmark()
             visible: !mobile
             action: Action {

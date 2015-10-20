@@ -152,7 +152,7 @@ Item {
 
                             console.log(root.initialPage)
 
-                            if(!root.privateNav && root.tabsEntirelyColorized) {
+                            if(!root.privateNav && root.app.tabsEntirelyColorized) {
                                 root.initialPage.ink.color = content
                                 root.initialPage.ink.createTapCircle(root.width/2, Units.dp(100))
                                 root.initialPage.inkTimer.restart()

@@ -128,6 +128,7 @@ Component {
                     Icon {
                         id: iconNoFavicon
                         color:  item.textColor
+                        Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/description"
                         visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && !modelData.webview.settingsTabPageQuickSearches
                         anchors.verticalCenter: parent.verticalCenter
@@ -136,6 +137,7 @@ Component {
                     Icon {
                         id: iconDashboard
                         color:  item.textColor
+                        Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/dashboard"
                         visible: modelData.webview.newTabPage
                         anchors.verticalCenter: parent.verticalCenter
@@ -145,6 +147,7 @@ Component {
                         id: iconSettings
                         name: "action/settings"
                         color:  item.textColor
+                        Behavior on color { ColorAnimation { duration : 500 }}
                         visible: modelData.webview.settingsTabPage || modelData.webview.settingsTabPageSitesColors || modelData.webview.settingsTabPageQuickSearches
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -153,6 +156,7 @@ Component {
                         id: iconSource
                         name: "action/code"
                         color:  item.textColor
+                        Behavior on color { ColorAnimation { duration : 500 }}
                         visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -176,11 +180,13 @@ Component {
                         anchors.verticalCenter: parent.verticalCenter
                         font.family: root.fontFamily
                         visible: !root.reduceTabsSizes
+                        Behavior on color { ColorAnimation { duration : 500 }}
                     }
 
                     IconButton {
                         id: closeButton
                         color: item.textColor
+                        Behavior on color { ColorAnimation { duration : 500 }}
                         anchors.verticalCenter: parent.verticalCenter
                         visible: {
                             if(modelData.hasCloseButton) {
