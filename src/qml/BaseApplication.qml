@@ -94,11 +94,16 @@ Item {
     }
 
     property string sitesColorsPresets: "[
-            {'domain':'facebook.com', 'color': '#3b5998'} ,
-            {'domain':'linkedin.com', 'color': '#646464'} ,
-            {'domain':'twitter.com', 'color': '#00aced'} ,
-            {'domain':'github.com', 'color': '#f5f5f5'}
-        ]"
+        {'domain':'facebook.com', 'color': '#3b5998'} ,
+        {'domain':'linkedin.com', 'color': '#646464'} ,
+        {'domain':'twitter.com', 'color': '#00aced'} ,
+        {'domain':'github.com', 'color': '#f5f5f5'} ,
+        {'domain':'youtube.com', 'color': '#b31217'} ,
+        {'domain':'9gag.com', 'color': '#262626'} ,
+        {'domain':'reddit.com', 'color': '#c5dbf9'} ,
+        {'domain':'soundcloud.com', 'color': '#f64100'} ,
+        {'domain':'khanacademy.org', 'color': '#66CD00'}
+    ]"
     property string quickSearchesPresets: "[ \
             {'name':'Youtube', 'key': 'ytb', 'url': 'https://www.youtube.com/results?search_query='}, \
             {'name':'Google Play Store', 'key': 'gps', 'url': 'https://play.google.com/store/search?q='} \

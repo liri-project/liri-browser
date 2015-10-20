@@ -79,8 +79,8 @@ View {
         id: connectionTypeIcon
 
         property bool searchIcon: false
-        name: searchIcon ? "action/search" : root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
-        color: /*root.activeTab.webview.secureConnection ? "green" : root.currentIconColor*/ root.iconColor
+        name:  root.privateNav ? "awesome/binoculars" : searchIcon ? "action/search" : root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
+        color: root.activeTab.webview.secureConnection ? "green" : "gray"
         onColorChanged: {
 
         }

@@ -292,13 +292,9 @@ Rectangle {
             bottom:parent.bottom
             margins: Units.dp(20)
         }
-        iconName: ""
-        onClicked: {
-            root.initialPage.ink.color = "#212121"
-            root.initialPage.ink.createTapCircle(root.width - Units.dp(30),root.height-Units.dp(30))
-        }
+        iconName: "awesome/binoculars"
+        onClicked: tooglePrivateNav()
     }
-
 
 
 }

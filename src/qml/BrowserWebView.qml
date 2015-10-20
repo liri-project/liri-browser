@@ -152,8 +152,11 @@ Item {
 
                             console.log(root.initialPage)
 
-                            root.initialPage.ink.createTapCircle(root.width/2, Units.dp(100))
-                            root.initialPage.inkTimer.restart()
+                            if(!root.privateNav && root.tabsEntirelyColorized) {
+                                root.initialPage.ink.color = content
+                                root.initialPage.ink.createTapCircle(root.width/2, Units.dp(100))
+                                root.initialPage.inkTimer.restart()
+                            }
                         }
                         else{
                             var customColor = root.app.customSitesColors ? searchForCustomColor(url.toString()) : "none";
@@ -171,7 +174,7 @@ Item {
                 });
 
                 // Add history entry
-                if (title && url.toString() != root.app.homeUrl) {
+                if (!root.privateNav && title && url.toString() != root.app.homeUrl) {
                     var locale = Qt.locale()
                     var currentDate = new Date()
                     var dateString = currentDate.toLocaleDateString();

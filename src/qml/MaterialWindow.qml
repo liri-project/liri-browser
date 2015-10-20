@@ -45,29 +45,6 @@ Controls.ApplicationWindow {
 
         }
     }
-    SystemBar {
-        id: systemBar
-        visible: root.app.customFrame
-        anchors.margins: 10
-    }
-
-    SystemButtons {
-        id: sysbuttons
-        z:90
-        color: bookmarksDrawer.visible || downloadsDrawer.visible || historyDrawer.visible ? "transparent" : systemBar.color
-        onShowMinimized: root.showMinimized();
-        onShowMaximized: root.showMaximized();
-        onShowNormal: root.showNormal();
-        onClose: root.close();
-        visible: root.app.customFrame
-        anchors {
-            right: parent.right
-            top: parent.top
-            margins: 10
-        }
-    }
-
-
 
 
     PageStack {
@@ -75,10 +52,10 @@ Controls.ApplicationWindow {
         anchors {
             left: parent.left
             right: parent.right
-            top: __toolbar.bottom
+            top: parent.top
             bottom: parent.bottom
             margins: root.app.customFrame ? 10 : 0
-            topMargin: root.tabsListIsOpened || root.customSitesColorsIsOpened ? 0 : root.app.customFrame ? systemBar.height :  0
+            topMargin: /*root.tabsListIsOpened || root.customSitesColorsIsOpened ? 0 :*/ root.app.customFrame ? 10 :  0
         }
 
         onPushed: __toolbar.push(page)
@@ -88,25 +65,17 @@ Controls.ApplicationWindow {
             root.customSitesColorsIsOpened = false
         }
         onReplaced: __toolbar.replace(page)
+        /*Rectangle {
+            anchors.fill: parent
+            color: app.darkTheme ? app.darkThemeColor : "white"
+        }*/
     }
 
     Toolbar {
         id: __toolbar
         clientSideDecorations: app.clientSideDecorations
         anchors.margins : root.app.customFrame ? 10 : 0
-        SystemButtons {
-            id: sysbutton
-            visible: !root.mobile
-            onShowMinimized: __window.showMinimized();
-            onShowMaximized: __window.showMaximized();
-            onShowNormal: __window.showNormal();
-            onClose: __window.close();
-        }
     }
-
-
-
-
 
 
     OverlayLayer {
@@ -125,6 +94,29 @@ Controls.ApplicationWindow {
 
     width: Units.dp(800)
     height: Units.dp(600)
+
+
+    SystemBar {
+        id: systemBar
+        visible: root.app.customFrame
+        anchors.margins: 10
+    }
+
+    SystemButtons {
+        id: sysbuttons
+        z:90
+        color: /*bookmarksDrawer.visible || downloadsDrawer.visible || historyDrawer.visible ? "transparent" : systemBar.color*/ "transparent"
+        onShowMinimized: root.showMinimized();
+        onShowMaximized: root.showMaximized();
+        onShowNormal: root.showNormal();
+        onClose: root.close();
+        visible: root.app.customFrame
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: 10
+        }
+    }
 
     Dialog {
         id: errorDialog
