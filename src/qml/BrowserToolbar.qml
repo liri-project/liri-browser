@@ -7,11 +7,11 @@ import QtQuick.Controls 1.2 as Controls
 View {
     id: toolbar
     elevation:0
-    backgroundColor: root.app.darkTheme ? root.app.darkThemeColor : activeTab.customColor ? activeTab.customColor : root.tabColorActive
+    //backgroundColor: inkTimer.running ? "white" : root.app.darkTheme ? root.app.darkThemeColor : activeTab.customColor ? activeTab.customColor : root.tabColorActive
+    backgroundColor: "transparent"
     visible: !root.app.integratedAddressbars
 
     height: root.mobile ? Units.dp(64) : Units.dp(56)
-
     property bool darkBackground: Theme.isDarkColor(color)
     property color textColor: Theme.lightDark(color, Theme.light.textColor, Theme.dark.textColor)
     property color iconColor: Theme.lightDark(color, Theme.light.iconColor, Theme.dark.iconColor)
@@ -32,11 +32,15 @@ View {
             bookmarkButton.iconName = "action/bookmark_border";
     }
 
+
+
+
+
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: spacing
         anchors.rightMargin: spacing
-
+        z:20
         spacing: Units.dp(24)
 
         Layout.alignment: Qt.AlignVCenter
@@ -45,6 +49,7 @@ View {
             enabled: root.activeTab.webview.canGoBack
             onClicked: root.activeTab.webview.goBack()
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             action: Action {
                 iconName: "navigation/arrow_back"
                 name: qsTr("Go Back")
@@ -55,6 +60,7 @@ View {
             enabled: root.activeTab.webview.canGoForward
             onClicked: root.activeTab.webview.goForward()
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             visible: root.activeTab.webview.canGoForward || !mobile
             action: Action {
                 iconName: "navigation/arrow_forward"
@@ -65,6 +71,7 @@ View {
         IconButton {
             hoverAnimation: true
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
             action: Action {
                 iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
@@ -91,6 +98,7 @@ View {
 
         IconButton {
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: addTab()
             visible: !mobile && (tabsModel.count == 1)
             action: Action {
@@ -102,6 +110,7 @@ View {
         IconButton {
             id: bookmarkButton
             color: root.currentIconColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: toggleActiveTabBookmark()
             visible: !mobile
             action: Action {
@@ -146,11 +155,14 @@ View {
             }
         }
     }
+
     Component.onCompleted: {
         if (root.app.platform === "converged/ubuntu") {
             var overlayComponent = Qt.createComponent("UbuntuOmniboxOverlay.qml");
             ubuntuOmniboxOverlay = overlayComponent.createObject(toolbar, {})
         }
+
+
     }
 
 }

@@ -3,6 +3,7 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
+import Material.Extras 0.1
 
 Page {
     id: page
@@ -17,10 +18,36 @@ Page {
     property alias txtSearch: txtSearch
     property alias websiteSearchOverlay: websiteSearchOverlay
     property alias mediaDialog: mediaDialog
+    property alias toolbar: toolbar
+
+    backgroundColor: {
+        if((!activeTab.customColor || inkTimer.running) && !root.app.darkTheme && root.app.tabsEntirelyColorized) {
+                return "#FAFAFA"
+        }
+        else if((!activeTab.customColor || inkTimer.running) && root.app.darkTheme && root.app.tabsEntirelyColorized) {
+            return root.app.darkThemeColor
+        }
+        else if(root.app.tabsEntirelyColorized)
+            return activeTab.customColor
+        else if(root.app.darkTheme)
+            return root.app.darkThemeColor
+        else
+            return "#FAFAFA"
+    }
+    Behavior on backgroundColor {
+        ColorAnimation {
+            duration: 200
+        }
+    }
+
+    property alias ink: ink
+    property alias inkTimer: inkTimer
 
     function updateToolbar () {
         toolbar.update()
     }
+
+
 
     property list<Action> overflowActions: [
         Action {
@@ -104,10 +131,9 @@ Page {
         id: titlebar
         backgroundColor: "transparent"
         anchors.top: parent.top
-        anchors.topMargin: (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ? -Units.dp(50) : 0
+        anchors.topMargin:  (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ?  Units.dp(5) : root.app.customFrame ? Units.dp(30) : 0
         width: parent.width
         height: titlebarContents.height
-
         z: 5
 
         elevation: 0
@@ -120,6 +146,7 @@ Page {
                 left: parent.left
                 right: parent.right
             }
+
 
             BrowserTabBar {
                 id: tabBar
@@ -268,6 +295,26 @@ Page {
                         modelData.triggered(listItem)
                     }
                 }
+            }
+        }
+    }
+
+    Ink {
+        id: ink
+        anchors.fill: parent
+        width: root.width
+        onPressed: console.log(0)
+        enabled: false
+        propagateComposedEvents: true
+        color: activeTab.customColor
+        z:-1
+
+        Timer {
+            id: inkTimer
+            interval: 1500
+            repeat: false
+            onTriggered: {
+                ink.currentCircle.removeCircle()
             }
         }
     }

@@ -7,7 +7,7 @@ import Material.ListItems 0.1 as ListItem
 Rectangle {
     id: pageRoot
     anchors.fill: parent
-    color: root.app.darkTheme ? root.app.darkThemeColor : "white"
+    color: /*root.app.darkTheme ? root.app.darkThemeColor : "white"*/ "transparent"
 
     Text {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -286,6 +286,15 @@ Rectangle {
 
     }
 
+    ActionButton {
+        anchors {
+            right:parent.right
+            bottom:parent.bottom
+            margins: Units.dp(20)
+        }
+        iconName: "awesome/binoculars"
+        onClicked: tooglePrivateNav()
+    }
 
 
 }

@@ -47,5 +47,6 @@
         <file>qml/TextFieldThemed.qml</file>
         <file>qml/ScrollbarThemed.qml</file>
         <file>qml/PlayerPage.qml</file>
+        <file>qml/AwesomeActionButton.qml</file>
     </qresource>
 </RCC>

@@ -24,7 +24,7 @@ Rectangle {
         }
 
         spacing: Units.dp(10)
-        property string iconsColor: root.iconColorOnCurrentTabDarken
+        property string iconsColor: root.currentIconColor
 
         Rectangle {
             width:1
@@ -35,6 +35,7 @@ Rectangle {
             width: Units.dp(20)
             height: width
             color: parent.iconsColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: _back.showMinimized()
         }
 
@@ -44,6 +45,7 @@ Rectangle {
             id: sysbtn_max
             height: width
             color: parent.iconsColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: {
                 if(root.visibility == 2)
                     _back.showMaximized();
@@ -57,6 +59,7 @@ Rectangle {
             width: Units.dp(20)
             height: width
             color: parent.iconsColor
+            Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: _back.close()
         }
     }

@@ -9,7 +9,8 @@ Rectangle {
 
     height: root.tabHeight
     //color: root.tabBackgroundColor
-    color: root.app.customFrame ? "transparent" : root.app.darkTheme ? root.app.darkThemeColor : "#EFEFEF"
+    //color: root.app.customFrame ? "transparent" : root.app.darkTheme ? root.app.darkThemeColor : "#EFEFEF"
+    color: "transparent"
     anchors {
         left: parent.left
         rightMargin: root.app.customFrame ? Units.dp(100) : 0

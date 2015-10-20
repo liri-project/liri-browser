@@ -39,7 +39,6 @@ MaterialWindow {
 
     //Fix for the player
     property bool noMedia: false
-
     property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
 
     property Settings settings: Settings {
@@ -67,13 +66,17 @@ MaterialWindow {
     property color tabTextColorInactive: "#757575"
     property color iconColor: app.darkTheme ? "white" : "#7b7b7b"
     property color addressBarColor: "#e0e0e0"
-    property color currentTextColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
-    property color currentIconColor: activeTab.customTextColor ? activeTab.customTextColor : iconColor
+    property color currentTextColor: privateNav ? "white" : activeTab.customTextColor ? activeTab.customTextColor : iconColor
+    property color currentIconColor: privateNav ? "white" : activeTab.customTextColor ? activeTab.customTextColor : iconColor
     property string currentTabColorDarken: app.darkTheme ? shadeColor(app.darkThemeColor, -0.1) : activeTab.customColor ? shadeColor(activeTab.customColor, -0.1) : "#EFEFEF"
     property string iconColorOnCurrentTabDarken:  app.darkTheme ? shadeColor(app.darkThemeColor, 0.5) : shadeColor("" +Theme.lightDark(currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor) + "",0.4)
     property string fontFamily: "Roboto"
 
     property alias omniboxText: page
+
+    property alias toolbar: page.toolbar
+
+    property int systemBarHeight: systemBar.height
 
     property string searchEngine: "google"
 
@@ -84,6 +87,8 @@ MaterialWindow {
     property var downloadsDrawer
 
     property bool fullscreen: false
+
+    property bool privateNav: false
 
     property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(1000) || width < Units.dp(640)
 
@@ -572,6 +577,19 @@ MaterialWindow {
             root.app.sourcetemp = root.app.sourcetemp.replace(/    /g,"");
             root.app.sourcetemp = encodeURI(root.app.sourcetemp);
         });
+    }
+
+
+    function tooglePrivateNav(){
+        if(!root.privateNav) {
+            root.initialPage.ink.color = "#212121"
+            root.initialPage.ink.createTapCircle(root.width - Units.dp(30),root.height-Units.dp(30))
+            root.privateNav = true
+        }
+        else {
+            root.initialPage.ink.currentCircle.removeCircle()
+            root.privateNav = false
+        }
     }
 
     /* Events */

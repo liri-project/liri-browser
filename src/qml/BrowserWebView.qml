@@ -149,6 +149,14 @@ Item {
                             root.getTabModelDataByUID(uid).customColor = content;
                             root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(content, 0.6);
                             root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
+
+                            console.log(root.initialPage)
+
+                            if(!root.privateNav && root.app.tabsEntirelyColorized) {
+                                root.initialPage.ink.color = content
+                                root.initialPage.ink.createTapCircle(root.width/2, Units.dp(100))
+                                root.initialPage.inkTimer.restart()
+                            }
                         }
                         else{
                             var customColor = root.app.customSitesColors ? searchForCustomColor(url.toString()) : "none";
@@ -166,7 +174,7 @@ Item {
                 });
 
                 // Add history entry
-                if (title && url.toString() != root.app.homeUrl) {
+                if (!root.privateNav && title && url.toString() != root.app.homeUrl) {
                     var locale = Qt.locale()
                     var currentDate = new Date()
                     var dateString = currentDate.toLocaleDateString();
