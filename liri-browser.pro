@@ -43,7 +43,8 @@ android {
 }
 
 
-TRANSLATIONS += src/translations/de_DE.ts \
+TRANSLATIONS += src/translations/liri-browser.ts \
+                src/translations/de_DE.ts \
                 src/translations/ru_RU.ts \
                 src/translations/fr_FR.ts \
                 src/translations/es_CR.ts \

@@ -45,6 +45,53 @@
     </message>
 </context>
 <context>
+    <name>BookmarksDrawer</name>
+    <message>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No bookmarks found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Bearbeiten</translation>
+    </message>
+    <message>
+        <source>Add to dash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Löschen</translation>
+    </message>
+    <message>
+        <source>Edit bookmark</source>
+        <translation type="unfinished">Lesezeichen bearbeiten</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Titel</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation type="unfinished">URL</translation>
+    </message>
+    <message>
+        <source>Icon URL</source>
+        <translation type="unfinished">Icon-URL</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished">Übernehmen</translation>
+    </message>
+</context>
+<context>
     <name>BrowserOxideWebView</name>
     <message>
         <source>New tab</source>
@@ -93,6 +140,49 @@
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
+    <message>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BrowserToolbar</name>
+    <message>
+        <source>Go Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tabs</source>
+        <translation type="unfinished">Reiter</translation>
+    </message>
+    <message>
+        <source>Add a tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmark this page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Downloads</translation>
+    </message>
+    <message>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BrowserWebView</name>
@@ -103,6 +193,50 @@
     <message>
         <source>Settings</source>
         <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <source>Sites Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quick Searches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to dash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View source</source>
+        <translation type="unfinished">Seitenquelltext ansehen</translation>
+    </message>
+    <message>
+        <source>Open in new tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play in browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy URL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -208,7 +342,7 @@
     </message>
     <message>
         <source>Clear</source>
-        <translation>Leeren</translation>
+        <translation type="vanished">Leeren</translation>
     </message>
     <message>
         <source>Awaiting confirmation</source>
@@ -254,7 +388,7 @@
     </message>
     <message>
         <source>Clear History</source>
-        <translation>Chronik leeren</translation>
+        <translation type="vanished">Chronik leeren</translation>
     </message>
     <message>
         <source>No browser history found</source>
@@ -318,6 +452,62 @@
         <source>Search or enter website name</source>
         <translation>Suche oder Adresse eingeben</translation>
     </message>
+    <message>
+        <source>Search...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PlayerPage</name>
+    <message>
+        <source>Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuickSearches</name>
+    <message>
+        <source>Customize sites colors (if no theme-color)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuickSearchesList</name>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Titel</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation type="unfinished">URL</translation>
+    </message>
+    <message>
+        <source>Custom (can overwrite presets)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuickSearchesPage</name>
+    <message>
+        <source>Sites Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Settings</name>
@@ -351,7 +541,7 @@
     </message>
     <message>
         <source>Current Browser Version: 0.3</source>
-        <translation>Aktuelle Browser-Version: 0.3</translation>
+        <translation type="vanished">Aktuelle Browser-Version: 0.3</translation>
     </message>
     <message>
         <source>Theme</source>
@@ -372,6 +562,34 @@
     <message>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Responsive tabs (EXPERIMENTAL)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom sites colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Quick Searches in Omnibox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Material window frame (EXPERIMENTAL)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmarks bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: 0.3</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -430,6 +648,43 @@
     <message>
         <source>Settings</source>
         <translation>Einstellungen</translation>
+    </message>
+</context>
+<context>
+    <name>SitesColors</name>
+    <message>
+        <source>Customize sites colors (if no theme-color)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SitesColorsList</name>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Domain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom (can overwrite presets)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SitesColorsPage</name>
+    <message>
+        <source>Sites Colors</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
