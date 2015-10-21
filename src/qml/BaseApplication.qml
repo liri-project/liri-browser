@@ -93,7 +93,7 @@ Item {
         return result
     }
 
-    property string sitesColorsPresets: "[
+    property var sitesColorsPresets: [
         {'domain':'facebook.com', 'color': '#3b5998'} ,
         {'domain':'linkedin.com', 'color': '#646464'} ,
         {'domain':'twitter.com', 'color': '#00aced'} ,
@@ -103,11 +103,11 @@ Item {
         {'domain':'reddit.com', 'color': '#c5dbf9'} ,
         {'domain':'soundcloud.com', 'color': '#f64100'} ,
         {'domain':'khanacademy.org', 'color': '#66CD00'}
-    ]"
-    property string quickSearchesPresets: "[ \
-            {'name':'Youtube', 'key': 'ytb', 'url': 'https://www.youtube.com/results?search_query='}, \
-            {'name':'Google Play Store', 'key': 'gps', 'url': 'https://play.google.com/store/search?q='} \
-        ]"
+    ]
+    property var quickSearchesPresets: [
+            {'name':'Youtube', 'key': 'ytb', 'url': 'https://www.youtube.com/results?search_query='},
+            {'name':'Google Play Store', 'key': 'gps', 'url': 'https://play.google.com/store/search?q='}
+        ]
     property bool bookmarksBar: true
     property bool bookmarksBarAlwaysOn: false
     property bool bookmarksBarOnlyOnDash: true
@@ -163,7 +163,7 @@ Item {
         }
 
         // Load custom sites color
-        var presets = eval(application.sitesColorsPresets)
+        var presets = application.sitesColorsPresets
 
         for (var t in presets)
           application.presetSitesColorsModel.append(presets[t])
@@ -179,7 +179,7 @@ Item {
         for (var i=0; i<application.settings.bookmarks.length; i++)
             application.bookmarksModel.append(application.settings.bookmarks[i]);
 
-        var presets_qs = eval(application.quickSearchesPresets)
+        var presets_qs = application.quickSearchesPresets
         for (t in presets_qs)
           application.presetQuickSearchesModel.append(presets_qs[t])
 

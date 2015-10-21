@@ -1,4 +1,4 @@
-//Code modified from:
+// This is a modified version of:
 /*
  * QML Material - An application framework implementing Material Design.
  * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>

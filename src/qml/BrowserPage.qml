@@ -34,6 +34,7 @@ Page {
         else
             return "#FAFAFA"
     }
+
     Behavior on backgroundColor {
         ColorAnimation {
             duration: 200

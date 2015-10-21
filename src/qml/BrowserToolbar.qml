@@ -32,10 +32,6 @@ View {
             bookmarkButton.iconName = "action/bookmark_border";
     }
 
-
-
-
-
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: spacing
