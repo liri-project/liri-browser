@@ -15,7 +15,7 @@ Component {
 
         property color inactiveColor: /*root.app.darkTheme ? shadeColor(root.app.darkThemeColor,0.05) : (root.app.tabsEntirelyColorized && modelData.customColorLight) ? modelData.customColorLight: root.tabColorInactive*/ "transparent"
         property color activeColor: /*root.app.darkTheme ? root.app.darkThemeColor : (root.app.tabsEntirelyColorized && modelData.customColor) ? modelData.customColor: root.tabColorActive*/ "transparent"
-        property color backgroundColor: /*(itemContainer.state == "active") ? activeColor : inactiveColor*/ "transparent"
+        property color backgroundColor: /*(itemContainer.state == "active") ? activeColor : inactiveColor*/ /*"transparent"*/ itemContainer.state != "dragging" ? "transparent" : page.backgroundColor
         property color defaultTextColor: /*(itemContainer.state == "active") ? root.tabTextColorActive : root.tabTextColorInactive */ !activeTab.customColor ? root.iconColor : "white"
         property color textColor: root.privateNav ? "#FAFAFA" : (itemContainer.state == "active") &&  !activeTab.customColor ? root.iconColor : (itemContainer.state != "active") &&  !activeTab.customColor ? Theme.alpha(root.iconColor,0.5) : (itemContainer.state == "active") &&  activeTab.customColor ? "white" : Theme.alpha("white", 0.5)
         //property color draggingColor: root.TabColorDragging
