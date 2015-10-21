@@ -15,6 +15,8 @@ The list of contributors is sorted alphabetical based on the last names.
 The list of languages is sorted alphabetical.
 
 ## Translations
+Thanks to all of you who contributed via transifex! 
+https://www.transifex.com/liri-browser/teams/
 * Arabic
   * Fortas Abdeldjalil (https://github.com/Fcmam5)
   * Karim Oulad Chalha (https://github.com/karim88)
