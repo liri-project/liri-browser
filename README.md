@@ -19,7 +19,7 @@ The name "liri" comes from the Albanian word for freedom. Liri Browser was forme
 ![Screenshot](screenshots/screenshot_02.png)
 
 ## Translations
-Please help us translating this application on [Transifex](https://transifex.com/liri-browser/)!
+Please help us translating this application on [Transifex](https://www.transifex.com/liri-browser/liri-browser/)!
 Alternatively you can follow [this guide](https://github.com/liri-browser/liri-browser/wiki/Translations
 ) to get started.
 
