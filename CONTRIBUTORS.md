@@ -11,6 +11,7 @@ The list of contributors is sorted alphabetical based on the last names.
 * Michael Spencer (https://github.com/iBeliever)
 * Tim Süberkrüb (https://github.com/tim-sueberkrueb)
 * VirusKa (https://github.com/VirusKA)
+* Tim Wang (https://github.com/timwangdev)
 
 The list of languages is sorted alphabetical.
 
