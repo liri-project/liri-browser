@@ -9,7 +9,7 @@ Item {
     property bool enableShortCuts: true
     property bool enableNewWindowAction: true
 
-    property bool customFrame: true
+    property bool customFrame: false
 
     property string homeUrl: "https://www.google.com"
 
