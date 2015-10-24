@@ -14,7 +14,7 @@ Page {
     property alias webContainer: webContainer
     property alias listView: tabBar.listView
     property alias bookmarksBar: bookmarksBar
-    property alias bookmarkContainer: bookmarksBar.bookmarkContainer
+    //property alias bookmarkContainer: bookmarksBar.bookmarkContainer
     property alias txtSearch: txtSearch
     property alias websiteSearchOverlay: websiteSearchOverlay
     property alias mediaDialog: mediaDialog
@@ -101,7 +101,7 @@ Page {
         Action {
             name: qsTr("Bookmark")
             visible: root.app.integratedAddressbars && !root.mobile && !activeTab.webview.sourceTapPage
-            iconName: "action/bookmark_border"
+            iconName:  "action/bookmark_border"
             onTriggered: root.toggleActiveTabBookmark()
         },
         Action {

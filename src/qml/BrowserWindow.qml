@@ -248,24 +248,23 @@ MaterialWindow {
     }
 
     function isBookmarked(url){
-        for (var i=0; i<root.app.bookmarks.length; i++){
-            if (root.app.bookmarks[i].url === url)
+        for (var i=0; i<root.app.bookmarksModel.count; i++){
+            if (root.app.bookmarksModel.get(i).url == url)
                 return true
         }
         return false
     }
 
     function addBookmark(title, url, faviconUrl, color){
-        root.app.bookmarks.push({title: title, url: url, faviconUrl: faviconUrl, color: color});
-        root.app.changedBookmarks();
+        root.app.bookmarksModel.append({title: title, url: url, faviconUrl: faviconUrl, color: color})
     }
 
     function changeBookmark(url, title, newUrl, faviconUrl){
-        for (var i=0; i<root.app.bookmarks.length; i++){
-            if (root.app.bookmarks[i].url == url){
-                root.app.bookmarks[i].url = newUrl;
-                root.app.bookmarks[i].title = title;
-                root.app.bookmarks[i].faviconUrl = faviconUrl;
+        for (var i=0; i<root.app.bookmarksModel.count; i++){
+            if (root.app.bookmarksModel.get(i).url == url){
+                root.app.bookmarksModel.get(i).url = newUrl;
+                root.app.bookmarksModel.get(i).title = title;
+                root.app.bookmarksModel.get(i).faviconUrl = faviconUrl;
                 root.app.changedBookmarks();
                 return true;
             }
@@ -275,10 +274,9 @@ MaterialWindow {
     }
 
     function removeBookmark(url){
-        for (var i=0; i<root.app.bookmarks.length; i++){
-            if (root.app.bookmarks[i].url == url){
-                root.app.bookmarks.splice(i, 1);
-                root.app.changedBookmarks();
+        for (var i=0; i<root.app.bookmarksModel.count; i++){
+            if (root.app.bookmarksModel.get(i).url == url){
+                root.app.bookmarksModel.remove(i)
                 return true;
             }
         }
@@ -292,22 +290,21 @@ MaterialWindow {
     }
 
     function loadBookmarks() {
-        root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
-        var bookmarkComponent = Qt.createComponent("BookmarkItem.qml");
+       /* root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
         for (var i=0; i<root.app.bookmarks.length; i++){
             var b = root.app.bookmarks[i];
-            var bookmarkObject = bookmarkComponent.createObject(page.bookmarkContainer, { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
-        }
+            var bookmarkObject = , { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
+        }*/
     }
 
     function reloadBookmarks(){
-        clearBookmarks();
+        /*clearBookmarks();
         loadBookmarks();
         // Reload the bookmarks model
         root.app.bookmarksModel.clear()
         for (var i=0; i<root.app.settings.bookmarks.length; i++) {
             root.app.bookmarksModel.append(root.app.settings.bookmarks[i]);
-        }
+        }*/
     }
 
     function bookmarksChanged() {
@@ -552,6 +549,7 @@ MaterialWindow {
         var url = activeTab.webview.url;
         var icon = activeTab.webview.icon;
         var title = activeTab.webview.title;
+        console.log(url)
         if (isBookmarked(url)) {
             snackbar.open(qsTr('Removed bookmark %1').arg(title));
             removeBookmark(url)

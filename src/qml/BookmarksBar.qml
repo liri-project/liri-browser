@@ -15,21 +15,15 @@ Rectangle {
         right: parent.right
     }
 
-
-
-    property alias bookmarkContainer: bookmarkContainer
-
-    Flickable {
+    ListView {
+        id: bookmarkView
+        anchors.leftMargin: Units.dp(20)
+        anchors.rightMargin: Units.dp(20)
         anchors.fill: parent
-        anchors.margins: Units.dp(5)
-        anchors.leftMargin: Units.dp(24)
-        contentWidth: bookmarkContainer.implicitWidth + Units.dp(16)
-
-        Row {
-            id: bookmarkContainer
-            anchors.fill: parent
-            spacing: Units.dp(15)
-        }
+        model: root.app.bookmarksModel
+        orientation: ListView.Horizontal
+        spacing: Units.dp(20)
+        delegate: BookmarkItem {}
     }
 
     Behavior on height {

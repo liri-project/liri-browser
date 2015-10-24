@@ -20,7 +20,7 @@ Rectangle {
 
     Flickable {
         id: flickable
-
+        boundsBehavior: Flickable.StopAtBounds
         anchors.fill: parent
         contentHeight: grid.childrenRect.height + Units.dp(48) + viewBottom.height + view.height
 

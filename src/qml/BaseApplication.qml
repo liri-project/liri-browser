@@ -30,7 +30,6 @@ Item {
     property string sourceHighlightFont: "Roboto Mono"
     property int sourceHighlightFontPixelSize: 12
 
-    property var bookmarks: []
     signal changedBookmarks ()
 
     property bool integratedAddressbars: false
@@ -141,13 +140,9 @@ Item {
 
     Component.onCompleted: {
         console.log("Locale name: " + Qt.locale().name)
-        if (!settings.bookmarks)
-            settings.bookmarks = [];
 
         if (!settings.history)
             settings.history = [];
-
-        application.bookmarks = settings.bookmarks;
 
         // Load the browser history
         var locale = Qt.locale()
@@ -179,7 +174,7 @@ Item {
             application.dashboardModel.append(application.settings.dashboard[i]);
 
         // Load the bookmarks model
-        for (var i=0; i<application.settings.bookmarks.length; i++)
+        for (i=0; i<application.settings.bookmarks.length; i++)
             application.bookmarksModel.append(application.settings.bookmarks[i]);
 
         var presets_qs = application.quickSearchesPresets
@@ -192,7 +187,6 @@ Item {
     }
 
     Component.onDestruction: {
-        settings.bookmarks = application.bookmarks;
 
         // Save the browser history
         var history = [], hM_l = application.historyModel.count;
@@ -202,6 +196,14 @@ Item {
                 history.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl, "date": item.date, "type": item.type, "color": item.color});
         }
         application.settings.history = history;
+
+        // Save the browser bookmarks
+        var bookmarks = [], bM_l = application.bookmarksModel.count;
+        for (i=0; i<bM_l; i++){
+            item = application.bookmarksModel.get(i);
+            bookmarks.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl});
+        }
+        application.settings.bookmarks = bookmarks;
 
         // Save the dashboard model
         var dashboard = [], dM_l = application.dashboardModel.count;

@@ -6,16 +6,12 @@ import Material.ListItems 0.1 as ListItem
 
 Item {    
     id: item
-    property string title
-    property string faviconUrl
-    property string url
     property int maximumWidth: Units.dp(148)
 
     property color color: "white"
 
-    height: parent.height
+    height: bookmarksBar.height
     width: row.childrenRect.width
-
     property int maximumTextWidth: maximumWidth - favicon.width - Units.dp(16)
 
     Row {
@@ -64,7 +60,7 @@ Item {
                 contextMenu.open(parent, contextMenu.width-parent.width)
              }
              else
-                 root.addTab(item.url);
+                 root.addTab(url);
          }
     }
 
@@ -95,7 +91,7 @@ Item {
                 text: qsTr("Delete")
                 iconName: "action/delete"
                 onClicked: {
-                    root.removeBookmark(item.url);
+                    root.removeBookmark(url);
                     contextMenu.close();
                 }
             }
@@ -140,7 +136,7 @@ Item {
                 id: txtEditTitle
                 placeholderText: qsTr("Title")
                 floatingLabel: true
-                text: item.title
+                text: title
                 width: parent.width
             }
 
@@ -148,7 +144,7 @@ Item {
                 id: txtEditUrl
                 placeholderText: qsTr("URL")
                 floatingLabel: true
-                text: item.url
+                text: url
                 width: parent.width
 
             }
@@ -157,7 +153,7 @@ Item {
                 id: txtEditFaviconUrl
                 placeholderText: qsTr("Icon URL")
                 floatingLabel: true
-                text: item.faviconUrl
+                text: faviconUrl
                 width: parent.width
             }
 
@@ -190,7 +186,7 @@ Item {
             text: qsTr("Apply")
 
             onClicked: {
-                root.changeBookmark(item.url, txtEditTitle.text, txtEditUrl.text, txtEditFaviconUrl.text);
+                root.changeBookmark(url, txtEditTitle.text, txtEditUrl.text, txtEditFaviconUrl.text);
                 editDialog.close();
             }
         }
