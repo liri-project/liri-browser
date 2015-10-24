@@ -301,6 +301,25 @@ Page {
         }
     }
 
+    Rectangle {
+          id: shadow
+          color: Qt.rgba(0,0,0,0.1)
+          anchors.fill: parent
+          z:19
+          visible: false
+          MouseArea {
+              anchors.fill: parent
+              onClicked: {
+                  bookmarksDrawer.close()
+                  historyDrawer.close()
+              }
+          }
+        }
+
+    BookmarksDrawer { id: bookmarksDrawer }
+
+    HistoryDrawer { id: historyDrawer }
+
     Ink {
         id: ink
         anchors.fill: parent

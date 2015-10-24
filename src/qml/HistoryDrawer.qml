@@ -4,12 +4,33 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 
 
-NavigationDrawer {
+View {
     id: drawer
-    z: 25
-    mode: "right"
+    z:25
+    backgroundColor: "white"
     width: Units.dp(350)
-    visible: anchors.rightMargin != -width - Units.dp(10)
+    anchors {
+        right: parent.right
+        top: parent.top
+        bottom: parent.bottom
+        rightMargin: -width - 20
+    }
+
+    Behavior on anchors.rightMargin {
+        NumberAnimation {
+            duration: 300
+        }
+    }
+
+    function open() {
+        anchors.rightMargin = 0
+        shadow.visible = true
+    }
+
+    function close() {
+        anchors.rightMargin = -width - 20
+        shadow.visible = false
+    }
     View {
         id: historyTitle
         height: Units.dp(56)

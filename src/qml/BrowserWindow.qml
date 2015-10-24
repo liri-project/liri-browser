@@ -606,10 +606,6 @@ MaterialWindow {
 
     initialPage: BrowserPage { id: page }
 
-    HistoryDrawer { id: historyDrawer }
-
-    BookmarksDrawer { id: bookmarksDrawer }
-
     SettingsPage { id: settingsPage }
 
     TabsListPage { id: tabsListPage }
