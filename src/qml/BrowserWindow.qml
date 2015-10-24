@@ -76,7 +76,7 @@ MaterialWindow {
 
     property alias toolbar: page.toolbar
 
-    property int systemBarHeight: systemBar.height
+    //property int systemBarHeight: systemBar.height
 
     property string searchEngine: "google"
 
@@ -143,7 +143,7 @@ MaterialWindow {
         activeTab.webview.settingsTabPageSitesColors = false;
         activeTab.webview.settingsTabPageQuickSearches = false;
         activeTab.webview.playerPage = true;
-        activeTab.webview.player.mrl = url
+        //activeTab.webview.player.mrl = url
     }
 
     function getValidUrl(url) {

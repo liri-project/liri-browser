@@ -11,20 +11,11 @@ typedef QGuiApplication Application;
 #include <QtQml/QQmlContext>
 #include <QtWebEngine/qtwebengineglobal.h>
 #include <QtWebEngine/QtWebEngine>
-#include <QmlVlc.h>
-#include <QmlVlc/QmlVlcConfig.h>
 #include "cursor/cursor.h"
 #include "clipboardadapter.h"
 
 int main(int argc, char **argv)
 {
-    RegisterQmlVlc();
-    QmlVlcConfig& config = QmlVlcConfig::instance();
-    config.enableAdjustFilter(true);
-    config.enableMarqueeFilter(true);
-    config.enableLogoFilter(true);
-    config.enableDebug(true);
-
     Application app(argc, argv);
 
     app.setOrganizationName("liri-browser");

@@ -32,7 +32,7 @@ TextFieldStyle {
     }
 
     font {
-        family: echoMode == TextInput.Password ? "Default" : "Roboto"
+        family: "Roboto"
         pixelSize: Units.dp(16)
     }
 
@@ -144,7 +144,7 @@ TextFieldStyle {
                 visible: background.helperText && background.showBorder
                 text: background.helperText
                 font.pixelSize: Units.dp(12)
-                color: style.helperNotFocusedColor
+                color: style.helperNotFocusedColor ? style.helperNotFocusedColor : "white"
 
                 Behavior on color {
                     ColorAnimation { duration: 200 }

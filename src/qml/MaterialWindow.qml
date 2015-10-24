@@ -73,7 +73,7 @@ Controls.ApplicationWindow {
 
     Toolbar {
         id: __toolbar
-        clientSideDecorations: app.clientSideDecorations
+        clientSideDecorations: false
         anchors.margins : root.app.customFrame ? 10 : 0
     }
 

@@ -35,7 +35,7 @@ Item {
     property real progress: webview.loadProgress/100
 
 
-    property alias player: itemPlayerPage.player
+    //property alias player: itemPlayerPage.player
 
     function goBack() {
         webview.goBack();
@@ -288,11 +288,11 @@ Item {
         anchors.fill: parent
     }
 
-    PlayerPage {
+    /*PlayerPage {
         id: itemPlayerPage
         anchors.fill: parent
         visible: playerPage
-    }
+    }*/
 
     Clipboard {
         id: clip

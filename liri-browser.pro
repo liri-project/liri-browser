@@ -11,11 +11,6 @@ TEMPLATE = app
 QT += qml quick widgets svg xml webengine multimedia core #webview (for android)
 #QT += androidextras
 
-include(dependencies/liri-player/dependencies/QmlVlc/QmlVlc.pri)
-
-INCLUDEPATH += dependencies \
-    dependencies/liri-player/dependencies
-
 QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \
@@ -26,8 +21,7 @@ HEADERS += \
     src/cursor/cursor.h
 
 RESOURCES += \
-    src/qml.qrc \
-    dependencies/liri-player/src/plugin.qrc
+    src/qml.qrc
 
 
 CONFIG += c++11
@@ -35,13 +29,6 @@ CONFIG += c++11
 macx {
     LIBS += -L/Applications/VLC.app/Contents/MacOS/lib
 }
-
-android {
-    LIBS += -L$$PWD/android/libs/armeabi-v7a -lvlcjni
-
-    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-}
-
 
 TRANSLATIONS += src/translations/liri-browser.ts \
                 src/translations/de_DE.ts \
