@@ -154,7 +154,7 @@ Item {
 
                             if(!root.privateNav && root.app.tabsEntirelyColorized) {
                                 root.initialPage.ink.color = content
-                                root.initialPage.ink.createTapCircle(root.width/2, Units.dp(100))
+                                root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
                                 root.initialPage.inkTimer.restart()
                             }
                         }
@@ -164,6 +164,11 @@ Item {
                                 root.getTabModelDataByUID(uid).customColor = customColor;
                                 root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(customColor, 0.6);
                                 root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(customColor);
+                                if(!root.privateNav && root.app.tabsEntirelyColorized) {
+                                    root.initialPage.ink.color = customColor
+                                    root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
+                                    root.initialPage.inkTimer.restart()
+                                }
                             }
                             else {
                                 root.getTabModelDataByUID(uid).customColor = false;

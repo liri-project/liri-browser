@@ -37,6 +37,7 @@ MaterialWindow {
 
     //Fix for the player
     property bool noMedia: false
+
     property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
 
     property Settings settings: Settings {
@@ -75,6 +76,8 @@ MaterialWindow {
     property alias toolbar: page.toolbar
 
     //property int systemBarHeight: systemBar.height
+
+    property alias titlebar: page.titlebar
 
     property string searchEngine: "google"
 

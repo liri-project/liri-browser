@@ -19,6 +19,7 @@ Page {
     property alias websiteSearchOverlay: websiteSearchOverlay
     property alias mediaDialog: mediaDialog
     property alias toolbar: toolbar
+    property alias titlebar: titlebar
 
     backgroundColor: {
         if((!activeTab.customColor || inkTimer.running) && !root.app.darkTheme && root.app.tabsEntirelyColorized) {
