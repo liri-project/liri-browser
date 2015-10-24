@@ -12,6 +12,7 @@ Rectangle {
     property bool mobileMode: width < Units.dp(640)
     property color textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.alpha(Theme.light.textColor,1)
     property color linesColor: Theme.alpha(textColor, 0.6)
+    property int subHeaderLeftMargin: Units.dp(20)
     color: root.app.darkTheme ? root.app.darkThemeColor : "white"
     z: -20
     clip: true
@@ -137,8 +138,48 @@ Rectangle {
                 }
             }
 
+            ListItem.SectionHeader {
+                text: qsTr("Window")
+                id: winHead
+                expanded: false
+            }
+
             ListItem.Standard {
-                visible: !root.mobile
+                visible: winHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
+                        id: chbCustomFrame
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.customFrame
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Material window frame (EXPERIMENTAL)")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+
+                }
+                onClicked: {
+                    chbCustomFrame.checked = !chbCustomFrame.checked
+                }
+            }
+
+            ListItem.SectionHeader {
+                text: qsTr("Dash")
+                id: dashHead
+                expanded: false
+            }
+
+            ListItem.Standard {
+                visible: !root.mobile && dashHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -160,8 +201,16 @@ Rectangle {
                 }
             }
 
+            ListItem.SectionHeader {
+                text: qsTr("Toolbar")
+                id: toolHead
+                expanded: false
+            }
+
             ListItem.Standard {
-                visible: !root.mobile
+                visible: !root.mobile && toolHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -184,6 +233,9 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: toolHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -206,7 +258,9 @@ Rectangle {
             }
 
             ListItem.Standard {
-                visible: !root.mobile
+                visible: !root.mobile && toolHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -229,6 +283,9 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: toolHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -251,11 +308,12 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: toolHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
-
-
 
                     CheckBox {
                         id: chbCustomSitesColors
@@ -288,6 +346,9 @@ Rectangle {
             }
 
             ListItem.Standard {
+                visible: toolHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Row {
                     anchors.fill: parent
                     spacing: Units.dp(12)
@@ -320,30 +381,11 @@ Rectangle {
                 }
             }
 
-            ListItem.Standard {
-                Row {
-                    anchors.fill: parent
-                    spacing: Units.dp(12)
-                    CheckBox {
-                        id: chbCustomFrame
-                        darkBackground: root.app.darkTheme
-                        checked: root.app.customFrame
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    Label {
-                        text: qsTr("Material window frame (EXPERIMENTAL)")
-                        anchors.verticalCenter: parent.verticalCenter
-                        font.pixelSize: Units.dp(16)
-                        color: settingsRoot.textColor
-                    }
-
-                }
-                onClicked: {
-                    chbCustomFrame.checked = !chbCustomFrame.checked
-                }
-            }
             ListItem.Standard  {
                 id:bookmarksBarToogle
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                visible: toolHead.expanded
                 text: qsTr('Bookmarks bar')
                 textColor: settingsRoot.textColor
                 Switch {
@@ -359,7 +401,9 @@ Rectangle {
             }
             ListItem.Standard {
                 id: bookmarksBarOptions
-                visible: swBookmarksBar.checked
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                visible: swBookmarksBar.checked && toolHead.expanded
                 height: 120
                 anchors{
                     left: parent.left
@@ -440,8 +484,17 @@ Rectangle {
                 }
             }
 
-            ListItem.Standard  {
+            ListItem.SectionHeader {
+                text: qsTr("Colors")
+                id: colorsHead
+                expanded: false
+            }
+
+            ListItem.Standard {
                 id:darkToogle
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                visible: colorsHead.expanded
                 text: qsTr('Dark theme')
                 textColor: settingsRoot.textColor
                 Switch {
@@ -457,7 +510,9 @@ Rectangle {
             }
             ListItem.Standard {
                 id: darkThemeOptions
-                visible: swDarkTheme.checked
+                visible: swDarkTheme.checked && colorsHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 height: 80
                 anchors{
                     left: parent.left
@@ -503,6 +558,9 @@ Rectangle {
                 id:primaryChooser
                 text: qsTr('Primary Color')
                 textColor: settingsRoot.textColor
+                visible:  colorsHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Rectangle {
                     id: primarycolorSample
                     width: Units.dp(30)
@@ -525,6 +583,9 @@ Rectangle {
                 id:accentChooser
                 text: qsTr('Accent Color')
                 textColor: settingsRoot.textColor
+                visible:  colorsHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 Rectangle {
                     id: accentcolorSample
                     width: Units.dp(30)
@@ -543,8 +604,17 @@ Rectangle {
                 }
             }
 
+            ListItem.SectionHeader {
+                text: qsTr("SourceViewer settings")
+                id: srcHead
+                expanded: false
+            }
+
             ListItem.Standard {
                   id: srcListItem
+                  visible: srcHead.expanded
+                  width: parent.width - settingsRoot.subHeaderLeftMargin
+                  anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                   text: ""
                   height: Units.dp(60)
 
@@ -577,6 +647,9 @@ Rectangle {
 
             ListItem.Standard {
                   id: srcFontItem
+                  visible: srcHead.expanded
+                  width: parent.width - settingsRoot.subHeaderLeftMargin
+                  anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                   text: ""
                   height: Units.dp(60)
                   MenuFieldThemed {
@@ -606,6 +679,9 @@ Rectangle {
             ListItem.Standard {
                 text: "Source code font size : " + slSourceHighlightFontSizePixel.value + "px"
                 height: Units.dp(60)
+                visible: srcHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
                 textColor: settingsRoot.textColor
                 Slider {
                     id: slSourceHighlightFontSizePixel

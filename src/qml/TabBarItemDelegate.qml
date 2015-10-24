@@ -93,7 +93,7 @@ Component {
                 color: backgroundColor
                 Row {
                     anchors.fill: parent
-                    anchors.leftMargin: Units.dp(20)
+                    anchors.leftMargin: Units.dp(10)
                     anchors.rightMargin: Units.dp(5)
                     spacing: Units.dp(7)
 
