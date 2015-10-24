@@ -32,7 +32,7 @@ Controls.ApplicationWindow {
         RectangularGlow {
             id: outGlow
             width: __pageStack.width - parent.anchors.margins * 2
-            height: __pageStack.height + __toolbar.height - parent.anchors.margins * 2 //+ systemBar.height
+            height: __pageStack.height + __toolbar.height - parent.anchors.margins * 2
             x: 10
             y: 10
             visible: root.app.customFrame
@@ -55,7 +55,7 @@ Controls.ApplicationWindow {
             top: parent.top
             bottom: parent.bottom
             margins: root.app.customFrame ? 10 : 0
-            topMargin: /*root.tabsListIsOpened || root.customSitesColorsIsOpened ? 0 :*/ root.app.customFrame ? 10 :  0
+            topMargin: root.app.customFrame ? 10 :  0
         }
 
         onPushed: __toolbar.push(page)
@@ -65,10 +65,6 @@ Controls.ApplicationWindow {
             root.customSitesColorsIsOpened = false
         }
         onReplaced: __toolbar.replace(page)
-        /*Rectangle {
-            anchors.fill: parent
-            color: app.darkTheme ? app.darkThemeColor : "white"
-        }*/
     }
 
     Toolbar {
@@ -105,7 +101,7 @@ Controls.ApplicationWindow {
     SystemButtons {
         id: sysbuttons
         z:90
-        color: /*bookmarksDrawer.visible || downloadsDrawer.visible || historyDrawer.visible ? "transparent" : systemBar.color*/ "transparent"
+        color: "transparent"
         onShowMinimized: root.showMinimized();
         onShowMaximized: root.showMaximized();
         onShowNormal: root.showNormal();
@@ -203,7 +199,7 @@ Controls.ApplicationWindow {
             State {
                 name: "4"
                 PropertyChanges { target: resizeArea; anchors.margins: 0; enabled: false }
-                PropertyChanges { target: __pageStack; anchors.margins: 0; anchors.topMargin: root.app.customFrame ? systemBar.height : 0}
+                PropertyChanges { target: __pageStack; anchors.margins: 0; anchors.topMargin: 0}
                 PropertyChanges { target: systemBar; anchors.margins: 0 }
                 PropertyChanges { target: sysbuttons; anchors.margins: 0 }
                 PropertyChanges { target: __toolbar; anchors.margins: 0 }
