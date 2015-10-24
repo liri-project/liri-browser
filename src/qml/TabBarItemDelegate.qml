@@ -160,7 +160,7 @@ Component {
                     Text {
                         id: title
                         text: root.app.uppercaseTabTitle ? modelData.webview.title.toUpperCase() : modelData.webview.title
-                        color: item.textColor
+                        color: root.currentIconColor
                         width: parent.width - closeButton.width - icon.width - prgLoading.width - Units.dp(16)
                         elide: Text.ElideRight
                         smooth: true
@@ -173,7 +173,7 @@ Component {
 
                     IconButton {
                         id: closeButton
-                        color: item.textColor
+                        color: root.currentIconColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         anchors.verticalCenter: parent.verticalCenter
                         visible: {
