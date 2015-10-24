@@ -164,7 +164,7 @@ Page {
                 id: bookmarksBar
                 visible: {
                     if(root.app.bookmarksBar && !root.mobile) {
-                      if(app.bookmarks.length > 0) {
+                      if(app.bookmarksModel.count > 0) {
                           if(root.app.bookmarksBarAlwaysOn) {
                               return true
                           }
