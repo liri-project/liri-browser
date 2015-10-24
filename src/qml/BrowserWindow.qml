@@ -66,7 +66,7 @@ MaterialWindow {
     property color iconColor: app.darkTheme ? "white" : "#7b7b7b"
     property color addressBarColor: "#e0e0e0"
     property color currentTextColor: privateNav ? "white" : activeTab.customTextColor ? activeTab.customTextColor : iconColor
-    property color currentIconColor: privateNav ? "white" : activeTab.customTextColor ? activeTab.customTextColor : iconColor
+    property color currentIconColor: privateNav ? "white" : activeTab.customTextColor && app.tabsEntirelyColorized ? activeTab.customTextColor : iconColor
     property string currentTabColorDarken: app.darkTheme ? shadeColor(app.darkThemeColor, -0.1) : activeTab.customColor ? shadeColor(activeTab.customColor, -0.1) : "#EFEFEF"
     property string iconColorOnCurrentTabDarken:  app.darkTheme ? shadeColor(app.darkThemeColor, 0.5) : shadeColor("" +Theme.lightDark(currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor) + "",0.4)
     property string fontFamily: "Roboto"
