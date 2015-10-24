@@ -184,6 +184,28 @@ Rectangle {
             }
 
             ListItem.Standard {
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
+                        id: chbUppercaseTabTitle
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.uppercaseTabTitle
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Uppercase tabs titles")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+                }
+                onClicked: {
+                    chbUppercaseTabTitle.checked = !chbUppercaseTabTitle.checked
+                }
+            }
+
+            ListItem.Standard {
                 visible: !root.mobile
                 Row {
                     anchors.fill: parent
@@ -658,6 +680,7 @@ Rectangle {
                     root.app.bookmarksBarOnlyOnDash = rdBookmarksBarOnlyOnDash.checked
                     root.app.allowReducingTabsSizes = chbAllowReducingTabsSizes.checked
                     root.app.quickSearches = chbQuickSearches.checked
+                    root.app.uppercaseTabTitle = chbUppercaseTabTitle.checked
                     drawer.close();
                 }
             }
@@ -672,6 +695,15 @@ Rectangle {
                     chbIntegratedAddressbars.checked = root.app.integratedAddressbars;
                     chbTabsEntirelyColorized.checked = root.app.tabsEntirelyColorized;
                     chbCustomFrame.checked = root.app.customFrame;
+                    chbDashboard.checked = root.app.newTabPage
+                    chbCustomFrame.checked = root.app.customFrame
+                    rdBookmarksBarAlwaysOn.checked = rdBookmarksBarAlwaysOn.checked
+                    swBookmarksBar.checked = root.app.bookmarksBar
+                    rdBookmarksBarOnlyOnDash.checked = root.app.bookmarksBarOnlyOnDash
+                    chbAllowReducingTabsSizes.checked = root.app.allowReducingTabsSizes
+                    chbQuickSearches.checked = root.app.quickSearches
+                    chbUppercaseTabTitle.checked = root.app.uppercaseTabTitle
+                    chbCustomSitesColors.checked = root.app.customSitesColors
                     drawer.close();
                 }
             }

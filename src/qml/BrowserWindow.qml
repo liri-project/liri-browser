@@ -29,8 +29,6 @@ MaterialWindow {
 
     property variant win;
 
-    property bool customFrame: false
-
     property bool snappedRight: false
     property bool snappedLeft: false
 
@@ -184,7 +182,6 @@ MaterialWindow {
             domains[domains_l-1] = domains[domains_l-1].substring(0,domains[domains_l-1].indexOf("/"))
         var domain = domains.join(".")
         var nb=presetSitesColorsModel.count,i,result = "none"
-        console.log(domain)
         for(i=0;i<nb;i++) {
             if (presetSitesColorsModel.get(i).domain == domain)
                 result=presetSitesColorsModel.get(i).color

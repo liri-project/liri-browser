@@ -29,7 +29,7 @@ Rectangle {
             left: parent.left
             //right: toolbarIntegrated.left
         }
-        width: parent.width - toolbarIntegrated.width
+        width: contentItem.width < (tabBar.width - toolbarIntegrated.width) ? contentItem.width : parent.width - toolbarIntegrated.width
 
         orientation: ListView.Horizontal
         spacing: Units.dp(1)

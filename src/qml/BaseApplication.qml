@@ -36,6 +36,8 @@ Item {
     property bool integratedAddressbars: false
     property bool tabsEntirelyColorized: false
 
+    property bool uppercaseTabTitle: false
+
     property bool allowReducingTabsSizes: false
 
     property bool newTabPage: true
@@ -125,6 +127,7 @@ Item {
         property var downloads
         property var customsitescolors
         property bool customSitesColors: application.customSitesColors
+        property alias uppercaseTabTitle: application.uppercaseTabTitle
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
         property alias customFrame: application.customFrame

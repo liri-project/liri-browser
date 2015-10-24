@@ -22,7 +22,7 @@ Component {
 
         property QtObject modelData: listView.model.get(index)
 
-        property url url: modelData.url
+        property url url: modelData.url ? modelData.url : ""
 
         property bool editModeActive: false
 
@@ -159,7 +159,7 @@ Component {
 
                     Text {
                         id: title
-                        text: modelData.webview.title.toUpperCase()
+                        text: root.app.uppercaseTabTitle ? modelData.webview.title.toUpperCase() : modelData.webview.title
                         color: item.textColor
                         width: parent.width - closeButton.width - icon.width - prgLoading.width - Units.dp(16)
                         elide: Text.ElideRight
