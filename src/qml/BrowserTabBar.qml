@@ -98,7 +98,7 @@ Rectangle {
 
     IconButton {
         id: btnAddTabFloating
-        visible: listView.width + toolbarIntegrated.width + width + Units.dp(24) < tabBar.width && mouseArea.draggingId === -1
+        visible: listView.width + toolbarIntegrated.width + width + Units.dp(24) < tabBar.width && mouseArea.draggingId === -1 && !listView.moving
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: listView.right
         anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
@@ -122,7 +122,7 @@ Rectangle {
         IconButton {
             id: btnAddTab
             z:30
-            visible: !btnAddTabFloating.visible && mouseArea.draggingId === -1
+            visible: !btnAddTabFloating.visible && mouseArea.draggingId === -1 && !listView.moving
             width: visible ? Units.dp(24) : 0
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: btnDownloadsIntegrated.left
