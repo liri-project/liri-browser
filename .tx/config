@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[liri-browser-1.liri-browserts]
+[liri-browser.liri-browserts]
 file_filter = src/translations/<lang>.ts
 source_lang = en
 type = QT
