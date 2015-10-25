@@ -20,6 +20,8 @@ Item {
     property bool playerPage
     property bool settingsTabPageSitesColors
     property bool settingsTabPageQuickSearches
+
+    // TODO: Handle this locally
     property bool sourceTapPage: url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
 
     /* Wrapping WebEngineView functionality */
@@ -33,9 +35,6 @@ Item {
     property alias canGoForward: webview.canGoForward
     property bool secureConnection: false
     property real progress: webview.loadProgress/100
-
-
-    //property alias player: itemPlayerPage.player
 
     function goBack() {
         webview.goBack();
@@ -195,6 +194,7 @@ Item {
                     root.app.historyModel.insert(0, item);
                 }
 
+                // TODO: Handle this locally
                 if(!loading && url.toString().substring(0,57)=="http://liri-browser.github.io/sourcecodeviewer/index.html") {
                     runJavaScript("
                       function setSource(){
@@ -293,6 +293,7 @@ Item {
         anchors.fill: parent
     }
 
+    // TO BE REMOVED
     /*PlayerPage {
         id: itemPlayerPage
         anchors.fill: parent

@@ -2,6 +2,8 @@ import QtQuick 2.0
 import Material 0.1
 
 Page {
+    // TO BE REFACTORED
+    // TODO: refactor page and tab system
     title: qsTr("Player")
     visible: false
     backgroundColor: "black"

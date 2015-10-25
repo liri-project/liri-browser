@@ -25,8 +25,7 @@ MaterialWindow {
         backgroundColor: app.darkTheme ? app.darkThemeColor : "#f3f3f3"
     }
 
-    /* User Settings */
-
+    /* Settings */
     property variant win;
 
     property bool snappedRight: false
@@ -36,7 +35,8 @@ MaterialWindow {
     property bool customSitesColorsIsOpened: false
 
     //Fix for the player
-    property bool noMedia: false
+    // TO BE REMOVED
+    //property bool noMedia: false
 
     property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
 
@@ -44,20 +44,20 @@ MaterialWindow {
         id: settings
         property alias x: root.x
         property alias y: root.y
-        //property alias width: root.width
-        //property alias height: root.height
+        property alias width: root.width
+        property alias height: root.height
         property alias primaryColor: theme.primaryColor
         property alias accentColor: theme.accentColor
-        property alias searchEngine: root.searchEngine
     }
 
+    property bool fullscreen: false
+    property bool privateNav: false
+    property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(1000) || width < Units.dp(640)
+
     /* Style Settings */
+
+    // TO BE REMOVED
     property color tabBackgroundColor: "#f1f1f1"
-    property int tabHeight: Units.dp(40)
-    property int tabWidth: !reduceTabsSizes ? Units.dp(200) : Units.dp(50)
-    property int tabWidthEdit: Units.dp(400)
-    property int tabsSpacing: Units.dp(1)
-    property int titlebarHeight: Units.dp(148)
     property color tabColorActive: "#ffffff"
     property color tabColorInactive: "#e5e5e5"
     property alias tabIndicatorColor: theme.accentColor
@@ -69,45 +69,53 @@ MaterialWindow {
     property color currentIconColor: privateNav ? "white" : activeTab.customTextColor && app.tabsEntirelyColorized ? activeTab.customTextColor : iconColor
     property string currentTabColorDarken: app.darkTheme ? shadeColor(app.darkThemeColor, -0.1) : activeTab.customColor ? shadeColor(activeTab.customColor, -0.1) : "#EFEFEF"
     property string iconColorOnCurrentTabDarken:  app.darkTheme ? shadeColor(app.darkThemeColor, 0.5) : shadeColor("" +Theme.lightDark(currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor) + "",0.4)
+
+    // TO KEEP:
+
+    /* ---- */
+
+    property int tabHeight: Units.dp(40)
+    property int tabWidth: !reduceTabsSizes ? Units.dp(200) : Units.dp(50)
+    property int tabWidthEdit: Units.dp(400)
+    property int tabsSpacing: Units.dp(1)
+    property int titlebarHeight: Units.dp(148)
+
+    property color defaultBackgroundColor
+    property color currentBackgroundColor
+
+    property color defaultForegroundColor
+    property color currentForegroundColor
+
+    property color defaultInactiveForegroundColor
+    property color currentInactiveForegroundColor
+
+    property color defaultIndicatorColor
+    property color currentIndicatorColor
+
     property string fontFamily: "Roboto"
 
+    /* ---- */
+
     property alias omniboxText: page
-
     property alias toolbar: page.toolbar
-
-    //property int systemBarHeight: systemBar.height
-
     property alias titlebar: page.titlebar
-
-    property string searchEngine: "google"
-
-    property string sourcetemp: "test"
 
     property alias txtSearch: page.txtSearch
     property alias websiteSearchOverlay: page.websiteSearchOverlay
     property var downloadsDrawer
 
-    property bool fullscreen: false
-
-    property bool privateNav: false
-
-    property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(1000) || width < Units.dp(640)
-
+    /* Tab Management */
     property var activeTab
     property var activeTabItem
     property var lastActiveTab
     property var activeTabHistory: []
-
     property int lastTabUID: 0
-
     property ListModel tabsModel: ListModel {}
-
     property var closedTabsUrls : []
-
     property bool activeTabInEditMode: false
     property var activeTabInEditModeItem
 
-    /* Functions */
+    /* General */
 
     function startFullscreenMode(){
         fullscreen = true;
@@ -138,6 +146,8 @@ MaterialWindow {
         });
     }
 
+    // TO BE REMOVED
+    /*
     function openPlayer(url) {
         activeTab.webview.settingsTabPage = false;
         activeTab.webview.newTabPage = false;
@@ -146,6 +156,9 @@ MaterialWindow {
         activeTab.webview.playerPage = true;
         //activeTab.webview.player.mrl = url
     }
+    */
+
+    /* URL Hangdling */
 
     function getValidUrl(url) {
         url=""+ url + ""
@@ -174,29 +187,6 @@ MaterialWindow {
         return url;
     }
 
-    function searchForCustomColor(url) {
-        var domains = url.split(".")
-        if(domains[0].indexOf("://") != 1)
-            domains[0]=domains[0].substring(domains[0].indexOf("://")+3,domains[0].length)
-        if(domains[0] == "www")
-            domains.shift()
-        var domains_l = domains.length;
-        if(domains[domains_l-1].indexOf("/") != -1)
-            domains[domains_l-1] = domains[domains_l-1].substring(0,domains[domains_l-1].indexOf("/"))
-        var domain = domains.join(".")
-        var nb=presetSitesColorsModel.count,i,result = "none"
-        for(i=0;i<nb;i++) {
-            if (presetSitesColorsModel.get(i).domain == domain)
-                result=presetSitesColorsModel.get(i).color
-        }
-        nb=customSitesColorsModel.count;
-        for(i=0;i<nb;i++) {
-            if (customSitesColorsModel.get(i).domain == domain)
-                result=customSitesColorsModel.get(i).color
-        }
-        return result
-    }
-
     function isASearchQuery(url) {
       if (url.indexOf('.') !== -1){
           if (url.lastIndexOf('http://', 0) !== 0){
@@ -208,6 +198,9 @@ MaterialWindow {
       else
         return true;
     }
+
+
+    /* Boomarks Management */
 
     function getBetterIcon(url, title, color, callback){
         var doc = new XMLHttpRequest();
@@ -283,32 +276,30 @@ MaterialWindow {
         return false;
     }
 
-    function clearBookmarks(){
-        for(var i = page.bookmarkContainer.children.length; i > 0 ; i--) {
-            page.bookmarkContainer.children[i-1].destroy();
+
+    /* Color Handling */
+
+    function searchForCustomColor(url) {
+        var domains = url.split(".")
+        if(domains[0].indexOf("://") != 1)
+            domains[0]=domains[0].substring(domains[0].indexOf("://")+3,domains[0].length)
+        if(domains[0] == "www")
+            domains.shift()
+        var domains_l = domains.length;
+        if(domains[domains_l-1].indexOf("/") != -1)
+            domains[domains_l-1] = domains[domains_l-1].substring(0,domains[domains_l-1].indexOf("/"))
+        var domain = domains.join(".")
+        var nb=presetSitesColorsModel.count,i,result = "none"
+        for(i=0;i<nb;i++) {
+            if (presetSitesColorsModel.get(i).domain == domain)
+                result=presetSitesColorsModel.get(i).color
         }
-    }
-
-    function loadBookmarks() {
-       /* root.app.bookmarks = sortByKey(root.app.bookmarks, "title"); // Automatically sort root.app.bookmarks
-        for (var i=0; i<root.app.bookmarks.length; i++){
-            var b = root.app.bookmarks[i];
-            var bookmarkObject = , { title: b.title, url: b.url, faviconUrl: b.faviconUrl });
-        }*/
-    }
-
-    function reloadBookmarks(){
-        /*clearBookmarks();
-        loadBookmarks();
-        // Reload the bookmarks model
-        root.app.bookmarksModel.clear()
-        for (var i=0; i<root.app.settings.bookmarks.length; i++) {
-            root.app.bookmarksModel.append(root.app.settings.bookmarks[i]);
-        }*/
-    }
-
-    function bookmarksChanged() {
-        root.app.changedBookmarks();
+        nb=customSitesColorsModel.count;
+        for(i=0;i<nb;i++) {
+            if (customSitesColorsModel.get(i).domain == domain)
+                result=customSitesColorsModel.get(i).color
+        }
+        return result
     }
 
     function shadeColor(color, percent) {
@@ -334,6 +325,9 @@ MaterialWindow {
             return root.TabTextColorActive
         }
     }
+
+
+    /* Tabs Management */
 
     onActiveTabChanged: {
         // Handle last active tab
@@ -557,7 +551,6 @@ MaterialWindow {
             snackbar.open(qsTr('Added bookmark "%1"').arg(title));
             addBookmark(title, url, icon, activeTab.customColor);
         }
-        page.updateToolbar ();
     }
 
     function activeTabFindText(text, backward) {
@@ -577,7 +570,6 @@ MaterialWindow {
         });
     }
 
-
     function tooglePrivateNav(){
         if(!root.privateNav) {
             root.initialPage.ink.color = "#212121"
@@ -588,12 +580,6 @@ MaterialWindow {
             root.initialPage.ink.currentCircle.removeCircle()
             root.privateNav = false
         }
-    }
-
-    /* Events */
-
-    function activeTabUrlChanged() {
-        page.updateToolbar ();
     }
 
     /** ------------- **/
@@ -666,7 +652,6 @@ MaterialWindow {
             var component = Qt.createComponent("DownloadsDrawer.qml");
             downloadsDrawer = component.createObject(page);
         }
-
 
         // Add tab
         addTab();

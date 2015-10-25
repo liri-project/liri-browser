@@ -62,13 +62,6 @@ Rectangle {
                     width: item.width; height: item.height;
                     property int uid: (index >= 0) ? grid.model.get(index).uid : -1
 
-                    Behavior on x {
-                        NumberAnimation { duration: 100 }
-                    }
-                    Behavior on y {
-                        NumberAnimation { duration: 100 }
-                    }
-
                     Image {
                         anchors.centerIn: parent
                         width: if (implicitWidth > Units.dp(64)) { Units.dp(64) } else { implicitWidth }

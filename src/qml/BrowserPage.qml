@@ -14,7 +14,6 @@ Page {
     property alias webContainer: webContainer
     property alias listView: tabBar.listView
     property alias bookmarksBar: bookmarksBar
-    //property alias bookmarkContainer: bookmarksBar.bookmarkContainer
     property alias txtSearch: txtSearch
     property alias websiteSearchOverlay: websiteSearchOverlay
     property alias mediaDialog: mediaDialog

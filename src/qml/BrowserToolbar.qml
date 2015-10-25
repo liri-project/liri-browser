@@ -7,7 +7,6 @@ import QtQuick.Controls 1.2 as Controls
 View {
     id: toolbar
     elevation:0
-    //backgroundColor: inkTimer.running ? "white" : root.app.darkTheme ? root.app.darkThemeColor : activeTab.customColor ? activeTab.customColor : root.tabColorActive
     backgroundColor: "transparent"
     visible: !root.app.integratedAddressbars
 
@@ -22,15 +21,6 @@ View {
     }
 
     property var ubuntuOmniboxOverlay
-
-    function update() {
-        var url = activeTab.webview.url;
-
-        if (isBookmarked(url))
-            bookmarkButton.iconName = "action/bookmark";
-        else
-            bookmarkButton.iconName = "action/bookmark_border";
-    }
 
     RowLayout {
         anchors.fill: parent
@@ -157,8 +147,6 @@ View {
             var overlayComponent = Qt.createComponent("UbuntuOmniboxOverlay.qml");
             ubuntuOmniboxOverlay = overlayComponent.createObject(toolbar, {})
         }
-
-
     }
 
 }

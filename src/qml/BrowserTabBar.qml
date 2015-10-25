@@ -8,15 +8,12 @@ Rectangle {
     id: tabBar
 
     height: root.tabHeight
-    //color: root.tabBackgroundColor
-    //color: root.app.customFrame ? "transparent" : root.app.darkTheme ? root.app.darkThemeColor : "#EFEFEF"
     color: "transparent"
     anchors {
         left: parent.left
         rightMargin: root.app.customFrame ? Units.dp(100) : 0
         right: parent.right
     }
-
 
     property alias listView: listView
 
@@ -27,7 +24,6 @@ Rectangle {
             top: parent.top
             bottom: parent.bottom
             left: parent.left
-            //right: toolbarIntegrated.left
         }
         width: contentItem.width < (tabBar.width - toolbarIntegrated.width) ? contentItem.width : parent.width - toolbarIntegrated.width
 
@@ -106,7 +102,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: listView.right
         anchors.margins:if (root.app.integratedAddressbars) { Units.dp(24) } else { 12 }
-        color: root.iconColorOnCurrentTabDarken
+        color: root.currentIconColor
         iconName: "content/add"
 
         onClicked: addTab();
@@ -114,11 +110,11 @@ Rectangle {
 
     Rectangle {
         id: toolbarIntegrated
-        color: tabBar.color
+        //color: tabBar.color
+        // TBD: current background color
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        //visible: !root.app.customFrame
         width: root.app.integratedAddressbars ? btnAddTab.width + btnDownloadsIntegrated.width +
                                                 btnMenuIntegrated.width + 4 * Units.dp(24)
                                               : Units.dp(48)
@@ -132,7 +128,7 @@ Rectangle {
             anchors.right: btnDownloadsIntegrated.left
             anchors.margins: root.app.integratedAddressbars ? Units.dp(24) : root.app.customFrame ? 3 : 12
             anchors.rightMargin: root.app.integratedAddressbars ? Units.dp(24) : root.app.customFrame ? 2 : 12
-            color: root.app.darkTheme ? shadeColor(root.app.darkThemeColor, 0.5) : Theme.lightDark(root.currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor)
+            color: root.currentIconColor
             iconName: "content/add"
 
             onClicked: addTab();
@@ -159,7 +155,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: root.app.integratedAddressbars ? Units.dp(24) : 0
             width: root.app.integratedAddressbars ? Units.dp(24) : 0
-            color: root.iconColor
+            color: root.currentIconColor
             iconName: "navigation/more_vert"
             onClicked: overflowMenu.open(btnMenuIntegrated)
         }

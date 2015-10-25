@@ -14,10 +14,10 @@ Component {
         property int widthWithoutClose: editModeActive ? root.tabWidthEdit : root.tabWidth
 
         property color backgroundColor: itemContainer.state != "dragging" ? "transparent" : page.backgroundColor
-        property color textColor: root.privateNav ? "#FAFAFA" : (itemContainer.state == "active")
-                                                    &&  !activeTab.customColor ? root.iconColor : (itemContainer.state != "active")
-                                                                                 &&  !activeTab.customColor ? Theme.alpha(root.iconColor,0.5) : (itemContainer.state == "active")
-                                                                                                              &&  activeTab.customColor ? "white" : Theme.alpha("white", 0.5)
+        //property color textColor: root.privateNav ? "#FAFAFA" : (itemContainer.state == "active")
+        //                                            &&  !activeTab.customColor ? root.iconColor : (itemContainer.state != "active")
+        //                                                                         &&  !activeTab.customColor ? Theme.alpha(root.iconColor,0.5) : (itemContainer.state == "active")
+        // /*TO BE REMOVED*/                                                                                                     &&  activeTab.customColor ? "white" : Theme.alpha("white", 0.5)
         property alias state: itemContainer.state
 
         property QtObject modelData: listView.model.get(index)
@@ -115,7 +115,7 @@ Component {
 
                     Icon {
                         id: iconNoFavicon
-                        color:  item.textColor
+                        color:  root.currentIconColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/description"
                         visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && !modelData.webview.settingsTabPageQuickSearches
@@ -124,7 +124,7 @@ Component {
 
                     Icon {
                         id: iconDashboard
-                        color:  item.textColor
+                        color:  root.currentIconColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/dashboard"
                         visible: modelData.webview.newTabPage
@@ -134,7 +134,7 @@ Component {
                     Icon {
                         id: iconSettings
                         name: "action/settings"
-                        color:  item.textColor
+                        color:  root.currentIconColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         visible: modelData.webview.settingsTabPage || modelData.webview.settingsTabPageSitesColors || modelData.webview.settingsTabPageQuickSearches
                         anchors.verticalCenter: parent.verticalCenter
@@ -143,7 +143,7 @@ Component {
                     Icon {
                         id: iconSource
                         name: "action/code"
-                        color:  item.textColor
+                        color:  root.currentIconColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         anchors.verticalCenter: parent.verticalCenter
