@@ -13,9 +13,9 @@ Item {
         delegate: Card {
             property int uid: (index >= 0) ? listView.model.get(index).uid : -1
 
-            property color backgroundColor: (root.app.tabsEntirelyColorized && model.customColor) ? model.customColor: root.tabColorActive
-            property color defaultTextColor: root.tabTextColorActive
-            property color textColor: (root.app.tabsEntirelyColorized && model.customTextColor) ? model.customTextColor: defaultTextColor
+            property color backgroundColor: root.defaultBackgroundColor
+            property color defaultTextColor: root.defaultForegroundColor
+            property color textColor: defaultTextColor
 
             width: parent.width
             height: Units.dp(48)

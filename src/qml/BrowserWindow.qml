@@ -54,55 +54,35 @@ MaterialWindow {
     property bool privateNav: false
     property bool mobile: Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) < Units.dp(1000) || width < Units.dp(640)
 
-    /* Style Settings */
-
-    // TO BE REMOVED
-    property color tabBackgroundColor: "#f1f1f1"
-    property color tabColorActive: "#ffffff"
-    property color tabColorInactive: "#e5e5e5"
-    property alias tabIndicatorColor: theme.accentColor
-    property color tabTextColorActive: "#212121"
-    property color tabTextColorInactive: "#757575"
-    property color iconColor: app.darkTheme ? "white" : "#7b7b7b"
-    property color addressBarColor: "#e0e0e0"
-    property color currentTextColor: privateNav ? "white" : activeTab.customTextColor ? activeTab.customTextColor : iconColor
-    property color currentIconColor: privateNav ? "white" : activeTab.customTextColor && app.tabsEntirelyColorized ? activeTab.customTextColor : iconColor
-    property string currentTabColorDarken: app.darkTheme ? shadeColor(app.darkThemeColor, -0.1) : activeTab.customColor ? shadeColor(activeTab.customColor, -0.1) : "#EFEFEF"
-    property string iconColorOnCurrentTabDarken:  app.darkTheme ? shadeColor(app.darkThemeColor, 0.5) : shadeColor("" +Theme.lightDark(currentTabColorDarken, Theme.light.iconColor, Theme.dark.iconColor) + "",0.4)
-
-    // TO KEEP:
-
-    /* ---- */
-
-    property int tabHeight: Units.dp(40)
-    property int tabWidth: !reduceTabsSizes ? Units.dp(200) : Units.dp(50)
-    property int tabWidthEdit: Units.dp(400)
-    property int tabsSpacing: Units.dp(1)
-    property int titlebarHeight: Units.dp(148)
-
-    property color defaultBackgroundColor
-    property color currentBackgroundColor
-
-    property color defaultForegroundColor
-    property color currentForegroundColor
-
-    property color defaultInactiveForegroundColor
-    property color currentInactiveForegroundColor
-
-    property color defaultIndicatorColor
-    property color currentIndicatorColor
-
-    property string fontFamily: "Roboto"
-
-    /* ---- */
-
-    property alias omniboxText: page
     property alias toolbar: page.toolbar
     property alias titlebar: page.titlebar
 
     property alias txtSearch: page.txtSearch
     property alias websiteSearchOverlay: page.websiteSearchOverlay
     property var downloadsDrawer
+
+    /* Style Settings */
+    property int tabHeight: Units.dp(40)
+    property int tabWidth: !reduceTabsSizes ? Units.dp(200) : Units.dp(50)
+    property int tabWidthEdit: Units.dp(400)
+    property int tabsSpacing: Units.dp(1)
+    property int titlebarHeight: Units.dp(148)
+
+    property color defaultBackgroundColor: "#FAFAFA"
+    property color currentBackgroundColor: page.backgroundColor
+
+    property color defaultForegroundColor: (privateNav || app.darkTheme) ? "white" : "#212121"
+    property color currentForegroundColor: app.tabsEntirelyColorized && activeTab.customTextColor ? activeTab.customTextColor : defaultForegroundColor
+
+    property color defaultInactiveForegroundColor: (privateNav || app.darkTheme) ? shadeColor("#FFFFF", 0.9) : "#757575"
+    property color currentInactiveForegroundColor: app.tabsEntirelyColorized && activeTab.customTextColor ? shadeColor(activeTab.customTextColor, 0.9) : defaultInactiveForegroundColor
+
+    property color defaultIndicatorColor
+    property color currentIndicatorColor
+
+    property color currentIconColor: currentForegroundColor
+
+    property string fontFamily: "Roboto"
 
     /* Tab Management */
     property var activeTab
@@ -304,6 +284,7 @@ MaterialWindow {
 
     function shadeColor(color, percent) {
         // from http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+        color = color.toString()
         var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
         return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
     }
@@ -322,10 +303,9 @@ MaterialWindow {
             return "white";
         }
         else {
-            return root.TabTextColorActive
+            return root.defaultForegroundColor
         }
     }
-
 
     /* Tabs Management */
 
@@ -344,7 +324,6 @@ MaterialWindow {
             activeTab.webview.visible = true;
             activeTabHistory.push(activeTab.uid);
         }
-        page.updateToolbar();
     }
 
     function getTabModelDataByUID (uid) {
@@ -572,7 +551,7 @@ MaterialWindow {
 
     function tooglePrivateNav(){
         if(!root.privateNav) {
-            root.initialPage.ink.color = "#212121"
+            root.initialPage.ink.color = app.privateNavColor
             root.initialPage.ink.createTapCircle(root.width - Units.dp(30),root.height-Units.dp(30))
             root.privateNav = true
         }
@@ -581,8 +560,6 @@ MaterialWindow {
             root.privateNav = false
         }
     }
-
-    /** ------------- **/
 
     Item {
         id: shortCutActionsContainer

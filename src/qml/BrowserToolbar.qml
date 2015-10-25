@@ -11,9 +11,6 @@ View {
     visible: !root.app.integratedAddressbars
 
     height: root.mobile ? Units.dp(64) : Units.dp(56)
-    property bool darkBackground: Theme.isDarkColor(color)
-    property color textColor: Theme.lightDark(color, Theme.light.textColor, Theme.dark.textColor)
-    property color iconColor: Theme.lightDark(color, Theme.light.iconColor, Theme.dark.iconColor)
 
     anchors {
         left: parent.left

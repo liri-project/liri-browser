@@ -7,7 +7,7 @@ import Material.ListItems 0.1 as ListItem
 Rectangle {
     id: pageRoot
     anchors.fill: parent
-    color: /*root.app.darkTheme ? root.app.darkThemeColor : "white"*/ "transparent"
+    color: "transparent"
 
     Text {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -16,7 +16,7 @@ Rectangle {
         text: qsTr("Nothing here, yet")
         visible: root.app.dashboardModel.count === 0
         font.pixelSize: 24
-        color: root.iconColor
+        color: root.currentForegroundColor
     }
 
     Text {
@@ -30,7 +30,7 @@ Rectangle {
         wrapMode: Text.WordWrap
         visible: root.app.dashboardModel.count === 0
         font.pixelSize: 16
-        color: root.iconColor
+        color: root.currentForegroundColor
     }
 
     GridView {

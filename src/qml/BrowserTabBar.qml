@@ -110,8 +110,7 @@ Rectangle {
 
     Rectangle {
         id: toolbarIntegrated
-        //color: tabBar.color
-        // TBD: current background color
+        color: root.currentBackgroundColor
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -122,7 +121,7 @@ Rectangle {
         IconButton {
             id: btnAddTab
             z:30
-            visible: !btnAddTabFloating.visible && mouseArea.draggingId === -1 && !listView.moving
+            visible: !btnAddTabFloating.visible
             width: visible ? Units.dp(24) : 0
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: btnDownloadsIntegrated.left

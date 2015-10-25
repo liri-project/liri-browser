@@ -22,7 +22,8 @@ Item {
         return d.getHours()
     }
 
-    property string darkThemeColor: "#263238"
+    property color darkThemeColor: "#263238"
+    property color privateNavColor: "#212121"
     property bool isNight: (getCurrentHour() >= 19 || getCurrentHour() <= 7)
 
     property string sourcetemp: "unknown"

@@ -21,18 +21,14 @@ Page {
     property alias titlebar: titlebar
 
     backgroundColor: {
-        if((!activeTab.customColor || inkTimer.running) && !root.app.darkTheme && root.app.tabsEntirelyColorized) {
-                return "#FAFAFA"
-        }
-        else if((!activeTab.customColor || inkTimer.running) && root.app.darkTheme && root.app.tabsEntirelyColorized) {
-            return root.app.darkThemeColor
-        }
-        else if(root.app.tabsEntirelyColorized)
-            return activeTab.customColor
+        if (root.privateNav)
+            return root.app.privateNavColor
         else if(root.app.darkTheme)
             return root.app.darkThemeColor
+        else if(root.app.tabsEntirelyColorized && activeTab.customColor && !inkTimer.running)
+            return activeTab.customColor
         else
-            return "#FAFAFA"
+            return root.defaultBackgroundColor
     }
 
     Behavior on backgroundColor {
@@ -43,12 +39,6 @@ Page {
 
     property alias ink: ink
     property alias inkTimer: inkTimer
-
-    function updateToolbar () {
-        toolbar.update()
-    }
-
-
 
     property list<Action> overflowActions: [
         Action {
@@ -313,7 +303,7 @@ Page {
                   historyDrawer.close()
               }
           }
-        }
+    }
 
     BookmarksDrawer { id: bookmarksDrawer }
 
@@ -323,7 +313,6 @@ Page {
         id: ink
         anchors.fill: parent
         width: root.width
-        onPressed: console.log(0)
         enabled: false
         propagateComposedEvents: true
         color: activeTab.customColor

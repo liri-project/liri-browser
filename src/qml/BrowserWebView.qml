@@ -92,7 +92,6 @@ Item {
                 activeTabUrlChanged();
             if(isMedia("" + url + "")) {
 
-                console.log("\n\nbi\n\n\nbi\n\n\nbi\n\n\nbi\n\n\nbi\n")
                 setActiveTabURL(url)
             }
         }
@@ -149,9 +148,7 @@ Item {
                             root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(content, 0.6);
                             root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
 
-                            console.log(root.initialPage)
-
-                            if(!root.privateNav && root.app.tabsEntirelyColorized) {
+                            if(!root.privateNav && !root.app.darkTheme && root.app.tabsEntirelyColorized) {
                                 root.initialPage.ink.color = content
                                 root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
                                 root.initialPage.inkTimer.restart()

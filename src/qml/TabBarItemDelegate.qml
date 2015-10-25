@@ -13,11 +13,9 @@ Component {
         property int widthWithClose: editModeActive ? root.tabWidthEdit : root.tabWidth*1.7
         property int widthWithoutClose: editModeActive ? root.tabWidthEdit : root.tabWidth
 
-        property color backgroundColor: itemContainer.state != "dragging" ? "transparent" : page.backgroundColor
-        //property color textColor: root.privateNav ? "#FAFAFA" : (itemContainer.state == "active")
-        //                                            &&  !activeTab.customColor ? root.iconColor : (itemContainer.state != "active")
-        //                                                                         &&  !activeTab.customColor ? Theme.alpha(root.iconColor,0.5) : (itemContainer.state == "active")
-        // /*TO BE REMOVED*/                                                                                                     &&  activeTab.customColor ? "white" : Theme.alpha("white", 0.5)
+        property color backgroundColor: itemContainer.state != "dragging" ? "transparent" : root.currentBackgroundColor
+        property color foregroundColor: itemContainer.state == "inactive" ? root.currentInactiveForegroundColor: root.currentForegroundColor
+
         property alias state: itemContainer.state
 
         property QtObject modelData: listView.model.get(index)
@@ -115,7 +113,7 @@ Component {
 
                     Icon {
                         id: iconNoFavicon
-                        color:  root.currentIconColor
+                        color:  item.foregroundColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/description"
                         visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && !modelData.webview.settingsTabPageQuickSearches
@@ -124,7 +122,7 @@ Component {
 
                     Icon {
                         id: iconDashboard
-                        color:  root.currentIconColor
+                        color:  item.foregroundColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/dashboard"
                         visible: modelData.webview.newTabPage
@@ -134,7 +132,7 @@ Component {
                     Icon {
                         id: iconSettings
                         name: "action/settings"
-                        color:  root.currentIconColor
+                        color:  item.foregroundColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         visible: modelData.webview.settingsTabPage || modelData.webview.settingsTabPageSitesColors || modelData.webview.settingsTabPageQuickSearches
                         anchors.verticalCenter: parent.verticalCenter
@@ -143,7 +141,7 @@ Component {
                     Icon {
                         id: iconSource
                         name: "action/code"
-                        color:  root.currentIconColor
+                        color:  item.foregroundColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
                         anchors.verticalCenter: parent.verticalCenter
@@ -160,7 +158,7 @@ Component {
                     Text {
                         id: title
                         text: root.app.uppercaseTabTitle ? modelData.webview.title.toUpperCase() : modelData.webview.title
-                        color: root.currentIconColor
+                        color: item.foregroundColor
                         width: parent.width - closeButton.width - icon.width - prgLoading.width - Units.dp(16)
                         elide: Text.ElideRight
                         smooth: true
@@ -173,7 +171,7 @@ Component {
 
                     IconButton {
                         id: closeButton
-                        color: root.currentIconColor
+                        color: item.foregroundColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         anchors.verticalCenter: parent.verticalCenter
                         visible: {
@@ -207,7 +205,7 @@ Component {
 
                 Rectangle {
                     id: rectIndicator
-                    color: root.currentIconColor
+                    color: item.foregroundColor
                     visible: itemContainer.state == "active"
                     height: Units.dp(2)
                     width: parent.width
@@ -261,7 +259,7 @@ Component {
                     enabled: modelData.webview.canGoBack
 
                     onClicked: modelData.webview.goBack()
-                    color: root.currentIconColor
+                    color: item.foregroundColor
                 }
 
                 IconButton {
@@ -279,7 +277,7 @@ Component {
                     }
 
                     onClicked: modelData.webview.goForward()
-                    color: root.currentIconColor
+                    color: item.foregroundColor
                 }
 
                 IconButton {
@@ -291,7 +289,7 @@ Component {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: btnGoForward.right
                     anchors.margins: Units.dp(16)
-                    color: root.currentIconColor
+                    color: item.foregroundColor
                     onClicked: {
                         item.editModeActive = false;
                         modelData.webview.reload();
@@ -311,7 +309,7 @@ Component {
                 Icon {
                     id: iconConnectionType
                     name: modelData.webview.secureConnection ? "action/lock" :  "social/public"
-                    color:  modelData.webview.secureConnection ? "green" :  root.currentIconColor
+                    color:  modelData.webview.secureConnection ? "green" :  item.foregroundColor
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: prgLoadingEdit.right
                     anchors.margins: Units.dp(16)
@@ -325,7 +323,7 @@ Component {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     text: modelData.webview.url
-                    style: TextFieldStyle { textColor: root.iconColor }
+                    style: TextFieldStyle { textColor: root.currentForegroundColor }
                     showBorder: false
                     onAccepted: {
                         item.editModeActive = false;
@@ -339,7 +337,7 @@ Component {
 
                 IconButton {
                     id: btnTxtUrlHide
-                    color: root.currentIconColor
+                    color: item.foregroundColor
                     anchors.margins: Units.dp(16)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
