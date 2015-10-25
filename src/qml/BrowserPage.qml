@@ -22,7 +22,7 @@ Page {
 
     backgroundColor: {
         if (root.privateNav)
-            return root.app.privateNavColor
+            return root.defaultBackgroundColor
         else if(root.app.darkTheme)
             return root.app.darkThemeColor
         else if(root.app.tabsEntirelyColorized && activeTab.customColor && !inkTimer.running)

@@ -110,7 +110,7 @@ Rectangle {
 
     Rectangle {
         id: toolbarIntegrated
-        color: root.currentBackgroundColor
+        color: "transparent"
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
