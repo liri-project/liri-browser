@@ -12,6 +12,8 @@ View {
     elevation: 1
     opacity: 1
 
+    property alias txtUrl: txtUrl
+
     /*om
      * Loading progress indicator
      *

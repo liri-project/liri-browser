@@ -43,8 +43,8 @@ Item {
                 root.activeTabItem.editModeActive = true;
             }
             else {
-                txtUrl.forceActiveFocus();
-                txtUrl.selectAll();
+                toolbar.omnibox.txtUrl.forceActiveFocus();
+                toolbar.omnibox.txtUrl.selectAll();
             }
         }
     }
@@ -55,8 +55,8 @@ Item {
                 root.activeTabItem.editModeActive = true;
             }
             else {
-                txtUrl.forceActiveFocus();
-                txtUrl.selectAll();
+                toolbar.omnibox.txtUrl.forceActiveFocus();
+                toolbar.omnibox.txtUrl.selectAll();
             }
         }
     }

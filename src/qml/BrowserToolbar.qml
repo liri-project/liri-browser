@@ -18,6 +18,7 @@ View {
     }
 
     property var ubuntuOmniboxOverlay
+    property alias omnibox: omnibox
 
     RowLayout {
         anchors.fill: parent
