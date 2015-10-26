@@ -398,6 +398,9 @@ Rectangle {
                             verticalCenter: parent.verticalCenter
                     }
                 }
+                onClicked: {
+                    swBookmarksBar.checked = !swBookmarksBar.checked
+                }
             }
             ListItem.Standard {
                 id: bookmarksBarOptions
@@ -506,6 +509,9 @@ Rectangle {
                             right: parent.right
                             verticalCenter: parent.verticalCenter
                     }
+                }
+                onClicked: {
+                    swDarkTheme.checked = !swDarkTheme.checked
                 }
             }
             ListItem.Standard {
