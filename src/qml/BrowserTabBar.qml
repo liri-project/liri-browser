@@ -35,6 +35,8 @@ Rectangle {
 
         delegate: TabBarItemDelegate {}
 
+        clip: true
+
         MouseArea {
             id: mouseArea
             anchors {
