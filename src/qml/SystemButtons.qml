@@ -40,7 +40,7 @@ Rectangle {
         }
 
         IconButton {
-            iconName: root.visibility == 4 ? "navigation/fullscreen_exit" : "navigation/fullscreen"
+            iconName: root.visibility == 4 ? "image/crop_7_5" : "image/crop_3_2"
             width: Units.dp(20)
             id: sysbtn_max
             height: width
