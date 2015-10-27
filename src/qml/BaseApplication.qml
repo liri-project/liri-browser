@@ -47,6 +47,11 @@ Item {
         dynamicRoles: true
     }
 
+    property ListModel searchSuggestionsModel: ListModel {
+        id: searchSuggestionsModel
+        dynamicRoles: true
+    }
+
     property ListModel historyModel: ListModel {
         id: historyModel
         dynamicRoles: true

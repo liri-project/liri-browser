@@ -237,6 +237,8 @@ Page {
         }
     }
 
+    SearchSuggestions { id: searchSuggestions }
+
     Dialog {
         id: mediaDialog
         title: "A media link has been reached"

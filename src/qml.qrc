@@ -48,5 +48,6 @@
         <file>qml/ScrollbarThemed.qml</file>
         <file>qml/PlayerPage.qml</file>
         <file>qml/AwesomeActionButton.qml</file>
+        <file>qml/SearchSuggestions.qml</file>
     </qresource>
 </RCC>

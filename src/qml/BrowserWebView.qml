@@ -138,6 +138,7 @@ Item {
                 if (newTabPage) {
                     newTabPage = false;
                 }
+                root.app.searchSuggestionsModel.clear()
             }
             else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
                 // Looking for custom tab bar colors

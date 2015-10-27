@@ -125,7 +125,28 @@ View {
         placeholderText: mobile ? qsTr("Search") : qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive
-        onTextChanged: isASearchQuery(text) ? connectionTypeIcon.searchIcon = true : connectionTypeIcon.searchIcon = false;
+        onTextChanged: {
+            if(isASearchQuery(text)) {
+                connectionTypeIcon.searchIcon = true
+
+                //Get search suggestions
+                var req = new XMLHttpRequest, status;
+                req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
+                req.onreadystatechange = function() {
+                    status = req.readyState;
+                    if (status === XMLHttpRequest.DONE) {
+                        var objectArray = JSON.parse(req.responseText);
+                        root.app.searchSuggestionsModel.clear()
+                        for(var i in objectArray)
+                            root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase})
+                    }
+                }
+                req.send();
+            }
+            else
+                connectionTypeIcon.searchIcon = false;
+
+        }
         onAccepted: {
             setActiveTabURL(text)
             quickSearch = ""

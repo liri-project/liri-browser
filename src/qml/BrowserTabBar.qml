@@ -28,6 +28,7 @@ Rectangle {
         width: contentItem.width < (tabBar.width - toolbarIntegrated.width) ? contentItem.width : parent.width - toolbarIntegrated.width
 
         orientation: ListView.Horizontal
+        boundsBehavior: Flickable.StopAtBounds
         spacing: Units.dp(1)
         interactive: mouseArea.draggingId == -1
 

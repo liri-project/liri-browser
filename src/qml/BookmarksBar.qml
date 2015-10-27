@@ -17,6 +17,7 @@ Rectangle {
 
     ListView {
         id: bookmarkView
+        boundsBehavior: Flickable.StopAtBounds
         anchors.leftMargin: Units.dp(20)
         anchors.rightMargin: Units.dp(20)
         anchors.fill: parent
