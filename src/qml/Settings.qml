@@ -859,7 +859,6 @@ Rectangle {
                     root.app.allowReducingTabsSizes = chbAllowReducingTabsSizes.checked
                     root.app.quickSearches = chbQuickSearches.checked
                     root.app.uppercaseTabTitle = chbUppercaseTabTitle.checked
-                    drawer.close();
                 }
             }
             Button {
@@ -885,7 +884,6 @@ Rectangle {
                     privateColorPicker.color = root.app.privateNavColor;
                     lightColorPicker.color = root.app.lightThemeColor;
                     darkColorPicker.color = root.app.darkThemeColor;
-                    drawer.close();
                 }
             }
         }
