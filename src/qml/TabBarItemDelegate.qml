@@ -97,12 +97,12 @@ Component {
 
                     Image {
                         id: icon
-                        visible: isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && !modelData.webview.settingsTabPageQuickSearches && modelData.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
-                        width: webview.loading ?  0 : Units.dp(20)
+                        visible: isAFavicon && !modelData.view.loading && typeof(modelData.view.icon) !== 'string'
+                        width: view.loading ?  0 : Units.dp(20)
                         height: Units.dp(20)
                         anchors.verticalCenter: parent.verticalCenter
-                        source: modelData.webview.icon
-                        property var isAFavicon: true
+                        source: modelData.view.icon
+                        property bool isAFavicon: true
                         onStatusChanged: {
                             if (icon.status == Image.Error || icon.status == Image.Null)
                                 isAFavicon = false;
@@ -116,48 +116,29 @@ Component {
                         color:  item.foregroundColor
                         Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/description"
-                        visible: !icon.isAFavicon && !modelData.webview.loading && !modelData.webview.newTabPage && !modelData.webview.settingsTabPage && !modelData.webview.settingsTabPageSitesColors && !modelData.webview.settingsTabPageQuickSearches
+                        visible: !icon.isAFavicon && !modelData.view.loading && typeof(modelData.view.icon) !== 'string'
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Icon {
-                        id: iconDashboard
                         color:  item.foregroundColor
                         Behavior on color { ColorAnimation { duration : 500 }}
-                        name: "action/dashboard"
-                        visible: modelData.webview.newTabPage
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Icon {
-                        id: iconSettings
-                        name: "action/settings"
-                        color:  item.foregroundColor
-                        Behavior on color { ColorAnimation { duration : 500 }}
-                        visible: modelData.webview.settingsTabPage || modelData.webview.settingsTabPageSitesColors || modelData.webview.settingsTabPageQuickSearches
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Icon {
-                        id: iconSource
-                        name: "action/code"
-                        color:  item.foregroundColor
-                        Behavior on color { ColorAnimation { duration : 500 }}
-                        visible: modelData.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
+                        visible: typeof(modelData.view.icon) === 'string' && !iconNoFavicon.visible
+                        name: modelData.view.icon
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     LoadingIndicator {
                         id: prgLoading
-                        visible: modelData.webview.loading
-                        width: webview.loading ? Units.dp(24) : 0
+                        visible: modelData.view.loading
+                        width: view.loading ? Units.dp(24) : 0
                         height: Units.dp(24)
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Text {
                         id: title
-                        text: root.app.uppercaseTabTitle ? modelData.webview.title.toUpperCase() : modelData.webview.title
+                        text: root.app.uppercaseTabTitle ? modelData.view.title.toUpperCase() : modelData.view.title
                         color: item.foregroundColor
                         width: parent.width - closeButton.width - icon.width - prgLoading.width - Units.dp(16)
                         elide: Text.ElideRight
@@ -196,8 +177,7 @@ Component {
                         }
                         iconName: modelData.closeButtonIconName
                         onClicked: {
-                            saveThisTabUrl(modelData.webview.url)
-                            console.log(modelData.webview.url)
+                            saveThisTabUrl(modelData.view.url)
                             removeTab(uid);
                         }
                     }
@@ -256,9 +236,9 @@ Component {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.margins: Units.dp(16)
-                    enabled: modelData.webview.canGoBack
+                    enabled: modelData.view.canGoBack
 
-                    onClicked: modelData.webview.goBack()
+                    onClicked: modelData.view.goBack()
                     color: item.foregroundColor
                 }
 
@@ -267,22 +247,22 @@ Component {
                     iconName : "navigation/arrow_forward"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: btnGoBack.right
-                    anchors.margins: if (webview.canGoForward) { Units.dp(16) } else { 0 }
-                    enabled: modelData.webview.canGoForward
-                    visible: modelData.webview.canGoForward
-                    width: if (modelData.webview.canGoForward) { Units.dp(24) } else { 0 }
+                    anchors.margins: if (view.canGoForward) { Units.dp(16) } else { 0 }
+                    enabled: modelData.view.canGoForward
+                    visible: modelData.view.canGoForward
+                    width: if (modelData.view.canGoForward) { Units.dp(24) } else { 0 }
 
                     Behavior on width {
                         SmoothedAnimation { duration: 200 }
                     }
 
-                    onClicked: modelData.webview.goForward()
+                    onClicked: modelData.view.goForward()
                     color: item.foregroundColor
                 }
 
                 IconButton {
                     id: btnRefresh
-                    visible: !modelData.webview.loading
+                    visible: !modelData.view.loading
                     width: Units.dp(24)
                     hoverAnimation: true
                     iconName : "navigation/refresh"
@@ -292,13 +272,13 @@ Component {
                     color: item.foregroundColor
                     onClicked: {
                         item.editModeActive = false;
-                        modelData.webview.reload();
+                        modelData.view.reload();
                     }
                 }
 
                 LoadingIndicator {
                     id: prgLoadingEdit
-                    visible: modelData.webview.loading
+                    visible: modelData.view.loading
                     width: Units.dp(24)
                     height: Units.dp(24)
                     anchors.verticalCenter: parent.verticalCenter
@@ -308,8 +288,8 @@ Component {
 
                 Icon {
                     id: iconConnectionType
-                    name: modelData.webview.secureConnection ? "action/lock" :  "social/public"
-                    color:  modelData.webview.secureConnection ? "green" :  item.foregroundColor
+                    name: modelData.view.secureConnection ? "action/lock" :  "social/public"
+                    color:  modelData.view.secureConnection ? "green" :  item.foregroundColor
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: prgLoadingEdit.right
                     anchors.margins: Units.dp(16)
@@ -322,7 +302,7 @@ Component {
                     anchors.right: btnTxtUrlHide.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    text: modelData.webview.url
+                    text: modelData.view.url
                     style: TextFieldStyle { textColor: root.currentForegroundColor }
                     showBorder: false
                     onAccepted: {

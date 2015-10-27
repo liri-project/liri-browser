@@ -11,7 +11,7 @@ Page {
         hidden: true
     }
 
-    property alias webContainer: webContainer
+    property alias viewContainer: viewContainer
     property alias listView: tabBar.listView
     property alias bookmarksBar: bookmarksBar
     property alias txtSearch: txtSearch
@@ -25,8 +25,8 @@ Page {
             return root.defaultBackgroundColor
         else if(root.app.darkTheme)
             return root.app.darkThemeColor
-        else if(root.app.tabsEntirelyColorized && activeTab.customColor && !inkTimer.running)
-            return activeTab.customColor
+        else if(root.app.tabsEntirelyColorized && activeTab.view.customColor && !inkTimer.running)
+            return activeTab.view.customColor
         else
             return root.defaultBackgroundColor
     }
@@ -83,31 +83,30 @@ Page {
         },
         Action {
             name: qsTr("Search")
-            visible: !activeTab.webview.newTabPage && !activeTab.webview.settingsTabPage
+            visible: activeTab.view.isWebView
             iconName: "action/search"
             onTriggered: root.showSearchOverlay()
         },
         Action {
             name: qsTr("Bookmark")
-            visible: root.app.integratedAddressbars && !root.mobile && !activeTab.webview.sourceTapPage
+            visible: root.app.integratedAddressbars
             iconName:  "action/bookmark_border"
             onTriggered: root.toggleActiveTabBookmark()
         },
         Action {
             name: qsTr("Add to dash")
-            visible: !root.mobile && !activeTab.webview.newTabPage && !activeTab.webview.sourceTapPage
+            visible: !root.mobile && activeTab.view.isWebView
             iconName: "action/dashboard"
-            onTriggered: root.addToDash(activeTab.webview.url, activeTab.webview.title, activeTab.customColor)
+            onTriggered: root.addToDash(activeTab.view.url, activeTab.view.title, activeTab.customColor)
         },
         Action {
             name: qsTr("View source")
-            visible: !activeTab.webview.newTabPage && !activeTab.webview.settingsTabPage && !activeTab.webview.sourceTapPage
+            visible: activeTab.view.isWebView
             iconName: "action/code"
             onTriggered: activeTabViewSourceCode()
         },
         Action {
             name: qsTr("Settings")
-            visible: !activeTab.webview.settingsTabPage
             iconName: "action/settings"
             onTriggered: {
                 if (mobile)
@@ -157,10 +156,10 @@ Page {
                           if(root.app.bookmarksBarAlwaysOn) {
                               return true
                           }
-                          else if(root.app.bookmarksBarOnlyOnDash && activeTab.webview.newTabPage) {
+                          else if(root.app.bookmarksBarOnlyOnDash && activeTab.view.newTabPage) {
                               return true
                           }
-                          else if(!activeTab.webview.newTabPage && !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn)
+                          else if(!activeTab.view.newTabPage && !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn)
                               return true
                           else
                               return false
@@ -259,7 +258,7 @@ Page {
         }
 
         Item {
-            id: webContainer
+            id: viewContainer
             anchors.fill: parent
         }
     }

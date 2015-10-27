@@ -4,10 +4,14 @@ import QtQuick.Controls 1.2
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 
-Rectangle {
+BaseBrowserView {
     id: pageRoot
+
+    title: "New tab"
+    icon: "action/dashboard"
+    url: "liri://dash"
+
     anchors.fill: parent
-    color: "transparent"
 
     Text {
         anchors.horizontalCenter: parent.horizontalCenter

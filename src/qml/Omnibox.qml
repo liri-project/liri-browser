@@ -32,7 +32,7 @@ View {
         width: 0
         opacity: loading ? 1 : 0
 
-        property bool loading: activeTab.webview.loading
+        property bool loading: activeTab.view.loading
         property bool enableBehavior
 
         // When loading, we first disable the behavior and reset the width to 0
@@ -42,7 +42,7 @@ View {
                 enableBehavior = false
                 width = 0
                 enableBehavior = true
-                width = Qt.binding(function () { return omnibox.width * activeTab.webview.progress })
+                width = Qt.binding(function () { return omnibox.width * activeTab.view.progress })
             }
         }
 
@@ -81,8 +81,8 @@ View {
         id: connectionTypeIcon
 
         property bool searchIcon: false
-        name:  root.privateNav ? "awesome/binoculars" : searchIcon ? "action/search" : root.activeTab.webview.secureConnection ? "action/lock" : "social/public"
-        color: root.activeTab.webview.secureConnection ? "green" : "gray"
+        name:  root.privateNav ? "awesome/binoculars" : searchIcon ? "action/search" : root.activeTab.view.secureConnection ? "action/lock" : "social/public"
+        color: root.activeTab.view.secureConnection ? "green" : "gray"
         onColorChanged: {
 
         }
@@ -121,7 +121,7 @@ View {
         property string quickSearchURL: ""
         showBorder: false
         visible: quickSearch == ""
-        text: root.activeTab.webview.url
+        text: root.activeTab.view.url
         placeholderText: mobile ? qsTr("Search") : qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive

@@ -7,19 +7,12 @@ import QtWebEngine 1.1
 import Clipboard 1.0
 
 
-Item {
+BaseBrowserView {
     id: browserWebView
     anchors.fill: parent
 
-    visible: false
-
     property var uid
     property alias view: webview
-    property bool newTabPage
-    property bool settingsTabPage
-    property bool playerPage
-    property bool settingsTabPageSitesColors
-    property bool settingsTabPageQuickSearches
 
     // TODO: Handle this locally
     property bool sourceTapPage: url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
@@ -29,12 +22,14 @@ Item {
     property alias url: webview.url
     property alias profile: webview.profile
     property alias icon: webview.icon
-    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : settingsTabPageSitesColors ? qsTr("Sites Colors") : settingsTabPageQuickSearches ? qsTr("Quick Searches") : playerPage ? qsTr("Player") :  webview.title
+    property string title: webview.title
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
     property bool secureConnection: false
-    property real progress: webview.loadProgress/100
+    property real loadProgress: webview.loadProgress/100
+
+    reloadable: true
 
     function goBack() {
         webview.goBack();
@@ -61,14 +56,12 @@ Item {
         if (backward)
             flags |= WebEngineView.FindBackward
         webview.findText(text, flags, callback);
-
     }
 
     WebEngineView {
         id: webview
         property var page
         anchors.fill: parent
-        visible: !newTabPage && !settingsTabPage
 
         onIconChanged: {
             // Set the favicon in history
@@ -135,9 +128,6 @@ Item {
 
          onLoadingChanged: {
             if (loadRequest.status === WebEngineView.LoadStartedStatus) {
-                if (newTabPage) {
-                    newTabPage = false;
-                }
                 root.app.searchSuggestionsModel.clear()
             }
             else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
@@ -145,9 +135,9 @@ Item {
                 runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
                     function(content){
                         if(content !== "") {
-                            root.getTabModelDataByUID(uid).customColor = content;
-                            root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(content, 0.6);
-                            root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
+                            browserWebView.customColor = content;
+                            browserWebView.customColorLight = root.shadeColor(content, 0.6);
+                            browserWebView.customTextColor = root.getTextColorForBackground(content);
 
                             if(!root.privateNav && !root.app.darkTheme && root.app.tabsEntirelyColorized) {
                                 root.initialPage.ink.color = content
@@ -158,9 +148,9 @@ Item {
                         else{
                             var customColor = root.app.customSitesColors ? searchForCustomColor(url.toString()) : "none";
                             if(customColor != "none") {
-                                root.getTabModelDataByUID(uid).customColor = customColor;
-                                root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(customColor, 0.6);
-                                root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(customColor);
+                                browserWebView.customColor = customColor;
+                                browserWebView.customColorLight = root.shadeColor(customColor, 0.6);
+                                browserWebView.customTextColor = root.getTextColorForBackground(customColor);
                                 if(!root.privateNav && root.app.tabsEntirelyColorized) {
                                     root.initialPage.ink.color = customColor
                                     root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
@@ -168,9 +158,9 @@ Item {
                                 }
                             }
                             else {
-                                root.getTabModelDataByUID(uid).customColor = false;
-                                root.getTabModelDataByUID(uid).customColorLight = false;
-                                root.getTabModelDataByUID(uid).customTextColor = false;
+                                browserWebView.customColor = false;
+                                browserWebView.customColorLight = false;
+                                browserWebView.customTextColor = false;
                             }
                         }
                 });
@@ -267,7 +257,7 @@ Item {
             hoverUrl = ""
     }
 
-    NewTabPage {
+    /*NewTabPage {
         id: itemNewTabPage
         visible: newTabPage
         anchors.fill: parent
@@ -289,13 +279,6 @@ Item {
         id: itemSettingsTabPageQuickSearches
         visible: settingsTabPageQuickSearches && !newTabPage
         anchors.fill: parent
-    }
-
-    // TO BE REMOVED
-    /*PlayerPage {
-        id: itemPlayerPage
-        anchors.fill: parent
-        visible: playerPage
     }*/
 
     Clipboard {

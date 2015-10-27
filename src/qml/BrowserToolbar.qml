@@ -30,8 +30,8 @@ View {
         Layout.alignment: Qt.AlignVCenter
 
         IconButton {
-            enabled: root.activeTab.webview.canGoBack
-            onClicked: root.activeTab.webview.goBack()
+            enabled: root.activeTab.view.canGoBack
+            onClicked: root.activeTab.view.goBack()
             color: root.currentIconColor
             Behavior on color { ColorAnimation { duration : 500 }}
             action: Action {
@@ -41,11 +41,11 @@ View {
         }
 
         IconButton {
-            enabled: root.activeTab.webview.canGoForward
-            onClicked: root.activeTab.webview.goForward()
+            enabled: root.activeTab.view.canGoForward
+            onClicked: root.activeTab.view.goForward()
             color: root.currentIconColor
             Behavior on color { ColorAnimation { duration : 500 }}
-            visible: root.activeTab.webview.canGoForward || !mobile
+            visible: root.activeTab.view.canGoForward || !mobile
             action: Action {
                 iconName: "navigation/arrow_forward"
                 name: qsTr("Go Forward")
@@ -55,11 +55,12 @@ View {
         IconButton {
             hoverAnimation: true
             color: root.currentIconColor
+            visible: root.activeTab.view.reloadable
             Behavior on color { ColorAnimation { duration : 500 }}
-            onClicked: !activeTab.webview.loading ? activeTab.webview.reload() : activeTab.webview.stop()
+            onClicked: !activeTab.view.loading ? activeTab.view.reload() : activeTab.view.stop()
             action: Action {
-                iconName: !activeTab.webview.loading ? "navigation/refresh" : "navigation/close"
-                name:!activeTab.webview.loading ? qsTr("Refresh") : qsTr("Stop")
+                iconName: !activeTab.view.loading ? "navigation/refresh" : "navigation/close"
+                name:!activeTab.view.loading ? qsTr("Refresh") : qsTr("Stop")
             }
         }
 

@@ -12,7 +12,7 @@ MaterialWindow {
 
     property QtObject app
 
-    title: activeTab ? (activeTab.webview.title || qsTr("Loading")) + " - Liri Browser" : "Liri Browser"
+    title: activeTab ? (activeTab.view.title || qsTr("Loading")) + " - Liri Browser" : "Liri Browser"
     visible: true
     width: 1000
     height: 640
@@ -33,10 +33,6 @@ MaterialWindow {
 
     property bool tabsListIsOpened: false
     property bool customSitesColorsIsOpened: false
-
-    //Fix for the player
-    // TO BE REMOVED
-    //property bool noMedia: false
 
     property bool reduceTabsSizes: ((tabWidth * tabsModel.count) > root.width - 200) && root.app.allowReducingTabsSizes
 
@@ -72,10 +68,10 @@ MaterialWindow {
     property color currentBackgroundColor: page.backgroundColor
 
     property color defaultForegroundColor: (privateNav || app.darkTheme) ? "white" : "#212121"
-    property color currentForegroundColor: app.tabsEntirelyColorized && activeTab.customTextColor ? activeTab.customTextColor : defaultForegroundColor
+    property color currentForegroundColor: app.tabsEntirelyColorized && activeTab.view.customTextColor ? activeTab.view.customTextColor : defaultForegroundColor
 
     property color defaultInactiveForegroundColor: (privateNav || app.darkTheme) ? shadeColor("#FFFFF", 0.9) : "#757575"
-    property color currentInactiveForegroundColor: app.tabsEntirelyColorized && activeTab.customTextColor ? shadeColor(activeTab.customTextColor, 0.9) : defaultInactiveForegroundColor
+    property color currentInactiveForegroundColor: app.tabsEntirelyColorized && activeTab.view.customTextColor ? shadeColor(activeTab.view.customTextColor, 0.9) : defaultInactiveForegroundColor
 
     property color currentIconColor: currentForegroundColor
 
@@ -92,6 +88,12 @@ MaterialWindow {
     property var closedTabsUrls : []
     property bool activeTabInEditMode: false
     property var activeTabInEditModeItem
+    property Component webviewComponent
+    property Component browserViewComponent: Qt.createComponent(Qt.resolvedUrl("BrowserView.qml"))
+    property Component newTabPageComponent: Qt.createComponent(Qt.resolvedUrl("NewTabPage.qml"))
+    property Component settingsViewComponent: Qt.createComponent(Qt.resolvedUrl("SettingsView.qml"))
+    property Component quickSearchesSettingsViewComponent: Qt.createComponent(Qt.resolvedUrl("QuickSearchesView.qml"))
+    property Component sitesColorsSettingsViewComponent: Qt.createComponent(Qt.resolvedUrl("SitesColorsView.qml"))
 
     /* General */
 
@@ -123,18 +125,6 @@ MaterialWindow {
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
     }
-
-    // TO BE REMOVED
-    /*
-    function openPlayer(url) {
-        activeTab.webview.settingsTabPage = false;
-        activeTab.webview.newTabPage = false;
-        activeTab.webview.settingsTabPageSitesColors = false;
-        activeTab.webview.settingsTabPageQuickSearches = false;
-        activeTab.webview.playerPage = true;
-        //activeTab.webview.player.mrl = url
-    }
-    */
 
     /* URL Hangdling */
 
@@ -230,7 +220,6 @@ MaterialWindow {
 
     function addBookmark(title, url, faviconUrl, color){
         lastBookmarkUID++;
-        console.log(lastBookmarkUID)
         root.app.bookmarksModel.append({"title": title, "url": url, "faviconUrl": faviconUrl, "color": color, "uid": lastBookmarkUID})
     }
 
@@ -315,7 +304,7 @@ MaterialWindow {
         // Handle last active tab
         if (lastActiveTab !== undefined && lastActiveTab !== null && lastActiveTab !== false) {
             lastActiveTab.state = "inactive";
-            lastActiveTab.webview.visible = false;
+            lastActiveTab.view.visible = false;
         }
         // Handle now active tab
         if (activeTab) {
@@ -323,7 +312,7 @@ MaterialWindow {
                 activeTabInEditModeItem.editModeActive = false;
             lastActiveTab = activeTab;
             activeTab.state = "active";
-            activeTab.webview.visible = true;
+            activeTab.view.visible = true;
             activeTabHistory.push(activeTab.uid);
         }
     }
@@ -351,54 +340,24 @@ MaterialWindow {
     }
 
     function addTab(url, background) {
-        var u;
-        var ntp = false, stp = false, stpsc = false, stpqs = false;
-        if (url) {
-            if (url == "liri://settings") {
-                stp = true;
-                u = url;
-            }
-            else if (url == "liri://settings-sites-colors"){
-                stpsc = true;
-                u = url;
-            }
-            else if (url == "liri://settings-quick-searches"){
-                stpqs = true;
-                u = url;
-            }
-            else {
-                u = getValidUrl(url);
-            }
-        } else if (root.app.newTabPage && !stp) {
-            ntp = true;
-        } else {
-            u = root.app.homeUrl;
-        }
-
-        var webviewComponent;
-
-        if (app.webEngine === "qtwebengine")
-            webviewComponent = Qt.createComponent ("BrowserWebView.qml");
-        else if (app.webEngine === "oxide")
-            webviewComponent = Qt.createComponent ("BrowserOxideWebView.qml");
-        var webview = webviewComponent.createObject(page.webContainer, {url: u, newTabPage: ntp, settingsTabPage: stp, settingsTabPageSitesColors: stpsc, settingsTabPageQuickSearches: stpqs,profile: root.app.defaultProfile, uid: lastTabUID});
+        var browserView = browserViewComponent.createObject(page.viewContainer);
+        browserView.load(url);
         var modelData = {
             url: url,
-            webview: webview,
+            view: browserView,
             uid: lastTabUID,
             state:"inactive",
-            hasCloseButton: true,
+            hasCloseButton: browserView.hasCloseButton,
             closeButtonIconName: "navigation/close",
-            iconSource: webview.icon,
-            customColor: false,
-            customColorLight: false,
-            customTextColor: false,
+            iconSource: browserView.icon,
+            customColor: browserView.customColor,
+            customColorLight: browserView.customColorLight,
+            customTextColor: browserView.customTextColor,
         }
         tabsModel.append(modelData);
         if (!background)
             setActiveTab(lastTabUID, true);
         lastTabUID++;
-        return modelData;
     }
 
     function removeTab(t) {
@@ -414,8 +373,8 @@ MaterialWindow {
             if (activeTab.uid === t) {
                 setLastActiveTabActive(function(){
                     var modelData = getTabModelDataByUID(t);
-                    modelData.webview.visible = false;
-                    modelData.webview.destroy();
+                    modelData.view.visible = false;
+                    modelData.view.destroy();
                     tabsModel.remove(getTabModelIndexByUID(t));
                     // Was the last tab closed?
                     if (tabsModel.count === 0) {
@@ -425,8 +384,8 @@ MaterialWindow {
             }
             else {
                 var modelData = getTabModelDataByUID(t);
-                modelData.webview.visible = false;
-                modelData.webview.destroy();
+                modelData.view.visible = false;
+                modelData.view.destroy();
                 tabsModel.remove(getTabModelIndexByUID(t));
             }
         }
@@ -480,8 +439,9 @@ MaterialWindow {
             return false
     }
 
-    function setActiveTabURL(url,todownload) {
-        if (url == "liri://settings") {
+    function setActiveTabURL(url, todownload) {
+        // TO BE REFACTORED
+        /*if (url == "liri://settings") {
             u = url;
             activeTab.webview.settingsTabPage = true;
             activeTab.webview.newTabPage = false;
@@ -517,32 +477,32 @@ MaterialWindow {
             var u = todownload ? url : getValidUrl(url);
             activeTab.webview.settingsTabPage = false;
             activeTab.webview.url = u;
-        }
+        }*/
+        activeTab.view.load(url);
     }
 
     function toggleActiveTabBookmark() {
-        var url = activeTab.webview.url;
-        var icon = activeTab.webview.icon;
-        var title = activeTab.webview.title;
-        console.log(url)
+        var url = activeTab.view.url;
+        var icon = activeTab.view.icon;
+        var title = activeTab.view.title;
         if (isBookmarked(url)) {
             snackbar.open(qsTr('Removed bookmark %1').arg(title));
             removeBookmark(url)
         } else {
             snackbar.open(qsTr('Added bookmark "%1"').arg(title));
-            addBookmark(title, url, icon, activeTab.customColor);
+            addBookmark(title, url, icon, activeTab.view.customColor);
         }
     }
 
     function activeTabFindText(text, backward) {
         var flags
-        activeTab.webview.findText(text, backward, function(success) {
+        activeTab.view.findText(text, backward, function(success) {
             root.txtSearch.hasError = !success;
         });
     }
 
     function activeTabViewSourceCode () {
-        activeTab.webview.runJavaScript("function getSource() { return '' + document.documentElement.innerHTML + '';} getSource() ", function(content) {
+        activeTab.view.runJavaScript("function getSource() { return '' + document.documentElement.innerHTML + '';} getSource() ", function(content) {
             addTab("http://liri-browser.github.io/sourcecodeviewer/index.html");
             root.app.sourcetemp = content;
             root.app.sourcetemp = root.app.sourcetemp.replace(/\r?\n|\r/g,"");
@@ -620,6 +580,12 @@ MaterialWindow {
     }
 
     Component.onCompleted: {
+        // WebView Component
+        if (app.webEngine === "qtwebengine")
+            webviewComponent = Qt.createComponent ("BrowserWebView.qml");
+        else if (app.webEngine === "oxide")
+            webviewComponent = Qt.createComponent ("BrowserOxideWebView.qml");
+
         // Create shortcut actions
         if (app.enableShortCuts) {
             var component = Qt.createComponent("ShortcutActions.qml");

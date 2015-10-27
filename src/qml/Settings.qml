@@ -335,7 +335,7 @@ Rectangle {
                           verticalCenter: parent.verticalCenter
                         }
                         onClicked: {
-                            addTab("liri://settings-sites-colors")
+                            addTab("liri://settings/sites-colors")
                         }
                     }
 
@@ -371,7 +371,7 @@ Rectangle {
                           verticalCenter: parent.verticalCenter
                         }
                         onClicked: {
-                            addTab("liri://settings-quick-searches")
+                            addTab("liri://settings/quick-searches")
                         }
                     }
 
