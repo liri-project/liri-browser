@@ -25,7 +25,7 @@ Rectangle {
             bottom: parent.bottom
             left: parent.left
         }
-        width: contentItem.width < (tabBar.width - toolbarIntegrated.width) ? contentItem.width : parent.width - toolbarIntegrated.width
+        width: contentWidth < (tabBar.width - toolbarIntegrated.width) ? contentWidth : parent.width - toolbarIntegrated.width
 
         orientation: ListView.Horizontal
         boundsBehavior: Flickable.StopAtBounds
