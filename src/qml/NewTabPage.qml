@@ -48,16 +48,16 @@ Rectangle {
             id: delegate
             Item {
                 id: item
-                width: grid.cellWidth-5; height: grid.cellHeight-5;
-                Rectangle {
+                width: grid.cellWidth-10; height: grid.cellHeight-10;
+                View {
                     id: box
                     parent: grid
                     x: item.x; y: item.y;
-
-                    border.color: Qt.rgba(0,0,0,0.2)
+                    elevation:1
+                    //border.color: Qt.rgba(0,0,0,0.2)
                     radius: Units.dp(2)
 
-                    color: bgColor
+                    backgroundColor: bgColor
 
                     width: item.width; height: item.height;
                     property int uid: (index >= 0) ? grid.model.get(index).uid : -1
