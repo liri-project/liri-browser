@@ -56,15 +56,14 @@ Item {
             clip: true
             font.family: root.fontFamily
 
-            width: maximumTextWidth
             anchors.verticalCenter: parent.verticalCenter
 
             Component.onCompleted:  {
                 if (paintedWidth > maximumTextWidth) {
-                    width= maximumTextWidth
+                    width = maximumTextWidth;
                 }
-                else{
-                        width=paintedWidth
+                else {
+                    width = paintedWidth;
                 }
             }
         }
@@ -187,9 +186,9 @@ Item {
             text: qsTr("Cancel")
 
             onClicked: {
-                txtEditTitle.text = item.title;
-                txtEditUrl.text = item.url;
-                txtEditFaviconUrl.text = item.faviconUrl;
+                txtEditTitle.text = title;
+                txtEditUrl.text = url;
+                txtEditFaviconUrl.text = faviconUrl;
                 editDialog.close();
             }
         }
