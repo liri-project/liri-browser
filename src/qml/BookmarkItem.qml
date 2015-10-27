@@ -4,7 +4,7 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 
 
-Item {    
+Item {
     id: item
     property int maximumWidth: Units.dp(148)
 
@@ -13,6 +13,26 @@ Item {
     height: bookmarksBar.height
     width: row.childrenRect.width
     property int maximumTextWidth: maximumWidth - favicon.width - Units.dp(16)
+
+    states: [
+        State {
+            name: "default"
+        },
+
+        State {
+            name: "dragging"; when: mouseArea.draggingId === uid
+            PropertyChanges {
+                target: row
+                x: mouseArea.mouseX-row.width/2;
+                z: 10;
+                parent: bookmarkView
+                anchors.fill: null
+                y: item.y
+                width: item.width
+                height: item.height
+            }
+        }
+    ]
 
     Row {
         id: row
@@ -52,7 +72,6 @@ Item {
     }
 
     MouseArea {
-        id: mouseArea
         anchors.fill:  parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: {

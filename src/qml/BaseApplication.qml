@@ -175,8 +175,11 @@ Item {
             application.dashboardModel.append(application.settings.dashboard[i]);
 
         // Load the bookmarks model
-        for (i=0; i<application.settings.bookmarks.length; i++)
-            application.bookmarksModel.append(application.settings.bookmarks[i]);
+        for (i=0; i<application.settings.bookmarks.length; i++) {
+            var data = application.settings.bookmarks[i];
+            data["uid"] = i;
+            application.bookmarksModel.append(data);
+        }
 
         var presets_qs = application.quickSearchesPresets
         for (t in presets_qs)

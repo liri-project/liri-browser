@@ -90,6 +90,7 @@ MaterialWindow {
     property var lastActiveTab
     property var activeTabHistory: []
     property int lastTabUID: 0
+    property int lastBookmarkUID: 0
     property ListModel tabsModel: ListModel {}
     property var closedTabsUrls : []
     property bool activeTabInEditMode: false
@@ -229,7 +230,9 @@ MaterialWindow {
     }
 
     function addBookmark(title, url, faviconUrl, color){
-        root.app.bookmarksModel.append({title: title, url: url, faviconUrl: faviconUrl, color: color})
+        lastBookmarkUID++;
+        console.log(lastBookmarkUID)
+        root.app.bookmarksModel.append({"title": title, "url": url, "faviconUrl": faviconUrl, "color": color, "uid": lastBookmarkUID})
     }
 
     function changeBookmark(url, title, newUrl, faviconUrl){
@@ -635,8 +638,7 @@ MaterialWindow {
         var txtUrl = Utils.findChild(root,"txtUrl")
         txtUrl.forceActiveFocus();
 
-        // Bookmark handling
-        root.loadBookmarks();
-        root.app.changedBookmarks.connect(root.reloadBookmarks)
+        // Set last bookmarks UID
+        lastBookmarkUID = app.bookmarksModel.count;
     }
 }
