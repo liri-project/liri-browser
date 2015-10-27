@@ -77,9 +77,6 @@ MaterialWindow {
     property color defaultInactiveForegroundColor: (privateNav || app.darkTheme) ? shadeColor("#FFFFF", 0.9) : "#757575"
     property color currentInactiveForegroundColor: app.tabsEntirelyColorized && activeTab.customTextColor ? shadeColor(activeTab.customTextColor, 0.9) : defaultInactiveForegroundColor
 
-    property color defaultIndicatorColor
-    property color currentIndicatorColor
-
     property color currentIconColor: currentForegroundColor
 
     property string fontFamily: "Roboto"
