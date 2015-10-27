@@ -30,7 +30,8 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+F"
         onTriggered: {
-            root.showSearchOverlay()
+            if (root.activeTab.view.isWebView)
+                root.showSearchOverlay()
         }
     }
     Controls.Action {
