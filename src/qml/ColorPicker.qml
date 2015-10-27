@@ -6,6 +6,8 @@ Dropdown {
     id: colorPicker
     property alias color: colorChooser.color
     property alias titel: colorChooser.title
+    property alias dark: colorChooser.dark
+    property alias light: colorChooser.light
 
     width: Units.dp(300)
     height: Units.dp(196)

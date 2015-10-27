@@ -7,6 +7,8 @@ Item {
     property color color
     property string title
     property Item colorPicker
+    property bool dark: false
+    property bool light: false
 
     width: Units.dp(300)
     height: Units.dp(196)
@@ -31,7 +33,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
 
         Repeater {
-            model: [
+            model:  [
                 "red", "pink", "purple", "deepPurple", "indigo",
                 "blue", "lightBlue", "cyan", "teal", "green",
                 "lightGreen", "lime", "yellow", "amber", "orange",
@@ -43,7 +45,7 @@ Item {
                 width: Units.dp(30)
                 height: Units.dp(30)
                 radius: Units.dp(2)
-                color: Palette.colors[modelData]["500"]
+                color: colorChooser.dark ? Palette.colors[modelData]["900"] : colorChooser.light ? Palette.colors[modelData]["100"] : Palette.colors[modelData]["500"]
                 border.width: if (color === colorChooser.color) { Units.dp(2) } else { 0 }
                 border.color: Theme.alpha("#000", 0.26)
 

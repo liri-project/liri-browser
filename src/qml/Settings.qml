@@ -610,6 +610,81 @@ Rectangle {
                 }
             }
 
+            ListItem.Standard  {
+                id:lightChooser
+                text: qsTr('Light Theme Color')
+                textColor: settingsRoot.textColor
+                visible:  colorsHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                Rectangle {
+                    id: lightColorSample
+                    width: Units.dp(30)
+                    height: width
+                    radius: width*0.5
+                    color: lightColorPicker.color
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            topMargin:5
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressed: lightColorPicker.open(lightColorSample, Units.dp(4), Units.dp(-4))
+                    }
+                }
+            }
+
+            ListItem.Standard  {
+                id: darkChooser
+                text: qsTr('Dark Theme Color')
+                textColor: settingsRoot.textColor
+                visible:  colorsHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                Rectangle {
+                    id: darkColorSample
+                    width: Units.dp(30)
+                    height: width
+                    radius: width*0.5
+                    color: darkColorPicker.color
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            topMargin:5
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressed: darkColorPicker.open(darkColorSample, Units.dp(4), Units.dp(-4))
+                    }
+                }
+            }
+
+            ListItem.Standard  {
+                id:privateChooser
+                text: qsTr('Private Nav Color')
+                textColor: settingsRoot.textColor
+                visible:  colorsHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                Rectangle {
+                    id: privateColorSample
+                    width: Units.dp(30)
+                    height: width
+                    radius: width*0.5
+                    color: privateColorPicker.color
+                    anchors {
+                            top: parent.top
+                            right: parent.right
+                            topMargin:5
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressed: privateColorPicker.open(privateColorSample, Units.dp(4), Units.dp(-4))
+                    }
+                }
+            }
+
             ListItem.SectionHeader {
                 text: qsTr("SourceViewer settings")
                 id: srcHead
@@ -715,6 +790,24 @@ Rectangle {
                 id: accentColorPicker
                 color: theme.accentColor
             }
+
+            ColorPicker {
+                id: lightColorPicker
+                light: true
+                color: root.app.lightThemeColor
+            }
+
+            ColorPicker {
+                id: darkColorPicker
+                dark: true
+                color: root.app.darkThemeColor
+            }
+
+            ColorPicker {
+                id: privateColorPicker
+                dark: true
+                color: root.app.privateNavColor
+            }
           }
        }
     }
@@ -746,6 +839,9 @@ Rectangle {
                 onClicked: {
                     theme.primaryColor = primaryColorPicker.color;
                     theme.accentColor = accentColorPicker.color;
+                    root.app.lightThemeColor = lightColorPicker.color;
+                    root.app.darkThemeColor = darkColorPicker.color;
+                    root.app.privateNavColor = privateColorPicker.color;
                     root.app.homeUrl = txtHomeUrl.text;
                     root.app.searchEngine = menuSearchEngine.selectedEngine;
                     root.app.sourceHighlightTheme = menuSourceHighlightTheme.selectedSourceHighlightTheme;
@@ -786,6 +882,9 @@ Rectangle {
                     chbQuickSearches.checked = root.app.quickSearches
                     chbUppercaseTabTitle.checked = root.app.uppercaseTabTitle
                     chbCustomSitesColors.checked = root.app.customSitesColors
+                    privateColorPicker.color = root.app.privateNavColor;
+                    lightColorPicker.color = root.app.lightThemeColor;
+                    darkColorPicker.color = root.app.darkThemeColor;
                     drawer.close();
                 }
             }

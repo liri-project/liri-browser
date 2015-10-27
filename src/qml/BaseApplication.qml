@@ -22,6 +22,7 @@ Item {
         return d.getHours()
     }
 
+    property color lightThemeColor: "#FAFAFA"
     property color darkThemeColor: "#263238"
     property color privateNavColor: "#212121"
     property bool isNight: (getCurrentHour() >= 19 || getCurrentHour() <= 7)
@@ -141,6 +142,9 @@ Item {
         property alias bookmarksBarAlwaysOn: application.bookmarksBarAlwaysOn
         property alias bookmarksBarOnlyOnDash: application.bookmarksBarOnlyOnDash
         property alias allowReducingTabsSizes: application.allowReducingTabsSizes
+        property alias lightThemeColor: application.lightThemeColor
+        property alias darkThemeColor: application.darkThemeColor
+        property alias privateNavColor: application.privateNavColor
         property var customquicksearches
     }
 

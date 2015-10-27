@@ -68,7 +68,7 @@ MaterialWindow {
     property int tabsSpacing: Units.dp(1)
     property int titlebarHeight: Units.dp(148)
 
-    property color defaultBackgroundColor: "#FAFAFA"
+    property color defaultBackgroundColor: application.lightThemeColor
     property color currentBackgroundColor: page.backgroundColor
 
     property color defaultForegroundColor: (privateNav || app.darkTheme) ? "white" : "#212121"
