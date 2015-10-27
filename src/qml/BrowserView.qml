@@ -150,32 +150,32 @@ Item {
     /* WebView functionality */
 
     function goBack() {
-        if (loader.isWebView)
+        if (isWebView)
             loader.item.goBack();
     }
 
     function goForward() {
-        if (loader.isWebView)
+        if (isWebView)
             loader.item.goForward();
     }
 
     function runJavaScript(arg1, arg2) {
-        if (loader.isWebView)
+        if (isWebView)
             loader.item.runJavaScript(arg1, arg2);
     }
 
     function reload() {
-        if (loader.isWebView)
+        if (isWebView)
             loader.item.reload();
     }
 
     function stop() {
-        if (loader.isWebView)
+        if (isWebView)
             loader.item.stop();
     }
 
     function findText (text, backward, callback){
-        if (loader.isWebView)
+        if (isWebView)
             loader.item.findText(text, backward, callback);
     }
 
