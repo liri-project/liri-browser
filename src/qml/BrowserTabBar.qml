@@ -62,7 +62,6 @@ Rectangle {
             }
 
             onPressAndHold: {
-                console.log("!")
                 if (root.activeTabInEditMode) {
                     mouse.accepted = false;
                 } else {

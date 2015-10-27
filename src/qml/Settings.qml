@@ -9,7 +9,7 @@ import QtQuick.Controls.Styles.Material 0.1
 Rectangle {
     id: settingsRoot
     anchors.fill: parent
-    property bool mobileMode: width < Units.dp(640)
+    property bool singleColumnMode: width < Units.dp(640)
     property color textColor: root.app.darkTheme ? Theme.dark.textColor : Theme.alpha(Theme.light.textColor,1)
     property color linesColor: Theme.alpha(textColor, 0.6)
     property int subHeaderLeftMargin: Units.dp(20)
@@ -45,7 +45,7 @@ Rectangle {
 
         Grid {
           id: grid
-          columns: mobileMode ? 1 : 2
+          columns: singleColumnMode ? 1 : 2
 
           width: parent.width
           anchors {
@@ -59,7 +59,7 @@ Rectangle {
 
           Column {
             id: colSettings
-            width: !mobileMode ? parent.width/2 - Units.dp(60) : parent.width - Units.dp(60)
+            width: !singleColumnMode ? parent.width/2 - Units.dp(60) : parent.width - Units.dp(60)
             spacing: Units.dp(0)
 
             Item {
@@ -474,7 +474,7 @@ Rectangle {
 
           Column {
             id: colTheme
-            width: !mobileMode ? parent.width/2 - Units.dp(60) : parent.width - Units.dp(60)
+            width: !singleColumnMode ? parent.width/2 - Units.dp(60) : parent.width - Units.dp(60)
             spacing: Units.dp(0)
             Item {
                 height: Units.dp(60)
