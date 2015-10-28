@@ -139,7 +139,7 @@ BaseBrowserView {
                             browserWebView.customColorLight = root.shadeColor(content, 0.6);
                             browserWebView.customTextColor = root.getTextColorForBackground(content);
 
-                            if(!root.privateNav && !root.app.darkTheme && root.app.tabsEntirelyColorized) {
+                            if(!root.privateNav && !root.app.darkTheme && root.app.tabsEntirelyColorized && view.visible) {
                                 root.initialPage.ink.color = content
                                 root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
                                 root.initialPage.inkTimer.restart()
@@ -151,7 +151,7 @@ BaseBrowserView {
                                 browserWebView.customColor = customColor;
                                 browserWebView.customColorLight = root.shadeColor(customColor, 0.6);
                                 browserWebView.customTextColor = root.getTextColorForBackground(customColor);
-                                if(!root.privateNav && root.app.tabsEntirelyColorized) {
+                                if(!root.privateNav && root.app.tabsEntirelyColorized && view.visible) {
                                     root.initialPage.ink.color = customColor
                                     root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
                                     root.initialPage.inkTimer.restart()
