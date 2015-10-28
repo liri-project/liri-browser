@@ -136,15 +136,17 @@ View {
                     status = req.readyState;
                     if (status === XMLHttpRequest.DONE) {
                         var objectArray = JSON.parse(req.responseText);
-                        root.app.searchSuggestionsModel.clear()
+                        root.app.searchSuggestionsModel.clear();
                         for(var i in objectArray)
                             root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase})
                     }
                 }
                 req.send();
             }
-            else
+            else {
+                root.app.searchSuggestionsModel.clear();
                 connectionTypeIcon.searchIcon = false;
+            }
 
         }
         onAccepted: {
@@ -153,7 +155,7 @@ View {
             quickSearchURL = ""
         }
 
-        Keys.onTabPressed:{
+        Keys.onTabPressed: {
             if(text.length == 3) {
                 var item = getInfosOfQuickSearch(text)
                 quickSearch = item.name + ""
