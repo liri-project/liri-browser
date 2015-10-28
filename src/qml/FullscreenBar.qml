@@ -28,7 +28,7 @@ Rectangle {
         spacing: Units.dp(24)
 
         Image {
-            source: root.activeTab.webview.icon
+            source: root.activeTab.view.icon
             width: Units.dp(18)
             height: Units.dp(18)
             anchors.verticalCenter: parent.verticalCenter
@@ -36,7 +36,7 @@ Rectangle {
         }
 
         Text {
-            text: root.activeTab.webview.title
+            text: root.activeTab.view.title
             anchors.verticalCenter: parent.verticalCenter
             font.family: root.fontFamily
         }

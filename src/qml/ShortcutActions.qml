@@ -113,7 +113,13 @@ Item {
     }
     Controls.Action {
         shortcut: "Ctrl+Tab"
-        onTriggered: {console.log("nextChild")} // TODO: implement tab switching per Ctrl+Tab
+        onTriggered: {
+            var currentIndex = root.getTabModelIndexByUID(root.activeTab.uid);
+            if (currentIndex === root.tabsModel.count-1)
+                root.activeTab = tabsModel.get(0);
+            else
+                root.activeTab = tabsModel.get(currentIndex+1);
+        }
     }
     Controls.Action {
         shortcut: "F5"
