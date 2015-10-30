@@ -209,7 +209,6 @@ View {
             txtUrl.quickSearch = ""
             txtUrl.quickSearchURL = ""
         }
-
         Keys.onTabPressed:{
             if(text.length == 3) {
                 var item = getInfosOfQuickSearch(text)
@@ -217,6 +216,9 @@ View {
                 txtUrl.quickSearchURL = item.url + ""
                 txtUrl.placeholderText = qsTr("Search...")
             }
+        }
+        Keys.onEscapePressed: {
+            Keys.onBacktabPressed(event)
         }
         Keys.onBacktabPressed:  {
                 txtUrl.quickSearch = "";
