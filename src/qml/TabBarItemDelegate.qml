@@ -305,9 +305,44 @@ Component {
                     text: modelData.view.url
                     style: TextFieldStyle { textColor: root.currentForegroundColor }
                     showBorder: false
+                    onTextChanged: {
+                        if(isASearchQuery(text)) {
+                            //connectionTypeIcon.searchIcon = true
+
+                            //Get search suggestions
+                            var req = new XMLHttpRequest, status;
+                            req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
+                            req.onreadystatechange = function() {
+                                status = req.readyState;
+                                if (status === XMLHttpRequest.DONE) {
+                                    var objectArray = JSON.parse(req.responseText);
+                                    root.app.searchSuggestionsModel.clear();
+                                    for(var i in objectArray)
+                                        root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase})
+                                }
+                            }
+                            req.send();
+                        }
+                        else {
+                            root.app.searchSuggestionsModel.clear();
+                            //connectionTypeIcon.searchIcon = false;
+                        }
+
+                    }
                     onAccepted: {
                         item.editModeActive = false;
                         root.setActiveTabURL(text);
+                        root.selectedQueryIndex = 0
+                    }
+                    Keys.onDownPressed: {
+                        if(root.selectedQueryIndex < root.app.searchSuggestionsModel.count - 1)
+                            root.selectedQueryIndex += 1
+                        text = root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion
+                    }
+                    Keys.onUpPressed: {
+                        if(root.selectedQueryIndex >= 1)
+                            root.selectedQueryIndex -= 1
+                        text = root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion
                     }
                     onActiveFocusChanged: {
                         if (!activeFocus)

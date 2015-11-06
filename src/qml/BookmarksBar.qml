@@ -6,7 +6,6 @@ import QtQuick.Controls 1.2 as Controls
 
 Rectangle {
     id: bookmarksBar
-
     color: toolbar.backgroundColor
     height: visible ? Units.dp(48) : 0
 

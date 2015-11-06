@@ -95,6 +95,8 @@ MaterialWindow {
     property Component quickSearchesSettingsViewComponent: Qt.createComponent(Qt.resolvedUrl("QuickSearchesView.qml"))
     property Component sitesColorsSettingsViewComponent: Qt.createComponent(Qt.resolvedUrl("SitesColorsView.qml"))
 
+    property int selectedQueryIndex: 0
+
     /* General */
 
     function startFullscreenMode(){
