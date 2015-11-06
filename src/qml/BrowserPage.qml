@@ -207,7 +207,9 @@ Page {
                 showBorder: true
                 placeholderText: qsTr("Search")
                 errorColor: "red"
-                onAccepted: activeTabFindText(text)
+                onTextChanged: activeTabFindText(text)
+                Keys.onEnterPressed: activeTabFindText(text)
+                Keys.onReturnPressed: activeTabFindText(text)
             }
 
             IconButton {
