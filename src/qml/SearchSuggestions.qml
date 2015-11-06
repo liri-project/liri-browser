@@ -38,9 +38,14 @@ View {
     ListView {
         id: searchSuggestionsView
         width: parent.width
+        property int currentpos: root.selectedQueryIndex
         height: parent.height
         boundsBehavior: Flickable.StopAtBounds
         model: root.app.searchSuggestionsModel
+        onCurrentposChanged: {
+            positionViewAtIndex(currentpos,ListView.End)
+        }
+
         delegate: ListItem.Standard {
             text: suggestion
             backgroundColor: root.selectedQueryIndex == index ? Qt.rgba(0,0,0,0.05) : "transparent"
