@@ -130,22 +130,28 @@ View {
         textColor: root.tabTextColorActive
         onTextChanged: {
             if(isASearchQuery(text)) {
-                connectionTypeIcon.searchIcon = true
-                root.app.searchSuggestionsModel.append({"suggestion":text})
-                //Get search suggestions
-                var req = new XMLHttpRequest, status;
-                req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
-                req.onreadystatechange = function() {
-                    status = req.readyState;
-                    if (status === XMLHttpRequest.DONE) {
-                        var objectArray = JSON.parse(req.responseText);
-                        root.app.searchSuggestionsModel.clear();
-                        root.app.searchSuggestionsModel.append({"suggestion":text})
-                        for(var i in objectArray)
-                            root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase})
-                    }
+                if(text.substring(0,1) == "=") {
+                    root.app.searchSuggestionsModel.clear()
+                    root.app.searchSuggestionsModel.append({"suggestion":"Result : " + calculate(text.substring(1,text.length))})
                 }
-                req.send();
+                else {
+                    connectionTypeIcon.searchIcon = true
+                    root.app.searchSuggestionsModel.append({"suggestion":text})
+                    //Get search suggestions
+                    var req = new XMLHttpRequest, status;
+                    req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
+                    req.onreadystatechange = function() {
+                        status = req.readyState;
+                        if (status === XMLHttpRequest.DONE) {
+                            var objectArray = JSON.parse(req.responseText);
+                            root.app.searchSuggestionsModel.clear();
+                            root.app.searchSuggestionsModel.append({"suggestion":text})
+                            for(var i in objectArray)
+                                root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase})
+                        }
+                    }
+                    req.send();
+                }
             }
             else {
                 root.app.searchSuggestionsModel.clear();
