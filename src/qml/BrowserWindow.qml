@@ -95,6 +95,8 @@ MaterialWindow {
     property Component quickSearchesSettingsViewComponent: Qt.createComponent(Qt.resolvedUrl("QuickSearchesView.qml"))
     property Component sitesColorsSettingsViewComponent: Qt.createComponent(Qt.resolvedUrl("SitesColorsView.qml"))
 
+    property int selectedQueryIndex: 0
+
     /* General */
 
     function startFullscreenMode(){
@@ -135,7 +137,7 @@ MaterialWindow {
             page.mediaDialog.show()
             return
         }
-        else if (url.indexOf('.') !== -1){
+        else if (url.indexOf('.') !== -1 && url.indexOf('?') !== 0){
             if (url.lastIndexOf('http://', 0) !== 0){
                 if (url.lastIndexOf('https://', 0) !== 0){
                     url = 'http://' + url;
@@ -143,6 +145,11 @@ MaterialWindow {
             }
         }
         else if (url.lastIndexOf('http://', 0) !== 0 &&  url.lastIndexOf('https://', 0) !== 0 && url !== "about:blank") {
+
+            if (url.indexOf('?') === 0 && url.length > 1) {
+                url = url.substring(1);
+            }
+
       	    if(root.app.searchEngine == "duckduckgo")
      	        url = "https://duckduckgo.com/?q=" + url;
       	    else if(root.app.searchEngine == "yahoo")

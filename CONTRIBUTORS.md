@@ -4,6 +4,7 @@ The list of contributors is sorted alphabetical based on the last names.
 
 ## Code
 * Ilya87 (https://github.com/Ilya87)
+* Daniel França (https://github.com/danielfranca)
 * Pierre Jacquier (https://github.com/pierremtb)
 * Corbin Matschull (https://github.com/Polyg0n)
 * Alexandre Oliveira (https://github.com/RockyTV)

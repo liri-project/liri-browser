@@ -20,6 +20,7 @@ View {
      * The outer item provides the actual shape for the progress bar. It is clipped, and has a child rectangle that
      * is slightly bigger. This is so the progress bar is curved where it intersects the corners of the omnibox.
      */
+
     Item {
         id: progressBar
         anchors {
@@ -121,14 +122,16 @@ View {
         property string quickSearchURL: ""
         showBorder: false
         visible: quickSearch == ""
-        text: root.activeTab.view.url
+        text: addingSearch ? searchesText : root.activeTab.view.url
+        property var searchesText
+        property bool addingSearch: false
         placeholderText: mobile ? qsTr("Search") : qsTr("Search or enter website name")
         opacity: 1
         textColor: root.tabTextColorActive
         onTextChanged: {
             if(isASearchQuery(text)) {
                 connectionTypeIcon.searchIcon = true
-
+                root.app.searchSuggestionsModel.append({"suggestion":text})
                 //Get search suggestions
                 var req = new XMLHttpRequest, status;
                 req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
@@ -137,6 +140,7 @@ View {
                     if (status === XMLHttpRequest.DONE) {
                         var objectArray = JSON.parse(req.responseText);
                         root.app.searchSuggestionsModel.clear();
+                        root.app.searchSuggestionsModel.append({"suggestion":text})
                         for(var i in objectArray)
                             root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase})
                     }
@@ -150,9 +154,15 @@ View {
 
         }
         onAccepted: {
-            setActiveTabURL(text)
+            if(root.selectedQueryIndex != 0) {
+                setActiveTabURL(root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion)
+            }
+            else
+                setActiveTabURL(text)
             quickSearch = ""
             quickSearchURL = ""
+            root.selectedQueryIndex = 0
+            addingSearch = false
         }
 
         Keys.onTabPressed: {
@@ -162,10 +172,23 @@ View {
                 quickSearchURL = item.url + ""
                 txtUrlQuickSearches.forceActiveFocus()
             }
+            if(isASearchQuery(text)) {
+                addingSearch = true
+                searchesText = root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion
+                root.selectedQueryIndex = 0
+            }
         }
         Keys.onBacktabPressed:  {
                 quickSearch = "";
                 placeholderText = qsTr("Search or enter website name")
+        }
+        Keys.onDownPressed: {
+            if(root.selectedQueryIndex < root.app.searchSuggestionsModel.count - 1)
+                root.selectedQueryIndex += 1
+        }
+        Keys.onUpPressed: {
+            if(root.selectedQueryIndex >= 1)
+                root.selectedQueryIndex -= 1
         }
         MouseArea {
             anchors.fill: parent
@@ -209,7 +232,6 @@ View {
             txtUrl.quickSearch = ""
             txtUrl.quickSearchURL = ""
         }
-
         Keys.onTabPressed:{
             if(text.length == 3) {
                 var item = getInfosOfQuickSearch(text)
@@ -217,6 +239,9 @@ View {
                 txtUrl.quickSearchURL = item.url + ""
                 txtUrl.placeholderText = qsTr("Search...")
             }
+        }
+        Keys.onEscapePressed: {
+            Keys.onBacktabPressed(event)
         }
         Keys.onBacktabPressed:  {
                 txtUrl.quickSearch = "";

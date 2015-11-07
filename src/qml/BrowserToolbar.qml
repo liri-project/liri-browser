@@ -19,6 +19,7 @@ View {
 
     property var ubuntuOmniboxOverlay
     property alias omnibox: omnibox
+    property int leftIconsCount: goBackButton.activeInt + goForwardButton.activeInt + refreshButton.activeInt
 
     RowLayout {
         anchors.fill: parent
@@ -30,7 +31,9 @@ View {
         Layout.alignment: Qt.AlignVCenter
 
         IconButton {
+            id: goBackButton
             enabled: root.activeTab.view.canGoBack
+            property int activeInt: visible ? 1 : 0
             onClicked: root.activeTab.view.goBack()
             color: root.currentIconColor
             Behavior on color { ColorAnimation { duration : 500 }}
@@ -41,9 +44,11 @@ View {
         }
 
         IconButton {
+            id: goForwardButton
             enabled: root.activeTab.view.canGoForward
             onClicked: root.activeTab.view.goForward()
             color: root.currentIconColor
+            property int activeInt: visible ? 1 : 0
             Behavior on color { ColorAnimation { duration : 500 }}
             visible: root.activeTab.view.canGoForward || !mobile
             action: Action {
@@ -54,7 +59,9 @@ View {
 
         IconButton {
             hoverAnimation: true
+            id: refreshButton
             color: root.currentIconColor
+            property int activeInt: visible ? 1 : 0
             visible: root.activeTab.view.reloadable
             Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: !activeTab.view.loading ? activeTab.view.reload() : activeTab.view.stop()

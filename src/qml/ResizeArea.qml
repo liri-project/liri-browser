@@ -109,7 +109,7 @@ MouseArea{
                 case "rm": cursorShape = Qt.SizeHorCursor; break;
                 case "mt":
                 case "mb": cursorShape = Qt.SizeVerCursor; break;
-                default: cursorShape = Qt.ArrowCursor; break;
+                default: cursorShape = Qt.PointingHandCursor; break;
             }
         }
     }
