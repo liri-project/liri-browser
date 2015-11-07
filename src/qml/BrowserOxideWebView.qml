@@ -2,23 +2,18 @@ import QtQuick 2.4
 import Material 0.1
 import com.canonical.Oxide 1.0
 
-Item {
+BaseBrowserView {
     id: browserWebView
     anchors.fill: parent
 
-    visible: false
-
     property var uid
     property alias webview: webview
-    property bool newTabPage
-    property bool settingsTabPage
 
-    /* Wrapping WebEngineView functionality */
     property alias page: webview.page
     property alias url: webview.url
     //property alias profile: webview.profile
     property alias icon: webview.icon
-    property string title: newTabPage ? qsTr("New tab") : settingsTabPage ? qsTr("Settings") : webview.title
+    property string title: webview.title
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
@@ -75,7 +70,6 @@ Item {
         id: webview
         property var page
         anchors.fill: parent
-        visible: !newTabPage
 
         context: webcontext
 
@@ -97,8 +91,6 @@ Item {
                 browserWebView.secureConnection = true;
             else
                 browserWebView.secureConnection = false;
-            if (root.activeTab.webview == browserWebView)
-                activeTabUrlChanged();
         }
 
          onCertificateError: {
@@ -139,9 +131,7 @@ Item {
 
          onLoadingChanged: {
             if (loadEvent.type === 0) {
-                if (newTabPage) {
-                    newTabPage = false;
-                }
+
             }
 
             else if (loadEvent.type === 2) {
@@ -149,14 +139,33 @@ Item {
                 runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
                     function(content){
                         if(content !== "") {
-                            root.getTabModelDataByUID(uid).customColor = content;
-                            root.getTabModelDataByUID(uid).customColorLight = root.shadeColor(content, 0.6);
-                            root.getTabModelDataByUID(uid).customTextColor = root.getTextColorForBackground(content);
+                            browserWebView.customColor = content;
+                            browserWebView.customColorLight = root.shadeColor(content, 0.6);
+                            browserWebView.customTextColor = root.getTextColorForBackground(content);
+
+                            if(!root.privateNav && !root.app.darkTheme && root.app.tabsEntirelyColorized && view.visible) {
+                                root.initialPage.ink.color = content
+                                root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
+                                root.initialPage.inkTimer.restart()
+                            }
                         }
                         else{
-                            root.getTabModelDataByUID(uid).customColor = false;
-                            root.getTabModelDataByUID(uid).customColorLight = false;
-                            root.getTabModelDataByUID(uid).customTextColor = false;
+                            var customColor = root.app.customSitesColors ? searchForCustomColor(url.toString()) : "none";
+                            if(customColor != "none") {
+                                browserWebView.customColor = customColor;
+                                browserWebView.customColorLight = root.shadeColor(customColor, 0.6);
+                                browserWebView.customTextColor = root.getTextColorForBackground(customColor);
+                                if(!root.privateNav && root.app.tabsEntirelyColorized && view.visible) {
+                                    root.initialPage.ink.color = customColor
+                                    root.initialPage.ink.createTapCircle(root.width/2, root.height/1.5)
+                                    root.initialPage.inkTimer.restart()
+                                }
+                            }
+                            else {
+                                browserWebView.customColor = false;
+                                browserWebView.customColorLight = false;
+                                browserWebView.customTextColor = false;
+                            }
                         }
                 });
 
@@ -204,9 +213,9 @@ Item {
                     setSource();");*/
                 }
 
-                webview.grabToImage(function(result) {
-                    preview = result.image;
-                });
+                //webview.grabToImage(function(result) {
+                //    activeTab.webview = result.image;
+                //});
 
             }
 
@@ -246,20 +255,5 @@ Item {
 
          }
     }
-
-
-    NewTabPage {
-        id: itemNewTabPage
-        visible: newTabPage
-        anchors.fill: parent
-    }
-
-
-    SettingsTabPage {
-        id: itemSettingsTabPage
-        visible: settingsTabPage && !newTabPage
-        anchors.fill: parent
-    }
-
 
 }

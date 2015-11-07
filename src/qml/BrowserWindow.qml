@@ -64,7 +64,7 @@ MaterialWindow {
     property int tabsSpacing: Units.dp(1)
     property int titlebarHeight: Units.dp(148)
 
-    property color defaultBackgroundColor: application.lightThemeColor
+    property color defaultBackgroundColor: app.lightThemeColor
     property color currentBackgroundColor: page.backgroundColor
 
     property color defaultForegroundColor: (privateNav || app.darkTheme) ? "white" : "#212121"
@@ -260,15 +260,18 @@ MaterialWindow {
         if(domains[domains_l-1].indexOf("/") != -1)
             domains[domains_l-1] = domains[domains_l-1].substring(0,domains[domains_l-1].indexOf("/"))
         var domain = domains.join(".")
-        var nb=presetSitesColorsModel.count,i,result = "none"
+        var nb = root.app.presetSitesColorsModel.count;
+        var i;
+        var result = "none";
+
         for(i=0;i<nb;i++) {
-            if (presetSitesColorsModel.get(i).domain == domain)
-                result=presetSitesColorsModel.get(i).color
+            if (root.app.presetSitesColorsModel.get(i).domain == domain)
+                result=root.app.presetSitesColorsModel.get(i).color
         }
-        nb=customSitesColorsModel.count;
+        nb=root.app.customSitesColorsModel.count;
         for(i=0;i<nb;i++) {
-            if (customSitesColorsModel.get(i).domain == domain)
-                result=customSitesColorsModel.get(i).color
+            if (root.app.customSitesColorsModel.get(i).domain == domain)
+                result=root.app.customSitesColorsModel.get(i).color
         }
         return result
     }

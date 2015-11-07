@@ -80,7 +80,8 @@ Item {
             loader.sourceComponent = root.webviewComponent;
             if (loader.ready) {
                 loader.item.url = url;
-                loader.item.profile = root.app.defaultProfile;
+                if (root.app.webEngine === "qtwebengine")
+                    loader.item.profile = root.app.defaultProfile;
                 viewType = "built-in";
                 viewName = "webview";
             }

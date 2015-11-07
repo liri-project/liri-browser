@@ -42,7 +42,7 @@ import zipfile
 # arch_list contains list of architectures for which the packages should be
 # downloaded
 arch_list = ['i386', 'amd64', 'armhf']
-# multiarch_list contains full architecture name as used in the directories
+# multiarch_list contains full architecture name as used in the directoriesroot.app.
 # in contents of click package
 multiarch_list = ["i386-linux-gnu", "x86_64-linux-gnu", "arm-linux-gnueabihf"]
 
@@ -101,7 +101,7 @@ def prepare_uris():
             sources_list = open(os.path.join(new_etc_apt, 'sources.list'), "w")
             for source in sources[arch]:
                 sources_list.write(
-                    "deb [arch={arch}] {uri} utopic {repositories}\n"
+                    "deb [arch={arch}] {uri} wily {repositories}\n"
                     .format(arch=arch, uri=source.uri,
                             repositories=source.repositories))
             sources_list.close()
