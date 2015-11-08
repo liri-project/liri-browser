@@ -16,6 +16,7 @@ View {
         leftMargin: root.app.integratedAddressbars ? parent.width/4 * 1.5 : Units.dp(24) * toolbar.leftIconsCount + (toolbar.leftIconsCount + 1) * Units.dp(27)
     }
     backgroundColor: "white"
+    radius: toolbar.omnibox.radius
     elevation: searchSuggestionsView.count == 0 ? 0 : 2
     z:4
 
@@ -48,7 +49,8 @@ View {
 
         delegate: ListItem.Standard {
             text: suggestion
-            backgroundColor: root.selectedQueryIndex == index ? Qt.rgba(0,0,0,0.05) : "transparent"
+            iconName: icon
+            backgroundColor: root.selectedQueryIndex == index && icon=="action/search" ? Qt.rgba(0,0,0,0.05) : "transparent"
             onClicked: {
                 setActiveTabURL(suggestion)
                 root.app.searchSuggestionsModel.clear()

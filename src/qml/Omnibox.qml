@@ -82,7 +82,7 @@ View {
         id: connectionTypeIcon
 
         property bool searchIcon: false
-        name:  root.privateNav ? "awesome/binoculars" : searchIcon ? "action/search" : root.activeTab.view.secureConnection ? "action/lock" : "social/public"
+        name:  root.privateNav ? "awesome/binoculars" : searchIcon ? "editor/mode_edit" : root.activeTab.view.secureConnection ? "action/lock" : "social/public"
         color: root.activeTab.view.secureConnection ? "green" : "gray"
         onColorChanged: {
 
@@ -130,13 +130,29 @@ View {
         textColor: root.tabTextColorActive
         onTextChanged: {
             if(isASearchQuery(text)) {
+                console.log(text.substring(0,6))
                 if(text.substring(0,1) == "=") {
                     root.app.searchSuggestionsModel.clear()
-                    root.app.searchSuggestionsModel.append({"suggestion":"Result : " + calculate(text.substring(1,text.length))})
+                    root.app.searchSuggestionsModel.append({"icon":"action/code","suggestion":"Result : " + calculate(text.substring(1,text.length))})
                 }
+                else if(text.substring(0,8) == "weather ") {
+                    console.log("http://api.openweathermap.org/data/2.5/weather?q=" + text.substring(8,text.length) + "&APPID=7d2c3897b58a06210476db2ba6ae39d2")
+                    var req = new XMLHttpRequest, status;
+                    req.open("GET", "http://api.openweathermap.org/data/2.5/weather?q=" + text.substring(8,text.length) + "&APPID=7d2c3897b58a06210476db2ba6ae39d2");
+                    req.onreadystatechange = function() {
+                        status = req.readyState;
+                        if (status === XMLHttpRequest.DONE) {
+                            var objectArray = JSON.parse(req.responseText);
+                            root.app.searchSuggestionsModel.clear();
+                            root.app.searchSuggestionsModel.append({"suggestion": objectArray.name + ": " + objectArray.weather[0].main + " - " + parseInt(objectArray.main.temp - 273) + " °C", "icon" : "image/wb_sunny" })
+                    }}
+                    req.send();
+
+                }
+
                 else {
                     connectionTypeIcon.searchIcon = true
-                    root.app.searchSuggestionsModel.append({"suggestion":text})
+                    root.app.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
                     //Get search suggestions
                     var req = new XMLHttpRequest, status;
                     req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
@@ -145,9 +161,9 @@ View {
                         if (status === XMLHttpRequest.DONE) {
                             var objectArray = JSON.parse(req.responseText);
                             root.app.searchSuggestionsModel.clear();
-                            root.app.searchSuggestionsModel.append({"suggestion":text})
+                            root.app.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
                             for(var i in objectArray)
-                                root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase})
+                                root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase,"icon":"action/search"})
                         }
                     }
                     req.send();
