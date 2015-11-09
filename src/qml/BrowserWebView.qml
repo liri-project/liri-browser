@@ -28,6 +28,7 @@ BaseBrowserView {
     property alias canGoForward: webview.canGoForward
     property bool secureConnection: false
     property real loadProgress: webview.loadProgress/100
+    property alias zoomFactor: webview.zoomFactor
 
     reloadable: true
 

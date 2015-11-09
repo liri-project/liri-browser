@@ -62,11 +62,11 @@ Item {
     Controls.Action {
         shortcut: "Ctrl+R"
         onTriggered: {
-            root.activeTab.webview.reload();
+            root.activeTab.view.reload();
         }
     }
     Controls.Action {
-        shortcut: "Ctrl+T"
+        shortcut: 19
         onTriggered: {
             root.addTab()
             toolbar.omnibox.txtUrl.forceActiveFocus();
@@ -101,15 +101,15 @@ Item {
     }
     Controls.Action {
         shortcut: "Ctrl+0"
-        onTriggered: root.activeTab.webview.zoomFactor = 1.0;
+        onTriggered: root.activeTab.view.zoomReset();
     }
     Controls.Action {
-        shortcut: "Ctrl+-"
-        onTriggered: root.activeTab.webview.zoomFactor -= 0.1;
+        shortcut: 17
+        onTriggered: root.activeTab.view.zoomOut();
     }
     Controls.Action {
-        shortcut: "Ctrl+="
-        onTriggered: root.activeTab.webview.zoomFactor += 0.1;
+        shortcut: 16
+        onTriggered: root.activeTab.view.zoomIn();
     }
     Controls.Action {
         shortcut: "Ctrl+Tab"
@@ -124,7 +124,7 @@ Item {
     Controls.Action {
         shortcut: "F5"
         onTriggered: {
-            root.activeTab.webview.reload()
+            root.activeTab.view.reload()
         }
     }
     Controls.Action {

@@ -170,6 +170,21 @@ Item {
             loader.item.reload();
     }
 
+    function zoomIn() {
+        if (isWebView)
+            loader.item.zoomFactor += 0.25;
+    }
+
+    function zoomOut() {
+        if (isWebView)
+            loader.item.zoomFactor -= 0.25
+    }
+
+    function zoomReset() {
+        if (isWebView)
+            loader.item.zoomFactor = 1.0
+    }
+
     function stop() {
         if (isWebView)
             loader.item.stop();
