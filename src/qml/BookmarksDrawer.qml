@@ -18,7 +18,8 @@ View {
 
     Behavior on anchors.rightMargin {
         NumberAnimation {
-            duration: 300
+            duration: 400
+            easing.type: Easing.InOutCubic
         }
     }
 

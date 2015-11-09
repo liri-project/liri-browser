@@ -209,6 +209,15 @@ Component {
                         else if (mouse.button === Qt.MiddleButton) {
                             removeTab(uid);
                         }
+                        else if (mouse.button === Qt.RightButton) {
+                            if(!root.tabPreview.visible)
+                                root.getTabModelDataByUID(uid).view.grabToImage(function(result) {
+                                    root.tabPreview.source = result.url;
+                                    root.tabPreview.visible = true
+                                })
+                            else
+                                root.tabPreview.visible = false
+                        }
                     }
                 }
             }

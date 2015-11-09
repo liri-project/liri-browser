@@ -28,6 +28,10 @@ MaterialWindow {
     /* Settings */
     property variant win;
 
+
+    property alias tabPreview: page.tabPreview
+    property string tabPreviewSource
+
     property bool snappedRight: false
     property bool snappedLeft: false
 

@@ -19,6 +19,7 @@ Page {
     property alias mediaDialog: mediaDialog
     property alias toolbar: toolbar
     property alias titlebar: titlebar
+    property alias tabPreview: tabPreview
 
     backgroundColor: {
         if (root.privateNav)
@@ -315,6 +316,28 @@ Page {
     BookmarksDrawer { id: bookmarksDrawer }
 
     HistoryDrawer { id: historyDrawer }
+
+    View {
+        id: tabPreview
+        width: root.tabWidth
+        height: width * root.height/root.width
+        anchors{
+            left: parent.left
+            bottom: parent.bottom
+        }
+
+        elevation: 2
+        z:900
+        visible: false
+        property alias source: img.source
+
+
+        Image {
+            id: img
+            source: root.tabPreviewSource
+            anchors.fill: parent
+        }
+    }
 
     Ink {
         id: ink
