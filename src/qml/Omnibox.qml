@@ -214,7 +214,12 @@ View {
 
         }
         onAccepted: {
-            setActiveTabURL(root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion)
+            if(isASearchQuery(text)) {
+                setActiveTabURL(root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion)
+            }
+            else {
+                setActiveTabURL(text)
+            }
             root.app.searchSuggestionsModel.clear()
             quickSearch = ""
             quickSearchURL = ""
