@@ -184,7 +184,7 @@ Page {
     View {
         id: websiteSearchOverlay
         visible: false
-        anchors.top: titlebar.bottom
+        anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         height: Units.dp(48)
