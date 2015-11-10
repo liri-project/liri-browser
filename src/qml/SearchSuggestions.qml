@@ -15,10 +15,9 @@ View {
         left: parent.left
         leftMargin: root.app.integratedAddressbars ? parent.width/4 * 1.5 : Units.dp(24) * toolbar.leftIconsCount + (toolbar.leftIconsCount + 1) * Units.dp(27)
     }
-    backgroundColor: "white"
     radius: toolbar.omnibox.radius
     elevation: searchSuggestionsView.count == 0 ? 0 : 2
-    z:4
+    z:20
 
     Behavior on height {
         NumberAnimation { duration: 400; easing.type: Easing.InOutCubic }
