@@ -26,10 +26,6 @@ RESOURCES += \
 
 CONFIG += c++11
 
-macx {
-    LIBS += -L/Applications/VLC.app/Contents/MacOS/lib
-}
-
 TRANSLATIONS += src/translations/liri-browser.ts \
                 src/translations/de_DE.ts \
                 src/translations/ru_RU.ts \
@@ -62,3 +58,9 @@ ICON = icons/liri-browser.icns
 
 HEADERS += \
     src/clipboardadapter.h
+
+linux-g++{
+    target.path=/opt/liri-browser-build
+    target.files+=liri-browser
+    target.files+=liri-browser.desktop
+}

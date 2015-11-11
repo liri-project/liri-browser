@@ -129,86 +129,16 @@ View {
         opacity: 1
         textColor: root.tabTextColorActive
         onTextChanged: {
+            root.app.searchSuggestionsModel.clear();
             if(isASearchQuery(text)) {
-
-                if(text.substring(0,1) == "=") {
-                    root.app.searchSuggestionsModel.clear()
-                    root.app.searchSuggestionsModel.append({"icon":"action/code","suggestion":"Result : " + calculate(text.substring(1,text.length))})
-                }
-
-                else if(text.substring(0,8) == "weather ") {
-                    console.log("http://api.openweathermap.org/data/2.5/weather?q=" + text.substring(8,text.length) + "&APPID=7d2c3897b58a06210476db2ba6ae39d2")
-                    var req = new XMLHttpRequest, status;
-                    req.open("GET", "http://api.openweathermap.org/data/2.5/weather?q=" + text.substring(8,text.length) + "&APPID=7d2c3897b58a06210476db2ba6ae39d2");
-                    req.onreadystatechange = function() {
-                        status = req.readyState;
-                        if (status === XMLHttpRequest.DONE) {
-                            var objectArray = JSON.parse(req.responseText);
-                            root.app.searchSuggestionsModel.clear();
-                            root.app.searchSuggestionsModel.append({"suggestion": objectArray.name + ": " + objectArray.weather[0].main + " - " + parseInt(objectArray.main.temp - 273) + " °C", "icon" : "image/wb_sunny" })
-                    }}
-                    req.send();
-
-                }
-
-                else {
-                    root.app.searchSuggestionsModel.clear();
-
-                    // Check if a bookmark entry is present
-                    var count = root.app.bookmarksModel.count, temp, i, current=0, temp2
-                    for(i=0;i<count;i++) {
-                        temp = root.app.bookmarksModel.get(i)
-                        try{
-                            temp2 = temp.url.indexOf(text)
-                        }
-                        catch(e){
-                            temp2 = -1
-                        }
-
-                        if(temp2 != -1 && current <= 1) {
-                            current++;
-                            root.app.searchSuggestionsModel.append({"icon":"action/bookmark", "suggestion":temp.url})
-                        }
-                    }
-
-                    // Check if an history entry is present
-                    count = root.app.historyModel.count
-                    current = 0
-                    for(i=0;i<count;i++) {
-                        temp = root.app.historyModel.get(i)
-                        try{
-                            temp2 = temp.url.indexOf(text)
-                        }
-                        catch(e){
-                            temp2 = -1
-                        }
-
-                        if(temp2 != -1 && current <= 1) {
-                            current++
-                            root.app.searchSuggestionsModel.append({"icon":"action/history", "suggestion":temp.url})
-                        }
-                    }
-
-                    connectionTypeIcon.searchIcon = true
-                    root.app.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
-                    //Get search suggestions
-                    var req = new XMLHttpRequest, status;
-                    req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
-                    req.onreadystatechange = function() {
-                        status = req.readyState;
-                        if (status === XMLHttpRequest.DONE) {
-                            var objectArray = JSON.parse(req.responseText);
-                            root.app.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
-                            for(var i in objectArray)
-                                root.app.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase,"icon":"action/search"})
-                        }
-                    }
-                    req.send();
+                for(var i in root.app.omnipletsFunctions) {
+                    if(root.app.omnipletsModel.get(i).activated)
+                        if(root.app.omnipletsFunctions[i](text) == "stop")
+                            break;
                 }
             }
 
             else {
-                root.app.searchSuggestionsModel.clear();
                 connectionTypeIcon.searchIcon = false;
             }
 
