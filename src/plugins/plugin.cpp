@@ -46,6 +46,7 @@ void Plugin::loadScript(){
     QString contents = stream.readAll();
     scriptFile.close();
     engine.evaluate(contents, path);
+
 }
 
 

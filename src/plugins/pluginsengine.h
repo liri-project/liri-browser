@@ -18,11 +18,10 @@ class PluginsEngine : public QObject{
 
                 bool trigger(QString event, QJSValueList args=QJSValueList());
                 Q_INVOKABLE bool trigger(QJSValue event, QJSValueList args=QJSValueList());
-                //Q_INVOKABLE void copyText(QString text);
+                Q_INVOKABLE bool trigger(QJSValue event, QString text);
 
         private:
                 QQmlApplicationEngine *appEngine;
-                //QClipboard *clip;
 };
 
 #endif // PLUGINSENGINE_H

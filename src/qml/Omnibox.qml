@@ -131,6 +131,7 @@ View {
         onTextChanged: {
             root.app.searchSuggestionsModel.clear();
             if(isASearchQuery(text)) {
+                PluginsEngine.trigger("omnibox.search", text);
                 for(var i in root.app.omnipletsFunctions) {
                     if(root.app.omnipletsModel.get(i).activated)
                         if(root.app.omnipletsFunctions[i](text) == "stop")

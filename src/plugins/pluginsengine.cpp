@@ -37,3 +37,7 @@ bool PluginsEngine::trigger(QString event, QJSValueList args){
 bool PluginsEngine::trigger(QJSValue event, QJSValueList args){
     return PluginsEngine::trigger(event.toString(), args);
 }
+
+bool PluginsEngine::trigger(QJSValue event, QString text){
+    return PluginsEngine::trigger(event.toString(), QJSValueList() << QJSValue(text));
+}
