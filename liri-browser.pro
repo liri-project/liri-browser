@@ -15,10 +15,16 @@ QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \
     src/cursor/cursor.cpp \
-    src/clipboardadapter.cpp
+    src/clipboardadapter.cpp \
+    src/plugins/pluginsengine.cpp \
+    src/plugins/plugin.cpp \
+    src/plugins/api.cpp
 
 HEADERS += \
-    src/cursor/cursor.h
+    src/cursor/cursor.h \
+    src/plugins/pluginsengine.h \
+    src/plugins/plugin.h \
+    src/plugins/api.h
 
 RESOURCES += \
     src/qml.qrc
