@@ -815,6 +815,7 @@ Rectangle {
                                right: parent.right
                                verticalCenter: parent.verticalCenter
                        }
+                       onCheckedChanged:  root.app.omnipletsModel.setProperty(index,"activated",checked)
                    }
                    onClicked: {
                        sw.checked = !sw.checked
