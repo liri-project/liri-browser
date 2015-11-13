@@ -21,6 +21,8 @@ class PluginsEngine : public QObject{
                 Q_INVOKABLE bool trigger(QJSValue event, QString text);
 
         private:
+                QJSValueList newArgsList(QJSValueList args);
+
                 QQmlApplicationEngine *appEngine;
 };
 

@@ -28,8 +28,9 @@ void PluginsEngine::loadPlugins(){
 
 bool PluginsEngine::trigger(QString event, QJSValueList args){
     qDebug() << "Triggered event" << event;
+
     for (int i=0; i<this->plugins.values().length(); i++){
-       this->plugins.values()[i]->trigger(event, args);
+       this->plugins.values()[i]->trigger(event, this->newArgsList(args));
     }
     return true;
 }
@@ -40,4 +41,13 @@ bool PluginsEngine::trigger(QJSValue event, QJSValueList args){
 
 bool PluginsEngine::trigger(QJSValue event, QString text){
     return PluginsEngine::trigger(event.toString(), QJSValueList() << QJSValue(text));
+}
+
+QJSValueList PluginsEngine::newArgsList(QJSValueList args){
+    // Make sure there's one list created for each plugin
+    QJSValueList newList;
+    for (int i=0; i<args.length();i++) {
+        newList.append(args[i]);
+    }
+    return newList;
 }
