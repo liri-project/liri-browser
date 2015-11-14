@@ -1,0 +1,12 @@
+{
+    "name": "omniplet-bookmarks",
+    "title": "Bookmarks Omniplet",
+    "description": "Omniplet that provides bookmarks specific search suggestions",
+    "version": "0.1", 
+    "maintainer": "Tim Süberkrüb <tim.sueberkrueb@web.de>",
+    "api": "0.1",
+    "features": [
+        "omniplet",
+        "bookmarks"
+    ]
+}

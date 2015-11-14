@@ -18,6 +18,21 @@
                 "omniplet": true,
                 "network": true
             }
+        },
+
+        "omniplet-history": {
+            "permissions": {
+                "omniplet": true,
+                "history": true
+            }
+        },
+
+        "omniplet-bookmarks": {
+            "permissions": {
+                "omniplet": true,
+                "bookmarks": true
+            }
         }
+
     }
 }

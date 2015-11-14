@@ -34,8 +34,6 @@ Item {
     property string sourceHighlightFont: "Roboto Mono"
     property int sourceHighlightFontPixelSize: 12
 
-    signal changedBookmarks ()
-
     property bool integratedAddressbars: false
     property bool tabsEntirelyColorized: false
 
@@ -45,9 +43,63 @@ Item {
 
     property bool newTabPage: true
 
+    function getBookmarksArray() {
+        var bookmarks = [], bM_l = application.bookmarksModel.count;
+        for (var i=0; i<bM_l; i++){
+            var item = application.bookmarksModel.get(i);
+            bookmarks.push({"title": item.title, "url": item.url.toString(), "faviconUrl": item.faviconUrl.toString()});
+        }
+        return bookmarks;
+    }
+
+    function getHistoryArray() {
+        var history = [], hM_l = application.historyModel.count;
+        for (var i=0; i<hM_l; i++){
+            var item = application.historyModel.get(i);
+            if (item.type !== "date")
+                history.push({"title": item.title, "url": item.url.toString(), "faviconUrl": item.faviconUrl.toString(), "date": item.date, "type": item.type, "color": item.color});
+        }
+        return history;
+    }
+
     property ListModel bookmarksModel: ListModel {
         id: bookmarksModel
         dynamicRoles: true
+    }
+
+    function saveBookmarks() {
+        application.settings.bookmarks = getBookmarksArray();
+    }
+
+    function saveHistory() {
+        application.settings.history = getHistoryArray();
+    }
+
+    function saveDashboard() {
+        var dashboard = [], dM_l = application.dashboardModel.count;
+        for (var i=0; i<dM_l; i++){
+            var item = application.dashboardModel.get(i);
+            dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
+        }
+        application.settings.dashboard = dashboard;
+    }
+
+    function saveSitesColors(){
+        var customsitescolors = [], cscM_l = application.customSitesColorsModel.count;
+        for (var i=0; i<cscM_l; i++){
+             var item = application.customSitesColorsModel.get(i);
+             customsitescolors.push({"domain": item.domain, "color": item.color})
+        }
+        application.settings.customsitescolors = customsitescolors;
+    }
+
+    function saveQuickSearches(){
+        var customquicksearches = [], cqsm_l = application.customQuickSearchesModel.count;
+        for (var i=0; i<cqsm_l; i++){
+             var item = application.customQuickSearchesModel.get(i);
+             customquicksearches.push({"name": item.name, "key": item.key, "url": item.url})
+        }
+        application.settings.customquicksearches = customquicksearches;
     }
 
     property ListModel searchSuggestionsModel: ListModel {
@@ -127,6 +179,7 @@ Item {
             }*/
         },
         2: function(text) {
+            /*
             var count = application.bookmarksModel.count, temp, i, current=0, temp2
             for(i=0;i<count;i++) {
                 temp = application.bookmarksModel.get(i)
@@ -141,10 +194,10 @@ Item {
                     current++;
                     application.searchSuggestionsModel.append({"icon":"action/bookmark", "suggestion":temp.url})
                 }
-            }
+            }*/
         },
         3: function(text) {
-            var count = application.historyModel.count, current = 0, temp, temp2
+            /*var count = application.historyModel.count, current = 0, temp, temp2
             for(var i=0;i<count;i++) {
                 temp = application.historyModel.get(i)
                 try{
@@ -158,7 +211,7 @@ Item {
                     current++
                     application.searchSuggestionsModel.append({"icon":"action/history", "suggestion":temp.url})
                 }
-            }
+            }*/
         },
         4: function(text) {
             /*application.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
@@ -352,48 +405,4 @@ Item {
             application.customQuickSearchesModel.append(application.settings.customquicksearches[i]);
     }
 
-    Component.onDestruction: {
-
-        // Save the browser history
-        var history = [], hM_l = application.historyModel.count;
-        for (var i=0; i<hM_l; i++){
-            var item = application.historyModel.get(i);
-            if (item.type !== "date")
-                history.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl, "date": item.date, "type": item.type, "color": item.color});
-        }
-        application.settings.history = history;
-
-        // Save the browser bookmarks
-        var bookmarks = [], bM_l = application.bookmarksModel.count;
-        for (i=0; i<bM_l; i++){
-            item = application.bookmarksModel.get(i);
-            bookmarks.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl});
-        }
-        application.settings.bookmarks = bookmarks;
-
-        // Save the dashboard model
-        var dashboard = [], dM_l = application.dashboardModel.count;
-        for (i=0; i<dM_l; i++){
-            item = application.dashboardModel.get(i);
-            dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
-        }
-        application.settings.dashboard = dashboard;
-
-        // Save sites color model
-        var customsitescolors = [], cscM_l = application.customSitesColorsModel.count;
-        for (i=0; i<cscM_l; i++){
-             item = application.customSitesColorsModel.get(i);
-            customsitescolors.push({"domain": item.domain, "color": item.color})
-        }
-        application.settings.customsitescolors = customsitescolors;
-
-        // Save quick searches
-        var customquicksearches = [], cqsm_l = application.customQuickSearchesModel.count;
-        for (i=0; i<cqsm_l; i++){
-             item = application.customQuickSearchesModel.get(i);
-            customquicksearches.push({"name": item.name, "key": item.key, "url": item.url})
-        }
-        application.settings.customquicksearches = customquicksearches;
-
-    }
 }

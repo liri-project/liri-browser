@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QVariantList>
 #include <QQmlApplicationEngine>
+#include <QJsonArray>
 #include "../config.h"
 
 class PluginAPI : public QObject{
@@ -33,6 +34,11 @@ class PluginAPI : public QObject{
                 // Search Suggestions
                 Q_INVOKABLE bool appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue insert=QJSValue("end"));
 
+                // Browser history
+                Q_INVOKABLE QVariant getHistory();
+
+                // Browser bookmarks
+                Q_INVOKABLE QVariant getBookmarks();
         private:
                 const QString version = QString("0.1");
                 QString pluginName;

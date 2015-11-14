@@ -55,6 +55,7 @@ Rectangle {
             onPositionChanged: {
                 if (draggingId != -1 && index != -1 && index != activeIndex) {
                     bookmarkView.model.move(activeIndex, activeIndex = index, 1);
+                    root.app.saveBookmarks();
                 }
                 mouse.accepted = false;
 

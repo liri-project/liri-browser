@@ -216,6 +216,7 @@ MaterialWindow {
             else
                 fgColor = "black"
             root.app.dashboardModel.append({"title": title, "url": url.toString(), "iconUrl": iconUrl.toString(), "uid": uidMax+1, "bgColor": color || "white", "fgColor": fgColor});
+            root.app.saveDashboard();
             //: %1 is a title
             snackbar.open(qsTr('Added website "%1" to dash').arg(title));
         });
@@ -232,6 +233,7 @@ MaterialWindow {
     function addBookmark(title, url, faviconUrl, color){
         lastBookmarkUID++;
         root.app.bookmarksModel.append({"title": title, "url": url, "faviconUrl": faviconUrl, "color": color, "uid": lastBookmarkUID})
+        root.app.saveBookmarks();
     }
 
     function changeBookmark(url, title, newUrl, faviconUrl){
@@ -240,7 +242,7 @@ MaterialWindow {
                 root.app.bookmarksModel.get(i).url = newUrl;
                 root.app.bookmarksModel.get(i).title = title;
                 root.app.bookmarksModel.get(i).faviconUrl = faviconUrl;
-                root.app.changedBookmarks();
+                root.app.saveBookmarks();
                 return true;
             }
         }
@@ -251,7 +253,8 @@ MaterialWindow {
     function removeBookmark(url){
         for (var i=0; i<root.app.bookmarksModel.count; i++){
             if (root.app.bookmarksModel.get(i).url == url){
-                root.app.bookmarksModel.remove(i)
+                root.app.bookmarksModel.remove(i);
+                root.app.saveBookmarks();
                 return true;
             }
         }

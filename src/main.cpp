@@ -25,8 +25,8 @@ int main(int argc, char **argv)
     config->load();
 
     // Set domain
-    app.setOrganizationName("liri-browser");
-    app.setOrganizationDomain("liri-browser.github.io");
+    app.setOrganizationName("liri-project");
+    app.setOrganizationDomain("liri-project.me");
     app.setApplicationName("liri-browser");
 
     // Load Translations

@@ -5,6 +5,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QSignalMapper>
+#include <QtQml>
+#include <QJsonArray>
 #include "api.h"
 #include "urlopener.h"
 
@@ -61,7 +63,6 @@ bool PluginAPI::on(QString event, QJSValue callback) {
 }
 
 bool PluginAPI::trigger(QString event, QJSValueList args) {
-    qDebug() << "Triggering engine event" << event;
     if (!events.contains(event)) {
         qWarning() << "Trying to trigger non-existing event" << event;
         return false;
@@ -81,7 +82,7 @@ bool PluginAPI::fetchURL(QUrl url, QJSValue callback){
         return true;
     }
     else {
-        qWarning() << "blocked network access for plugin" << this->pluginName << "because of missing permission";
+        qWarning() << "blocked network access for plugin" << this->pluginName;
         return false;
     }
 }
@@ -101,5 +102,33 @@ bool PluginAPI::appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue in
     else {
         qWarning() << "blocked omniplet access for plugin" << this->pluginName;
         return false;
+    }
+}
+
+
+QVariant PluginAPI::getHistory(){
+    if (hasPermission("history")) {
+        QVariant retValue;
+        QMetaObject::invokeMethod(this->appEngine->rootObjects().first(), "getHistoryArray",
+                Q_RETURN_ARG(QVariant, retValue));
+        return QVariant::fromValue(retValue.toList());
+    }
+    else {
+        qWarning() << "blocked history access for plugin" << this->pluginName;
+        return QVariant(false);
+    }
+}
+
+
+QVariant PluginAPI::getBookmarks(){
+    if (hasPermission("bookmarks")) {
+        QVariant retValue;
+        QMetaObject::invokeMethod(this->appEngine->rootObjects().first(), "getBookmarksArray",
+                Q_RETURN_ARG(QVariant, retValue));
+        return QVariant::fromValue(retValue.toList());
+    }
+    else {
+        qWarning() << "blocked bookmarks access for plugin" << this->pluginName;
+        return QVariant(false);
     }
 }
