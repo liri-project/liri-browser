@@ -1,0 +1,12 @@
+{
+    "name": "omniplet-weather",
+    "title": "Weather Omniplet",
+    "description": "Omniplet that provides weather information",
+    "version": "0.1", 
+    "maintainer": "Tim Süberkrüb <tim.sueberkrueb@web.de>",
+    "api": "0.1",
+    "features": [
+        "omniplet",
+        "network"
+    ]
+}

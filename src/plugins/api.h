@@ -24,8 +24,12 @@ class PluginAPI : public QObject{
                 // Register callbacks on events
                 Q_INVOKABLE bool on(QString event, QJSValue callback);
 
+                // Network functionality
+                Q_INVOKABLE void fetchURL(QUrl url, QJSValue callback);
+
                 // Search Suggestions
-                Q_INVOKABLE void appendSearchSuggestion(QJSValue text);
+                Q_INVOKABLE void appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue insert=QJSValue("end"));
+
         private:
                 const QString version = QString("0.1");
                 QString pluginName;

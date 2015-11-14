@@ -1,7 +1,11 @@
 #include <QDebug>
 #include <QVariantList>
 #include <QJSValueList>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QSignalMapper>
 #include "api.h"
+#include "urlopener.h"
 
 QStringList PluginAPI::events = QStringList() << QString("load")
                                               << QString("omnibox.search"); // QJSValue text
@@ -47,4 +51,18 @@ bool PluginAPI::trigger(QString event, QJSValueList args) {
 }
 
 
-void PluginAPI::appendSearchSuggestion(QJSValue text) {}
+void PluginAPI::fetchURL(QUrl url, QJSValue callback){
+    URLOpener *urlopener = new URLOpener();
+    urlopener->fetch(url, callback);
+}
+
+void PluginAPI::appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue insert) {
+    QObject *rootObject = this->appEngine->rootObjects().first();
+    QObject *qmlObject = rootObject->findChild<QObject*>("searchSuggestionsModel");
+    QMetaObject::invokeMethod(qmlObject,
+        "appendSuggestion",
+        Q_ARG(QVariant, text.toVariant()),
+        Q_ARG(QVariant, icon.toVariant()),
+        Q_ARG(QVariant, insert.toVariant())
+    );
+}

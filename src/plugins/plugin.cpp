@@ -4,6 +4,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QNetworkRequest>
 #include "plugin.h"
 #include "api.h"
 
@@ -69,7 +70,7 @@ bool Plugin::loadManifest() {
     this->maintainer = json["maintainer"].toString();
     this->version = json["version"].toString();
     this->apiVersion = json["api"].toString();
-    this->permissions = json["permissions"].toArray().toVariantList();
+    this->features = json["features"].toArray().toVariantList();
 
     return true;
 }

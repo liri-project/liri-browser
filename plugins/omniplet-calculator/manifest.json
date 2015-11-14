@@ -1,0 +1,11 @@
+{
+    "name": "omniplet-calculator",
+    "title": "Calculator Omniplet",
+    "description": "Omniplet for simple calculations",
+    "version": "0.1", 
+    "maintainer": "Tim Süberkrüb <tim.sueberkrueb@web.de>",
+    "api": "0.1",
+    "features": [
+        "omniplet"
+    ]
+}

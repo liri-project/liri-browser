@@ -4,6 +4,8 @@ import Qt.labs.settings 1.0
 Item {
     id: application
 
+    objectName: "application"
+
     property string webEngine: "qtwebengine"
     property string platform: "unknown/desktop"
     property bool enableShortCuts: true
@@ -49,8 +51,15 @@ Item {
     }
 
     property ListModel searchSuggestionsModel: ListModel {
+        objectName: "searchSuggestionsModel"
         id: searchSuggestionsModel
         dynamicRoles: true
+        function appendSuggestion(suggestion, icon, insertMode) {
+            if (insertMode === "start")
+                searchSuggestionsModel.insert(0, {"suggestion": suggestion, "icon": icon})
+            else
+                searchSuggestionsModel.append({"suggestion": suggestion, "icon": icon});
+        }
     }
 
     property ListModel historyModel: ListModel {
@@ -99,13 +108,13 @@ Item {
 
     property var omnipletsFunctions: {
         0: function(text) {
-            if(text.substring(0,1) == "=") {
+            /*if(text.substring(0,1) == "=") {
                 application.searchSuggestionsModel.append({"icon":"action/code","suggestion":"Result : " + calculate(text.substring(1,text.length))})
                 return "stop"
-            }
+            }*/
         },
         1: function(text) {
-            if(text.substring(0,8) == "weather ") {
+            /*if(text.substring(0,8) == "weather ") {
                 var req = new XMLHttpRequest, status;
                 req.open("GET", "http://api.openweathermap.org/data/2.5/weather?q=" + text.substring(8,text.length) + "&APPID=7d2c3897b58a06210476db2ba6ae39d2");
                 req.onreadystatechange = function() {
@@ -115,7 +124,7 @@ Item {
                         application.searchSuggestionsModel.append({"suggestion": objectArray.name + ": " + objectArray.weather[0].main + " - " + parseInt(objectArray.main.temp - 273) + " °C", "icon" : "image/wb_sunny" })
                 }}
                 req.send();
-            }
+            }*/
         },
         2: function(text) {
             var count = application.bookmarksModel.count, temp, i, current=0, temp2
@@ -150,10 +159,9 @@ Item {
                     application.searchSuggestionsModel.append({"icon":"action/history", "suggestion":temp.url})
                 }
             }
-
         },
         4: function(text) {
-            application.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
+            /*application.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
             var req = new XMLHttpRequest, status;
             req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
             req.onreadystatechange = function() {
@@ -165,14 +173,14 @@ Item {
                         application.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase,"icon":"action/search"})
                 }
             }
-            req.send();
+            req.send();*/
         }
     }
 
 
     /* Omnibox calculations */
 
-    function search(expr,a,b) {
+    /*function search(expr,a,b) {
         var i = 0
         while (i != -1) {
             i = expr.indexOf(a,i);
@@ -206,7 +214,7 @@ Item {
         expr = search(expr,'sqrt','Math.sqrt');
         expr = search(expr,'pi','Math.PI');
         return eval(expr);
-    }
+    }*/
 
     property bool customSitesColors: true
     property bool quickSearches: true

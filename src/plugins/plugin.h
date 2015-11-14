@@ -28,8 +28,7 @@ class Plugin : public QObject{
                 QString maintainer;
                 QString apiVersion;
                 QString version;
-                QStringList policyGroups;
-                QVariantList permissions;
+                QVariantList features;
 
                 PluginAPI * api;
 
