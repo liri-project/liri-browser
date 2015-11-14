@@ -5,14 +5,17 @@
 #include <QList>
 #include <QJSValue>
 #include <QMap>
+#include <QVariantList>
 #include <QQmlApplicationEngine>
+#include "../config.h"
 
 class PluginAPI : public QObject{
         Q_OBJECT
         public:
-                explicit PluginAPI(QString pluginName, QQmlApplicationEngine *appEngine, QObject *parent = 0);
+                explicit PluginAPI(QString pluginName, QVariantList features, QQmlApplicationEngine *appEngine, Config *config, QObject *parent = 0);
 
                 static QStringList events;
+                static QMap<QString, QVariant> eventFeatures;
 
                 bool trigger(QString event, QJSValueList args);
 
@@ -25,17 +28,22 @@ class PluginAPI : public QObject{
                 Q_INVOKABLE bool on(QString event, QJSValue callback);
 
                 // Network functionality
-                Q_INVOKABLE void fetchURL(QUrl url, QJSValue callback);
+                Q_INVOKABLE bool fetchURL(QUrl url, QJSValue callback);
 
                 // Search Suggestions
-                Q_INVOKABLE void appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue insert=QJSValue("end"));
+                Q_INVOKABLE bool appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue insert=QJSValue("end"));
 
         private:
                 const QString version = QString("0.1");
                 QString pluginName;
+                QVariantList features;
 
                 QMap<QString, QList<QJSValue>> eventsMap;
-                QQmlApplicationEngine * appEngine;
+                QQmlApplicationEngine *appEngine;
+                Config *config;
+
+                bool hasFeature(QVariant feature);
+                bool hasPermission(QVariant feature);
 };
 
 #endif // API_H

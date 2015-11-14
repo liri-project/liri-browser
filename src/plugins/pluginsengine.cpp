@@ -4,13 +4,14 @@
 #include "pluginsengine.h"
 #include "plugin.h"
 
-PluginsEngine::PluginsEngine(QQmlApplicationEngine*appEngine, QObject *parent) : QObject(parent){
+PluginsEngine::PluginsEngine(QQmlApplicationEngine *appEngine, Config *config, QObject *parent) : QObject(parent){
     this->appEngine = appEngine;
+    this->config = config;
 }
 
 void PluginsEngine::loadPlugin(QString name, QString path) {
     qDebug() << "Loading plugin" << name << path;
-    Plugin *plugin = new Plugin(name, path, this->appEngine);
+    Plugin *plugin = new Plugin(name, path, this->appEngine, this->config);
     this->plugins[name] = plugin;
     plugin->load();
 }

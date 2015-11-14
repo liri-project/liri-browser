@@ -5,11 +5,12 @@
 #include <QJSEngine>
 #include "api.h"
 #include <QQmlApplicationEngine>
+#include "../config.h"
 
 class Plugin : public QObject{
         Q_OBJECT
         public:
-                explicit Plugin(QString name, QString path, QQmlApplicationEngine *appEngine, QObject *parent = 0);
+                explicit Plugin(QString name, QString path, QQmlApplicationEngine *appEngine, Config *config, QObject *parent = 0);
 
                 void load();
                 bool trigger(QString event, QJSValueList args=QJSValueList());
@@ -33,6 +34,7 @@ class Plugin : public QObject{
                 PluginAPI * api;
 
                 QQmlApplicationEngine *appEngine;
+                Config *config;
 };
 
 #endif // PLUGIN_H

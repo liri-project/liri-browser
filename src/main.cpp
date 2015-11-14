@@ -14,10 +14,15 @@ typedef QGuiApplication Application;
 #include "cursor/cursor.h"
 #include "clipboardadapter.h"
 #include "plugins/pluginsengine.h"
+#include "config.h"
 
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
+
+    // Load configuration
+    Config * config = new Config();
+    config->load();
 
     // Set domain
     app.setOrganizationName("liri-browser");
@@ -45,7 +50,7 @@ int main(int argc, char **argv)
     appEngine->rootContext()->setContextProperty("G_Cursor",new Cursor);
 
     // Load plugins
-    PluginsEngine * pluginsEngine = new PluginsEngine(appEngine);
+    PluginsEngine * pluginsEngine = new PluginsEngine(appEngine, config);
     appEngine->rootContext()->setContextProperty("PluginsEngine", pluginsEngine);
     pluginsEngine->loadPlugins();
     pluginsEngine->trigger(QString("load"));

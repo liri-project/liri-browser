@@ -1,0 +1,23 @@
+{
+    "plugins": {
+        "omniplet-calculator": {
+            "permissions": {
+                "omniplet": true
+            }
+        },
+
+        "omniplet-weather": {
+            "permissions": {
+                "omniplet": true,
+                "network": true
+            }
+        },
+
+        "omniplet-duckduckgo": {
+            "permissions": {
+                "omniplet": true,
+                "network": true
+            }
+        }
+    }
+}

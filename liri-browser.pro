@@ -14,6 +14,7 @@ QT += qml quick widgets svg xml webengine multimedia core network #webview (for 
 QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \
+    src/config.cpp \
     src/cursor/cursor.cpp \
     src/clipboardadapter.cpp \
     src/plugins/pluginsengine.cpp \
@@ -22,6 +23,7 @@ SOURCES += src/main.cpp \
     src/plugins/urlopener.cpp
 
 HEADERS += \
+    src/config.h \
     src/cursor/cursor.h \
     src/plugins/pluginsengine.h \
     src/plugins/plugin.h \

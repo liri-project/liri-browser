@@ -8,10 +8,11 @@
 #include "plugin.h"
 #include "api.h"
 
-Plugin::Plugin(QString name, QString path, QQmlApplicationEngine *appEngine, QObject *parent) : QObject(parent){
+Plugin::Plugin(QString name, QString path, QQmlApplicationEngine *appEngine, Config *config, QObject *parent) : QObject(parent){
     this->name = name;
     this->path = path;
     this->appEngine = appEngine;
+    this->config = config;
 }
 
 
@@ -26,7 +27,7 @@ void Plugin::load() {
 bool Plugin::loadEngine(){
     qDebug() << "Plugin API version:" << this->apiVersion;
     if (this->apiVersion == "0.1") {
-        PluginAPI * apiObject = new PluginAPI(name, this->appEngine);
+        PluginAPI * apiObject = new PluginAPI(name, this->features, this->appEngine, this->config);
         QJSValue jsApi = engine.newQObject(apiObject);
         this->api = apiObject;
         engine.globalObject().setProperty("liri", jsApi);

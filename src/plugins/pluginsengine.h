@@ -5,11 +5,12 @@
 #include <QJSEngine>
 #include <QQmlApplicationEngine>
 #include "plugin.h"
+#include "../config.h"
 
 class PluginsEngine : public QObject{
                 Q_OBJECT
         public:
-                explicit PluginsEngine(QQmlApplicationEngine*appEngine, QObject *parent = 0);
+                explicit PluginsEngine(QQmlApplicationEngine *appEngine, Config *config, QObject *parent = 0);
 
                 QMap<QString, Plugin *> plugins;
 
@@ -24,6 +25,7 @@ class PluginsEngine : public QObject{
                 QJSValueList newArgsList(QJSValueList args);
 
                 QQmlApplicationEngine *appEngine;
+                Config *config;
 };
 
 #endif // PLUGINSENGINE_H
