@@ -81,6 +81,8 @@ MaterialWindow {
 
     property string fontFamily: "Roboto"
 
+    property alias shadow: page.shadow
+
     /* Tab Management */
     property var activeTab
     property var activeTabItem
@@ -610,7 +612,7 @@ MaterialWindow {
             component.createObject(shortCutActionsContainer);
         }
 
-        // Create download drawer
+       // Create download drawer
         if (app.webEngine === "qtwebengine") {
             var component = Qt.createComponent("DownloadsDrawer.qml");
             downloadsDrawer = component.createObject(page);

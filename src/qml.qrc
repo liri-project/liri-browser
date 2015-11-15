@@ -53,5 +53,7 @@
         <file>qml/BaseBrowserView.qml</file>
         <file>qml/QuickSearchesView.qml</file>
         <file>qml/SitesColorsView.qml</file>
+        <file>qml/RightDrawer.qml</file>
+        <file>qml/ShadowOverlay.qml</file>
     </qresource>
 </RCC>

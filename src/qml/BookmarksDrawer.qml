@@ -4,34 +4,9 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 
-View {
+RightDrawer {
     id: drawer
-    z:25
-    backgroundColor: "white"
-    width: Units.dp(350)
-    anchors {
-        right: parent.right
-        top: parent.top
-        bottom: parent.bottom
-        rightMargin: -width - 20
-    }
 
-    Behavior on anchors.rightMargin {
-        NumberAnimation {
-            duration: 400
-            easing.type: Easing.InOutCubic
-        }
-    }
-
-    function open() {
-        anchors.rightMargin = 0
-        shadow.visible = true
-    }
-
-    function close() {
-        anchors.rightMargin = -width - 20
-        shadow.visible = false
-    }
     View {
         id: bookmarksTitle
         height: Units.dp(56)

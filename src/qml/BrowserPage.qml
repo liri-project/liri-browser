@@ -20,6 +20,7 @@ Page {
     property alias toolbar: toolbar
     property alias titlebar: titlebar
     property alias tabPreview: tabPreview
+    property alias shadow: shadow
 
     backgroundColor: {
         if (root.privateNav)
@@ -296,19 +297,11 @@ Page {
         }
     }
 
-    Rectangle {
-          id: shadow
-          color: Qt.rgba(0,0,0,0.1)
-          anchors.fill: parent
-          z:19
-          visible: false
-          MouseArea {
-              anchors.fill: parent
-              onClicked: {
-                  bookmarksDrawer.close()
-                  historyDrawer.close()
-              }
-          }
+    ShadowOverlay {
+        id: shadow
+        onClicked: {
+            visible ? visible = false : visible = true
+        }
     }
 
     BookmarksDrawer { id: bookmarksDrawer }

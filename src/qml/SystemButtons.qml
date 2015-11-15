@@ -24,7 +24,7 @@ Rectangle {
         }
 
         spacing: Units.dp(10)
-        property string iconsColor: root.currentIconColor
+        property string iconsColor: root.shadow.visible ? "black" : root.currentIconColor
 
         Rectangle {
             width:1

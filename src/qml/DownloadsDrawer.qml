@@ -5,12 +5,9 @@ import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.1
 import QtQuick.Layouts 1.1
 
-NavigationDrawer {
+RightDrawer {
     id: drawer
-    z: 25
-    mode: "right"
-    width: Units.dp(350)
-    visible: anchors.rightMargin != -width - Units.dp(10)
+
     View {
         id: downloadsTitle
         height: Units.dp(56)
