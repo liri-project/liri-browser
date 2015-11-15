@@ -239,6 +239,17 @@ BaseBrowserView {
             hoverUrl = hUrl
         }
 
+        onWheel: {
+            if (wheel.modifiers & Qt.ControlModifier) {
+                if (wheel.angleDelta.y > 0)
+                    root.activeTab.view.zoomIn();
+                else
+                    root.activeTab.view.zoomOut();
+            }
+            else
+                wheel.accepted = false
+        }
+
         onPressed: {
             var putX = mouseX
             var putY = mouseY
