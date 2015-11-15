@@ -4,6 +4,8 @@ import Qt.labs.settings 1.0
 Item {
     id: application
 
+    objectName: "application"
+
     property string webEngine: "qtwebengine"
     property string platform: "unknown/desktop"
     property bool enableShortCuts: true
@@ -32,8 +34,6 @@ Item {
     property string sourceHighlightFont: "Roboto Mono"
     property int sourceHighlightFontPixelSize: 12
 
-    signal changedBookmarks ()
-
     property bool integratedAddressbars: false
     property bool tabsEntirelyColorized: false
 
@@ -43,14 +43,75 @@ Item {
 
     property bool newTabPage: true
 
+    function getBookmarksArray() {
+        var bookmarks = [], bM_l = application.bookmarksModel.count;
+        for (var i=0; i<bM_l; i++){
+            var item = application.bookmarksModel.get(i);
+            bookmarks.push({"title": item.title, "url": item.url.toString(), "faviconUrl": item.faviconUrl.toString()});
+        }
+        return bookmarks;
+    }
+
+    function getHistoryArray() {
+        var history = [], hM_l = application.historyModel.count;
+        for (var i=0; i<hM_l; i++){
+            var item = application.historyModel.get(i);
+            if (item.type !== "date")
+                history.push({"title": item.title, "url": item.url.toString(), "faviconUrl": item.faviconUrl.toString(), "date": item.date, "type": item.type, "color": item.color});
+        }
+        return history;
+    }
+
     property ListModel bookmarksModel: ListModel {
         id: bookmarksModel
         dynamicRoles: true
     }
 
+    function saveBookmarks() {
+        application.settings.bookmarks = getBookmarksArray();
+    }
+
+    function saveHistory() {
+        application.settings.history = getHistoryArray();
+    }
+
+    function saveDashboard() {
+        var dashboard = [], dM_l = application.dashboardModel.count;
+        for (var i=0; i<dM_l; i++){
+            var item = application.dashboardModel.get(i);
+            dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
+        }
+        application.settings.dashboard = dashboard;
+    }
+
+    function saveSitesColors(){
+        var customsitescolors = [], cscM_l = application.customSitesColorsModel.count;
+        for (var i=0; i<cscM_l; i++){
+             var item = application.customSitesColorsModel.get(i);
+             customsitescolors.push({"domain": item.domain, "color": item.color})
+        }
+        application.settings.customsitescolors = customsitescolors;
+    }
+
+    function saveQuickSearches(){
+        var customquicksearches = [], cqsm_l = application.customQuickSearchesModel.count;
+        for (var i=0; i<cqsm_l; i++){
+             var item = application.customQuickSearchesModel.get(i);
+             customquicksearches.push({"name": item.name, "key": item.key, "url": item.url})
+        }
+        application.settings.customquicksearches = customquicksearches;
+    }
+
     property ListModel searchSuggestionsModel: ListModel {
+        objectName: "searchSuggestionsModel"
         id: searchSuggestionsModel
         dynamicRoles: true
+        function appendSuggestion(suggestion, icon, insertMode) {
+            if (insertMode === "start")
+                searchSuggestionsModel.insert(0, {"suggestion": suggestion, "icon": icon})
+            else
+                searchSuggestionsModel.append({"suggestion": suggestion, "icon": icon});
+        }
     }
 
     property ListModel historyModel: ListModel {
@@ -61,151 +122,6 @@ Item {
     property ListModel dashboardModel: ListModel {
         id: dashboardModel
         dynamicRoles: true
-    }
-
-    property ListModel omnipletsModel: ListModel {
-        id: omnipletsModel
-
-        ListElement {
-            rank: 0
-            omnipletName: "Calculation"
-            activated: true
-        }
-
-        ListElement {
-            rank: 1
-            omnipletName: "Weather"
-            activated: true
-        }
-
-        ListElement {
-            rank: 2
-            omnipletName: "History"
-            activated: true
-        }
-
-        ListElement {
-            rank: 3
-            omnipletName: "Bookmarks"
-            activated: true
-        }
-
-        ListElement {
-            rank: 4
-            omnipletName: "DuckDuckGo Suggestions"
-            activated: true
-        }
-    }
-
-    property var omnipletsFunctions: {
-        0: function(text) {
-            if(text.substring(0,1) == "=") {
-                application.searchSuggestionsModel.append({"icon":"action/code","suggestion":"Result : " + calculate(text.substring(1,text.length))})
-                return "stop"
-            }
-        },
-        1: function(text) {
-            if(text.substring(0,8) == "weather ") {
-                var req = new XMLHttpRequest, status;
-                req.open("GET", "http://api.openweathermap.org/data/2.5/weather?q=" + text.substring(8,text.length) + "&APPID=7d2c3897b58a06210476db2ba6ae39d2");
-                req.onreadystatechange = function() {
-                    status = req.readyState;
-                    if (status === XMLHttpRequest.DONE) {
-                        var objectArray = JSON.parse(req.responseText);
-                        application.searchSuggestionsModel.append({"suggestion": objectArray.name + ": " + objectArray.weather[0].main + " - " + parseInt(objectArray.main.temp - 273) + " °C", "icon" : "image/wb_sunny" })
-                }}
-                req.send();
-            }
-        },
-        2: function(text) {
-            var count = application.bookmarksModel.count, temp, i, current=0, temp2
-            for(i=0;i<count;i++) {
-                temp = application.bookmarksModel.get(i)
-                try{
-                    temp2 = temp.url.indexOf(text)
-                }
-                catch(e){
-                    temp2 = -1
-                }
-
-                if(temp2 != -1 && current <= 1) {
-                    current++;
-                    application.searchSuggestionsModel.append({"icon":"action/bookmark", "suggestion":temp.url})
-                }
-            }
-        },
-        3: function(text) {
-            var count = application.historyModel.count, current = 0, temp, temp2
-            for(var i=0;i<count;i++) {
-                temp = application.historyModel.get(i)
-                try{
-                    temp2 = temp.url.indexOf(text)
-                }
-                catch(e){
-                    temp2 = -1
-                }
-
-                if(temp2 != -1 && current <= 1) {
-                    current++
-                    application.searchSuggestionsModel.append({"icon":"action/history", "suggestion":temp.url})
-                }
-            }
-
-        },
-        4: function(text) {
-            application.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
-            var req = new XMLHttpRequest, status;
-            req.open("GET", "https://duckduckgo.com/ac/?q=" + text);
-            req.onreadystatechange = function() {
-                status = req.readyState;
-                if (status === XMLHttpRequest.DONE) {
-                    var objectArray = JSON.parse(req.responseText);
-                    application.searchSuggestionsModel.append({"icon":"action/search","suggestion":text})
-                    for(var i in objectArray)
-                        application.searchSuggestionsModel.append({"suggestion":objectArray[i].phrase,"icon":"action/search"})
-                }
-            }
-            req.send();
-        }
-    }
-
-
-    /* Omnibox calculations */
-
-    function search(expr,a,b) {
-        var i = 0
-        while (i != -1) {
-            i = expr.indexOf(a,i);
-            if (i>=0) {
-                if (i==0) {
-                    expr = expr.substring(0,i)+b+expr.substring(i+a.length);
-                    i += b.length
-                } else {
-                    if (expr.substring(i-1,i) != "a") {
-                        expr = expr.substring(0,i)+b+expr.substring(i+a.length);
-                        i += b.length
-                    } else {i++}
-                }
-
-            }
-        }
-        return expr
-
-    }
-    function calculate(f) {
-        var expr = f;
-        expr = search(expr,'cos','Math.cos');
-        expr = search(expr,'sin','Math.sin');
-        expr = search(expr,'tan','Math.tan');
-        expr = search(expr,'acos','Math.acos');
-        expr = search(expr,'asin','Math.asin');
-        expr = search(expr,'atan','Math.atan');
-        expr = search(expr,'ln','Math.log');
-        expr = search(expr,'exp','Math.exp');
-        expr = search(expr,'pow','Math.pow');
-        expr = search(expr,'sqrt','Math.sqrt');
-        expr = search(expr,'pi','Math.PI');
-        return eval(expr);
     }
 
     property bool customSitesColors: true
@@ -340,52 +256,10 @@ Item {
           application.presetQuickSearchesModel.append(presets_qs[t])
 
         // Load the quick searches model
-        for (var i=0; i<application.settings.customquicksearches.length; i++)
-            application.customQuickSearchesModel.append(application.settings.customquicksearches[i]);
+        if (application.settings.customquicksearches) {
+            for (var i=0; i<application.settings.customquicksearches.length; i++)
+                application.customQuickSearchesModel.append(application.settings.customquicksearches[i]);
+        }
     }
 
-    Component.onDestruction: {
-
-        // Save the browser history
-        var history = [], hM_l = application.historyModel.count;
-        for (var i=0; i<hM_l; i++){
-            var item = application.historyModel.get(i);
-            if (item.type !== "date")
-                history.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl, "date": item.date, "type": item.type, "color": item.color});
-        }
-        application.settings.history = history;
-
-        // Save the browser bookmarks
-        var bookmarks = [], bM_l = application.bookmarksModel.count;
-        for (i=0; i<bM_l; i++){
-            item = application.bookmarksModel.get(i);
-            bookmarks.push({"title": item.title, "url": item.url, "faviconUrl": item.faviconUrl});
-        }
-        application.settings.bookmarks = bookmarks;
-
-        // Save the dashboard model
-        var dashboard = [], dM_l = application.dashboardModel.count;
-        for (i=0; i<dM_l; i++){
-            item = application.dashboardModel.get(i);
-            dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
-        }
-        application.settings.dashboard = dashboard;
-
-        // Save sites color model
-        var customsitescolors = [], cscM_l = application.customSitesColorsModel.count;
-        for (i=0; i<cscM_l; i++){
-             item = application.customSitesColorsModel.get(i);
-            customsitescolors.push({"domain": item.domain, "color": item.color})
-        }
-        application.settings.customsitescolors = customsitescolors;
-
-        // Save quick searches
-        var customquicksearches = [], cqsm_l = application.customQuickSearchesModel.count;
-        for (i=0; i<cqsm_l; i++){
-             item = application.customQuickSearchesModel.get(i);
-            customquicksearches.push({"name": item.name, "key": item.key, "url": item.url})
-        }
-        application.settings.customquicksearches = customquicksearches;
-
-    }
 }

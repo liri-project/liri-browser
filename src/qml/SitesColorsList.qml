@@ -119,7 +119,10 @@ Item {
                                 anchors{
                                     verticalCenter: parent.verticalCenter
                                  }
-                                 onTextChanged: listView.model.set(index, {"domain": text})
+                                 onTextChanged: {
+                                     listView.model.set(index, {"domain": text})
+                                     root.app.saveSitesColors();
+                                 }
                                  style: TextFieldThemed {
                                      helperNotFocusedColor: sitesColorsRoot.linesColor
                                      textColor: sitesColorsRoot.textColor
@@ -130,7 +133,10 @@ Item {
                                 text: listView.model.get(index).color
                                 placeholderText: qsTr("Color")
                                 floatingLabel: true
-                                onTextChanged: listView.model.set(index, {"color": text})
+                                onTextChanged: {
+                                    listView.model.set(index, {"color": text})
+                                    root.app.saveSitesColors();
+                                }
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
@@ -144,7 +150,10 @@ Item {
                                 iconName: "action/delete"
                                 color: item.textColor
                                 size: Units.dp(15)
-                                onClicked: listView.model.remove(index)
+                                onClicked: {
+                                    listView.model.remove(index)
+                                    root.app.saveSitesColors();
+                                }
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
@@ -166,7 +175,10 @@ Item {
             anchors.margins: Units.dp( 48 )
             iconName: "content/add"
             text: qsTr("Add new color")
-            onClicked: root.app.customSitesColorsModel.append({"domain":"", "color": ""})
+            onClicked: {
+                root.app.customSitesColorsModel.append({"domain":"", "color": ""})
+                root.app.saveSitesColors();
+            }
         }
 
 }

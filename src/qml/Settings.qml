@@ -781,50 +781,6 @@ Rectangle {
                 }
             }
 
-            Item {
-                height: Units.dp(60)
-                width: parent.width
-                Label {
-                    style: "title"
-                    text: qsTr("Omnibox")
-                    color: settingsRoot.textColor
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
-
-            ListItem.SectionHeader {
-                text: qsTr("Omniplets")
-                id: omnipletsHead
-                expanded: false
-            }
-
-            Repeater {
-               model: root.app.omnipletsModel
-               visible: omnipletsHead.expanded
-               delegate: ListItem.Standard {
-                   width: parent.width - settingsRoot.subHeaderLeftMargin
-                   anchors.leftMargin: settingsRoot.subHeaderLeftMargin
-                   text: omnipletName
-                   textColor: settingsRoot.textColor
-                   Switch {
-                       id: sw
-                       checked: activated
-                       darkBackground: root.app.darkTheme
-                       anchors {
-                               top: parent.top
-                               right: parent.right
-                               verticalCenter: parent.verticalCenter
-                       }
-                       onCheckedChanged:  root.app.omnipletsModel.setProperty(index,"activated",checked)
-                   }
-                   onClicked: {
-                       sw.checked = !sw.checked
-                       root.app.omnipletsModel.setProperty(index,"activated",sw.checked)
-                       console.log(index)
-                   }
-               }
-            }
-
             ColorPicker {
                 id: primaryColorPicker
                 color: theme.primaryColor

@@ -1,0 +1,12 @@
+{
+    "name": "omniplet-duckduckgo",
+    "title": "DuckDuckGo Omniplet",
+    "description": "Omniplet that provides DuckDuckGo search suggestions",
+    "version": "0.1", 
+    "maintainer": "Tim Süberkrüb <tim.sueberkrueb@web.de>",
+    "api": "0.1",
+    "features": [
+        "omniplet",
+        "network"
+    ]
+}

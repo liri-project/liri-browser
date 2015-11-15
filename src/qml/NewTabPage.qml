@@ -120,6 +120,7 @@ BaseBrowserView {
             onPositionChanged: {
                 if (activeId != -1 && index != -1 && index != activeIndex) {
                     grid.model.move(activeIndex, activeIndex = index, 1)
+                    root.app.saveBookmarks();
                 }
             }
             onClicked: {
@@ -168,6 +169,7 @@ BaseBrowserView {
                 iconName: "action/delete"
                 onClicked: {
                     grid.model.remove(gridMouseArea.index)
+                    root.app.saveDashboard();
                     contextMenu.close();
                 }
             }
@@ -277,6 +279,7 @@ BaseBrowserView {
                 editDialog.modelItem.iconUrl = txtEditIconUrl.text;
                 editDialog.modelItem.bgColor = colorChooser.color;
                 editDialog.modelItem.fgColor = root.getTextColorForBackground(colorChooser.color.toString());
+                root.app.saveDashboard();
                 editDialog.close();
             }
         }

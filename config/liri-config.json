@@ -1,0 +1,38 @@
+{
+    "plugins": {
+        "omniplet-calculator": {
+            "permissions": {
+                "omniplet": true
+            }
+        },
+
+        "omniplet-weather": {
+            "permissions": {
+                "omniplet": true,
+                "network": true
+            }
+        },
+
+        "omniplet-duckduckgo": {
+            "permissions": {
+                "omniplet": true,
+                "network": true
+            }
+        },
+
+        "omniplet-history": {
+            "permissions": {
+                "omniplet": true,
+                "history": true
+            }
+        },
+
+        "omniplet-bookmarks": {
+            "permissions": {
+                "omniplet": true,
+                "bookmarks": true
+            }
+        }
+
+    }
+}

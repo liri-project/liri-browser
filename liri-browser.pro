@@ -8,17 +8,27 @@
 
 TEMPLATE = app
 
-QT += qml quick widgets svg xml webengine multimedia core #webview (for android)
+QT += qml quick widgets svg xml webengine multimedia core network #webview (for android)
 #QT += androidextras
 
 QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \
+    src/config.cpp \
     src/cursor/cursor.cpp \
-    src/clipboardadapter.cpp
+    src/clipboardadapter.cpp \
+    src/plugins/pluginsengine.cpp \
+    src/plugins/plugin.cpp \
+    src/plugins/api.cpp \
+    src/plugins/urlopener.cpp
 
 HEADERS += \
-    src/cursor/cursor.h
+    src/config.h \
+    src/cursor/cursor.h \
+    src/plugins/pluginsengine.h \
+    src/plugins/plugin.h \
+    src/plugins/api.h \
+    src/plugins/urlopener.h
 
 RESOURCES += \
     src/qml.qrc
@@ -47,8 +57,7 @@ QML_IMPORT_PATH =
 # Default rules for deployment.
 include(deployment.pri)
 
-DISTFILES += \
-    src/qml/TabBarItemDelegate.qml
+DISTFILES +=
 
 # Windows icon
 RC_ICONS = icons/liri-browser.ico

@@ -25,6 +25,7 @@ Rectangle {
             bottom: parent.bottom
             left: parent.left
         }
+
         width: contentWidth < (tabBar.width - toolbarIntegrated.width) ? contentWidth : parent.width - toolbarIntegrated.width
 
         orientation: ListView.Horizontal

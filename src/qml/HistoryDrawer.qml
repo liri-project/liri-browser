@@ -63,6 +63,7 @@ View {
 
             onClicked: {
                 root.app.historyModel.clear()
+                root.app.saveHistory();
             }
         }
 

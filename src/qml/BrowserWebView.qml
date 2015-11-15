@@ -75,6 +75,7 @@ BaseBrowserView {
                     break;
                 }
             }
+            root.app.saveHistory();
         }
 
         onUrlChanged: {
@@ -181,6 +182,7 @@ BaseBrowserView {
                     }
 
                     root.app.historyModel.insert(0, item);
+                    root.app.saveHistory();
                 }
 
                 // TODO: Handle this locally

@@ -132,7 +132,10 @@ Item {
                                 anchors{
                                     verticalCenter: parent.verticalCenter
                                  }
-                                 onTextChanged: listView.model.set(index, {"name": text})
+                                 onTextChanged: {
+                                    listView.model.set(index, {"name": text})
+                                    root.app.saveQuickSearches();
+                                 }
                                  style: TextFieldThemed {
                                      helperNotFocusedColor: quickSearchesRoot.linesColor
                                      textColor: quickSearchesRoot.textColor
@@ -143,7 +146,10 @@ Item {
                                 text: listView.model.get(index).key
                                 placeholderText: qsTr("Key")
                                 floatingLabel: true
-                                onTextChanged: listView.model.set(index, {"key": text})
+                                onTextChanged: {
+                                    listView.model.set(index, {"key": text})
+                                    root.app.saveQuickSearches();
+                                }
                                 anchors{
                                    verticalCenter: parent.verticalCenter
                                 }
@@ -155,7 +161,10 @@ Item {
 
                             TextField {
                                 text: listView.model.get(index).url
-                                onTextChanged: listView.model.set(index, {"url": text})
+                                onTextChanged: {
+                                    listView.model.set(index, {"url": text})
+                                    root.app.saveQuickSearches();
+                                }
                                 placeholderText: qsTr("URL")
                                 floatingLabel: true
                                 anchors{
@@ -191,7 +200,10 @@ Item {
             anchors.margins: Units.dp( 48 )
             iconName: "content/add"
             text: qsTr("Add new color")
-            onClicked: root.app.customQuickSearchesModel.append({"name":"", "key": "", "url": ""})
+            onClicked: {
+                root.app.customQuickSearchesModel.append({"name":"", "key": "", "url": ""})
+                root.app.saveQuickSearches();
+            }
         }
 
 }
