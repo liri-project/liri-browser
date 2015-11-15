@@ -65,25 +65,6 @@ HEADERS += \
 # manifest
 UBUNTU_MANIFEST_FILE=ubuntu/manifest.json
 
-# specify translation domain, this must be equal with the
-# app name in the manifest file
-#UBUNTU_TRANSLATION_DOMAIN="liri-browser.timsueberkrueb"
-#
-# specify the source files that should be included into
-# the translation file, from those files a translation
-# template is created in po/template.pot, to create a
-# translation copy the template to e.g. de.po and edit the sources
-#UBUNTU_TRANSLATION_SOURCES+= \
-#    $$files(*.qml,true) \
-#    $$files(*.js,true)  \
-#    $$files(*.cpp,true) \
-#    $$files(*.h,true) \
-#    $$files(*.desktop,true)
-#
-# specifies all translations files and makes sure they are
-# compiled and installed into the right place in the click package
-#UBUNTU_PO_FILES+=$$files(po/*.po)
-
 TARGET = liri-browser.timsueberkrueb
 
 RESOURCES += src/qml.qrc
