@@ -17,7 +17,7 @@ Item {
 
     property string searchEngine: "google"
 
-    property bool darkTheme: true
+    property bool darkTheme: false
 
     function getCurrentHour () {
         var d = new Date()
@@ -35,7 +35,7 @@ Item {
     property int sourceHighlightFontPixelSize: 12
 
     property bool integratedAddressbars: false
-    property bool tabsEntirelyColorized: false
+    property bool tabsEntirelyColorized: true
 
     property bool uppercaseTabTitle: false
 
