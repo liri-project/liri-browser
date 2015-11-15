@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Liri Browser
-Exec=qmlscene $@ src/qml/ubuntu/Main.qml
+Exec=opt/liri-browser-ubuntu/bin/liri-browser.timsueberkrueb
 Icon=icons/liri-browser-ubuntu.png
 Terminal=false
 Type=Application

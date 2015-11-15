@@ -8,9 +8,7 @@
 
 TEMPLATE = app
 
-QT += qml quick widgets svg xml webengine multimedia core network #webview (for android)
-#QT += androidextras
-
+QT += qml quick widgets svg xml webengine multimedia core network
 QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \
