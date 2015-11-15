@@ -57,8 +57,7 @@ QML_IMPORT_PATH =
 # Default rules for deployment.
 include(deployment.pri)
 
-DISTFILES += \
-    src/qml/TabBarItemDelegate.qml
+DISTFILES +=
 
 # Windows icon
 RC_ICONS = icons/liri-browser.ico

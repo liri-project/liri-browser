@@ -31,10 +31,6 @@ Page {
         else
             return root.defaultBackgroundColor
     }
-    onBackgroundColorChanged: {
-        console.log("Background color", backgroundColor);
-        console.log(activeTab.view.customColor)
-    }
 
     Behavior on backgroundColor {
         ColorAnimation {
