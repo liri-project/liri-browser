@@ -35,12 +35,12 @@ Item {
 
                     Image {
                         id: icon
-                        visible: isAFavicon && !model.webview.loading && !model.webview.newTabPage && !model.webview.settingsTabPage && model.webview.url != "http://liri-browser.github.io/sourcecodeviewer/index.html"
-                        width: webview.loading ?  0 : Units.dp(20)
+                        visible: isAFavicon && !model.view.loading && typeof(model.view.icon) !== 'string'
+                        width: view.loading ?  0 : Units.dp(20)
                         height: Units.dp(20)
                         anchors.verticalCenter: parent.verticalCenter
-                        source: model.webview.icon
-                        property var isAFavicon: true
+                        source: model.view.icon
+                        property bool isAFavicon: true
                         onStatusChanged: {
                             if (icon.status == Image.Error || icon.status == Image.Null)
                                 isAFavicon = false;
@@ -51,45 +51,31 @@ Item {
 
                     Icon {
                         id: iconNoFavicon
-                        color: textColor
+                        color:  item.foregroundColor
+                        Behavior on color { ColorAnimation { duration : 500 }}
                         name: "action/description"
-                        visible: !icon.isAFavicon && !model.webview.loading && !model.webview.newTabPage && !model.webview.settingsTabPage
+                        visible: !icon.isAFavicon && !model.view.loading && typeof(model.view.icon) !== 'string'
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Icon {
-                        id: iconDashboard
-                        color: textColor
-                        name: "action/dashboard"
-                        visible: model.webview.newTabPage
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Icon {
-                        id: iconSettings
-                        color: textColor
-                        name: "action/settings"
-                        visible: model.webview.settingsTabPage
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Icon {
-                        id: iconSource
-                        name: "action/code"
-                        visible: model.webview.url == "http://liri-browser.github.io/sourcecodeviewer/index.html"
+                        color:  item.foregroundColor
+                        Behavior on color { ColorAnimation { duration : 500 }}
+                        visible: typeof(model.view.icon) === 'string' && !iconNoFavicon.visible
+                        name: model.view.icon
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     LoadingIndicator {
                         id: prgLoading
-                        visible: model.webview.loading
-                        width: model.webview.loading ? Units.dp(24) : 0
+                        visible: model.view.loading
+                        width: model.view.loading ? Units.dp(24) : 0
                         height: Units.dp(24)
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Text {
-                        text: model.webview.title
+                        text: model.view.title
                         color: textColor
                         width: parent.width - closeButton.width - icon.width - prgLoading.width - Units.dp(16)
                         elide: Text.ElideRight

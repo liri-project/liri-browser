@@ -60,7 +60,7 @@ BaseBrowserView {
         userScripts: [
             UserScript {
                 context: usContext
-                url: Qt.resolvedUrl("ubuntu/oxide-user.js")
+                url: Qt.resolvedUrl("oxide-user.js")
             }
         ]
         userAgent: mobile ? mobileUserAgent : defaultUserAgent

@@ -181,7 +181,9 @@ Page {
     View {
         id: websiteSearchOverlay
         visible: false
-        anchors.bottom: parent.bottom
+        property bool mobile: root.mobile
+        y: mobile ? titlebar.height : parent.height - height
+
         anchors.left: parent.left
         anchors.right: parent.right
         height: Units.dp(48)

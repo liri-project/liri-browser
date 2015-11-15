@@ -77,9 +77,6 @@ BrowserWindow {
     }
 
     Component.onCompleted: {
-        Qt.application.name = "liri-browser.timsueberkrueb";
-        Qt.application.domain = "liri-browser.timsueberkrueb";
-        Qt.application.organization = "liri-browser.timsueberkrueb";
         fixDensity();
     }
 

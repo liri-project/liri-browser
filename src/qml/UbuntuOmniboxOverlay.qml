@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Material 0.1 as Material
-import Ubuntu.Components 1.2
+import Ubuntu.Components 1.3
 
 
 Rectangle {
@@ -8,10 +8,10 @@ Rectangle {
     anchors.fill: parent
     visible: false
     opacity: visible ? 1.0 : 0
-    color: activeTab.customColor ? activeTab.customColor : root.tabColorActive
+    color: root.currentBackgroundColor
 
     function show() {
-        textField.text = root.activeTab.webview.url;
+        textField.text = root.activeTab.view.url;
         visible = true;
         textField.forceActiveFocus();
         textField.selectAll();
@@ -33,7 +33,7 @@ Rectangle {
     TextField {
         id: textField
 
-        text: root.activeTab.webview.url
+        text: root.activeTab.view.url
         placeholderText: qsTr("Search or enter website name")
 
         anchors.left: connectionIcon.right
@@ -44,7 +44,9 @@ Rectangle {
 
         inputMethodHints: Qt.ImhUrlCharactersOnly
 
-        onTextChanged: isASearchQuery(text) ? connectionIcon.name = "action/search" :  connectionIcon.name = "social/public"
+        onTextChanged: {
+            isASearchQuery(text) ? connectionIcon.name = "action/search" :  connectionIcon.name = "social/public";
+        }
         onAccepted: {
             setActiveTabURL(text);
             hide();
