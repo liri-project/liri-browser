@@ -267,30 +267,6 @@ BaseBrowserView {
             hoverUrl = ""
     }
 
-    /*NewTabPage {
-        id: itemNewTabPage
-        visible: newTabPage
-        anchors.fill: parent
-    }
-
-    SettingsTabPage {
-        id: itemSettingsTabPage
-        visible: settingsTabPage && !newTabPage
-        anchors.fill: parent
-    }
-
-    SitesColorsPage {
-        id: itemSettingsTabPageSitesColors
-        visible: settingsTabPageSitesColors && !newTabPage
-        anchors.fill: parent
-    }
-
-    QuickSearchesPage {
-        id: itemSettingsTabPageQuickSearches
-        visible: settingsTabPageQuickSearches && !newTabPage
-        anchors.fill: parent
-    }*/
-
     Clipboard {
         id: clip
     }
