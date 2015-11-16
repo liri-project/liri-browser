@@ -33,7 +33,7 @@ View {
         width: 0
         opacity: loading ? 1 : 0
 
-        property bool loading: activeTab.view.loading
+        property bool loading: root.activeTab.view.loading
         property bool enableBehavior
 
         // When loading, we first disable the behavior and reset the width to 0
@@ -43,7 +43,7 @@ View {
                 enableBehavior = false
                 width = 0
                 enableBehavior = true
-                width = Qt.binding(function () { return omnibox.width * activeTab.view.progress })
+                width = Qt.binding(function () { return omnibox.width * root.activeTab.view.loadProgress })
             }
         }
 
@@ -74,7 +74,7 @@ View {
              */
             width: Math.min(parent.width + radius, omnibox.width)
             height: radius * 2
-            color: Theme.lightDark(toolbar.color, Theme.accentColor, "white")
+            color: Theme.accentColor
         }
     }
 
