@@ -8,7 +8,12 @@ import Material.Extras 0.1
 
 View {
     width: root.app.integratedAddressbars ? parent.width / 4 : toolbar.omnibox.width
-    height: root.app.searchSuggestionsModel.count * Units.dp(48) > Units.dp(400) ? Units.dp(400) : root.app.searchSuggestionsModel.count * Units.dp(48)
+    height: if (toolbar.omnibox.txtUrl.activeFocus && toolbar.omnibox.txtUrl.text.length > 0) {
+                root.app.searchSuggestionsModel.count * Units.dp(48) > Units.dp(400) ? Units.dp(400) : root.app.searchSuggestionsModel.count * Units.dp(48)
+            }
+            else {
+                0
+            }
     anchors {
         topMargin: searchSuggestionsView.count == 0 && bookmarksBar.visible ? -bookmarksBar.height - Units.dp(30) : searchSuggestionsView.count == 0 ? -Units.dp(30) : bookmarksBar.visible ? -bookmarksBar.height : 0
         top: titlebar.bottom
@@ -17,6 +22,7 @@ View {
     }
     radius: toolbar.omnibox.radius
     elevation: searchSuggestionsView.count == 0 ? 0 : 2
+    visible: height > 0
     z:20
 
     Behavior on height {
