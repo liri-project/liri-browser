@@ -180,7 +180,7 @@ BaseBrowserView {
                     root.app.historyModel.insert(0, item);
                 }
 
-                if(!loading && url.toString().substring(0,57) == "http://liri-browser.github.io/sourcecodeviewer/index.html") {
+                if(!loading && url.toString().indexOf("http://liriproject.me/browser/sourcecodeviewer/index.html") === 0) {
 
                     setSource(root.app.sourceHighlightTheme, root.app.sourcetemp)
                     /*runJavaScript("
@@ -206,10 +206,6 @@ BaseBrowserView {
                     }
                     setSource();");*/
                 }
-
-                //webview.grabToImage(function(result) {
-                //    activeTab.webview = result.image;
-                //});
 
             }
 
