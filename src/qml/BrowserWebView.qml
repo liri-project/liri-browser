@@ -91,10 +91,6 @@ BaseBrowserView {
             }
         }
 
-        /*settings.autoLoadImages: appSettings.autoLoadImages
-                     settings.javascriptEnabled: appSettings.javaScriptEnabled
-                     settings.errorPageEnabled: appSettings.errorPageEnabled*/
-
          onCertificateError: {
              dlgCertificateError.showError(error);
          }
@@ -186,7 +182,7 @@ BaseBrowserView {
                 }
 
                 // TODO: Handle this locally
-                if(!loading && url.toString().substring(0,57)=="http://liri-browser.github.io/sourcecodeviewer/index.html") {
+                if(!loading && url.toString().indexOf("http://liriproject.me/browser/sourcecodeviewer/index.html") === 0) {
                     runJavaScript("
                       function setSource(){
                           var head = document.head, link = document.createElement('link');

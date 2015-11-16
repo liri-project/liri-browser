@@ -487,7 +487,7 @@ MaterialWindow {
 
     function activeTabViewSourceCode () {
         activeTab.view.runJavaScript("function getSource() { return '' + document.documentElement.innerHTML + '';} getSource() ", function(content) {
-            addTab("http://liri-browser.github.io/sourcecodeviewer/index.html");
+            addTab("http://liri-project.github.io/browser/sourcecodeviewer/index.html");
             root.app.sourcetemp = content;
             root.app.sourcetemp = root.app.sourcetemp.replace(/\r?\n|\r/g,"");
             root.app.sourcetemp = root.app.sourcetemp.replace(/    /g,"");
