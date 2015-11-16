@@ -379,6 +379,7 @@ MaterialWindow {
         if (!background)
             setActiveTab(lastTabUID, true);
         lastTabUID++;
+        return modelData;
     }
 
     function removeTab(t) {
@@ -461,44 +462,6 @@ MaterialWindow {
     }
 
     function setActiveTabURL(url, todownload) {
-        // TO BE REFACTORED
-        /*if (url == "liri://settings") {
-            u = url;
-            activeTab.webview.settingsTabPage = true;
-            activeTab.webview.newTabPage = false;
-            activeTab.webview.settingsTabPageSitesColors = false;
-            activeTab.webview.settingsTabPageQuickSearches = false;
-            activeTab.webview.playerPage = false;
-        }
-        else if (url == "liri://settings-sites-colors"){
-            u = url;
-            activeTab.webview.settingsTabPage = false;
-            activeTab.webview.newTabPage = false;
-            activeTab.webview.settingsTabPageSitesColors = true;
-            activeTab.webview.settingsTabPageQuickSearches = false;
-            activeTab.webview.playerPage = false;
-        }
-        else if (url == "liri://settings-quick-searches"){
-            u = url;
-            activeTab.webview.settingsTabPage = false;
-            activeTab.webview.newTabPage = false;
-            activeTab.webview.settingsTabPageSitesColors = false;
-            activeTab.webview.settingsTabPageQuickSearches = true;
-            activeTab.webview.playerPage = false;
-        }
-        else if (url == "liri://player"){
-            u = url;
-            activeTab.webview.settingsTabPage = false;
-            activeTab.webview.newTabPage = false;
-            activeTab.webview.settingsTabPageSitesColors = false;
-            activeTab.webview.settingsTabPageQuickSearches = false;
-            activeTab.webview.playerPage = true;
-        }
-        else {
-            var u = todownload ? url : getValidUrl(url);
-            activeTab.webview.settingsTabPage = false;
-            activeTab.webview.url = u;
-        }*/
         activeTab.view.load(url);
     }
 

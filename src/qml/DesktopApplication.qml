@@ -112,7 +112,7 @@ BaseApplication {
     function createDialog(request) {
         var newDialog = browserWindowComponent.createObject(application)
         var tab = newDialog.addTab("about:blank")
-        request.openIn(tab.webview.view)
+        request.openIn(tab.view.item.view)
         return newDialog
     }
 

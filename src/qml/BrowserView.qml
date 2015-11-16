@@ -6,6 +6,8 @@ Item {
 
     anchors.fill: parent
 
+    visible: false
+
     property string viewType: "unknown"
     property string viewName: "unknown"
 
@@ -34,6 +36,8 @@ Item {
     property var customColorLight: loader.ready ? loader.item.customColorLight : false
     property var customTextColor: loader.ready ? loader.item.customTextColor : false
     property bool hasCloseButton: true
+
+    property alias item: loader.item
 
     /* Loading */
 

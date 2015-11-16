@@ -105,10 +105,10 @@ BaseBrowserView {
                  console.log("Warning: Blocked a popup window.")
              else if (request.destination === WebEngineView.NewViewInTab) {
                  var tab = root.addTab("about:blank");
-                 request.openIn(tab.webview.view);
+                 request.openIn(tab.view.item.view);
              } else if (request.destination === WebEngineView.NewViewInBackgroundTab) {
                  var tab = root.addTab("about:blank", true);
-                 request.openIn(tab.webview.view);
+                 request.openIn(tab.view.item.view);
              } else if (request.destination === WebEngineView.NewViewInDialog) {
                  var dialog = root.app.createDialog(request);
              } else {
