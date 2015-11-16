@@ -122,7 +122,7 @@ Page {
 
     SystemBar {
         id: systemBar
-        visible: root.app.customFrame
+        visible: root.app.customFrame || tabsModel.count > 1
         anchors.margins: 0
         z:2
     }
