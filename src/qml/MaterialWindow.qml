@@ -91,12 +91,15 @@ Controls.ApplicationWindow {
     width: Units.dp(800)
     height: Units.dp(600)
 
-
     SystemBar {
         id: systemBar
         visible: root.app.customFrame
-        anchors.margins: 10
+        anchors.margins: 0
+        z:2
+        color: "transparent"
     }
+
+
 
     SystemButtons {
         id: sysbuttons

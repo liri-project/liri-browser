@@ -222,6 +222,7 @@ MaterialWindow {
             //: %1 is a title
             snackbar.open(qsTr('Added website "%1" to dash').arg(title));
         });
+
     }
 
     function isBookmarked(url){

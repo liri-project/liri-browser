@@ -119,11 +119,19 @@ Page {
         }
     ]
 
+
+    SystemBar {
+        id: systemBar
+        visible: root.app.customFrame
+        anchors.margins: 0
+        z:2
+    }
+
     View {
         id: titlebar
         backgroundColor: "transparent"
         anchors.top: parent.top
-        anchors.topMargin:  (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ?  Units.dp(5) : root.app.customFrame ? Units.dp(30) : 0
+        anchors.topMargin:  (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ?  Units.dp(0) : root.app.customFrame ? Units.dp(30) : 0
         width: parent.width
         height: titlebarContents.height
         z: 5
@@ -138,7 +146,6 @@ Page {
                 left: parent.left
                 right: parent.right
             }
-
 
             BrowserTabBar {
                 id: tabBar

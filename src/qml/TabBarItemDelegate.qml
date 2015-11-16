@@ -13,7 +13,7 @@ Component {
         property int widthWithClose: editModeActive ? root.tabWidthEdit : root.tabWidth*1.7
         property int widthWithoutClose: editModeActive ? root.tabWidthEdit : root.tabWidth
 
-        property color backgroundColor: itemContainer.state != "dragging" ? "transparent" : root.currentBackgroundColor
+        property color backgroundColor: root.privateNav ? Qt.rgba(255,255,255,0.05) :  itemContainer.state != "dragging" && itemContainer.state != "active" ? "transparent" : page.inkTimer.running ? "transparent" : root.currentBackgroundColor
         property color foregroundColor: itemContainer.state == "inactive" ? root.currentInactiveForegroundColor: root.currentForegroundColor
 
         property alias state: itemContainer.state
@@ -88,7 +88,7 @@ Component {
                 id: rectDefault
                 anchors.fill: parent
                 visible: !item.editModeActive
-                color: backgroundColor
+                color: item.backgroundColor
                 Row {
                     anchors.fill: parent
                     anchors.leftMargin: Units.dp(10)
@@ -227,6 +227,12 @@ Component {
             id: rectEdit
             visible: item.editModeActive
             color: backgroundColor
+
+            Behavior on color {
+                NumberAnimation {
+                    duration: 300
+                }
+            }
 
             anchors.fill: parent
 

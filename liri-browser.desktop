@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=0.4
+Type=Application
+Name=Liri Browser
+Comment=The miminal, open-source and MD inspired web browser
+Exec=/opt/liri-browser-build/liri-browser
+Icon=browser
+Actions=Internet
+
