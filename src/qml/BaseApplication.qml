@@ -180,6 +180,7 @@ Item {
     property bool bookmarksBar: true
     property bool bookmarksBarAlwaysOn: false
     property bool bookmarksBarOnlyOnDash: true
+    property bool shadeBehindTabs: true
 
     property QtObject settings: Settings {
         property alias homeUrl: application.homeUrl
@@ -206,6 +207,7 @@ Item {
         property alias lightThemeColor: application.lightThemeColor
         property alias darkThemeColor: application.darkThemeColor
         property alias privateNavColor: application.privateNavColor
+        property alias shadeBehindTabs: application.shadeBehindTabs
         property var customquicksearches
     }
 

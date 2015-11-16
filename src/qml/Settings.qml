@@ -170,6 +170,32 @@ Rectangle {
                 }
             }
 
+            ListItem.Standard {
+                visible: winHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                Row {
+                    anchors.fill: parent
+                    spacing: Units.dp(12)
+                    CheckBox {
+                        id: chbShadeBehindTabs
+                        darkBackground: root.app.darkTheme
+                        checked: root.app.shadeBehindTabs
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: qsTr("Shade behinds tabs")
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Units.dp(16)
+                        color: settingsRoot.textColor
+                    }
+
+                }
+                onClicked: {
+                    chbShadeBehindTabs.checked = !chbShadeBehindTabs.checked
+                }
+            }
+
             ListItem.SectionHeader {
                 text: qsTr("Dash")
                 id: dashHead
@@ -859,6 +885,7 @@ Rectangle {
                     root.app.allowReducingTabsSizes = chbAllowReducingTabsSizes.checked
                     root.app.quickSearches = chbQuickSearches.checked
                     root.app.uppercaseTabTitle = chbUppercaseTabTitle.checked
+                    root.app.shadeBehindTabs = chbShadeBehindTabs.checked
                 }
             }
             Button {

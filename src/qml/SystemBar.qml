@@ -12,5 +12,5 @@ Rectangle {
     }
 
     height: tabsModel.count > 1 || root.app.integratedAddressbars ? root.tabHeight : Units.dp(30)
-    color: /* root.currentTabColorDarken*/ Qt.rgba(0,0,0,0.05)
+    color: /* root.currentTabColorDarken*/ root.app.shadeBehindTabs ? Qt.rgba(0,0,0,0.05) : Qt.rgba(0,0,0,0)
 }
