@@ -77,10 +77,10 @@ Page {
             name: qsTr("Fullscreen")
             iconName: "navigation/fullscreen"
             onTriggered: {
-                // TODO: Why this if statement? Should the action be hidden in fullscreen?
-                // An action that doesn't do anything is confusing
                 if (!root.fullscreen)
                     root.startFullscreenMode()
+                else
+                    root.endFullscreenMode()
             }
         },
         Action {
@@ -90,8 +90,8 @@ Page {
             onTriggered: root.showSearchOverlay()
         },
         Action {
-            name: qsTr("Bookmark")
-            visible: root.app.integratedAddressbars
+            name: qsTr("Bookmark this page")
+            visible: root.app.integratedAddressbars || root.mobile
             iconName:  "action/bookmark_border"
             onTriggered: root.toggleActiveTabBookmark()
         },
