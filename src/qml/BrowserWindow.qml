@@ -360,9 +360,9 @@ MaterialWindow {
         return tabsModel.get(i).uid;
     }
 
-    function addTab(url, background) {
+    function addTab(url, background, webview) {
         var browserView = browserViewComponent.createObject(page.viewContainer);
-        browserView.load(url);
+        browserView.load(url, webview);
         var modelData = {
             url: url,
             view: browserView,

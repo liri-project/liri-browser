@@ -24,6 +24,8 @@ BaseBrowserView {
 
     property var preview
 
+    property alias request: webview.request
+
     function goBack() {
         webview.goBack();
     }
@@ -98,20 +100,12 @@ BaseBrowserView {
          }
 
          onNewViewRequested: {
-             console.log("onNewViewRequested")
-             if (!request.userInitiated)
-                 console.log("Warning: Blocked a popup window.")
-             else if (request.destination === WebEngineView.NewViewInTab) {
-                 var tab = root.addTab("about:blank");
-                 request.openIn(tab.webview.view);
-             } else if (request.destination === WebEngineView.NewViewInBackgroundTab) {
-                 var tab = root.addTab("about:blank", true);
-                 request.openIn(tab.webview.view);
-             } else if (request.destination === WebEngineView.NewViewInDialog) {
-                 var dialog = root.app.createDialog(request);
-             } else {
-                 // New window
-                 var dialog = root.app.createDialog(request);
+             var webview = Qt.createComponent("BrowserOxideWebView.qml").createObject(browserWebView, {"request": request});
+             if (request.disposition === NewViewRequest.DispositionNewForegroundTab) {
+                 var tab = root.addTab("about:blank", false, webview);
+             }
+             else {
+                 var tab = root.addTab("about:blank", true, webview);
              }
          }
 

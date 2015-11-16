@@ -20,28 +20,34 @@ Item {
 
     /* View Properties */
 
-    property var icon: loader.ready ? loader.item.icon : null
-    property string title: loader.ready ? loader.item.title : "Loading ... "
-    property var url: loader.ready ? loader.item.url : null
+    property var icon: browserView.ready ? browserView.item.icon : null
+    property string title: browserView.ready ? browserView.item.title : "Loading ... "
+    property var url: browserView.ready ? browserView.item.url : null
     property var profile
-    property bool loading: loader.ready ? loader.item.loading : true
-    property real loadProgress: loader.ready ? loader.item.loadProgress : loader.progress
-    property bool reloadable: loader.ready ? loader.item.reloadable : false
+    property bool loading: browserView.ready ? browserView.item.loading : true
+    property real loadProgress: browserView.ready ? browserView.item.loadProgress : loader.progress
+    property bool reloadable: browserView.ready ? browserView.item.reloadable : false
 
-    property bool canGoBack: loader.ready ? loader.item.canGoBack : false
-    property bool canGoForward: loader.ready ? loader.item.canGoForward : false
-    property bool secureConnection: loader.ready ? loader.item.secureConnection : false
+    property bool canGoBack: browserView.ready ? browserView.item.canGoBack : false
+    property bool canGoForward: browserView.ready ? browserView.item.canGoForward : false
+    property bool secureConnection: browserView.ready ? browserView.item.secureConnection : false
 
-    property var customColor: loader.ready ? loader.item.customColor : false
-    property var customColorLight: loader.ready ? loader.item.customColorLight : false
-    property var customTextColor: loader.ready ? loader.item.customTextColor : false
+    property var customColor: browserView.ready ? browserView.item.customColor : false
+    property var customColorLight: browserView.ready ? browserView.item.customColorLight : false
+    property var customTextColor: browserView.ready ? browserView.item.customTextColor : false
     property bool hasCloseButton: true
 
-    property alias item: loader.item
+    property var item: loader.item
+
+    property var ready: true
 
     /* Loading */
 
-    function load (url) {
+    function load (url, webview) {
+        // Dirty workaround because Oxide webviews may be created directly without the use of a loader (see loadWebview)
+        browserView.item = Qt.binding(function(){return loader.item});
+        browserView.ready = Qt.binding(function(){return loader.ready});
+
         // Ensure url is valid
         if (typeof(url) === "undefined") {
             if (root.app.newTabPage)
@@ -71,21 +77,30 @@ Item {
         else {
             // Default WebView
             url = getValidUrl(url);
-            loadWebView(url);
+            loadWebView(url, webview);
         }
 
     }
 
-    function loadWebView (url) {
-        if (loader.ready && isWebView) {
-            loader.item.url = url;
+    function loadWebView (url, webview) {
+        if (browserView.ready && isWebView) {
+            browserView.item.url = url;
         }
         else {
-            loader.sourceComponent = root.webviewComponent;
-            if (loader.ready) {
-                loader.item.url = url;
+            if (root.app.webEngine === "qtwebengine" || !webview)
+                loader.sourceComponent = root.webviewComponent;
+            else {
+                // Dirty workaround: Directly override the loader's data.
+                // The problem with this is that Oxide webview sometimes *must* be created within onNewViewRequested.
+                loader.data = webview;
+                browserView.item = webview;
+                browserView.ready = true;
+            }
+            if (browserView.ready) {
+                if (!webview)
+                    browserView.item.url = url;
                 if (root.app.webEngine === "qtwebengine")
-                    loader.item.profile = root.app.defaultProfile;
+                    browserView.item.profile = root.app.defaultProfile;
                 viewType = "built-in";
                 viewName = "webview";
             }
@@ -96,9 +111,9 @@ Item {
     }
 
     function loadNewTabPage (url) {
-        if (!(loader.ready && isDash)) {
+        if (!(browserView.ready && isDash)) {
             loader.sourceComponent = root.newTabPageComponent;
-            if (loader.ready) {
+            if (browserView.ready) {
                 viewType = "built-in";
                 viewName = "dash";
             }
@@ -109,9 +124,9 @@ Item {
     }
 
     function loadSettings () {
-        if (!(loader.ready && isSettings)) {
+        if (!(browserView.ready && isSettings)) {
             loader.sourceComponent = root.settingsViewComponent;
-            if (loader.ready) {
+            if (browserView.ready) {
                 viewType = "built-in";
                 viewName = "settings";
             }
@@ -122,9 +137,9 @@ Item {
     }
 
     function loadQuickSearchesSettings () {
-        if (!(loader.ready && isQuickSearchesSettings)) {
+        if (!(browserView.ready && isQuickSearchesSettings)) {
             loader.sourceComponent = root.quickSearchesSettingsViewComponent;
-            if (loader.ready) {
+            if (browserView.ready) {
                 viewType = "built-in";
                 viewName = "quick-searches-settings";
             }
@@ -135,9 +150,9 @@ Item {
     }
 
     function loadSitesColorsSettings () {
-        if (!(loader.ready && isSitesColorsSettings)) {
+        if (!(browserView.ready && isSitesColorsSettings)) {
             loader.sourceComponent = root.sitesColorsSettingsViewComponent;
-            if (loader.ready) {
+            if (browserView.ready) {
                 viewType = "built-in";
                 viewName = "sites-colors-settings";
             }
@@ -156,47 +171,47 @@ Item {
 
     function goBack() {
         if (isWebView)
-            loader.item.goBack();
+            browserView.item.goBack();
     }
 
     function goForward() {
         if (isWebView)
-            loader.item.goForward();
+            browserView.item.goForward();
     }
 
     function runJavaScript(arg1, arg2) {
         if (isWebView)
-            loader.item.runJavaScript(arg1, arg2);
+            browserView.item.runJavaScript(arg1, arg2);
     }
 
     function reload() {
         if (isWebView)
-            loader.item.reload();
+            browserView.item.reload();
     }
 
     function zoomIn() {
         if (isWebView)
-            loader.item.zoomFactor += 0.25;
+            browserView.item.zoomFactor += 0.25;
     }
 
     function zoomOut() {
         if (isWebView)
-            loader.item.zoomFactor -= 0.25
+            browserView.item.zoomFactor -= 0.25
     }
 
     function zoomReset() {
         if (isWebView)
-            loader.item.zoomFactor = 1.0
+            browserView.item.zoomFactor = 1.0
     }
 
     function stop() {
         if (isWebView)
-            loader.item.stop();
+            browserView.item.stop();
     }
 
     function findText (text, backward, callback){
         if (isWebView)
-            loader.item.findText(text, backward, callback);
+            browserView.item.findText(text, backward, callback);
     }
 
 
@@ -208,7 +223,7 @@ Item {
 
         onStatusChanged: {
             switch (loader.status) {
-                case Loader.Ready:
+                case loader.ready:
                     console.log("Loaded");
                     break;
                 case Loader.Loading:
