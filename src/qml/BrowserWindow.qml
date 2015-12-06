@@ -264,7 +264,6 @@ MaterialWindow {
         return false;
     }
 
-
     /* Color Handling */
 
     function searchForCustomColor(url) {

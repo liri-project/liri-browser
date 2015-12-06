@@ -236,6 +236,12 @@ View {
                 txtUrl.quickSearch = "";
                 txtUrl.placeholderText = qsTr("Search or enter website name")
         }
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Backspace) {
+                txtUrl.quickSearch = "";
+                txtUrl.placeholderText = qsTr("Search or enter website name")
+            }
+        }
 
         MouseArea {
             anchors.fill: parent
