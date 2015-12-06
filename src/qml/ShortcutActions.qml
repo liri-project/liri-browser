@@ -122,6 +122,16 @@ Item {
         }
     }
     Controls.Action {
+        shortcut: "Ctrl+SHIFT+Tab"
+        onTriggered: {
+            var currentIndex = root.getTabModelIndexByUID(root.activeTab.uid);
+            if (currentIndex === 0)
+                root.activeTab = tabsModel.get(root.tabsModel.count-1);
+            else
+                root.activeTab = tabsModel.get(currentIndex-1);
+        }
+    }
+    Controls.Action {
         shortcut: "F5"
         onTriggered: {
             root.activeTab.view.reload()
@@ -150,6 +160,18 @@ Item {
             }
         }
     }
-
-
+    Controls.Action {
+        shortcut: "SHIFT+Backspace"
+        onTriggered: {
+            if (root.activeTab.view.canGoForward)
+                root.activeTab.view.goForward();
+        }
+    }
+    Controls.Action {
+        shortcut: "Backspace"
+        onTriggered: {
+            if (root.activeTab.view.canGoBack)
+                root.activeTab.view.goBack();
+        }
+    }
 }
