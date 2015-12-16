@@ -3,7 +3,9 @@ Version=0.4
 Type=Application
 Name=Liri Browser
 Comment=The miminal, open-source and MD inspired web browser
-Exec=/opt/liri-browser-build/liri-browser
+Exec=/opt/liri-browser-build/liri-browser %U
 Icon=browser
 Actions=Internet
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml_xml;image/webp;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
 
