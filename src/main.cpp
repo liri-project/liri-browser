@@ -39,6 +39,8 @@ int main(int argc, char **argv)
     translator.load(":/translations/" + QLocale::system().name());
     app.installTranslator(&translator);
 
+    qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "0.0.0.0:9992");
+
     // Initialize QtWebEngine
     QtWebEngine::initialize();
 
