@@ -76,7 +76,13 @@ Item {
         // TODO: Handle plugins
         else {
             // Default WebView
-            url = getValidUrl(url);
+            if(url.indexOf("file://") >= 0){
+                url = url;
+            }else{
+                url = getValidUrl(url);
+            }
+
+
             loadWebView(url, webview);
         }
 
