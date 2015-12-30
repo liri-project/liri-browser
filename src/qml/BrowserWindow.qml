@@ -501,7 +501,7 @@ MaterialWindow {
             root.privateNav = true
         }
         else {
-            root.initialPage.ink.currentCircle.removeCircle()
+            root.initialPage.ink.lastCircle.removeCircle()
             root.privateNav = false
         }
     }

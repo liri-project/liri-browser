@@ -124,19 +124,19 @@ Page {
         id: systemBar
         visible: root.app.customFrame || tabsModel.count > 1
         anchors.margins: 0
-        z:2
+        z:1000
     }
 
     View {
         id: titlebar
-        backgroundColor: "transparent"
+        property color chosenColor: root.activeTab.view.customColor ? root.activeTab.view.customColor : root.app.lightThemeColor
+        backgroundColor: root.app.elevatedToolbar ? shadeColor(chosenColor,-0.1) : "transparent"
         anchors.top: parent.top
         anchors.topMargin:  (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ?  Units.dp(0) : root.app.customFrame ? Units.dp(30) : 0
         width: parent.width
         height: titlebarContents.height
-        z: 5
-
-        elevation: 0
+        z: 9999
+        elevation: root.app.toolbarElevation
 
         Column {
             id: titlebarContents
@@ -351,7 +351,7 @@ Page {
             interval: 1500
             repeat: false
             onTriggered: {
-                ink.currentCircle.removeCircle()
+                ink.lastCircle.removeCircle()
             }
         }
     }

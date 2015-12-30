@@ -8,7 +8,8 @@ Rectangle {
     id: tabBar
 
     height: root.tabHeight
-    color: "transparent"
+    property color chosenColor: root.activeTab.view.customColor ? root.activeTab.view.customColor : root.app.lightThemeColor
+    color: root.app.elevatedToolbar ? shadeColor(chosenColor,-0.1) : "transparent"
     anchors {
         left: parent.left
         rightMargin: root.app.customFrame ? Units.dp(100) : 0

@@ -7,7 +7,8 @@ import QtQuick.Controls 1.2 as Controls
 View {
     id: toolbar
     elevation:0
-    backgroundColor: "transparent"
+    property color chosenColor: root.activeTab.view.customColor ? root.activeTab.view.customColor : root.app.lightThemeColor
+    backgroundColor: root.app.elevatedToolbar ? chosenColor : "transparent"
     visible: !root.app.integratedAddressbars
 
     height: root.mobile ? Units.dp(64) : Units.dp(56)

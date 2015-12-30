@@ -12,5 +12,6 @@ Rectangle {
     }
 
     height: tabsModel.count > 1 || root.app.integratedAddressbars ? root.tabHeight : Units.dp(30)
-    color: /* root.currentTabColorDarken*/ root.app.shadeBehindTabs ? Qt.rgba(0,0,0,0.05) : Qt.rgba(0,0,0,0)
+    property color chosenColor: root.activeTab.view.customColor ? root.activeTab.view.customColor : root.app.lightThemeColor
+    color: root.app.elevatedToolbar ? shadeColor(chosenColor,-0.1) : "transparent"
 }

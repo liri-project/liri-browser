@@ -37,6 +37,9 @@ Item {
     property bool integratedAddressbars: false
     property bool tabsEntirelyColorized: true
 
+    property bool elevatedToolbar: toolbarElevation > 0
+    property int toolbarElevation: 2
+
     property bool uppercaseTabTitle: false
 
     property bool allowReducingTabsSizes: false
@@ -209,6 +212,7 @@ Item {
         property alias privateNavColor: application.privateNavColor
         property alias shadeBehindTabs: application.shadeBehindTabs
         property var customquicksearches
+        property alias toolbarElevation: application.toolbarElevation
     }
 
     Component.onCompleted: {

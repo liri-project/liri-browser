@@ -309,6 +309,33 @@ Rectangle {
             }
 
             ListItem.Standard {
+                text: "Toolbar elevation : " + slToolbarShadow.value + "dp"
+                height: Units.dp(60)
+                visible: toolHead.expanded
+                width: parent.width - settingsRoot.subHeaderLeftMargin
+                anchors.leftMargin: settingsRoot.subHeaderLeftMargin
+                textColor: settingsRoot.textColor
+                Slider {
+                    id: slToolbarShadow
+                    value: root.app.toolbarElevation
+                    tickmarksEnabled: true
+                    stepSize: 1
+                    minimumValue: 0
+                    maximumValue: 8
+                    darkBackground: root.app.darkTheme
+                    anchors {
+                        right: parent.right
+                        top: parent.top
+                        topMargin: 20
+                        verticalCenter: parent.verticalCenter
+                    }
+                    onValueChanged: {
+                        root.app.toolbarElevation = value
+                    }
+                }
+            }
+
+            ListItem.Standard {
                 visible: toolHead.expanded
                 width: parent.width - settingsRoot.subHeaderLeftMargin
                 anchors.leftMargin: settingsRoot.subHeaderLeftMargin
