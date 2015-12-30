@@ -8,7 +8,7 @@
 
 TEMPLATE = app
 
-QT += qml quick widgets svg xml webengine multimedia core network
+QT += qml quick widgets svg xml webengine multimedia core network webenginewidgets
 QTPLUGIN += qsvg
 
 SOURCES += src/main.cpp \

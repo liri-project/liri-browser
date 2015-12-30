@@ -167,11 +167,12 @@ Item {
                 root.activeTab.view.goForward();
         }
     }
+    /*
     Controls.Action {
         shortcut: "Backspace"
         onTriggered: {
-            //if (root.activeTab.view.canGoBack)
-            //    root.activeTab.view.goBack();
+            if (root.activeTab.view.canGoBack)
+                root.activeTab.view.goBack();
         }
-    }
+    }*/
 }
