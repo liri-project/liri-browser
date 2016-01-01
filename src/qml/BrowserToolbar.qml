@@ -39,9 +39,8 @@ View {
             color: root.currentIconColor
             Behavior on color { ColorAnimation { duration : 500 }}
             action: Action {
-                enabled: !root.mobile
                 iconName: "navigation/arrow_back"
-                name: qsTr("Go Back")
+                name: root.mobile ? "" : qsTr("Go Back")
             }
         }
 
@@ -54,9 +53,8 @@ View {
             Behavior on color { ColorAnimation { duration : 500 }}
             visible: root.activeTab.view.canGoForward || !mobile
             action: Action {
-                enabled: !root.mobile
                 iconName: "navigation/arrow_forward"
-                name: qsTr("Go Forward")
+                name: root.mobile ? "" : qsTr("Go Forward")
             }
         }
 
@@ -69,9 +67,8 @@ View {
             Behavior on color { ColorAnimation { duration : 500 }}
             onClicked: !activeTab.view.loading ? activeTab.view.reload() : activeTab.view.stop()
             action: Action {
-                enabled: !root.mobile
                 iconName: !activeTab.view.loading ? "navigation/refresh" : "navigation/close"
-                name:!activeTab.view.loading ? qsTr("Refresh") : qsTr("Stop")
+                name:root.mobile ? "" : !activeTab.view.loading ? qsTr("Refresh") : qsTr("Stop")
             }
         }
 
@@ -87,9 +84,8 @@ View {
             onClicked: {pageStack.push(tabsListPage);root.tabsListIsOpened = true}
             visible: mobile
             action: Action {
-                enabled: !root.mobile
                 iconName: "action/tab"
-                name: qsTr("Tabs")
+                name: root.mobile ? "" : qsTr("Tabs")
             }
         }
 
@@ -99,9 +95,8 @@ View {
             onClicked: addTab()
             visible: !mobile && (tabsModel.count == 1)
             action: Action {
-                enabled: !root.mobile
                 iconName: "content/add"
-                name: qsTr("Add a tab")
+                name: root.mobile ? "" : qsTr("Add a tab")
             }
         }
 
@@ -112,7 +107,6 @@ View {
             onClicked: toggleActiveTabBookmark()
             visible: !mobile
             action: Action {
-                enabled: !root.mobile
                 iconName: "action/bookmark_border"
                 name: qsTr("Bookmark this page")
             }
@@ -127,7 +121,7 @@ View {
             visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
             action: Action {
                 iconName: "file/file_download"
-                name: qsTr("Downloads")
+                name: root.mobile ? "" : qsTr("Downloads")
             }
 
             ProgressCircle {
@@ -149,9 +143,8 @@ View {
             color: root.currentIconColor
             onClicked: overflowMenu.open(overflowButton)
             action: Action {
-                enabled: !root.mobile
                 iconName: "navigation/more_vert"
-                name: qsTr("Menu")
+                name: root.mobile ? "" : qsTr("Menu")
             }
         }
     }

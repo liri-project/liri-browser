@@ -52,10 +52,10 @@ Controls.ApplicationWindow {
         anchors {
             left: parent.left
             right: parent.right
-            top: __toolbar.bottom
+            top: root.mobile ? __toolbar.bottom : parent.top
             bottom: parent.bottom
             margins: root.app.customFrame ? 10 : 0
-            topMargin: root.app.customFrame ? 10 :  0
+            topMargin: root.app.customFrame && !root.mobile ? 10 :  0
         }
 
         onPushed: __toolbar.push(page)
