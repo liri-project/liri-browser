@@ -86,9 +86,10 @@ BaseBrowserView {
             if (root.activeTab.webview == browserWebView)
                 activeTabUrlChanged();
             if(isMedia("" + url + "")) {
-
-                setActiveTabURL(url)
+                setActiveTabURL(url);
             }
+            if(isPdf("" + url +""))
+                setActiveTabURL(url);
         }
 
          onCertificateError: {
@@ -367,6 +368,7 @@ BaseBrowserView {
 
             ListItem.Standard {
                 text: qsTr("Open in new tab")
+                visible: !isPdf(clickDetector.tempUrl)
                 iconName: "action/open_in_new"
                 onClicked: {
                     root.addTab(clickDetector.tempUrl)
@@ -385,7 +387,14 @@ BaseBrowserView {
                 }
             }
 
-
+            ListItem.Standard {
+                text: qsTr("View")
+                iconName: "action/pageview"
+                onClicked: {
+                    addTab(encodeURI(clickDetector.tempUrl))
+                    linkRightClickMenu.close()
+                }
+            }
 
             ListItem.Standard {
                 text: qsTr("Play in browser")

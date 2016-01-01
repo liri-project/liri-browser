@@ -143,6 +143,8 @@ MaterialWindow {
             page.mediaDialog.show()
             return
         }
+        else if(isPdf(url))
+            url = "https://docs.google.com/viewer?url=" + url;
         else if (url.indexOf('.') !== -1 && url.indexOf('?') !== 0){
             if (url.lastIndexOf('http://', 0) !== 0){
                 if (url.lastIndexOf('https://', 0) !== 0){
@@ -459,6 +461,8 @@ MaterialWindow {
         else
             return false
     }
+
+    function isPdf(url) { return url.slice(-4) == ".pdf"; }
 
     function setActiveTabURL(url, todownload) {
         activeTab.view.load(url);
