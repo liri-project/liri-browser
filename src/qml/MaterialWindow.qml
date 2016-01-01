@@ -52,7 +52,7 @@ Controls.ApplicationWindow {
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: __toolbar.bottom
             bottom: parent.bottom
             margins: root.app.customFrame ? 10 : 0
             topMargin: root.app.customFrame ? 10 :  0
