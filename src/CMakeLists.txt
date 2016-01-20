@@ -5,7 +5,23 @@ set(SOURCES
     liri-browser.qrc
 )
 
-add_executable(liri-browser ${SOURCES})
+file(GLOB_RECURSE TS_SOURCES *.cpp *.h *.qml *.js ${CMAKE_SOURCE_DIR}/plugins/*.ts)
+file(GLOB TS_FILES "${CMAKE_SOURCE_DIR}/translations/*.ts")
+
+if(UPDATE_TRANSLATIONS)
+    qt5_create_translation(QM_FILES ${TS_SOURCES} ${TS_FILES})
+else()
+    qt5_add_translation(QM_FILES ${TS_FILES})
+endif(UPDATE_TRANSLATIONS)
+
+if(APPLE)
+    set(MACOSX_BUNDLE_ICON_FILE liri-browser.icns)
+    set_source_files_properties(${CMAKE_SOURCE_DIR}/icons/liri-browser.icns
+                                PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    set(SOURCES ${SOURCES} ${CMAKE_SOURCE_DIR}/icons/liri-browser.icns)
+ENDIF(APPLE)
+
+add_executable(liri-browser ${SOURCES} ${QM_FILES})
 target_link_libraries(liri-browser
                       Qt5::Core
                       Qt5::Qml

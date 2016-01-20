@@ -2,6 +2,8 @@ project(me.liriproject.Browser CXX)
 
 cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
+OPTION(UPDATE_TRANSLATIONS "Update translations on compile" OFF)
+
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -40,7 +42,8 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              Multimedia
              Network
              WebEngine
-             WebEngineWidgets)
+             WebEngineWidgets
+             LinguistTools)
 
 # Install the desktop and appdata files
 # install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/${PROJECT_NAME}.desktop
@@ -54,3 +57,4 @@ add_subdirectory(src)
 
 # Display feature summary
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+MESSAGE(STATUS "UPDATE TRANSLATIONS: ${UPDATE_TRANSLATIONS}")
