@@ -1,5 +1,5 @@
 import QtQuick 2.4
-import Material 0.1
+import Material 0.2
 import QtQuick.Window 2.0
 import QtSystemInfo 5.0
 

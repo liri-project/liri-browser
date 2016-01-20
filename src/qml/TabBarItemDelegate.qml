@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles.Material 0.1
-import Material 0.1
+import Material 0.2
 
 Component {
     id: component

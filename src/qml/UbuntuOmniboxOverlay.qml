@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import Material 0.1 as Material
+import Material 0.2 as Material
 import Ubuntu.Components 1.3
 
 

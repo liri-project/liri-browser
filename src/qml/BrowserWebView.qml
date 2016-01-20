@@ -1,7 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
-import Material 0.1
+import Material 0.2
 import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.2
 import Clipboard 1.0

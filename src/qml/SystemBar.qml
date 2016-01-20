@@ -1,4 +1,4 @@
-import Material 0.1
+import Material 0.2
 import QtQuick 2.2
 
 Rectangle {
