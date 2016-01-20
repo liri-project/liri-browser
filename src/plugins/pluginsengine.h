@@ -7,25 +7,28 @@
 #include "plugin.h"
 #include "../config.h"
 
-class PluginsEngine : public QObject{
-                Q_OBJECT
-        public:
-                explicit PluginsEngine(QQmlApplicationEngine *appEngine, Config *config, QObject *parent = 0);
+class PluginsEngine : public QObject
+{
+    Q_OBJECT
 
-                QMap<QString, Plugin *> plugins;
+public:
+    explicit PluginsEngine(QQmlApplicationEngine *appEngine, Config *config, QObject *parent = 0);
 
-                void loadPlugins();
-                void loadPlugin(QString name, QString path);
+    QMap<QString, Plugin *> plugins;
 
-                bool trigger(QString event, QJSValueList args=QJSValueList());
-                Q_INVOKABLE bool trigger(QJSValue event, QJSValueList args=QJSValueList());
-                Q_INVOKABLE bool trigger(QJSValue event, QString text);
+    void loadPlugins();
+    void loadPlugin(QString name, QString path);
 
-        private:
-                QJSValueList newArgsList(QJSValueList args);
+public slots:
+    bool trigger(QString event, QStringList args = QStringList());
+    bool trigger(QString event, QString text);
 
-                QQmlApplicationEngine *appEngine;
-                Config *config;
+private:
+    QJSValueList newArgsList(QJSValueList args);
+
+    QQmlApplicationEngine *m_appEngine;
+    Config *m_config;
+    QString m_pluginsPath;
 };
 
 #endif // PLUGINSENGINE_H

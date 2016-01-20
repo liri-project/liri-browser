@@ -43,13 +43,13 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              WebEngineWidgets)
 
 # Install the desktop and appdata files
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/${PROJECT_NAME}.desktop
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/${PROJECT_NAME}.appdata.xml
-        DESTINATION ${CMAKE_INSTALL_METAINFODIR})
+# install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/${PROJECT_NAME}.desktop
+#         DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+# install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/${PROJECT_NAME}.appdata.xml
+#         DESTINATION ${CMAKE_INSTALL_METAINFODIR})
 
 # add_subdirectory(icons)
-# add_subdirectory(plugins)
+add_subdirectory(plugins)
 add_subdirectory(src)
 
 # Display feature summary

@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     PluginsEngine pluginsEngine(&appEngine, &config);
     appEngine.rootContext()->setContextProperty("PluginsEngine", &pluginsEngine);
     pluginsEngine.loadPlugins();
-    pluginsEngine.trigger(QString("load"));
+    pluginsEngine.trigger("load");
 
     return app.exec();
 }
