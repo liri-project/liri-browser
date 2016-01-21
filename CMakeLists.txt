@@ -3,6 +3,7 @@ project(me.liriproject.Browser CXX)
 cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 OPTION(UPDATE_TRANSLATIONS "Update translations on compile" OFF)
+OPTION(UBUNTU_TOUCH "Build for Ubuntu Touch" OFF)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -45,16 +46,11 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              WebEngineWidgets
              LinguistTools)
 
-# Install the desktop and appdata files
-# install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/${PROJECT_NAME}.desktop
-#         DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
-# install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/${PROJECT_NAME}.appdata.xml
-#         DESTINATION ${CMAKE_INSTALL_METAINFODIR})
-
-# add_subdirectory(icons)
+add_subdirectory(data)
 add_subdirectory(plugins)
 add_subdirectory(src)
 
 # Display feature summary
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 MESSAGE(STATUS "UPDATE TRANSLATIONS: ${UPDATE_TRANSLATIONS}")
+MESSAGE(STATUS "BUILD FOR UBUNTU TOUCH: ${UBUNTU_TOUCH}")
