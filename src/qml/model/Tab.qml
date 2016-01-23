@@ -4,7 +4,8 @@ import "../js/utils.js" as Utils
 
 Object {
     id: tab
-    property url url
+
+    readonly property url url: view ? view.url : ""
 
     property Item view
 
@@ -20,8 +21,10 @@ Object {
     property bool secureConnection: String(url).indexOf("https://") == 0
 
     function load(url) {
-        console.log("Loading url: " + url)
-        tab.url = Utils.getValidUrl(url)
-        console.log("Found url: " + tab.url)
+        view.load(Utils.getValidUrl(url))
+    }
+
+    onUrlChanged: {
+        console.log("Tab URL changed: " + url)
     }
 }

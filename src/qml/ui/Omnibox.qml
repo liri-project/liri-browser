@@ -156,6 +156,7 @@ View {
             quickSearch = ""
             quickSearchURL = ""
             addingSearch = false
+            text = Qt.binding(function() { return activeTab.url })
         }
 
         Keys.onTabPressed: {

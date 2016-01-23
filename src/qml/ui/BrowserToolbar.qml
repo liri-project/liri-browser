@@ -95,7 +95,7 @@ Item {
 
         IconButton {
             color: activeTab.iconColor
-            visible: mobile
+            visible: isMobile
             action: Action {
                 iconName: "action/tab"
                 name: qsTr("Tabs")
@@ -112,7 +112,7 @@ Item {
             color: activeTab.iconColor
             // Only show on the desktop and if there is one tab. When there is more than one tab,
             // thee add tab button will be in the toolbar
-            visible: !mobile && (tabsModel.count == 1)
+            visible: !isMobile && (tabsModel.count == 1)
             action: Action {
                 iconName: "content/add"
                 name: qsTr("Add a tab")
@@ -125,7 +125,7 @@ Item {
         IconButton {
             id: bookmarkButton
             color: activeTab.iconColor
-            visible: !mobile
+            visible: !isMobile
             action: Action {
                 iconName: "action/bookmark_border"
                 name: qsTr("Bookmark this page")
@@ -140,7 +140,7 @@ Item {
             id: downloadsButton
             color: downloadsModel.hasActiveDownloads
                     ? activeTab.activeIconColor : activeTab.iconColor
-            visible: !mobile && downloadsModel.hasDownloads
+            visible: !isMobile && downloadsModel.hasDownloads
             action: Action {
                 iconName: "file/file_download"
                 name: qsTr("Downloads")

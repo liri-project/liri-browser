@@ -5,7 +5,6 @@
     <file>qml/BrowserWindow2.qml</file>
     <file>qml/DesktopApplication.qml</file>
     <file>qml/ResizeArea.qml</file>
-    <file>qml/components/AwesomeActionButton.qml</file>
     <file>qml/components/LoadingIndicator.qml</file>
     <file>qml/components/MenuFieldThemed.qml</file>
     <file>qml/components/QuickSearches.qml</file>

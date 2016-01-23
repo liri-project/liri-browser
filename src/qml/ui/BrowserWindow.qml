@@ -39,9 +39,11 @@ ApplicationWindow {
             browserPage.ink.createTapCircle(window.width - Units.dp(30),
                                             window.height - Units.dp(30))
             privateBrowsing = true
+            snackbar.open("Entered private browsing")
         } else {
             browserPage.ink.lastCircle.removeCircle()
             privateBrowsing = false
+            snackbar.open("Exited private browsing")
         }
     }
 

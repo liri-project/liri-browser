@@ -5,6 +5,7 @@ import Material 0.2
 import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.1
 import Clipboard 1.0
+import "../../js/utils.js" as Utils
 import ".."
 
 BaseBrowserView {
@@ -82,8 +83,7 @@ BaseBrowserView {
         }
 
         onUrlChanged: {
-            if (activeTab.webview == browserWebView)
-                activeTabUrlChanged();
+            console.log("url changed: " + url)
             // TODO: Does this trigger binding loops?
             if (Utils.isMedia(url) || Utils.isPdf(url))
                 activeTab.load(url)
@@ -124,9 +124,8 @@ BaseBrowserView {
 
          onLoadingChanged: {
             if (loadRequest.status === WebEngineView.LoadStartedStatus) {
-                root.app.searchSuggestionsModel.clear()
-            }
-            else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
+                searchSuggestionsModel.clear()
+            } else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
                 // Looking for custom tab bar colors
                 runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
                     function(content){
@@ -206,10 +205,8 @@ BaseBrowserView {
                         }
                       setSource();");
                 }
-            }
-
-            else if (loadRequest.status === WebEngineView.LoadFailedStatus) {
-                root.setActiveTabURL('about:blank');
+            } else if (loadRequest.status === WebEngineView.LoadFailedStatus) {
+                activeTab.load('about:blank');
             }
          }
 
@@ -365,10 +362,10 @@ BaseBrowserView {
 
             ListItem.Standard {
                 text: qsTr("Open in new tab")
-                visible: !isPdf(clickDetector.tempUrl)
+                visible: !Utils.isPdf(clickDetector.tempUrl)
                 iconName: "action/open_in_new"
                 onClicked: {
-                    root.addTab(clickDetector.tempUrl)
+                    addTab(clickDetector.tempUrl)
                     clickDetector.tempUrl = ""
                     linkRightClickMenu.close()
                 }
@@ -396,7 +393,7 @@ BaseBrowserView {
             ListItem.Standard {
                 text: qsTr("Play in browser")
                 iconName: "av/play_arrow"
-                visible: isMedia(clickDetector.tempUrl)
+                visible: Utils.isMedia(clickDetector.tempUrl)
                 onClicked: {
                     addTab(encodeURI(clickDetector.tempUrl))
                     linkRightClickMenu.close()

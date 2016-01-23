@@ -42,9 +42,12 @@ function getSearchUrl(query) {
 }
 
 function isSearchQuery(url) {
+    url = String(url)
     if (url.indexOf('.') !== -1) {
-        if (url.lastIndexOf('http://', 0) !== 0 && url.lastIndexOf('https://', 0) !== 0) {
+        if (url.indexOf('http://', 0) === 0 && url.indexOf('https://', 0) === 0) {
             return false;
+        } else {
+            return url.indexOf(' ') !== -1
         }
     } else if (url.indexOf('liri://') !== -1) {
         return false
@@ -54,10 +57,12 @@ function isSearchQuery(url) {
 }
 
 function isMedia(url) {
+    url = String(url)
     return url.slice(-4) == ".mp3" || url.slice(-4) == ".mp4"  || url.slice(-4) == ".avi"
 }
 
 function isPdf(url) {
+    url = String(url)
     return url.slice(-4) == ".pdf";
 }
 

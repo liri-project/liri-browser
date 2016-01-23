@@ -12,58 +12,51 @@ Item {
 
     visible: tab == activeTab
 
-    readonly property string type: {
-        var url = String(tab.url)
-        console.log(tab, url)
+    function load(url) {
         if (url == "liri://dash") {
-            return "dash"
+            type = "dash"
+            loader.sourceComponent = dashboardViewComponent
         } else if (url == "liri://settings") {
-            return "settings"
+            type = "settings"
         } else if (url !== undefined && url !== null && String(url).length > 0) {
-            return "webview"
+            type = "webview"
+            loader.sourceComponent = webviewComponent
         } else {
-            return "blank"
+            type = "blank"
+            loader.sourceComponent = null;
         }
+
+        console.log(url, item)
+
+        item.url = url
     }
+
+    property string type
 
     readonly property bool isWebView: type == "webview"
 
-    onTypeChanged: {
-        var url = String(tab.url)
-        console.log(url, type)
-        if (type == "dash") {
-            loader.sourceComponent = dashboardViewComponent;
-        } else if (type == "settings") {
-
-        } else if (type == "webview") {
-            loader.sourceComponent = webviewComponent;
-        } else {
-            loader.sourceComponent = null;
-        }
-    }
-
     /* View Properties */
 
-    property var icon: browserView.ready ? browserView.item.icon : null
-    property string title: browserView.ready ? browserView.item.title : "Loading ... "
-    property var url: browserView.ready ? browserView.item.url : null
+    readonly property var icon: browserView.ready ? browserView.item.icon : null
+    readonly property string title: browserView.ready ? browserView.item.title : "Loading ... "
+    readonly property var url: browserView.ready ? browserView.item.url : null
     property var profile
-    property bool loading: browserView.ready ? browserView.item.loading : true
-    property real loadProgress: browserView.ready ? browserView.item.loadProgress : loader.progress
-    property bool reloadable: browserView.ready ? browserView.item.reloadable : false
+    readonly property bool loading: browserView.ready ? browserView.item.loading : true
+    readonly property real loadProgress: browserView.ready ? browserView.item.loadProgress : loader.progress
+    readonly property bool reloadable: browserView.ready ? browserView.item.reloadable : false
 
-    property bool canGoBack: browserView.ready ? browserView.item.canGoBack : false
-    property bool canGoForward: browserView.ready ? browserView.item.canGoForward : false
-    property bool secureConnection: browserView.ready ? browserView.item.secureConnection : false
+    readonly property bool canGoBack: browserView.ready ? browserView.item.canGoBack : false
+    readonly property bool canGoForward: browserView.ready ? browserView.item.canGoForward : false
+    readonly property bool secureConnection: browserView.ready ? browserView.item.secureConnection : false
 
-    property var customColor: browserView.ready ? browserView.item.customColor : false
-    property var customColorLight: browserView.ready ? browserView.item.customColorLight : false
-    property var customTextColor: browserView.ready ? browserView.item.customTextColor : false
+    readonly property var customColor: browserView.ready ? browserView.item.customColor : false
+    readonly property var customColorLight: browserView.ready ? browserView.item.customColorLight : false
+    readonly property var customTextColor: browserView.ready ? browserView.item.customTextColor : false
     property bool hasCloseButton: true
 
-    property var item: loader.item
+    readonly property var item: loader.item
 
-    property var ready: loader.status == Loader.Ready
+    readonly property var ready: loader.status == Loader.Ready
 
     /* WebView functionality */
 
@@ -110,12 +103,6 @@ Item {
     function findText (text, backward, callback) {
         if (isWebView)
             browserView.item.findText(text, backward, callback);
-    }
-
-    Connections {
-        target: tab
-
-        onUrlChanged: browserView.url = url
     }
 
     Loader {

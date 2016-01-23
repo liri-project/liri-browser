@@ -100,7 +100,7 @@ Page {
     View {
         id: titlebar
 
-        backgroundColor: activeTab.toolbarColor
+        backgroundColor: activeTab ? activeTab.toolbarColor : "white"
 
         anchors {
             top: parent.top
