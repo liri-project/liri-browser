@@ -6,7 +6,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Dialogs 1.1
 import Qt.labs.settings 1.0
-import "model"
+import "../model"
+import "../views"
 
 ApplicationWindow {
     id: window
@@ -51,12 +52,6 @@ ApplicationWindow {
         BrowserView {}
     }
 
-    Component {
-        id: newTabPageComponent
-
-        NewTabPage {}
-    }
-
     Snackbar {
         id: snackbar
     }
@@ -76,10 +71,6 @@ ApplicationWindow {
 
     SearchSuggestionsModel {
         id: searchSuggestionsModel
-    }
-
-    ListModel {
-        id: bookmarksModel
     }
 
     QtObject {

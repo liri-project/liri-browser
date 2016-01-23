@@ -60,8 +60,12 @@ BaseBrowserView {
 
     WebEngineView {
         id: webview
+
         property var page
+
         anchors.fill: parent
+
+        profile: app.defaultProfile
 
         onIconChanged: {
             // Set the favicon in history

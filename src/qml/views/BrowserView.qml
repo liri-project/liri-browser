@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Material 0.2
-import "model"
+import "dashboard"
 
 Item {
     id: browserView
@@ -31,13 +31,11 @@ Item {
         var url = String(tab.url)
         console.log(url, type)
         if (type == "dash") {
-            loader.sourceComponent = newTabPageComponent;
+            loader.sourceComponent = dashboardViewComponent;
         } else if (type == "settings") {
 
         } else if (type == "webview") {
             loader.sourceComponent = webviewComponent;
-            if (app.webEngine === "qtwebengine")
-                browserView.item.profile = app.defaultProfile;
         } else {
             loader.sourceComponent = null;
         }
@@ -137,5 +135,11 @@ Item {
                     break;
             }
         }
+    }
+
+    Component {
+        id: dashboardViewComponent
+
+        DashboardView {}
     }
 }

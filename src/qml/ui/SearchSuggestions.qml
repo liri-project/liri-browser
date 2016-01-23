@@ -4,7 +4,7 @@ import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 import Material.Extras 0.1
-
+import "../components"
 
 View {
     width: root.app.integratedAddressbars ? parent.width / 4 : toolbar.omnibox.width

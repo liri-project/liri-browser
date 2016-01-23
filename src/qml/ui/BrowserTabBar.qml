@@ -15,7 +15,7 @@ Item {
 
     anchors {
         left: parent.left
-        rightMargin: root.app.customFrame ? Units.dp(100) : 0
+        rightMargin: usingCustomFrame ? Units.dp(100) : 0
         right: parent.right
     }
 

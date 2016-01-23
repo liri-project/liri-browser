@@ -29,6 +29,8 @@ void PluginsEngine::loadPlugin(QString name, QString path)
 
 void PluginsEngine::loadPlugins()
 {
+    return;
+
     if (m_pluginsPath.isEmpty())
         return;
 

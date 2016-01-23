@@ -1,7 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.0
 import Material 0.1
-import "model"
+import "../components"
 
 Item {
     property bool hasFavIcon: icon.status == Image.Ready
@@ -80,5 +80,14 @@ Item {
                 tabsModel.removeTab(tab);
             }
         }
+    }
+
+    Rectangle {
+        id: rectIndicator
+        color: tab.highlightColor
+        visible: tab == activeTab
+        height: Units.dp(2)
+        width: parent.width
+        anchors.bottom: parent.bottom
     }
 }

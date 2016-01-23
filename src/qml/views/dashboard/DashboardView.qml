@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
 import Material 0.2
 import Material.ListItems 0.1 as ListItem
+import ".."
+import "../../popups"
 
 BaseBrowserView {
     id: pageRoot

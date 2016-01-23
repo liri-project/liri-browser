@@ -1,6 +1,6 @@
 import QtQuick 2.1
 import Qt.labs.settings 1.0
-import "utils.js" as Utils
+import "js/utils.js" as Utils
 
 Item {
     id: application
@@ -12,7 +12,7 @@ Item {
     property bool enableShortCuts: true
     property bool enableNewWindowAction: true
 
-    property bool customFrame: false
+    property bool useCustomFrame: false
 
     property string homeUrl: "https://www.google.com"
 
@@ -20,7 +20,7 @@ Item {
 
     property bool darkTheme: false
 
-    function getCurrentHour () {
+    function getCurrentHour() {
         var d = new Date()
         return d.getHours()
     }
@@ -194,7 +194,7 @@ Item {
         property alias uppercaseTabTitle: application.uppercaseTabTitle
         property alias integratedAddressbars: application.integratedAddressbars
         property alias tabsEntirelyColorized: application.tabsEntirelyColorized
-        property alias customFrame: application.customFrame
+        property alias useCustomFrame: application.useCustomFrame
         property alias darkTheme: application.darkTheme
         property alias bookmarksBar: application.bookmarksBar
         property alias bookmarksBarAlwaysOn: application.bookmarksBarAlwaysOn
