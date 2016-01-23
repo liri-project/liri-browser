@@ -8,7 +8,7 @@ Rectangle {
     id: fullscreenBar
 
     z: 5
-    visible: root.fullscreen
+    visible: isFullscreen
     height: Units.dp(48)
 
     anchors {
@@ -28,7 +28,7 @@ Rectangle {
         spacing: Units.dp(24)
 
         Image {
-            source: root.activeTab.view.icon
+            source: activeTab.view.icon
             width: Units.dp(18)
             height: Units.dp(18)
             anchors.verticalCenter: parent.verticalCenter
@@ -36,7 +36,7 @@ Rectangle {
         }
 
         Text {
-            text: root.activeTab.view.title
+            text: activeTab.view.title
             anchors.verticalCenter: parent.verticalCenter
             font.family: root.fontFamily
         }

@@ -3,7 +3,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import Material 0.2
 import Material.ListItems 0.1 as ListItem
-import QtWebEngine 1.2
+import QtWebEngine 1.1
 import Clipboard 1.0
 
 
@@ -26,7 +26,6 @@ BaseBrowserView {
     property alias loading: webview.loading
     property alias canGoBack: webview.canGoBack
     property alias canGoForward: webview.canGoForward
-    property bool secureConnection: false
     property real loadProgress: webview.loadProgress/100
     property alias zoomFactor: webview.zoomFactor
 
@@ -79,17 +78,11 @@ BaseBrowserView {
         }
 
         onUrlChanged: {
-            if (url.toString().lastIndexOf("https://", 0) === 0)
-                browserWebView.secureConnection = true;
-            else
-                browserWebView.secureConnection = false;
-            if (root.activeTab.webview == browserWebView)
+            if (activeTab.webview == browserWebView)
                 activeTabUrlChanged();
-            if(isMedia("" + url + "")) {
-                setActiveTabURL(url);
-            }
-            if(isPdf("" + url +""))
-                setActiveTabURL(url);
+            // TODO: Does this trigger binding loops?
+            if (Utils.isMedia(url) || Utils.isPdf(url))
+                activeTab.load(url)
         }
 
          onCertificateError: {
@@ -101,7 +94,7 @@ BaseBrowserView {
              if (!request.userInitiated)
                  console.log("Warning: Blocked a popup window.")
              else if (request.destination === WebEngineView.NewViewInTab) {
-                 var tab = root.addTab("about:blank");
+                 var tab = tabsModel.addTab();
                  request.openIn(tab.view.item.view);
              } else if (request.destination === WebEngineView.NewViewInBackgroundTab) {
                  var tab = root.addTab("about:blank", true);

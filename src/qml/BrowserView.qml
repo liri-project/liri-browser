@@ -1,22 +1,47 @@
 import QtQuick 2.0
 import Material 0.2
+import "model"
 
 Item {
     id: browserView
 
     anchors.fill: parent
 
-    visible: false
+    property Tab tab
 
-    property string viewType: "unknown"
-    property string viewName: "unknown"
+    // visible: tab == activeTab
 
-    property bool isWebView: viewType === "built-in" && viewName === "webview"
-    property bool isDash: viewType === "built-in" && viewName === "dash"
-    property bool isSettings: viewType === "built-in" && viewName === "settings"
-    property bool isQuickSearchesSettings: viewType === "built-in" && viewName === "quick-searches-settings"
-    property bool isSitesColorsSettings: viewType === "built-in" && viewName === "sites-colors-settings"
+    readonly property string type: {
+        var url = String(tab.url)
+        console.log(tab, url)
+        if (url == "liri://dash") {
+            return "dash"
+        } else if (url == "liri://settings") {
+            return "settings"
+        } else if (url !== undefined && url !== null && String(url).length > 0) {
+            return "webview"
+        } else {
+            return "blank"
+        }
+    }
 
+    readonly property bool isWebView: type == "webview"
+
+    onTypeChanged: {
+        var url = String(tab.url)
+        console.log(url, type)
+        if (type == "dash") {
+            loader.sourceComponent = newTabPageComponent;
+        } else if (type == "settings") {
+
+        } else if (type == "webview") {
+            loader.sourceComponent = webviewComponent;
+            if (app.webEngine === "qtwebengine")
+                browserView.item.profile = app.defaultProfile;
+        } else {
+            loader.sourceComponent = null;
+        }
+    }
 
     /* View Properties */
 
@@ -39,139 +64,7 @@ Item {
 
     property var item: loader.item
 
-    property var ready: true
-
-    /* Loading */
-
-    function load (url, webview) {
-        // Dirty workaround because Oxide webviews may be created directly without the use of a loader (see loadWebview)
-        browserView.item = Qt.binding(function(){return loader.item});
-        browserView.ready = Qt.binding(function(){return loader.ready});
-
-        // Ensure url is valid
-        if (typeof(url) === "undefined") {
-            if (root.app.newTabPage)
-                url = "liri://dash";
-            else
-                url = app.homeUrl;
-        }
-        if (url.toString().lastIndexOf("liri://", 0) === 0) {
-            // Built-in Liri specific URL handling
-            if (url.toString().lastIndexOf("liri://dash", 0) === 0) {
-                loadNewTabPage (url);
-            }
-            else if (url.toString().lastIndexOf("liri://settings", 0) === 0) {
-
-                if (url.toString().lastIndexOf("liri://settings/quick-searches", 0) === 0) {
-                    loadQuickSearchesSettings(url);
-                }
-                else if (url.toString().lastIndexOf("liri://settings/sites-colors", 0) === 0) {
-                    loadSitesColorsSettings(url);
-                }
-                else {
-                    loadSettings (url);
-                }
-            }
-        }
-        // TODO: Handle plugins
-        else {
-            // Default WebView
-            if(url.indexOf("file://") >= 0){
-                url = url;
-            }else{
-                url = getValidUrl(url);
-            }
-
-
-            loadWebView(url, webview);
-        }
-
-    }
-
-    function loadWebView (url, webview) {
-        if (browserView.ready && isWebView) {
-            browserView.item.url = url;
-        }
-        else {
-            if (root.app.webEngine === "qtwebengine" || !webview)
-                loader.sourceComponent = root.webviewComponent;
-            else {
-                // Dirty workaround: Directly override the loader's data.
-                // The problem with this is that Oxide webview sometimes *must* be created within onNewViewRequested.
-                loader.data = webview;
-                browserView.item = webview;
-                browserView.ready = true;
-            }
-            if (browserView.ready) {
-                if (!webview)
-                    browserView.item.url = url;
-                if (root.app.webEngine === "qtwebengine")
-                    browserView.item.profile = root.app.defaultProfile;
-                viewType = "built-in";
-                viewName = "webview";
-            }
-            else {
-                console.log("Warning, loader is not ready!");
-            }
-        }
-    }
-
-    function loadNewTabPage (url) {
-        if (!(browserView.ready && isDash)) {
-            loader.sourceComponent = root.newTabPageComponent;
-            if (browserView.ready) {
-                viewType = "built-in";
-                viewName = "dash";
-            }
-            else {
-                console.log("Warning, loader is not ready!");
-            }
-        }
-    }
-
-    function loadSettings () {
-        if (!(browserView.ready && isSettings)) {
-            loader.sourceComponent = root.settingsViewComponent;
-            if (browserView.ready) {
-                viewType = "built-in";
-                viewName = "settings";
-            }
-            else {
-                console.log("Warning, loader is not ready!");
-            }
-        }
-    }
-
-    function loadQuickSearchesSettings () {
-        if (!(browserView.ready && isQuickSearchesSettings)) {
-            loader.sourceComponent = root.quickSearchesSettingsViewComponent;
-            if (browserView.ready) {
-                viewType = "built-in";
-                viewName = "quick-searches-settings";
-            }
-            else {
-                console.log("Warning, loader is not ready!");
-            }
-        }
-    }
-
-    function loadSitesColorsSettings () {
-        if (!(browserView.ready && isSitesColorsSettings)) {
-            loader.sourceComponent = root.sitesColorsSettingsViewComponent;
-            if (browserView.ready) {
-                viewType = "built-in";
-                viewName = "sites-colors-settings";
-            }
-            else {
-                console.log("Warning, loader is not ready!");
-            }
-        }
-    }
-
-
-    function loadPluginView () {
-
-    }
+    property var ready: loader.status == Loader.Ready
 
     /* WebView functionality */
 
@@ -215,21 +108,26 @@ Item {
             browserView.item.stop();
     }
 
-    function findText (text, backward, callback){
+    function findText (text, backward, callback) {
         if (isWebView)
             browserView.item.findText(text, backward, callback);
     }
 
+    Connections {
+        target: tab
+
+        onUrlChanged: browserView.url = url
+    }
 
     Loader {
         id: loader
         anchors.fill: parent
 
-        property bool ready: status === Loader.Ready
+        property alias tab: browserView.tab
 
         onStatusChanged: {
             switch (loader.status) {
-                case loader.ready:
+                case Loader.Ready:
                     console.log("Loaded");
                     break;
                 case Loader.Loading:
@@ -241,4 +139,3 @@ Item {
         }
     }
 }
-

@@ -3,6 +3,7 @@ import Material 0.2
 import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
+import "utils.js" as Utils
 
 View {
     id: omnibox
@@ -12,17 +13,22 @@ View {
     elevation: 1
     opacity: 1
 
-    property alias txtUrl: txtUrl
+    property alias urlField: urlField
+    property bool isSearchQuery: Utils.isSearchQuery(urlField.text)
 
-    /*om
+    /*
      * Loading progress indicator
      *
-     * The outer item provides the actual shape for the progress bar. It is clipped, and has a child rectangle that
-     * is slightly bigger. This is so the progress bar is curved where it intersects the corners of the omnibox.
+     * The outer item provides the actual shape for the progress bar. It is clipped,
+     * and has a child rectangle that is slightly bigger. This is so the progress bar
+     * is curved where it intersects the corners of the omnibox.
      */
-
     Item {
         id: progressBar
+
+        property bool loading: activeTab.view.loading
+        property bool enableBehavior
+
         anchors {
             left: parent.left
             bottom: parent.bottom
@@ -33,9 +39,6 @@ View {
         width: 0
         opacity: loading ? 1 : 0
 
-        property bool loading: root.activeTab.view.loading
-        property bool enableBehavior
-
         // When loading, we first disable the behavior and reset the width to 0
         // So the progress bar resets and doesn't animate backwards
         onLoadingChanged: {
@@ -43,7 +46,9 @@ View {
                 enableBehavior = false
                 width = 0
                 enableBehavior = true
-                width = Qt.binding(function () { return omnibox.width * root.activeTab.view.loadProgress })
+                width = Qt.binding(function () {
+                    return omnibox.width * activeTab.view.loadProgress
+                })
             }
         }
 
@@ -67,10 +72,11 @@ View {
             }
 
             /*
-             * Make this wider than the clip rect, so the left edge is rounded to match the ominbox, but the right
-             * edge is squared off. We limit the width to the ominbox width, though, so as the progress bar gets to
-             * the edge, the clip moves off and the progress bar stops, so we see the right end of the progress bar
-             * match the corner of the omnibox
+             * Make this wider than the clip rect, so the left edge is rounded to match
+             * the ominbox, but the right edge is squared off. We limit the width to
+             * the ominbox width, though, so as the progress bar gets to the edge, the
+             * clip moves off and the progress bar stops, so we see the right end of the
+             * progress bar match the corner of the omnibox
              */
             width: Math.min(parent.width + radius, omnibox.width)
             height: radius * 2
@@ -81,12 +87,9 @@ View {
     Icon {
         id: connectionTypeIcon
 
-        property bool searchIcon: false
-        name:  root.privateNav ? "awesome/binoculars" : searchIcon ? "editor/mode_edit" : root.activeTab.view.secureConnection ? "action/lock" : "social/public"
-        color: root.activeTab.view.secureConnection ? "green" : "gray"
-        onColorChanged: {
+        name: isSearchQuery ? "action/search" : privateBrowsing ? "awesome/binoculars" : activeTab.view.secureConnection ? "action/lock" : "social/public"
 
-        }
+        color:  name == "action/lock" ? Palette.colors["green"]["500"] : Theme.light.iconColor
 
         anchors {
             left: parent.left
@@ -97,19 +100,26 @@ View {
 
     Label {
         id: quickSearchIndicator
-        anchors{
+
+        anchors {
             left: connectionTypeIcon.right
-            leftMargin: txtUrl.quickSearch != "" ? Units.dp(16) : 0
+            leftMargin: urlField.quickSearch != "" ? Units.dp(16) : 0
             verticalCenter: parent.verticalCenter
         }
 
-        text: txtUrl.quickSearch
-        visible: txtUrl.quickSearch != ""
+        text: urlField.quickSearch
+        visible: urlField.quickSearch != ""
     }
 
     TextField {
-        id: txtUrl
-        objectName: "txtUrl"
+        id: urlField
+        objectName: "urlField"
+
+        property string quickSearch: ""
+        property string quickSearchURL: ""
+        property var searchesText
+        property bool addingSearch: false
+
         anchors {
             left: quickSearchIndicator.right
             right: parent.right
@@ -118,39 +128,33 @@ View {
             leftMargin: Units.dp(16)
             rightMargin: Units.dp(16)
         }
-        property string quickSearch: ""
-        property string quickSearchURL: ""
+
         showBorder: false
         visible: quickSearch == ""
-        text: addingSearch ? searchesText : root.activeTab.view.url
-        property var searchesText
-        property bool addingSearch: false
-        placeholderText: mobile ? qsTr("Search") : qsTr("Search or enter website name")
-        opacity: 1
-        textColor: root.tabTextColorActive
+        text: addingSearch ? searchesText : activeTab.view.url
+        placeholderText: isMobile ? qsTr("Search") : qsTr("Search or enter website name")
+        textColor: activeTab.textColor
+
         onTextChanged: {
-            root.app.searchSuggestionsModel.clear();
-            if(isASearchQuery(text)) {
+            // FIXME
+            searchSuggestionsModel.clear();
+            if(isSearchQuery) {
                 // Trigger omniplet plugins
                 PluginsEngine.trigger("omnibox.search", text);
             }
-
-            else {
-                connectionTypeIcon.searchIcon = false;
-            }
-
         }
+
         onAccepted: {
-            if(isASearchQuery(text)) {
-                setActiveTabURL(root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion)
+            if(isSearchQuery) {
+                activeTab.load(searchSuggestionsModel.selectedSuggestion)
+            } else {
+                activeTab.load(text)
             }
-            else {
-                setActiveTabURL(text)
-            }
-            root.app.searchSuggestionsModel.clear()
+
+            searchSuggestionsModel.clear()
+            searchSuggestionsModel.selectedIndex = 0
             quickSearch = ""
             quickSearchURL = ""
-            root.selectedQueryIndex = 0
             addingSearch = false
         }
 
@@ -159,45 +163,47 @@ View {
                 var item = getInfosOfQuickSearch(text)
                 quickSearch = item.name + ""
                 quickSearchURL = item.url + ""
-                txtUrlQuickSearches.forceActiveFocus()
+                urlFieldQuickSearches.forceActiveFocus()
             }
-            if(isASearchQuery(text)) {
+            if(isSearchQuery) {
+                // FIXME
                 addingSearch = true
-                searchesText = root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion
-                root.selectedQueryIndex = 0
+                searchesText = searchSuggestionsModel.selectedSuggestion
+                searchSuggestionsModel.selectedIndex = 0
             }
         }
         Keys.onBacktabPressed:  {
-                quickSearch = "";
-                placeholderText = qsTr("Search or enter website name")
+            quickSearch = "";
+            // FIXME
+            placeholderText = qsTr("Search or enter website name")
         }
         Keys.onDownPressed: {
-            if(root.selectedQueryIndex < root.app.searchSuggestionsModel.count - 1)
-                root.selectedQueryIndex += 1
+            if(searchSuggestionsModel.selectedIndex < searchSuggestionsModel.count - 1)
+                searchSuggestionsModel.selectedIndex += 1
         }
         Keys.onUpPressed: {
-            if(root.selectedQueryIndex >= 1)
-                root.selectedQueryIndex -= 1
+            if(searchSuggestionsModel.selectedIndex > 0)
+                searchSuggestionsModel.selectedIndex -= 1
         }
         MouseArea {
             anchors.fill: parent
             propagateComposedEvents: true
 
             onPressed: {
-                if (root.app.platform !== "converged/ubuntu" || !root.mobile)
+                if (app.platform !== "converged/ubuntu" || !isMobile)
                     mouse.accepted = false;
             }
 
             onClicked: {
-                if (root.app.platform === "converged/ubuntu" && root.mobile)
+                if (app.platform === "converged/ubuntu" && isMobile)
                     ubuntuOmniboxOverlay.show();
             }
         }
-
     }
 
     TextField {
-        id: txtUrlQuickSearches
+        id: quickSearchesField
+
         anchors {
             left: quickSearchIndicator.right
             right: parent.right
@@ -206,40 +212,50 @@ View {
             leftMargin: Units.dp(16)
             rightMargin: Units.dp(16)
         }
-        visible: txtUrl.quickSearch != ""
+
+        visible: urlField.quickSearch != ""
         showBorder: false
-        text: ""
         placeholderText: qsTr("Search...")
-        opacity: 1
         textColor: root.tabTextColorActive
-        onTextChanged: isASearchQuery(text) ? connectionTypeIcon.searchIcon = true : connectionTypeIcon.searchIcon = false;
+
+        onTextChanged: {
+            if (isASearchQuery(text))
+                connectionTypeIcon.searchIcon = true
+            else
+                connectionTypeIcon.searchIcon = false
+        }
+
         onAccepted: {
-            if(txtUrl.quickSearch == "" && root.app.quickSearches)
+            // FIXME
+            if(urlField.quickSearch == "" && root.app.quickSearches)
                 console.log(1)
             else
-                setActiveTabURL(txtUrl.quickSearchURL + text)
-            txtUrl.quickSearch = ""
-            txtUrl.quickSearchURL = ""
+                setActiveTabURL(urlField.quickSearchURL + text)
+            urlField.quickSearch = ""
+            urlField.quickSearchURL = ""
         }
+
         Keys.onTabPressed:{
             if(text.length == 3) {
                 var item = getInfosOfQuickSearch(text)
-                txtUrl.quickSearch = item.name + ""
-                txtUrl.quickSearchURL = item.url + ""
-                txtUrl.placeholderText = qsTr("Search...")
+                urlField.quickSearch = item.name + ""
+                urlField.quickSearchURL = item.url + ""
+                urlField.placeholderText = qsTr("Search...")
             }
         }
         Keys.onEscapePressed: {
             Keys.onBacktabPressed(event)
         }
         Keys.onBacktabPressed:  {
-                txtUrl.quickSearch = "";
-                txtUrl.placeholderText = qsTr("Search or enter website name")
+            urlField.quickSearch = "";
+            // FIXME: Use property binding
+            urlField.placeholderText = qsTr("Search or enter website name")
         }
         Keys.onPressed: {
             if (event.key == Qt.Key_Backspace) {
-                txtUrl.quickSearch = "";
-                txtUrl.placeholderText = qsTr("Search or enter website name")
+                urlField.quickSearch = "";
+                // FIXME: Use property binding
+                urlField.placeholderText = qsTr("Search or enter website name")
             }
         }
 
@@ -257,7 +273,5 @@ View {
                     ubuntuOmniboxOverlay.show();
             }
         }
-
     }
-
 }

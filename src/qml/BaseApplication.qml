@@ -1,5 +1,6 @@
 import QtQuick 2.1
 import Qt.labs.settings 1.0
+import "utils.js" as Utils
 
 Item {
     id: application
@@ -45,6 +46,10 @@ Item {
     property bool allowReducingTabsSizes: false
 
     property bool newTabPage: true
+
+    onSearchEngineChanged: {
+        Utils.searchEngine = searchEngine
+    }
 
     function getBookmarksArray() {
         var bookmarks = [], bM_l = application.bookmarksModel.count;
@@ -103,18 +108,6 @@ Item {
              customquicksearches.push({"name": item.name, "key": item.key, "url": item.url})
         }
         application.settings.customquicksearches = customquicksearches;
-    }
-
-    property ListModel searchSuggestionsModel: ListModel {
-        objectName: "searchSuggestionsModel"
-        id: searchSuggestionsModel
-        dynamicRoles: true
-        function appendSuggestion(suggestion, icon, insertMode) {
-            if (insertMode === "start")
-                searchSuggestionsModel.insert(0, {"suggestion": suggestion, "icon": icon})
-            else
-                searchSuggestionsModel.append({"suggestion": suggestion, "icon": icon});
-        }
     }
 
     property ListModel historyModel: ListModel {

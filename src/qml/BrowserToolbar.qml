@@ -4,28 +4,29 @@ import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 
-View {
+Item {
     id: toolbar
-    elevation:0
-    property color chosenColor: root.activeTab.view.customColor ? root.activeTab.view.customColor : root.app.lightThemeColor
-    backgroundColor: root.app.elevatedToolbar ? chosenColor : "transparent"
-    visible: !root.app.integratedAddressbars
 
-    height: root.mobile ? Units.dp(64) : Units.dp(56)
+    property var ubuntuOmniboxOverlay
+    property alias omnibox: omnibox
+    property int leftIconsCount: goBackButton.activeInt + goForwardButton.activeInt + refreshButton.activeInt
+
+    visible: !isFullscreen && !integratedAddressbars
+
+    height: isMobile ? Units.dp(64) : Units.dp(56)
 
     anchors {
         left: parent.left
         right: parent.right
     }
 
-    property var ubuntuOmniboxOverlay
-    property alias omnibox: omnibox
-    property int leftIconsCount: goBackButton.activeInt + goForwardButton.activeInt + refreshButton.activeInt
-
     RowLayout {
-        anchors.fill: parent
-        anchors.leftMargin: spacing
-        anchors.rightMargin: spacing
+        anchors {
+            fill: parent
+            leftMargin: spacing
+            rightMargin: spacing
+        }
+
         z:20
         spacing: Units.dp(24)
 
@@ -33,43 +34,56 @@ View {
 
         IconButton {
             id: goBackButton
-            enabled: root.activeTab.view.canGoBack
+
             property int activeInt: visible ? 1 : 0
-            onClicked: root.activeTab.view.goBack()
-            color: root.currentIconColor
-            Behavior on color { ColorAnimation { duration : 500 }}
+
+            enabled: activeTab.view.canGoBack
+            color: activeTab.iconColor
             action: Action {
                 iconName: "navigation/arrow_back"
-                name: root.mobile ? "" : qsTr("Go Back")
+                name: qsTr("Go Back")
             }
+
+            Behavior on color { ColorAnimation { duration : 500 }}
+
+            onClicked: activeTab.view.goBack()
         }
 
         IconButton {
             id: goForwardButton
-            enabled: root.activeTab.view.canGoForward
-            onClicked: root.activeTab.view.goForward()
-            color: root.currentIconColor
+
             property int activeInt: visible ? 1 : 0
-            Behavior on color { ColorAnimation { duration : 500 }}
-            visible: root.activeTab.view.canGoForward || !mobile
+
+            enabled: activeTab.view.canGoForward
+            color: activeTab.iconColor
+            // Always show on the desktop, only show when you can go forward on mobile
+            visible: activeTab.view.canGoForward || !isMobile
             action: Action {
                 iconName: "navigation/arrow_forward"
-                name: root.mobile ? "" : qsTr("Go Forward")
+                name: qsTr("Go Forward")
             }
+
+            Behavior on color { ColorAnimation { duration : 500 }}
+
+            onClicked: activeTab.view.goForward()
         }
 
         IconButton {
-            hoverAnimation: true
             id: refreshButton
-            color: root.currentIconColor
+
             property int activeInt: visible ? 1 : 0
-            visible: root.activeTab.view.reloadable
-            Behavior on color { ColorAnimation { duration : 500 }}
-            onClicked: !activeTab.view.loading ? activeTab.view.reload() : activeTab.view.stop()
+
+            hoverAnimation: true
+            color: activeTab.iconColor
+            visible: activeTab.view.reloadable
             action: Action {
                 iconName: !activeTab.view.loading ? "navigation/refresh" : "navigation/close"
-                name:root.mobile ? "" : !activeTab.view.loading ? qsTr("Refresh") : qsTr("Stop")
+                name: !activeTab.view.loading ? qsTr("Refresh") : qsTr("Stop")
             }
+
+            Behavior on color { ColorAnimation { duration : 500 }}
+
+            onClicked: !activeTab.view.loading ? activeTab.view.reload() : activeTab.view.stop()
         }
 
         Omnibox {
@@ -80,49 +94,59 @@ View {
         }
 
         IconButton {
-            color: root.currentIconColor
-            onClicked: {pageStack.push(tabsListPage);root.tabsListIsOpened = true}
+            color: activeTab.iconColor
             visible: mobile
             action: Action {
                 iconName: "action/tab"
-                name: root.mobile ? "" : qsTr("Tabs")
+                name: qsTr("Tabs")
+            }
+
+            onClicked: {
+                pageStack.push(tabsListPage)
+                // FIXME
+                // root.tabsListIsOpened = true
             }
         }
 
         IconButton {
-            color: root.currentIconColor
-            Behavior on color { ColorAnimation { duration : 500 }}
-            onClicked: addTab()
+            color: activeTab.iconColor
+            // Only show on the desktop and if there is one tab. When there is more than one tab,
+            // thee add tab button will be in the toolbar
             visible: !mobile && (tabsModel.count == 1)
             action: Action {
                 iconName: "content/add"
-                name: root.mobile ? "" : qsTr("Add a tab")
+                name: qsTr("Add a tab")
             }
+
+            Behavior on color { ColorAnimation { duration : 500 }}
+            onClicked: tabsModel.addTab()
         }
 
         IconButton {
             id: bookmarkButton
-            color: root.currentIconColor
-            Behavior on color { ColorAnimation { duration : 500 }}
-            onClicked: toggleActiveTabBookmark()
+            color: activeTab.iconColor
             visible: !mobile
             action: Action {
                 iconName: "action/bookmark_border"
                 name: qsTr("Bookmark this page")
             }
+
+            Behavior on color { ColorAnimation { duration : 500 }}
+
+            onClicked: toggleActiveTabBookmark()
         }
 
         IconButton {
             id: downloadsButton
-            color: root.app.webEngine === "qtwebengine" && downloadsModel.hasActiveDownloads
-                   ? Theme.lightDark(toolbar.color, Theme.accentColor, Theme.dark.iconColor)
-                   : root.currentIconColor
-            onClicked: downloadsDrawer.open(downloadsButton)
-            visible: root.app.webEngine === "qtwebengine" && !mobile && downloadsModel.hasDownloads
+            color: downloadsModel.hasActiveDownloads
+                    ? activeTab.activeIconColor : activeTab.iconColor
+            visible: !mobile && downloadsModel.hasDownloads
             action: Action {
                 iconName: "file/file_download"
-                name: root.mobile ? "" : qsTr("Downloads")
+                name: qsTr("Downloads")
             }
+
+            onClicked: downloadsDrawer.open(downloadsButton)
 
             ProgressCircle {
                 anchors.centerIn: parent
@@ -140,20 +164,21 @@ View {
 
         IconButton {
             id: overflowButton
-            color: root.currentIconColor
-            onClicked: overflowMenu.open(overflowButton)
+
+            color: activeTab.iconColor
             action: Action {
                 iconName: "navigation/more_vert"
-                name: root.mobile ? "" : qsTr("Menu")
+                name: qsTr("Menu")
             }
+
+            onClicked: overflowMenu.open(overflowButton)
         }
     }
 
     Component.onCompleted: {
-        if (root.app.platform === "converged/ubuntu") {
-            var overlayComponent = Qt.createComponent("UbuntuOmniboxOverlay.qml");
-            ubuntuOmniboxOverlay = overlayComponent.createObject(toolbar, {})
+        if (app.platform === "converged/ubuntu") {
+            ubuntuOmniboxOverlay = Utils.newObject(Qt.resolvedUrl("UbuntuOmniboxOverlay.qml"), {},
+                    toolbar)
         }
     }
-
 }

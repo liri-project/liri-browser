@@ -9,6 +9,8 @@ Rectangle {
     color: toolbar.backgroundColor
     height: visible ? Units.dp(48) : 0
 
+    visible: showBookmarksBar && !isMobile && bookmarksModel.count > 0
+
     anchors {
         left: parent.left
         right: parent.right
@@ -78,4 +80,3 @@ Rectangle {
         }
     }
 }
-

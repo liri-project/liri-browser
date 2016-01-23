@@ -18,9 +18,9 @@ BaseBrowserView {
         anchors.bottom: textDescription.top
         font.family: root.fontFamily
         text: qsTr("Nothing here, yet")
-        visible: root.app.dashboardModel.count === 0
+        visible: app.dashboardModel.count === 0
         font.pixelSize: 24
-        color: root.currentForegroundColor
+        color: tab.textColor
     }
 
     Text {
@@ -32,9 +32,9 @@ BaseBrowserView {
         text: qsTr('You can add items by clicking on the menu item "Add to dash" on any website or by right clicking on a bookmark.')
         clip: true
         wrapMode: Text.WordWrap
-        visible: root.app.dashboardModel.count === 0
+        visible: app.dashboardModel.count === 0
         font.pixelSize: 16
-        color: root.currentForegroundColor
+        color: tab.textColor
     }
 
     GridView {
@@ -45,7 +45,7 @@ BaseBrowserView {
         cellWidth: 165; cellHeight: 130
         width: parent.width - Units.dp(128)
         height: parent.height -  Units.dp(128)
-        model: root.app.dashboardModel
+        model: app.dashboardModel
         delegate: delegate
 
         Component {
@@ -120,7 +120,7 @@ BaseBrowserView {
             onPositionChanged: {
                 if (activeId != -1 && index != -1 && index != activeIndex) {
                     grid.model.move(activeIndex, activeIndex = index, 1)
-                    root.app.saveBookmarks();
+                    app.saveBookmarks();
                 }
             }
             onClicked: {
@@ -128,7 +128,7 @@ BaseBrowserView {
                     if (index != -1) {
                         newTabPage = false;
                         var url = grid.model.get(activeIndex=index).url;
-                        root.setActiveTabURL(url);
+                        tab.load(url)
                     }
                 }
                 else {
@@ -169,7 +169,7 @@ BaseBrowserView {
                 iconName: "action/delete"
                 onClicked: {
                     grid.model.remove(gridMouseArea.index)
-                    root.app.saveDashboard();
+                    app.saveDashboard();
                     contextMenu.close();
                 }
             }
@@ -279,7 +279,7 @@ BaseBrowserView {
                 editDialog.modelItem.iconUrl = txtEditIconUrl.text;
                 editDialog.modelItem.bgColor = colorChooser.color;
                 editDialog.modelItem.fgColor = root.getTextColorForBackground(colorChooser.color.toString());
-                root.app.saveDashboard();
+                app.saveDashboard();
                 editDialog.close();
             }
         }
@@ -298,4 +298,3 @@ BaseBrowserView {
 
 
 }
-

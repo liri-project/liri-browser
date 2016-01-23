@@ -7,31 +7,10 @@ import Material.Extras 0.1
 
 Page {
     id: page
-    actionBar {
-        hidden: true
-    }
 
-    property alias viewContainer: viewContainer
-    property alias listView: tabBar.listView
-    property alias bookmarksBar: bookmarksBar
-    property alias txtSearch: txtSearch
-    property alias websiteSearchOverlay: websiteSearchOverlay
-    property alias mediaDialog: mediaDialog
-    property alias toolbar: toolbar
-    property alias titlebar: titlebar
-    property alias tabPreview: tabPreview
-    property alias shadow: shadow
+    property alias tabContainer: viewContainer
 
-    backgroundColor: {
-        if (root.privateNav)
-            return root.defaultBackgroundColor
-        else if(root.app.darkTheme)
-            return root.app.darkThemeColor
-        else if(root.app.tabsEntirelyColorized && activeTab.view.customColor && !inkTimer.running)
-            return activeTab.view.customColor
-        else
-            return root.defaultBackgroundColor
-    }
+    actionBar.hidden: true
 
     Behavior on backgroundColor {
         ColorAnimation {
@@ -39,30 +18,24 @@ Page {
         }
     }
 
-    property alias ink: ink
-    property alias inkTimer: inkTimer
+    // FIXME
+    // property alias ink: ink
+    // property alias inkTimer: inkTimer
 
     property list<Action> overflowActions: [
         Action {
             name: qsTr("New window")
             iconName: "action/open_in_new"
             onTriggered: app.createWindow()
+            // FIXME
             visible: root.app.enableNewWindowAction
         },
         Action {
             name: qsTr("New tab")
             iconName: "content/add"
             onTriggered: addTab();
-            visible: root.mobile
+            visible: isMobile
         },
-        /*Action {
-            name: qsTr("Save page")
-            iconName: "content/save"
-        },
-        Action {
-            name: qsTr("Print page")
-            iconName: "action/print"
-        },*/
         Action {
             name: qsTr("History")
             iconName: "action/history"
@@ -77,6 +50,7 @@ Page {
             name: qsTr("Fullscreen")
             iconName: "navigation/fullscreen"
             onTriggered: {
+                // FIXME
                 if (!root.fullscreen)
                     root.startFullscreenMode()
                 else
@@ -87,18 +61,21 @@ Page {
             name: qsTr("Search")
             visible: activeTab.view.isWebView
             iconName: "action/search"
+            // FIXME
             onTriggered: root.showSearchOverlay()
         },
         Action {
             name: qsTr("Bookmark this page")
-            visible: root.app.integratedAddressbars || root.mobile
+            visible: integratedAddressbars || isMobile
             iconName:  "action/bookmark_border"
+            // FIXME
             onTriggered: root.toggleActiveTabBookmark()
         },
         Action {
             name: qsTr("Add to dash")
-            visible: !root.mobile && activeTab.view.isWebView
+            visible: !isMobile && activeTab.view.isWebView
             iconName: "action/dashboard"
+            // FIXME
             onTriggered: root.addToDash(activeTab.view.url, activeTab.view.title, activeTab.customColor)
         },
         Action {
@@ -111,7 +88,7 @@ Page {
             name: qsTr("Settings")
             iconName: "action/settings"
             onTriggered: {
-                if (mobile)
+                if (isMobile)
                     pageStack.push(settingsPage);
                 else
                     addTab("liri://settings");
@@ -119,24 +96,20 @@ Page {
         }
     ]
 
-
-    SystemBar {
-        id: systemBar
-        visible: root.app.customFrame || tabsModel.count > 1
-        anchors.margins: 0
-        z:1000
-    }
-
     View {
         id: titlebar
-        property color chosenColor: root.activeTab.view.customColor ? root.activeTab.view.customColor : root.app.lightThemeColor
-        backgroundColor: root.app.elevatedToolbar ? shadeColor(chosenColor,-0.1) : "transparent"
-        anchors.top: parent.top
-        anchors.topMargin:  (tabsModel.count > 1 || root.app.integratedAddressbars) && root.app.customFrame ?  Units.dp(0) : root.app.customFrame ? Units.dp(30) : 0
-        width: parent.width
+
+        backgroundColor: activeTab.toolbarColor
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+
         height: titlebarContents.height
         z: 9999
-        elevation: root.app.toolbarElevation
+        elevation: 2
 
         Column {
             id: titlebarContents
@@ -149,37 +122,14 @@ Page {
 
             BrowserTabBar {
                 id: tabBar
-                visible: (tabsModel.count > 1 && !root.mobile && !root.fullscreen) || root.app.integratedAddressbars
             }
 
             BrowserToolbar {
                 id: toolbar
-                visible: !root.fullscreen && !root.app.integratedAddressbars
             }
 
             BookmarksBar {
                 id: bookmarksBar
-                visible: {
-                    if(root.app.bookmarksBar && !root.mobile) {
-                      if(app.bookmarksModel.count > 0) {
-                          if(root.app.bookmarksBarAlwaysOn) {
-                              return true
-                          }
-                          else if(root.app.bookmarksBarOnlyOnDash && activeTab.view.newTabPage) {
-                              return true
-                          }
-                          else if(!activeTab.view.newTabPage && !root.app.bookmarksBarOnlyOnDash && !root.app.bookmarksBarAlwaysOn)
-                              return true
-                          else
-                              return false
-
-                      }
-                      else
-                          return false
-                    }
-                    else
-                        return false
-                }
             }
         }
     }
@@ -189,8 +139,7 @@ Page {
     View {
         id: websiteSearchOverlay
         visible: false
-        property bool mobile: root.mobile
-        y: mobile ? titlebar.height : parent.height - height
+        y: isMobile ? titlebar.height : parent.height - height
 
         anchors.left: parent.left
         anchors.right: parent.right
@@ -213,7 +162,7 @@ Page {
             TextField {
                 id: txtSearch
                 height: parent.height - Units.dp(8)
-                width: root.mobile ? parent.width - iconPrevious.width - iconNext.width - Units.dp(96): Units.dp(256)
+                width: isMobile ? parent.width - iconPrevious.width - iconNext.width - Units.dp(96): Units.dp(256)
                 anchors.verticalCenter: parent.verticalCenter
                 showBorder: true
                 placeholderText: qsTr("Search")
@@ -244,7 +193,9 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
             anchors.rightMargin: Units.dp(24)
             iconName: "navigation/close"
-            color: root.iconColor
+            color: activeTab.iconColor
+
+            // FIXME
             onClicked: root.hideSearchOverlay()
         }
     }
@@ -263,7 +214,7 @@ Page {
 
     Item {
         anchors {
-            top: fullscreen ? parent.top : titlebar.bottom
+            top: isFullscreen ? parent.top : titlebar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
@@ -317,8 +268,8 @@ Page {
 
     View {
         id: tabPreview
-        width: root.tabWidth
-        height: width * root.height/root.width
+        width: styles.tabWidth
+        height: width * window.height/window.width
         anchors{
             left: parent.left
             bottom: parent.bottom
@@ -332,6 +283,8 @@ Page {
 
         Image {
             id: img
+
+            // FIXME
             source: root.tabPreviewSource
             anchors.fill: parent
         }
@@ -340,7 +293,7 @@ Page {
     Ink {
         id: ink
         anchors.fill: parent
-        width: root.width
+        width: window.width
         enabled: false
         propagateComposedEvents: true
         color: activeTab.customColor
