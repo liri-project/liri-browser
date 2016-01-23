@@ -20,9 +20,8 @@ Page {
         }
     }
 
-    // FIXME
-    // property alias ink: ink
-    // property alias inkTimer: inkTimer
+    property alias ink: ink
+    property alias inkTimer: inkTimer
 
     property list<Action> overflowActions: [
         Action {

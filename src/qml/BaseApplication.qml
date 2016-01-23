@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import Qt.labs.settings 1.0
 import "js/utils.js" as Utils
+import "model"
 
 Item {
     id: application
@@ -38,9 +39,6 @@ Item {
     property bool integratedAddressbars: false
     property bool tabsEntirelyColorized: true
 
-    property bool elevatedToolbar: toolbarElevation > 0
-    property int toolbarElevation: 2
-
     property bool uppercaseTabTitle: false
 
     property bool allowReducingTabsSizes: false
@@ -49,47 +47,6 @@ Item {
 
     onSearchEngineChanged: {
         Utils.searchEngine = searchEngine
-    }
-
-    function getBookmarksArray() {
-        var bookmarks = [], bM_l = application.bookmarksModel.count;
-        for (var i=0; i<bM_l; i++){
-            var item = application.bookmarksModel.get(i);
-            bookmarks.push({"title": item.title, "url": item.url.toString(), "faviconUrl": item.faviconUrl.toString()});
-        }
-        return bookmarks;
-    }
-
-    function getHistoryArray() {
-        var history = [], hM_l = application.historyModel.count;
-        for (var i=0; i<hM_l; i++){
-            var item = application.historyModel.get(i);
-            if (item.type !== "date")
-                history.push({"title": item.title, "url": item.url.toString(), "faviconUrl": item.faviconUrl.toString(), "date": item.date, "type": item.type, "color": item.color});
-        }
-        return history;
-    }
-
-    property ListModel bookmarksModel: ListModel {
-        id: bookmarksModel
-        dynamicRoles: true
-    }
-
-    function saveBookmarks() {
-        application.settings.bookmarks = getBookmarksArray();
-    }
-
-    function saveHistory() {
-        application.settings.history = getHistoryArray();
-    }
-
-    function saveDashboard() {
-        var dashboard = [], dM_l = application.dashboardModel.count;
-        for (var i=0; i<dM_l; i++){
-            var item = application.dashboardModel.get(i);
-            dashboard.push({"title": item.title, "url": item.url, "iconUrl": item.iconUrl, "bgColor": item.bgColor, "fgColor": item.fgColor, "uid": item.uid})
-        }
-        application.settings.dashboard = dashboard;
     }
 
     function saveSitesColors(){
@@ -110,15 +67,9 @@ Item {
         application.settings.customquicksearches = customquicksearches;
     }
 
-    property ListModel historyModel: ListModel {
-        id: historyModel
-        dynamicRoles: true
-    }
-
-    property ListModel dashboardModel: ListModel {
-        id: dashboardModel
-        dynamicRoles: true
-    }
+    property alias bookmarksModel: __bookmarksModel
+    property alias historyModel: __historyModel
+    property alias dashboardModel: __dashboardModel
 
     property bool customSitesColors: true
     property bool quickSearches: true
@@ -205,30 +156,14 @@ Item {
         property alias privateNavColor: application.privateNavColor
         property alias shadeBehindTabs: application.shadeBehindTabs
         property var customquicksearches
-        property alias toolbarElevation: application.toolbarElevation
     }
 
     Component.onCompleted: {
         console.log("Locale name: " + Qt.locale().name)
 
-        if (!settings.history)
-            settings.history = [];
-
-        // Load the browser history
-        var locale = Qt.locale()
-        var currentDate = new Date()
-        var dateString = currentDate.toLocaleDateString();
-
-        var currentItemDate = dateString;
-        var history_l = application.settings.history.length
-        for (var i=0; i<history_l; i++){
-            var item = application.settings.history[i];
-            if (currentItemDate != item.date) {
-                application.historyModel.append({"title": item.date, "url": false, "faviconUrl": false, "date": item.date, "type": "date", color: item.color})
-                currentItemDate = item.date
-            }
-            application.historyModel.append(item);
-        }
+        bookmarksModel.fromArray(settings.bookmarks)
+        historyModel.fromArray(settings.history)
+        dashboardModel.fromArray(settings.dashboard)
 
         // Load custom sites color
         var presets = application.sitesColorsPresets
@@ -238,17 +173,6 @@ Item {
 
         for (var z in application.settings.customsitescolors)
             application.customSitesColorsModel.append(application.settings.customsitescolors[z])
-
-        // Load the dashboard model
-        for (var i=0; i<application.settings.dashboard.length; i++)
-            application.dashboardModel.append(application.settings.dashboard[i]);
-
-        // Load the bookmarks model
-        for (i=0; i<application.settings.bookmarks.length; i++) {
-            var data = application.settings.bookmarks[i];
-            data["uid"] = i;
-            application.bookmarksModel.append(data);
-        }
 
         var presets_qs = application.quickSearchesPresets
         for (t in presets_qs)
@@ -261,4 +185,21 @@ Item {
         }
     }
 
+    Component.onDestruction: {
+        application.settings.bookmarks = bookmarksModel.toArray();
+        application.settings.history = historyModel.toArray();
+        application.settings.dashboard = dashboardModel.toArray();
+    }
+
+    BookmarksModel {
+        id: __bookmarksModel
+    }
+
+    DashboardModel {
+        id: __dashboardModel
+    }
+
+    HistoryModel {
+        id: __historyModel
+    }
 }

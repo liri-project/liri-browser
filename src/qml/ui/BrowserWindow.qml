@@ -33,12 +33,24 @@ ApplicationWindow {
 
     initialPage: BrowserPage { id: browserPage }
 
+    function togglePrivateBrowsing() {
+        if(!privateBrowsing) {
+            browserPage.ink.color = app.privateNavColor
+            browserPage.ink.createTapCircle(window.width - Units.dp(30),
+                                            window.height - Units.dp(30))
+            privateBrowsing = true
+        } else {
+            browserPage.ink.lastCircle.removeCircle()
+            privateBrowsing = false
+        }
+    }
+
     Component.onCompleted: {
         // WebView Component
         if (app.webEngine === "qtwebengine")
-            webviewComponent = Qt.createComponent("BrowserWebView.qml");
+            webviewComponent = Qt.createComponent("../views/browser/BrowserWebView.qml");
         else if (app.webEngine === "oxide")
-            webviewComponent = Qt.createComponent("BrowserOxideWebView.qml");
+            webviewComponent = Qt.createComponent("../ubuntu/BrowserOxideWebView.qml");
 
         console.log(webviewComponent.status == Component.Error)
         console.log(webviewComponent.errorString())

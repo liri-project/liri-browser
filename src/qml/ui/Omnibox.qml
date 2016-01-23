@@ -87,9 +87,9 @@ View {
     Icon {
         id: connectionTypeIcon
 
-        name: isSearchQuery ? "action/search" : privateBrowsing ? "awesome/binoculars" : activeTab.view.secureConnection ? "action/lock" : "social/public"
+        name: isSearchQuery ? "action/search" : privateBrowsing ? "action/visibility_off" : activeTab.view.secureConnection ? "action/lock" : "social/public"
 
-        color:  name == "action/lock" ? Palette.colors["green"]["500"] : Theme.light.iconColor
+        color:  name == "action/lock" ? Palette.colors["green"]["500"] : name == "action/visibility_off" ? Palette.colors["purple"]["500"] : Theme.light.iconColor
 
         anchors {
             left: parent.left

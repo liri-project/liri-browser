@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Material 0.2
 import "dashboard"
+import "../model"
 
 Item {
     id: browserView
@@ -9,7 +10,7 @@ Item {
 
     property Tab tab
 
-    // visible: tab == activeTab
+    visible: tab == activeTab
 
     readonly property string type: {
         var url = String(tab.url)

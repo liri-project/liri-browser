@@ -294,9 +294,7 @@ BaseBrowserView {
             bottom:parent.bottom
             margins: Units.dp(20)
         }
-        iconName: "awesome/binoculars"
-        onClicked: tooglePrivateNav()
+        iconName: privateBrowsing ? "action/visibility" : "action/visibility_off"
+        onClicked: togglePrivateBrowsing()
     }
-
-
 }

@@ -5,7 +5,7 @@ import Material 0.2
 import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.1
 import Clipboard 1.0
-
+import ".."
 
 BaseBrowserView {
     id: browserWebView
