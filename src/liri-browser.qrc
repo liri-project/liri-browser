@@ -16,6 +16,7 @@
     <file>qml/model/BookmarksModel.qml</file>
     <file>qml/model/DashboardModel.qml</file>
     <file>qml/model/DownloadsModel.qml</file>
+    <file>qml/model/FormFill.qml</file>
     <file>qml/model/HistoryModel.qml</file>
     <file>qml/model/SearchSuggestionsModel.qml</file>
     <file>qml/model/Tab.qml</file>

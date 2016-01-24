@@ -6,6 +6,7 @@ import Material.ListItems 0.1 as ListItem
 import QtWebEngine 1.1
 import Clipboard 1.0
 import "../../js/utils.js" as Utils
+import "../../model"
 import ".."
 
 BaseBrowserView {
@@ -123,9 +124,13 @@ BaseBrowserView {
          }
 
          onLoadingChanged: {
+             console.log("Loading changed!")
             if (loadRequest.status === WebEngineView.LoadStartedStatus) {
+                formFill.findAndSaveForms(webview)
                 searchSuggestionsModel.clear()
             } else if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
+                formFill.findAndFillForms(webview)
+
                 // Looking for custom tab bar colors
                 runJavaScript("function getThemeColor() { var metas = document.getElementsByTagName('meta'); for (i=0; i<metas.length; i++) { if (metas[i].getAttribute('name') === 'theme-color') { return metas[i].getAttribute('content');}} return '';} getThemeColor() ",
                     function(content){
@@ -264,6 +269,11 @@ BaseBrowserView {
 
     Clipboard {
         id: clip
+    }
+
+    FormFill {
+        id: formFill
+        webview: webview
     }
 
     function getPageTitle(url, callback){
