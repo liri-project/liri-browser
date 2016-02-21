@@ -12,7 +12,7 @@ See http://papyros.io for more information about Papyros.
 Our goal is it to create a minimalistic and simple, yet unique webbrowser that gets out of your way and lets you concentrate on the content. 
 Liri's user interface is designed according to Google's Material Design which leads to a clean and beautiful interface.
 
-The name "liri" comes from the Albanian word for freedom. Liri Browser was former named "Material Browser".
+The name "liri" comes from the Albanian word for freedom. Liri Browser was formerly named "Material Browser".
 
 ## Screenshots
 ![Screenshot](screenshots/screenshot_01.png)
