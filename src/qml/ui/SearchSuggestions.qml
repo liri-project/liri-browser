@@ -4,7 +4,7 @@ import Material.ListItems 0.1 as ListItem
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.2 as Controls
 import Material.Extras 0.1
-
+import "../components"
 
 View {
     width: root.app.integratedAddressbars ? parent.width / 4 : toolbar.omnibox.width
@@ -44,7 +44,7 @@ View {
     ListView {
         id: searchSuggestionsView
         width: parent.width
-        property int currentpos: root.selectedQueryIndex
+        property int currentpos: searchSuggestionsModel.selectedIndex
         height: parent.height
         boundsBehavior: Flickable.StopAtBounds
         model: root.app.searchSuggestionsModel
@@ -55,7 +55,7 @@ View {
         delegate: ListItem.Standard {
             text: suggestion
             iconName: icon
-            backgroundColor: root.selectedQueryIndex == index && (icon == "action/search" || icon == "action/bookmark" || icon == "action/history")? Qt.rgba(0,0,0,0.05) : "transparent"
+            backgroundColor: searchSuggestionsModel.selectedIndex == index && (icon == "action/search" || icon == "action/bookmark" || icon == "action/history")? Qt.rgba(0,0,0,0.05) : "transparent"
             onClicked: {
                 setActiveTabURL(suggestion)
                 root.app.searchSuggestionsModel.clear()

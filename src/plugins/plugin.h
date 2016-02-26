@@ -7,34 +7,37 @@
 #include <QQmlApplicationEngine>
 #include "../config.h"
 
-class Plugin : public QObject{
-        Q_OBJECT
-        public:
-                explicit Plugin(QString name, QString path, QQmlApplicationEngine *appEngine, Config *config, QObject *parent = 0);
+class Plugin : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Plugin(QString name, QString path, QQmlApplicationEngine *appEngine, Config *config,
+                    QObject *parent = 0);
 
-                void load();
-                bool trigger(QString event, QJSValueList args=QJSValueList());
+public slots:
+    void load();
+    bool trigger(QString event, QStringList args = QStringList());
 
-        private:
-                void createEngine();
-                bool loadManifest();
-                bool loadEngine();
-                void loadScript();
+private:
+    void createEngine();
+    bool loadManifest();
+    bool loadEngine();
+    void loadScript();
 
-                QJSEngine engine;
-                QString name;
-                QString path;
-                QString title;
-                QString description;
-                QString maintainer;
-                QString apiVersion;
-                QString version;
-                QVariantList features;
+    QJSEngine engine;
+    QString name;
+    QString path;
+    QString title;
+    QString description;
+    QString maintainer;
+    QString apiVersion;
+    QString version;
+    QVariantList features;
 
-                PluginAPI * api;
+    PluginAPI *api;
 
-                QQmlApplicationEngine *appEngine;
-                Config *config;
+    QQmlApplicationEngine *appEngine;
+    Config *config;
 };
 
 #endif // PLUGIN_H

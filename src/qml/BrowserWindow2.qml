@@ -77,7 +77,7 @@ MaterialWindow {
     property color defaultInactiveForegroundColor: (privateNav || app.darkTheme) ? shadeColor("#FFFFF", 0.9) : "#757575"
     property color currentInactiveForegroundColor: app.tabsEntirelyColorized && activeTab.view.customTextColor ? shadeColor(activeTab.view.customTextColor, 0.9) : defaultInactiveForegroundColor
 
-    property color currentIconColor: currentForegroundColor
+    property color currentIconColor: Theme.light.iconColor
 
     property string fontFamily: "Roboto"
 
@@ -136,74 +136,12 @@ MaterialWindow {
 
     /* URL Hangdling */
 
-    function getValidUrl(url) {
-        url=""+ url + ""
-        if(isMedia(url)) {
-            page.mediaDialog.url = url
-            page.mediaDialog.show()
-            return
-        }
-        else if(isPdf(url))
-            url = "https://docs.google.com/viewer?url=" + url;
-        else if (url.indexOf('.') !== -1 && url.indexOf('?') !== 0){
-            if (url.lastIndexOf('http://', 0) !== 0){
-                if (url.lastIndexOf('https://', 0) !== 0){
-                    url = 'http://' + url;
-                }
-            }
-        }
-        else if (url.lastIndexOf('http://', 0) !== 0 &&  url.lastIndexOf('https://', 0) !== 0 && url !== "about:blank") {
 
-            if (url.indexOf('?') === 0 && url.length > 1) {
-                url = url.substring(1);
-            }
-
-      	    if(root.app.searchEngine == "duckduckgo")
-     	        url = "https://duckduckgo.com/?q=" + url;
-      	    else if(root.app.searchEngine == "yahoo")
-                url = "https://search.yahoo.com/search?q=" + url;
-            else if(root.app.searchEngine == "bing")
-                url = "http://www.bing.com/search?q=" + url;
-      	    else
-                url = "https://www.google.com/search?q=" + url;
-      	}
-        return url;
-    }
-
-    function isASearchQuery(url) {
-      if (url.indexOf('.') !== -1){
-          if (url.lastIndexOf('http://', 0) !== 0){
-              if (url.lastIndexOf('https://', 0) !== 0){
-                  return false;
-              }
-          }
-      }
-      else if(url.indexOf('liri://') !== -1)
-          return false
-      else
-          return true;
-    }
 
 
     /* Boomarks Management */
 
-    function getBetterIcon(url, title, color, callback){
-        var doc = new XMLHttpRequest();
-        doc.onreadystatechange = function() {
-            if (doc.readyState == XMLHttpRequest.DONE) {
-                var json = JSON.parse(doc.responseText);
-                if ("error" in json) {
-                    callback(url, title, color, false);
-                }
-                else {
-                    callback(url, title, color, json["icons"][0].url);
-                }
-            }
-        }
-        doc.open("get", "http://icons.better-idea.org/api/icons?url=" + url);
-        doc.setRequestHeader("Content-Encoding", "UTF-8");
-        doc.send();
-    }
+
 
     function addToDash(url, title, color) {
         var uidMax = 0;
@@ -361,58 +299,7 @@ MaterialWindow {
         return tabsModel.get(i).uid;
     }
 
-    function addTab(url, background, webview) {
-        var browserView = browserViewComponent.createObject(page.viewContainer);
-        browserView.load(url, webview);
-        var modelData = {
-            url: url,
-            view: browserView,
-            uid: lastTabUID,
-            state:"inactive",
-            hasCloseButton: browserView.hasCloseButton,
-            closeButtonIconName: "navigation/close",
-            iconSource: browserView.icon,
-            customColor: browserView.customColor,
-            customColorLight: browserView.customColorLight,
-            customTextColor: browserView.customTextColor,
-        }
-        tabsModel.append(modelData);
-        if (!background)
-            setActiveTab(lastTabUID, true);
-        lastTabUID++;
-        return modelData;
-    }
 
-    function removeTab(t) {
-        // t is uid
-        if (typeof(t) === "number") {
-
-            // Remove all uid references from activeTabHistory:
-            while (activeTabHistory.indexOf(t) > -1) {
-                activeTabHistory.splice(activeTabHistory.indexOf(t), 1);
-            }
-
-            // Set last active tab:
-            if (activeTab.uid === t) {
-                setLastActiveTabActive(function(){
-                    var modelData = getTabModelDataByUID(t);
-                    modelData.view.visible = false;
-                    modelData.view.destroy();
-                    tabsModel.remove(getTabModelIndexByUID(t));
-                    // Was the last tab closed?
-                    if (tabsModel.count === 0) {
-                        addTab();
-                    }
-                });
-            }
-            else {
-                var modelData = getTabModelDataByUID(t);
-                modelData.view.visible = false;
-                modelData.view.destroy();
-                tabsModel.remove(getTabModelIndexByUID(t));
-            }
-        }
-    }
 
     function saveThisTabUrl(url) {
         // Add this tab to the list of recently closed tabs
@@ -454,15 +341,6 @@ MaterialWindow {
             callback();
         }
     }
-
-    function isMedia(url) {
-        if(url.slice(-4) == ".mp3" || url.slice(-4) == ".mp4"  || url.slice(-4) == ".avi")
-            return true
-        else
-            return false
-    }
-
-    function isPdf(url) { return url.slice(-4) == ".pdf"; }
 
     function setActiveTabURL(url, todownload) {
         activeTab.view.load(url);

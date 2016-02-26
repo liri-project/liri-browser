@@ -8,19 +8,15 @@ Component {
 
     Item {
         id: item
-        height: root.tabHeight
-        width: editModeActive ? root.tabWidthEdit : root.tabWidth
-        property int widthWithClose: editModeActive ? root.tabWidthEdit : root.tabWidth*1.7
-        property int widthWithoutClose: editModeActive ? root.tabWidthEdit : root.tabWidth
+        height: style.tabHeight
+        width: editModeActive ? style.tabWidthEdit : style.tabWidth
+        property int widthWithClose: editModeActive ? style.tabWidthEdit : style.tabWidth * 1.7
+        property int widthWithoutClose: editModeActive ? style.tabWidthEdit : style.tabWidth
 
         property color backgroundColor: root.privateNav ? Qt.rgba(255,255,255,0.05) :  itemContainer.state != "dragging" && itemContainer.state != "active" ? "transparent" : page.inkTimer.running ? "transparent" : root.currentBackgroundColor
         property color foregroundColor: itemContainer.state == "inactive" ? root.currentInactiveForegroundColor: root.currentForegroundColor
 
         property alias state: itemContainer.state
-
-        property QtObject modelData: listView.model.get(index)
-
-        property url url: modelData.url ? modelData.url : ""
 
         property bool editModeActive: false
 
@@ -347,17 +343,17 @@ Component {
                     onAccepted: {
                         item.editModeActive = false;
                         root.setActiveTabURL(text);
-                        root.selectedQueryIndex = 0
+                        searchSuggestionsModel.selectedIndex = 0
                     }
                     Keys.onDownPressed: {
-                        if(root.selectedQueryIndex < root.app.searchSuggestionsModel.count - 1)
-                            root.selectedQueryIndex += 1
-                        text = root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion
+                        if(searchSuggestionsModel.selectedIndex < searchSuggestionsModel.count - 1)
+                            searchSuggestionsModel.selectedIndex += 1
+                        text = searchSuggestionsModel.selectedSuggestion
                     }
                     Keys.onUpPressed: {
-                        if(root.selectedQueryIndex >= 1)
-                            root.selectedQueryIndex -= 1
-                        text = root.app.searchSuggestionsModel.get(root.selectedQueryIndex).suggestion
+                        if(searchSuggestionsModel.selectedIndex > 0)
+                            searchSuggestionsModel.selectedIndex -= 1
+                        text = searchSuggestionsModel.selectedSuggestion
                     }
                     onActiveFocusChanged: {
                         if (!activeFocus)

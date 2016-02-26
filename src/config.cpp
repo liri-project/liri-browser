@@ -1,46 +1,60 @@
+#include "config.h"
+
 #include <QDebug>
 #include <QFile>
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QVariant>
-#include "config.h"
+#include <QStandardPaths>
 
-Config::Config(QObject *parent) : QObject(parent){
-
+Config::Config(QObject *parent) : QObject(parent)
+{
+    // Nothing needed here
 }
 
+bool Config::load()
+{
+    QStringList configPaths = QStandardPaths::locateAll(QStandardPaths::ConfigLocation,
+                                                        QStringLiteral("liri-config.json"));
 
-bool Config::load(){
-    QFile configFile("config/liri-config.json");
-
-    if (!configFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open config file.");
+    if (configPaths.isEmpty()) {
+        qWarning() << "Configuration not found!";
         return false;
     }
 
-    QByteArray jsonData = configFile.readAll();
-    QJsonDocument configDoc (QJsonDocument::fromJson(jsonData));
+    foreach (QString path, configPaths) {
+        QFile configFile(path);
 
-    auto json = configDoc.object();
-    QJsonObject pluginsObject = json["plugins"].toObject();
-    this->plugins = pluginsObject.toVariantMap();
+        if (!configFile.open(QIODevice::ReadOnly)) {
+            qWarning() << "Couldn't open config file:" << path;
+        }
 
-    return true;
-}
+        QByteArray jsonData = configFile.readAll();
+        QJsonDocument configDoc(QJsonDocument::fromJson(jsonData));
 
+        auto json = configDoc.object();
+        QJsonObject pluginsObject = json["plugins"].toObject();
+        this->plugins = pluginsObject.toVariantMap();
 
-bool Config::save(){
+        return true;
+    }
+
     return false;
 }
 
+bool Config::save()
+{
+    return false;
+}
 
-QVariantMap Config::getPluginPermissions(QString pluginName) {
+QVariantMap Config::getPluginPermissions(QString pluginName)
+{
     return this->plugins[pluginName].toMap()["permissions"].toMap();
 }
 
-
-bool Config::getPluginIsPermitted(QString pluginName, QString feature){
+bool Config::getPluginIsPermitted(QString pluginName, QString feature)
+{
     QVariantMap permissions = this->getPluginPermissions(pluginName);
     if (permissions.keys().contains(feature))
         return permissions[feature].toBool();

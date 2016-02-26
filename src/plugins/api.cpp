@@ -1,3 +1,5 @@
+#include "api.h"
+
 #include <QDebug>
 #include <QString>
 #include <QVariantList>
@@ -7,128 +9,128 @@
 #include <QSignalMapper>
 #include <QtQml>
 #include <QJsonArray>
-#include "api.h"
+
 #include "urlopener.h"
 
-QStringList PluginAPI::events = QStringList() << QString("load")
-                                              << QString("omnibox.search"); // QJSValue text
+#define VERIFY_PERMISSION(permission)                                                              \
+    if (!hasPermission(#permission)) {                                                             \
+        qWarning() << "blocked" << #permission << "access for plugin" << m_pluginName;             \
+        return false;                                                                              \
+    }
 
-QMap<QString, QVariant> PluginAPI::eventFeatures = QMap<QString, QVariant>();
+QStringList PluginAPI::events = QStringList() << "load"
+                                              << "omnibox.search"; // QJSValue text
 
+QMap<QString, QString> PluginAPI::eventFeatures = QMap<QString, QString>();
 
-PluginAPI::PluginAPI(QString pluginName, QVariantList features, QQmlApplicationEngine *appEngine, Config *config, QObject *parent) : QObject(parent){
-    eventFeatures["load"] = QVariant("common");
-    eventFeatures["omnibox.search"] = QVariant("omniplet");
+PluginAPI::PluginAPI(QString pluginName, QVariantList features, QQmlApplicationEngine *appEngine,
+                     Config *config, QObject *parent)
+        : QObject(parent), m_pluginName(pluginName), m_features(features), m_appEngine(appEngine),
+          m_config(config)
+{
+    // TODO: Can we do this once instead of per constructor call? (eventFeatures is static)
+    eventFeatures["load"] = "common";
+    eventFeatures["omnibox.search"] = "omniplet";
 
-    this->pluginName = pluginName;
-    this->appEngine = appEngine;
-    this->config = config;
-    this->features = features;
-
-    for (int i=0; i<this->events.length(); i++) {
-        eventsMap.insert(this->events[i], QList<QJSValue>());
-
+    foreach (QString event, events) {
+        m_eventListeners[event] = QList<QJSValue>();
     }
 }
 
-bool PluginAPI::hasFeature(QVariant feature) {
-    return feature == "common" || this->features.contains(feature);
+bool PluginAPI::hasFeature(QString feature)
+{
+    return feature == "common" || m_features.contains(feature);
 }
 
-bool PluginAPI::hasPermission(QVariant feature){
-    return feature == "common" || ( hasFeature(feature) && this->config->getPluginIsPermitted(this->pluginName, feature.toString()) );
+bool PluginAPI::hasPermission(QString feature)
+{
+    return feature == "common" ||
+           (hasFeature(feature) && m_config->getPluginIsPermitted(m_pluginName, feature));
 }
 
-const QString PluginAPI::print(QString text) {
-    qDebug() << "plugin" << this->pluginName << ":" << text;
+const QString PluginAPI::print(QString text)
+{
+    qDebug() << "plugin" << m_pluginName + ":" << text;
     return text;
 }
 
-bool PluginAPI::on(QString event, QJSValue callback) {
-    if (events.contains(event)) {
-        if (this->hasPermission(this->eventFeatures[event])) {
-            eventsMap[event].append(callback);
-            qDebug() << "plugin" << this->pluginName << "successfully registered callback for event" << event;
-            return true;
-        }
-        else {
-            qWarning() << "plugin" << this->pluginName << "tried to register callback for event" << event << "without permission";
-            return false;
-        }
-    }
-    else {
-        qWarning() << "plugin" << this->pluginName << "tries to set callback for event" << event << "without permission";
+bool PluginAPI::on(QString event, QJSValue callback)
+{
+    if (!events.contains(event)) {
+        qWarning() << "plugin" << m_pluginName << "tried to register callback for event" << event
+                   << "without permission";
         return false;
     }
+
+    if (!hasPermission(eventFeatures[event])) {
+        qWarning() << "plugin" << m_pluginName << "tried to register callback for event" << event
+                   << "without permission";
+        return false;
+    }
+
+    m_eventListeners[event] << callback;
+    qDebug() << "plugin" << m_pluginName << "successfully registered callback for event" << event;
+    return true;
 }
 
-bool PluginAPI::trigger(QString event, QJSValueList args) {
+bool PluginAPI::trigger(QString event, QStringList args)
+{
     if (!events.contains(event)) {
         qWarning() << "Trying to trigger non-existing event" << event;
         return false;
     }
-    QList<QJSValue> events = eventsMap[event];
-    for (int i=0; i<events.length(); i++){
-        events[i].call(args);
+
+    QJSValueList list;
+    foreach (QString arg, args) {
+        list << QJSValue(arg);
     }
+
+    QList<QJSValue> eventListeners = m_eventListeners[event];
+
+    foreach (QJSValue listener, eventListeners) {
+        listener.call(list);
+    }
+
     return true;
 }
 
+bool PluginAPI::fetchURL(QUrl url, QJSValue callback)
+{
+    VERIFY_PERMISSION(network)
 
-bool PluginAPI::fetchURL(QUrl url, QJSValue callback){
-    if (hasPermission("network")) {
-        URLOpener *urlopener = new URLOpener();
-        urlopener->fetch(url, callback);
-        return true;
-    }
-    else {
-        qWarning() << "blocked network access for plugin" << this->pluginName;
-        return false;
-    }
+    URLOpener *urlopener = new URLOpener();
+    urlopener->fetch(url, callback);
+    return true;
 }
 
-bool PluginAPI::appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue insert) {
-    if (hasPermission("omniplet")) {
-        QObject *rootObject = this->appEngine->rootObjects().first();
-        QObject *qmlObject = rootObject->findChild<QObject*>("searchSuggestionsModel");
-        QMetaObject::invokeMethod(qmlObject,
-            "appendSuggestion",
-            Q_ARG(QVariant, text.toVariant()),
-            Q_ARG(QVariant, icon.toVariant()),
-            Q_ARG(QVariant, insert.toVariant())
-        );
-        return true;
-    }
-    else {
-        qWarning() << "blocked omniplet access for plugin" << this->pluginName;
-        return false;
-    }
+bool PluginAPI::appendSearchSuggestion(QJSValue text, QJSValue icon, QJSValue insert)
+{
+    VERIFY_PERMISSION(omniplet)
+
+    QObject *rootObject = m_appEngine->rootObjects().first();
+    QObject *qmlObject = rootObject->findChild<QObject *>("searchSuggestionsModel");
+    QMetaObject::invokeMethod(qmlObject, "appendSuggestion", Q_ARG(QVariant, text.toVariant()),
+                              Q_ARG(QVariant, icon.toVariant()),
+                              Q_ARG(QVariant, insert.toVariant()));
+    return true;
 }
 
+QVariant PluginAPI::getHistory()
+{
+    VERIFY_PERMISSION(history)
 
-QVariant PluginAPI::getHistory(){
-    if (hasPermission("history")) {
-        QVariant retValue;
-        QMetaObject::invokeMethod(this->appEngine->rootObjects().first(), "getHistoryArray",
-                Q_RETURN_ARG(QVariant, retValue));
-        return QVariant::fromValue(retValue.toList());
-    }
-    else {
-        qWarning() << "blocked history access for plugin" << this->pluginName;
-        return QVariant(false);
-    }
+    QVariant retValue;
+    QMetaObject::invokeMethod(m_appEngine->rootObjects().first(), "getHistoryArray",
+                              Q_RETURN_ARG(QVariant, retValue));
+    return retValue.toList();
 }
 
+QVariant PluginAPI::getBookmarks()
+{
+    VERIFY_PERMISSION(bookmarks)
 
-QVariant PluginAPI::getBookmarks(){
-    if (hasPermission("bookmarks")) {
-        QVariant retValue;
-        QMetaObject::invokeMethod(this->appEngine->rootObjects().first(), "getBookmarksArray",
-                Q_RETURN_ARG(QVariant, retValue));
-        return QVariant::fromValue(retValue.toList());
-    }
-    else {
-        qWarning() << "blocked bookmarks access for plugin" << this->pluginName;
-        return QVariant(false);
-    }
+    QVariant retValue;
+    QMetaObject::invokeMethod(m_appEngine->rootObjects().first(), "getBookmarksArray",
+                              Q_RETURN_ARG(QVariant, retValue));
+    return retValue.toList();
 }
