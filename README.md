@@ -66,12 +66,9 @@ https://gist.github.com/tim-sueberkrueb/bdaae352cc6dcaca19b3
 
 ### Dependencies
 * Qt 5.5 and QtWebEngine 1.1 (http://qt.io)
-* libvlc
 * qml-material (https://github.com/papyros/qml-material)
 
 ### Instructions
-* Install libvlc (e.g. Ubuntu: `sudo apt-get install libvlc-dev`)
-  * Build hints: https://github.com/RSATom/QmlVlcDemo/wiki/Build-hints 
 * Install Qt 5.5 (https://www.qt.io)
 * Install qml-material
   * git clone https://github.com/papyros/qml-material.git
