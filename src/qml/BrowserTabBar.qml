@@ -75,11 +75,6 @@ Rectangle {
 
             }
             onReleased: {
-                if (activeTab.uid !== draggingId) {
-                    getTabModelDataByUID(draggingId).state = "inactive";
-                } else {
-                    getTabModelDataByUID(draggingId).state = "active";
-                }
                 draggingId = -1
                 mouse.accepted = false;
             }

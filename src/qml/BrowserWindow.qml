@@ -368,7 +368,7 @@ MaterialWindow {
             url: url,
             view: browserView,
             uid: lastTabUID,
-            state:"inactive",
+            state: "inactive",
             hasCloseButton: browserView.hasCloseButton,
             closeButtonIconName: "navigation/close",
             iconSource: browserView.icon,

@@ -53,10 +53,9 @@ Component {
 
             property int uid: (index >= 0) ? listView.model.get(index).uid : -1
 
-            state: modelData.state
-
             states: [
                 State {
+                    when: root.activeTab.uid == uid && mouseArea.draggingId != itemContainer.uid
                     name: "active"
                     StateChangeScript {
                       script: {
@@ -66,6 +65,7 @@ Component {
                 },
 
                 State {
+                    when: root.activeTab.uid != uid && mouseArea.draggingId != itemContainer.uid
                     name: "inactive"
                 },
 
