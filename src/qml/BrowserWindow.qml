@@ -325,7 +325,6 @@ MaterialWindow {
     onActiveTabChanged: {
         // Handle last active tab
         if (lastActiveTab !== undefined && lastActiveTab !== null && lastActiveTab !== false) {
-            lastActiveTab.state = "inactive";
             lastActiveTab.view.visible = false;
         }
         // Handle now active tab
@@ -333,7 +332,6 @@ MaterialWindow {
             if (activeTabInEditModeItem)
                 activeTabInEditModeItem.editModeActive = false;
             lastActiveTab = activeTab;
-            activeTab.state = "active";
             activeTab.view.visible = true;
             activeTabHistory.push(activeTab.uid);
         }
@@ -368,7 +366,6 @@ MaterialWindow {
             url: url,
             view: browserView,
             uid: lastTabUID,
-            state: "inactive",
             hasCloseButton: browserView.hasCloseButton,
             closeButtonIconName: "navigation/close",
             iconSource: browserView.icon,
