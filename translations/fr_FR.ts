@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/qml/BrowserOxideWebView.qml" line="21"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvel onglet</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserOxideWebView.qml" line="21"/>
@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/qml/BrowserPage.qml" line="33"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nouvel onglet</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserPage.qml" line="47"/>
@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvel onglet</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="27"/>
@@ -126,22 +126,22 @@
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="283"/>
         <source>Open in new tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir dans un nouvel onglet</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="293"/>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir dans une nouvelle fenêtre</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="303"/>
         <source>Copy URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier l&apos;URL</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="313"/>
         <source>Add to bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter aux favoris</translation>
     </message>
     <message>
         <location filename="../src/qml/BrowserWebView.qml" line="327"/>
@@ -300,7 +300,7 @@
     <message>
         <location filename="../src/qml/HistoryDrawer.qml" line="36"/>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Supprimer l&apos;historique</translation>
     </message>
     <message>
         <location filename="../src/qml/HistoryDrawer.qml" line="85"/>
@@ -423,7 +423,7 @@
     <message>
         <location filename="../src/qml/Settings.qml" line="190"/>
         <source>Current Browser Version: 0.3</source>
-        <translation type="unfinished"></translation>
+        <translation>La version actuelle du navigateur: 0.3</translation>
     </message>
     <message>
         <location filename="../src/qml/Settings.qml" line="204"/>
@@ -448,7 +448,7 @@
     <message>
         <location filename="../src/qml/Settings.qml" line="322"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser</translation>
     </message>
 </context>
 <context>
@@ -552,7 +552,7 @@
     <message>
         <location filename="../src/qml/TabsList.qml" line="141"/>
         <source>Add tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un onglet</translation>
     </message>
 </context>
 <context>
@@ -560,7 +560,7 @@
     <message>
         <location filename="../src/qml/TabsListPage.qml" line="7"/>
         <source>Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Onglets</translation>
     </message>
 </context>
 <context>
