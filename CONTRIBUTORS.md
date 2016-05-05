@@ -26,6 +26,7 @@ https://www.transifex.com/liri-browser/teams/
   * Alexandre Oliveira (https://github.com/RockyTV)
 * French
   * Pierre Jacquier (https://github.com/pierremtb)
+  * Fortas Abdeldjalil (https://github.com/Fcmam5)
 * German
   * Tim Süberkrüb (https://github.com/tim-sueberkrueb)
 * Korean
