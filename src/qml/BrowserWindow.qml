@@ -195,7 +195,7 @@ MaterialWindow {
                     var json = JSON.parse(doc.responseText);
                     if (!("error" in json)) {
                         callback(url, title, color, json["icons"][0].url);
-                        return
+                        return;
                     }
                 }
                 catch(err) {
