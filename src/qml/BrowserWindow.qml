@@ -158,15 +158,15 @@ MaterialWindow {
                 url = url.substring(1);
             }
 
-      	    if(root.app.searchEngine == "duckduckgo")
-     	        url = "https://duckduckgo.com/?q=" + url;
-      	    else if(root.app.searchEngine == "yahoo")
+            if(root.app.searchEngine == "duckduckgo")
+                url = "https://duckduckgo.com/?q=" + url;
+            else if(root.app.searchEngine == "yahoo")
                 url = "https://search.yahoo.com/search?q=" + url;
             else if(root.app.searchEngine == "bing")
                 url = "http://www.bing.com/search?q=" + url;
-      	    else
+            else
                 url = "https://www.google.com/search?q=" + url;
-      	}
+        }
         return url;
     }
 
@@ -190,17 +190,21 @@ MaterialWindow {
     function getBetterIcon(url, title, color, callback){
         var doc = new XMLHttpRequest();
         doc.onreadystatechange = function() {
-            if (doc.readyState == XMLHttpRequest.DONE) {
-                var json = JSON.parse(doc.responseText);
-                if ("error" in json) {
-                    callback(url, title, color, false);
+            if (doc.readyState === XMLHttpRequest.DONE) {
+                try {
+                    var json = JSON.parse(doc.responseText);
+                    if (!("error" in json)) {
+                        callback(url, title, color, json["icons"][0].url);
+                        return;
+                    }
                 }
-                else {
-                    callback(url, title, color, json["icons"][0].url);
+                catch(err) {
+                    console.log(err);
                 }
+                callback(url, title, color, false);
             }
         }
-        doc.open("get", "http://icons.better-idea.org/api/icons?url=" + url);
+        doc.open("get", "http://icons.better-idea.org/allicons.json?url=" + url);
         doc.setRequestHeader("Content-Encoding", "UTF-8");
         doc.send();
     }
