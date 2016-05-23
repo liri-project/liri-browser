@@ -11,6 +11,7 @@ The list of contributors is sorted alphabetical based on the last names.
 * Andrew Penkrat (https://github.com/Aldrog)
 * Michael Spencer (https://github.com/iBeliever)
 * Tim Süberkrüb (https://github.com/tim-sueberkrueb)
+* Balázs Szücs (https://github.com/kuglisb)
 * VirusKa (https://github.com/VirusKA)
 * Tim Wang (https://github.com/timwangdev)
 
