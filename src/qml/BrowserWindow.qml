@@ -204,7 +204,7 @@ MaterialWindow {
                 callback(url, title, color, false);
             }
         }
-        doc.open("get", "http://icons.better-idea.org/api/icons?url=" + url);
+        doc.open("get", "http://icons.better-idea.org/allicons.json?url=" + url);
         doc.setRequestHeader("Content-Encoding", "UTF-8");
         doc.send();
     }
