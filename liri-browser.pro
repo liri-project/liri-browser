@@ -41,7 +41,8 @@ TRANSLATIONS += src/translations/liri-browser.ts \
                 src/translations/es_CR.ts \
                 src/translations/es_ES.ts \
                 src/translations/pt_BR.ts \
-                src/translations/pt_PT.ts
+                src/translations/pt_PT.ts \
+                src/translations/zh_CN.ts
 
 lupdate_only{
     SOURCES = *.qml \
