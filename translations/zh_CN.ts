@@ -4,783 +4,571 @@
 <context>
     <name>BookmarkItem</name>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="83"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="83"/>
         <source>Edit</source>
-        <translation></translation>
+        <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="89"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="89"/>
         <source>Add to dash</source>
-        <translation></translation>
+        <translation>添加到仪表板</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="95"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="95"/>
         <source>Delete</source>
-        <translation></translation>
+        <translation>删除</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="127"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="127"/>
         <source>Edit bookmark</source>
-        <translation></translation>
+        <translation>编辑书签</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="141"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="141"/>
         <source>Title</source>
-        <translation></translation>
+        <translation>标题</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="149"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="149"/>
         <source>URL</source>
-        <translation></translation>
+        <translation>网址</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="158"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="158"/>
         <source>Icon URL</source>
-        <translation></translation>
+        <translation>网站图标</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="172"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="172"/>
         <source>Cancel</source>
-        <translation></translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="../qml/BookmarkItem.qml" line="190"/>
+        <location filename="../src/qml/BookmarkItem.qml" line="190"/>
         <source>Apply</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>BookmarksDrawer</name>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="31"/>
-        <source>Bookmarks</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="67"/>
-        <source>No bookmarks found</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="128"/>
-        <source>Edit</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="134"/>
-        <source>Add to dash</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="140"/>
-        <source>Delete</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="172"/>
-        <source>Edit bookmark</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="186"/>
-        <source>Title</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="194"/>
-        <source>URL</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="203"/>
-        <source>Icon URL</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="217"/>
-        <source>Cancel</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BookmarksDrawer.qml" line="235"/>
-        <source>Apply</source>
-        <translation></translation>
+        <translation>应用</translation>
     </message>
 </context>
 <context>
     <name>BrowserOxideWebView</name>
     <message>
-        <location filename="../qml/BrowserOxideWebView.qml" line="21"/>
+        <location filename="../src/qml/BrowserOxideWebView.qml" line="21"/>
         <source>New tab</source>
-        <translation></translation>
+        <translation>新标签页</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserOxideWebView.qml" line="21"/>
+        <location filename="../src/qml/BrowserOxideWebView.qml" line="21"/>
         <source>Settings</source>
-        <translation></translation>
+        <translation>设置</translation>
     </message>
 </context>
 <context>
     <name>BrowserPage</name>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="55"/>
+        <location filename="../src/qml/BrowserPage.qml" line="27"/>
         <source>New window</source>
-        <translation></translation>
+        <translation>新窗口</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="61"/>
+        <location filename="../src/qml/BrowserPage.qml" line="33"/>
         <source>New tab</source>
-        <translation></translation>
+        <translation>新标签页</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="75"/>
+        <location filename="../src/qml/BrowserPage.qml" line="47"/>
         <source>History</source>
-        <translation></translation>
+        <translation>历史</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="80"/>
-        <source>Bookmarks</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserPage.qml" line="85"/>
+        <location filename="../src/qml/BrowserPage.qml" line="52"/>
         <source>Fullscreen</source>
-        <translation></translation>
+        <translation>全屏幕</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="95"/>
-        <location filename="../qml/BrowserPage.qml" line="219"/>
+        <location filename="../src/qml/BrowserPage.qml" line="62"/>
+        <location filename="../src/qml/BrowserPage.qml" line="164"/>
         <source>Search</source>
-        <translation></translation>
+        <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="101"/>
+        <location filename="../src/qml/BrowserPage.qml" line="68"/>
         <source>Bookmark</source>
-        <translation></translation>
+        <translation>书签</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="107"/>
+        <location filename="../src/qml/BrowserPage.qml" line="74"/>
         <source>Add to dash</source>
-        <translation></translation>
+        <translation>添加到仪表板</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="113"/>
+        <location filename="../src/qml/BrowserPage.qml" line="80"/>
         <source>View source</source>
-        <translation></translation>
+        <translation>查看源代码</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserPage.qml" line="119"/>
+        <location filename="../src/qml/BrowserPage.qml" line="86"/>
         <source>Settings</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>BrowserToolbar</name>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="51"/>
-        <source>Go Back</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="63"/>
-        <source>Go Forward</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="74"/>
-        <source>Refresh</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="74"/>
-        <source>Stop</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="91"/>
-        <source>Tabs</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="102"/>
-        <source>Add a tab</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="114"/>
-        <source>Bookmark this page</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="127"/>
-        <source>Downloads</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserToolbar.qml" line="150"/>
-        <source>Menu</source>
-        <translation></translation>
+        <translation>设置</translation>
     </message>
 </context>
 <context>
     <name>BrowserWebView</name>
     <message>
-        <location filename="../qml/BrowserWebView.qml" line="30"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>New tab</source>
-        <translation></translation>
+        <translation>新标签页</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWebView.qml" line="30"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="27"/>
         <source>Settings</source>
-        <translation></translation>
+        <translation>设置</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWebView.qml" line="30"/>
-        <source>Sites Colors</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserWebView.qml" line="30"/>
-        <source>Quick Searches</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserWebView.qml" line="30"/>
-        <source>Player</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserWebView.qml" line="333"/>
-        <source>Reload</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserWebView.qml" line="342"/>
-        <location filename="../qml/BrowserWebView.qml" line="438"/>
-        <source>Add to bookmarks</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserWebView.qml" line="356"/>
-        <location filename="../qml/BrowserWebView.qml" line="452"/>
-        <source>Add to dash</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserWebView.qml" line="368"/>
-        <source>View source</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/BrowserWebView.qml" line="396"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="283"/>
         <source>Open in new tab</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWebView.qml" line="406"/>
+        <location filename="../src/qml/BrowserWebView.qml" line="293"/>
         <source>Open in new window</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWebView.qml" line="418"/>
-        <source>Play in browser</source>
-        <translation></translation>
+        <location filename="../src/qml/BrowserWebView.qml" line="303"/>
+        <source>Copy URL</source>
+        <translation>复制网址</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWebView.qml" line="428"/>
-        <source>Copy URL</source>
-        <translation></translation>
+        <location filename="../src/qml/BrowserWebView.qml" line="313"/>
+        <source>Add to bookmarks</source>
+        <translation>添加到书签</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWebView.qml" line="327"/>
+        <source>Add to dash</source>
+        <translation>添加到仪表板</translation>
     </message>
 </context>
 <context>
     <name>BrowserWindow</name>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="15"/>
-        <source>Loading</source>
-        <translation></translation>
+        <source>Input search or web address</source>
+        <translation>搜索或输入网址</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="246"/>
+        <source>New window</source>
+        <translation>新窗口</translation>
+    </message>
+    <message>
+        <source>History</source>
+        <translation>历史</translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
+        <translation>全屏幕</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>搜索</translation>
+    </message>
+    <message>
+        <source>Bookmark</source>
+        <translation>书签</translation>
+    </message>
+    <message>
+        <source>Add to dash</source>
+        <translation>添加到仪表板</translation>
+    </message>
+    <message>
+        <source>View source</source>
+        <translation>查看源代码</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="14"/>
+        <source>Loading</source>
+        <translation>加载中</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/BrowserWindow.qml" line="183"/>
         <source>Added website &quot;%1&quot; to dash</source>
         <extracomment>%1 is a title</extracomment>
-        <translation></translation>
+        <translation>已把网站 %1 添加到仪表盘</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="556"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="432"/>
         <source>Removed bookmark %1</source>
-        <translation></translation>
+        <translation>移除了书签 %1</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="559"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="435"/>
         <source>Added bookmark &quot;%1&quot;</source>
-        <translation></translation>
+        <translation>已把网站 %1 添加到书签</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="626"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="485"/>
         <source>Reopen</source>
-        <translation></translation>
+        <translation>重新打开</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="641"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="500"/>
         <source>This Connection Is Untrusted</source>
-        <translation></translation>
+        <translation>该链接不安全</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="643"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="502"/>
         <source>You are about to securely connect to %1 but we can&apos;t confirm that your connection is secure because this site&apos;s identity can&apos;t be verified.</source>
         <extracomment>%1 is an URL</extracomment>
-        <translation></translation>
+        <translation>您即将安全地连接到 %1 ，但我们无法确认您的连接是否安全，因为该站点的身份无法验证。</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="644"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="503"/>
         <source>Continue anyway</source>
-        <translation></translation>
+        <translation>继续</translation>
     </message>
     <message>
-        <location filename="../qml/BrowserWindow.qml" line="645"/>
+        <location filename="../src/qml/BrowserWindow.qml" line="504"/>
         <source>Leave page</source>
-        <translation></translation>
+        <translation>离开页面</translation>
     </message>
 </context>
 <context>
     <name>ColorChooser</name>
     <message>
-        <location filename="../qml/ColorChooser.qml" line="18"/>
+        <location filename="../src/qml/ColorChooser.qml" line="18"/>
         <source>Choose a color</source>
-        <translation></translation>
+        <translation>选择一个颜色</translation>
     </message>
 </context>
 <context>
     <name>DownloadsDrawer</name>
     <message>
-        <location filename="../qml/DownloadsDrawer.qml" line="33"/>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="35"/>
         <source>Downloads</source>
-        <translation></translation>
+        <translation>下载</translation>
     </message>
     <message>
-        <location filename="../qml/DownloadsDrawer.qml" line="78"/>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="41"/>
+        <source>Clear</source>
+        <translation>清除</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="80"/>
         <source>Awaiting confirmation</source>
-        <translation></translation>
+        <translation>等待确认</translation>
     </message>
     <message>
-        <location filename="../qml/DownloadsDrawer.qml" line="80"/>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="82"/>
         <source>Downloading...</source>
-        <translation></translation>
+        <translation>下载中</translation>
     </message>
     <message>
-        <location filename="../qml/DownloadsDrawer.qml" line="82"/>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="84"/>
         <source>Completed</source>
-        <translation></translation>
+        <translation>完成</translation>
     </message>
     <message>
-        <location filename="../qml/DownloadsDrawer.qml" line="84"/>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="86"/>
         <source>Cancelled</source>
-        <translation></translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="../qml/DownloadsDrawer.qml" line="86"/>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="88"/>
         <source>Download failed</source>
-        <translation></translation>
+        <translation>下载失败</translation>
     </message>
     <message>
-        <location filename="../qml/DownloadsDrawer.qml" line="88"/>
+        <location filename="../src/qml/DownloadsDrawer.qml" line="90"/>
         <source>Unknown state!</source>
-        <translation></translation>
+        <translation>未知的状态！</translation>
+    </message>
+    <message>
+        <source>No active downloads</source>
+        <translation>没有进行中的下载</translation>
     </message>
 </context>
 <context>
     <name>HistoryDrawer</name>
     <message>
-        <location filename="../qml/HistoryDrawer.qml" line="28"/>
+        <location filename="../src/qml/HistoryDrawer.qml" line="30"/>
         <source>History</source>
-        <translation></translation>
+        <translation>历史</translation>
     </message>
     <message>
-        <location filename="../qml/HistoryDrawer.qml" line="79"/>
+        <location filename="../src/qml/HistoryDrawer.qml" line="36"/>
+        <source>Clear History</source>
+        <translation>清除历史</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/HistoryDrawer.qml" line="85"/>
         <source>No browser history found</source>
-        <translation></translation>
+        <translation>没有找到浏览记录</translation>
+    </message>
+    <message>
+        <source>No history found</source>
+        <translation>没有找到历史</translation>
     </message>
 </context>
 <context>
     <name>NewTabPage</name>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="16"/>
+        <location filename="../src/qml/NewTabPage.qml" line="15"/>
         <source>Nothing here, yet</source>
-        <translation></translation>
+        <translation>这里暂时什么也没有</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="28"/>
+        <location filename="../src/qml/NewTabPage.qml" line="27"/>
         <source>You can add items by clicking on the menu item &quot;Add to dash&quot; on any website or by right clicking on a bookmark.</source>
-        <translation></translation>
+        <translation>您可以单击网站上的菜单项“添加书签”，也可以右键单击书签来添加。</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="161"/>
+        <location filename="../src/qml/NewTabPage.qml" line="160"/>
         <source>Edit</source>
-        <translation></translation>
+        <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="170"/>
+        <location filename="../src/qml/NewTabPage.qml" line="169"/>
         <source>Delete</source>
-        <translation></translation>
+        <translation>删除</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="208"/>
+        <location filename="../src/qml/NewTabPage.qml" line="207"/>
         <source>Edit item</source>
-        <translation></translation>
+        <translation>编辑条目</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="222"/>
+        <location filename="../src/qml/NewTabPage.qml" line="221"/>
         <source>Title</source>
-        <translation></translation>
+        <translation>标题</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="230"/>
+        <location filename="../src/qml/NewTabPage.qml" line="229"/>
         <source>URL</source>
-        <translation></translation>
+        <translation>网址</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="239"/>
+        <location filename="../src/qml/NewTabPage.qml" line="238"/>
         <source>Icon URL</source>
-        <translation></translation>
+        <translation>网站图标</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="248"/>
+        <location filename="../src/qml/NewTabPage.qml" line="247"/>
         <source>Background color</source>
-        <translation></translation>
+        <translation>背景色</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="260"/>
+        <location filename="../src/qml/NewTabPage.qml" line="259"/>
         <source>Cancel</source>
-        <translation></translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="../qml/NewTabPage.qml" line="275"/>
+        <location filename="../src/qml/NewTabPage.qml" line="274"/>
         <source>Apply</source>
-        <translation></translation>
+        <translation>应用</translation>
     </message>
 </context>
 <context>
     <name>Omnibox</name>
     <message>
-        <location filename="../qml/Omnibox.qml" line="123"/>
+        <location filename="../src/qml/Omnibox.qml" line="105"/>
         <source>Search</source>
-        <translation></translation>
+        <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../qml/Omnibox.qml" line="123"/>
-        <location filename="../qml/Omnibox.qml" line="143"/>
-        <location filename="../qml/Omnibox.qml" line="198"/>
+        <location filename="../src/qml/Omnibox.qml" line="105"/>
         <source>Search or enter website name</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/Omnibox.qml" line="175"/>
-        <location filename="../qml/Omnibox.qml" line="193"/>
-        <source>Search...</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>PlayerPage</name>
-    <message>
-        <location filename="../qml/PlayerPage.qml" line="5"/>
-        <source>Player</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>QuickSearches</name>
-    <message>
-        <location filename="../qml/QuickSearches.qml" line="26"/>
-        <source>Customize sites colors (if no theme-color)</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>QuickSearchesList</name>
-    <message>
-        <location filename="../qml/QuickSearchesList.qml" line="26"/>
-        <source>Presets</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/QuickSearchesList.qml" line="52"/>
-        <source>Title</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/QuickSearchesList.qml" line="67"/>
-        <location filename="../qml/QuickSearchesList.qml" line="144"/>
-        <source>Key</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/QuickSearchesList.qml" line="81"/>
-        <location filename="../qml/QuickSearchesList.qml" line="159"/>
-        <source>URL</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/QuickSearchesList.qml" line="104"/>
-        <source>Custom (can overwrite presets)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/QuickSearchesList.qml" line="130"/>
-        <source>Name</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/QuickSearchesList.qml" line="193"/>
-        <source>Add new color</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>QuickSearchesPage</name>
-    <message>
-        <location filename="../qml/QuickSearchesPage.qml" line="5"/>
-        <source>Sites Colors</source>
-        <translation></translation>
+        <translation>搜索或输入网址</translation>
     </message>
 </context>
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../qml/Settings.qml" line="38"/>
+        <location filename="../src/qml/Settings.qml" line="31"/>
         <source>Settings</source>
-        <translation></translation>
+        <translation>设置</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="70"/>
+        <location filename="../src/qml/Settings.qml" line="61"/>
         <source>General</source>
-        <translation></translation>
+        <translation>通用</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="88"/>
+        <location filename="../src/qml/Settings.qml" line="79"/>
         <source>Start page</source>
-        <translation></translation>
+        <translation>起始页</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="134"/>
+        <location filename="../src/qml/Settings.qml" line="118"/>
         <source>Appearance</source>
-        <translation></translation>
+        <translation>外观</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="152"/>
+        <location filename="../src/qml/Settings.qml" line="134"/>
         <source>Enable dashboard</source>
-        <translation></translation>
+        <translation>启用仪表板</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="175"/>
+        <location filename="../src/qml/Settings.qml" line="155"/>
         <source>Integrated addressbars</source>
-        <translation></translation>
+        <translation>集成地址栏</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="198"/>
-        <source>Responsive tabs (EXPERIMENTAL)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/Settings.qml" line="220"/>
+        <location filename="../src/qml/Settings.qml" line="175"/>
         <source>Colorize the entire tab and toolbar</source>
-        <translation></translation>
+        <translation>着色标签页和地址栏</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="246"/>
-        <source>Use custom sites colors</source>
-        <translation></translation>
+        <location filename="../src/qml/Settings.qml" line="190"/>
+        <source>Current Browser Version: 0.3</source>
+        <translation>当前浏览器版本： 0.3</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="279"/>
-        <source>Use Quick Searches in Omnibox</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/Settings.qml" line="312"/>
-        <source>Material window frame (EXPERIMENTAL)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/Settings.qml" line="325"/>
-        <source>Bookmarks bar</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/Settings.qml" line="415"/>
+        <location filename="../src/qml/Settings.qml" line="204"/>
         <source>Theme</source>
-        <translation></translation>
+        <translation>主题</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="423"/>
-        <source>Dark theme</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/Settings.qml" line="482"/>
+        <location filename="../src/qml/Settings.qml" line="211"/>
         <source>Primary Color</source>
-        <translation></translation>
+        <translation>原色</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="504"/>
+        <location filename="../src/qml/Settings.qml" line="232"/>
         <source>Accent Color</source>
-        <translation></translation>
+        <translation>强调色</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="639"/>
+        <location filename="../src/qml/Settings.qml" line="306"/>
         <source>Save</source>
-        <translation></translation>
+        <translation>保存</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="665"/>
+        <location filename="../src/qml/Settings.qml" line="322"/>
         <source>Reset</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../qml/Settings.qml" line="685"/>
-        <source>Version: 0.3</source>
-        <translation></translation>
+        <translation>重置</translation>
     </message>
 </context>
 <context>
     <name>SettingsDrawer</name>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="30"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="30"/>
         <source>Settings</source>
-        <translation></translation>
+        <translation>设置</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="41"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="41"/>
         <source>General</source>
-        <translation></translation>
+        <translation>通用</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="53"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="53"/>
         <source>Start page</source>
-        <translation></translation>
+        <translation>起始页</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="87"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="87"/>
         <source>Appearance</source>
-        <translation></translation>
+        <translation>外观</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="102"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="102"/>
         <source>Enable dashboard</source>
-        <translation></translation>
+        <translation>启用仪表板</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="122"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="122"/>
         <source>Integrated addressbars</source>
-        <translation></translation>
+        <translation>集成地址栏</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="142"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="142"/>
         <source>Colorize the entire tab and toolbar</source>
-        <translation></translation>
+        <translation>着色标签页和地址栏</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="157"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="157"/>
         <source>Theme</source>
-        <translation></translation>
+        <translation>主题/translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="164"/>
-        <source>Primary Color</source>
-        <translation></translation>
+        <location filename="../src/qml/SettingsDrawer.qml" line="164"/>
+        <source>原色</source>
+        <translation>Color Primario</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="186"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="186"/>
         <source>Accent Color</source>
-        <translation></translation>
+        <translation>强调色</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="230"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="230"/>
         <source>Save</source>
-        <translation></translation>
+        <translation>保存</translation>
     </message>
     <message>
-        <location filename="../qml/SettingsDrawer.qml" line="245"/>
+        <location filename="../src/qml/SettingsDrawer.qml" line="245"/>
         <source>Abort</source>
-        <translation></translation>
+        <translation>终止</translation>
     </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
-        <location filename="../qml/SettingsPage.qml" line="5"/>
+        <location filename="../src/qml/SettingsPage.qml" line="5"/>
         <source>Settings</source>
-        <translation></translation>
+        <translation>设置</translation>
     </message>
 </context>
 <context>
-    <name>SitesColors</name>
+    <name>TabManager</name>
     <message>
-        <location filename="../qml/SitesColors.qml" line="24"/>
-        <source>Customize sites colors (if no theme-color)</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>SitesColorsList</name>
-    <message>
-        <location filename="../qml/SitesColorsList.qml" line="26"/>
-        <source>Presets</source>
-        <translation></translation>
+        <source>Added website &quot;%1&quot; to dash</source>
+        <extracomment>%1 is a title</extracomment>
+        <translation>标题为 %1</translation>
     </message>
     <message>
-        <location filename="../qml/SitesColorsList.qml" line="52"/>
-        <location filename="../qml/SitesColorsList.qml" line="117"/>
-        <source>Domain</source>
-        <translation></translation>
+        <source>Removed bookmark</source>
+        <translation>移除书签</translation>
     </message>
     <message>
-        <location filename="../qml/SitesColorsList.qml" line="67"/>
-        <location filename="../qml/SitesColorsList.qml" line="131"/>
-        <source>Color</source>
-        <translation></translation>
+        <source>Added bookmark</source>
+        <translation>添加书签</translation>
     </message>
     <message>
-        <location filename="../qml/SitesColorsList.qml" line="90"/>
-        <source>Custom (can overwrite presets)</source>
-        <translation></translation>
+        <source>Closed tab &quot;%1&quot;</source>
+        <extracomment>%1 is a title</extracomment>
+        <translation>标题为 %1</translation>
     </message>
     <message>
-        <location filename="../qml/SitesColorsList.qml" line="168"/>
-        <source>Add new color</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>SitesColorsPage</name>
-    <message>
-        <location filename="../qml/SitesColorsPage.qml" line="5"/>
-        <source>Sites Colors</source>
-        <translation></translation>
+        <source>New Tab</source>
+        <translation>新标签页</translation>
     </message>
 </context>
 <context>
     <name>TabsList</name>
     <message>
-        <location filename="../qml/TabsList.qml" line="141"/>
+        <location filename="../src/qml/TabsList.qml" line="141"/>
         <source>Add tab</source>
-        <translation></translation>
+        <translation>添加标签页</translation>
     </message>
 </context>
 <context>
     <name>TabsListPage</name>
     <message>
-        <location filename="../qml/TabsListPage.qml" line="7"/>
+        <location filename="../src/qml/TabsListPage.qml" line="7"/>
         <source>Tabs</source>
-        <translation></translation>
+        <translation>标签页</translation>
     </message>
 </context>
 <context>
     <name>UbuntuOmniboxOverlay</name>
     <message>
-        <location filename="../qml/UbuntuOmniboxOverlay.qml" line="37"/>
+        <location filename="../src/qml/UbuntuOmniboxOverlay.qml" line="37"/>
         <source>Search or enter website name</source>
-        <translation></translation>
+        <translation>搜索或输入网址</translation>
     </message>
 </context>
 </TS>
